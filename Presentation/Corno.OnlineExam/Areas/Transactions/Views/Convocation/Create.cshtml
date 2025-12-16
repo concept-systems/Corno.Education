@@ -1,0 +1,599 @@
+﻿@using Corno.Globals.Constants
+@model Corno.Data.Corno.ConvocationViewModel
+@{
+    ViewBag.Title = "Convocation Form";
+}
+<style>
+    .UpperCase {
+        text-transform: uppercase !important;
+    }
+</style>
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Online Exam</a></li>
+            <li><a href="#"> Create Convocation Form</a></li>
+        </ol>
+    </div>
+</div>
+@Html.ValidationSummary(false)
+@if (TempData["Success"] != null)
+{
+    <script type="text/javascript">
+        bootbox.alert("@TempData["Success"]")
+    </script>
+}
+<div class="row">
+    <div class="box ui-draggable ui-droppable">
+        <div class="box-header">
+            <div class="box-name">
+                <i class="fa fa-plus-square large"></i>
+                <span>Create a new Convocation Form.</span>
+            </div>
+            <div class="box-icons">
+                <a class="collapse-link">
+                    <i class="fa fa-chevron-up"></i>
+                </a>
+                <a class="expand-link">
+                    <i class="fa fa-expand"></i>
+                </a>
+            </div>
+            <div class="no-move"></div>
+        </div>
+        <div class="box-content">
+            @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form", enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(m => m.StudentId)
+                @Html.HiddenFor(m => m.CollegeId)
+                @Html.HiddenFor(m => m.CourseId)
+                @Html.HiddenFor(m => m.CoursePartId)
+                @Html.HiddenFor(m => m.BranchId)
+                @Html.HiddenFor(m => m.CentreId)
+                @Html.HiddenFor(m => m.ClassCode)
+                @Html.HiddenFor(m => m.SeatNo)
+                @Html.HiddenFor(m => m.PassingYear)
+                @Html.HiddenFor(m => m.PassingMonth)
+                @Html.HiddenFor(m => m.Cgpa)
+
+                @Html.HiddenFor(m => m.ConvocationFee)
+                @Html.HiddenFor(m => m.PostalChargeInIndia)
+                @Html.HiddenFor(m => m.PostalChargeInAbroad)
+
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="k-actions k-actions-horizontal k-actions-start">
+                            <button type="button" value="Index" class="btn btn-primary btn-label-left" 
+                                    onclick="location.href='@Url.Action("Details", new { area = "Reports", controller = "Report", reportName = "ConvocationChallanRpt", description = "Convocation form Challan" })' ">
+                                <span><i class="fa fa-file-excel-o"></i></span>
+                                Challan
+                            </button>
+                            <button type="button" value="Index" class="btn btn-primary btn-label-left pull-left"
+                                    onclick="location.href = '@Url.Action("Details", new { area = "Reports", controller = "Report", reportName = "ConvocationStudentSummary" })'">
+                                <span><i class="fa fa-file-excel-o"></i></span>
+                                Student Summary
+                            </button>
+                            <button type="button" value="Index" class="btn btn-primary btn-label-left pull-left"
+                                    onclick="location.href = '@Url.Action("Details", new { area = "Reports", controller = "Report", reportName = ReportName.ConvocationStudentsRpt })'">
+                                <span><i class="fa fa-file-excel-o"></i></span>
+                                Student List
+                            </button>
+                            <button type="button" value="Index" class="btn btn-primary btn-label-left pull-left"
+                                    onclick="location.href = '@Url.Action("Details", new { area = "Reports", controller = "Report", reportName = "ConvocationStudentResults" })'">
+                                <span><i class="fa fa-file-excel-o"></i></span>
+                                Convocation Record
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="k-actions k-actions-horizontal k-actions-end">
+                            <button type="submit" name="SubmitValue" value="Create" title="Create" class="btn btn-primary btn-label-left pull-right">
+                                <span><i class="fa fa-save"></i></span>
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal" id="horizontalForm">
+                    <div class="box-content">
+                        <div class="panel panel-info">
+                            <div class="panel-heading"><strong>Personal Details</strong></div>
+                            <div class="panel-body">
+                                <div class="form-group  has-feedback">
+                                    <div class="col-sm-offset-2 col-sm-4 ">
+                                        @Html.CheckBoxFor(m => m.ClassImprovementStudent, new { disabled = "disabled" })
+                                        <label class="control-label"> Under Class Improvement</label>
+                                    </div>
+                                </div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label">PRN :</label>
+                                    <div class="col-sm-3">
+                                        @Html.TextBoxFor(m => m.PrnNo, new { id = "PRNNo", @class = "form-control", placeholder = "Enter PRN", data_toggle = "tooltip", data_placement = "bottom", title = "PRN No" })
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <button type="submit" name="submitType" value="Search" class="btn btn-warning">
+                                            <span><i class="fa fa-search"></i></span>
+                                        </button>
+                                    </div>
+                                    <label class="col-sm-2 control-label">City <code>*</code>:</label>
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(m => m.Destination, new { id = "Destination", style = "text-transform:uppercase", @class = "form-control", maxlength = "20", placeholder = "City", data_toggle = "tooltip", data_placement = "bottom", title = "City" })
+                                    </div>
+                                </div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label">Address <code>*</code>:</label>
+                                    <div class="col-sm-4">
+                                        @Html.TextAreaFor(m => m.Address, new
+                                   {
+                                       rows = 5,
+                                       columns = 60,
+                                       style = "text-transform:uppercase",
+                                       id = "Address",
+                                       @class = "form-control UpperCase",
+                                       maxlength = "200",
+                                       placeholder = " Enter Address",
+                                       data_toggle = "tooltip",
+                                       data_placement = "bottom",
+                                       title = " Address",
+                                   onkeypress = "return disableEnterKey(event)"
+                                   })
+                                    </div>
+                                    <label class="col-sm-2 control-label">Pincode <code>*</code>:</label>
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(m => m.PinCode, new
+                                   {
+                                       id = "Pincode",
+                                       @class = "form-control",
+                                       maxlength = "6",
+                                       placeholder = "Pincode",
+                                       data_toggle = "tooltip",
+                                       data_placement = "bottom",
+                                       title = "Pincode",
+                                       onkeypress = "return isNumber(event)"
+                                   })
+                                    </div>
+                                    <label class="col-sm-2 control-label">Mobile <code>*</code>:</label>
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(m => m.Phone, new
+                                   {
+                                       id = "Phone",
+                                       @class = "form-control",
+                                       maxlength = "14",
+                                       placeholder = "Phone",
+                                       data_toggle = "tooltip",
+                                       data_placement = "bottom",
+                                       title = "Phone",
+                                       onkeypress = "return isNumber(event)"
+                                   })
+                                    </div>
+                                    <label class="col-sm-2 control-label">Email <code>*</code>:</label>
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(m => m.Email, new { id = "Email", @class = "form-control", maxlength = "50", placeholder = "Email", data_toggle = "tooltip", data_placement = "bottom", title = "Email" })
+                                    </div>
+                                    <label class="col-sm-2 control-label">Passing Month <code>*</code>:</label>
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(m => m.PassingMonth1, new
+                                   {
+                                       id = "PassingMonth1",
+                                       @class = "form-control",
+                                       maxlength = "10",
+                                       placeholder = "Passing Month",
+                                       data_toggle = "tooltip",
+                                       data_placement = "bottom",
+                                       title = "Passing Month",
+                                       onkeypress = "return isNumber(event)"
+                                   })
+                                    </div>
+                                    <label class="col-sm-offset-6 col-sm-2 control-label">Passing Year <code>*</code>:</label>
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(m => m.PassingYear1, new
+                                   {
+                                       id = "PassingYear1",
+                                       @class = "form-control",
+                                       maxlength = "10",
+                                       placeholder = "Passing Year",
+                                       data_toggle = "tooltip",
+                                       data_placement = "bottom",
+                                       title = "Passing Year",
+                                       onkeypress = "return isNumber(event)"
+                                   })
+                                    </div>
+                                </div>
+                                <div class="form-group  has-feedback">
+                                    <div class="col-sm-offset-2 col-sm-4 ">
+                                        @Html.CheckBoxFor(m => m.ForeignStudent)
+                                        <label class="control-label"> Overseas Student</label>
+                                    </div>
+                                    <label class="col-sm-2 control-label">Adhar No.:</label>
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(m => m.AdharNo, new
+                                   {
+                                       value = "@Model.AdharNo",
+                                       id = "AdharNo",
+                                       @class = "form-control",
+                                       maxlength = "50",
+                                       placeholder = "Enter Adhar No",
+                                       data_toggle = "tooltip",
+                                       data_placement = "bottom",
+                                       title = "Adhar No",
+                                       onkeypress = "return isNumber(event)"
+                                   })
+                                        @Html.ValidationMessageFor(x => x.AdharNo)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-info">
+                            <div class="panel-heading"><strong>Exam Details</strong></div>
+                            <div class="panel-body">
+                                <table class="table table-responsive" width="100%">
+                                    <tr>
+                                        <td width="80%">
+                                            <table class="table table-bordered table-responsive">
+                                                <tr>
+                                                    <th class="text-left col-sm-2"><strong>Name :</strong></th>
+                                                    <td id="tdName" class="text-left col-sm-6">
+                                                        @Html.DisplayFor(m => m.StudentName)
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="text-left col-sm-2"><strong>Gender :</strong></th>
+                                                    <td id="tdGender" class="text-left">
+                                                        @Html.DisplayFor(m => m.Gender)
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="text-left col-sm-2"><strong>Centre :</strong></th>
+                                                    <td id="tdCentre" class="text-left">
+                                                        @if (Model.CentreId > 0)
+                                                        {
+                                                            @Html.Display("(" + Model.CentreId + ")")
+                                                        }
+                                                        @Html.DisplayFor(m => m.CentreName)
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="text-left col-sm-2"><strong>College :</strong></th>
+                                                    <td id="tdCollege" class="text-left">
+                                                        @if (Model.CollegeId > 0)
+                                                        {
+                                                            @Html.Display("(" + Model.CollegeId + ")")
+                                                        }
+                                                        @Html.DisplayFor(m => m.CollegeName)
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="text-left col-sm-2"><strong>Course Type :</strong></th>
+                                                    <td id="tdCourseType" class="text-left">
+                                                        @Html.DisplayFor(m => m.CourseTypeName)
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="text-left col-sm-2"><strong>Course :</strong></th>
+                                                    <td id="tdCourse" class="text-left">
+                                                        @if (Model.CourseId > 0)
+                                                        {
+                                                            @Html.Display("(" + Model.CourseId + ")")
+                                                        }
+                                                        @Html.DisplayFor(m => m.CourseName)
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="text-left col-sm-2"><strong>Branch :</strong></th>
+                                                    <td id="tdBranch" class="text-left">
+                                                        @if (Model.BranchId > 0)
+                                                        {
+                                                            @Html.Display("(" + Model.BranchId + ")")
+                                                        }
+                                                        @Html.DisplayFor(m => m.BranchName)
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="text-left col-sm-2"><strong>Seat No :</strong></th>
+                                                    <td id="tdLastSeatNo" class="text-left">
+                                                        @Html.DisplayFor(m => m.SeatNo)
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left col-sm-4"><strong>Class / Grade :</strong></td>
+                                                    <td>
+                                                        @Html.DisplayFor(m => m.Grade)
+                                                        @Html.DisplayFor(m => m.Class)
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="text-left col-sm-2"><strong>CGPA :</strong></th>
+                                                    <td id="tdCGPA" class="text-left">
+                                                        @if (Model.Cgpa > 0)
+                                                        {
+                                                            @Html.DisplayFor(m => m.Cgpa)
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td width="20%">
+                                            <table class="table table-bordered table-responsive">
+                                                <tr>
+                                                    <td class="text-left col-sm-4" colspan="2"><strong>Photo :</strong></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-center col-sm-4" colspan="2">
+                                                        <img src='@Model.Photo' width="140px" height="180px" />
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+
+                                </table>
+                            </div>
+                        </div>
+                        <div class="panel panel-info">
+                            <div class="panel-heading"><strong>Fee Details</strong></div>
+                            <div class="panel-body">
+                                <table class="table table-bordered table-responsive">
+                                    <tr>
+                                        <td width="50%">
+                                            <table class="table table-bordered table-responsive">
+                                                <tr>
+                                                    <th colspan="2" class="text-center">Carrier</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        @Html.RadioButtonFor(model => model.InPerson, true, new { id = "InPerson", onclick = "FeeForInPerson()" })
+                                                        @Html.Label("InPerson", "In Person")
+                                                    </td>
+                                                    <td>
+                                                        @Html.RadioButtonFor(model => model.InPerson, false, new { id = "InAbsentia" })
+                                                        @Html.Label("InAbsentia", "By Post")
+                                                    </td>
+                                                </tr>
+                                                <tr id="divPostalChangesIndina">
+                                                    <td colspan="2">
+                                                        @Html.RadioButtonFor(model => model.InIndia, "true", new { id = "InIndia", onclick = "FeeForIndia()" })
+                                                        @Html.Label("InIndia", "In India")
+                                                    </td>
+                                                </tr>
+                                                <tr id="divPostalChargesAbroad">
+                                                    <td colspan="2">
+                                                        @Html.RadioButtonFor(model => model.InIndia, "false", new { id = "InAbroad", onclick = "FeeForAbroad()" })
+                                                        @Html.Label("InAbroad", "In Abroad")
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td width="50%">
+                                            <table class="table table-bordered table-responsive invisible">
+                                                <tr>
+                                                    <th colspan="2" class="text-center">Payment</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        @Html.RadioButtonFor(model => model.ByCash, "true", new { id = "ByCash", onclick = "FeeForInPerson()" })
+                                                        @Html.Label("ByCash", "By Cash")
+                                                    </td>
+                                                    <td>
+                                                        @Html.RadioButtonFor(model => model.ByCash, "false", new { id = "ByDD", onclick = "FeeForInPerson()" })
+                                                        @Html.Label("ByDD", "By Demand Draft")
+                                                    </td>
+                                                </tr>
+                                                <tr id="divDemandDraftNo">
+                                                    <td width="50%">
+                                                        <label class="control-label ">Demand Draft No :</label>
+                                                    </td>
+                                                    <td width="50%">
+                                                        @Html.TextBoxFor(m => m.DdNo, new { id = "DDNo", @class = "form-control", value = "@Model.DDNo", placeholder = "Enter Demand Draft No.", data_toggle = "tooltip", data_placement = "bottom", title = "Damand Draft No" })
+                                                    </td>
+                                                </tr>
+                                                <tr id="divDrawnOn">
+                                                    <td width="50%">
+                                                        <label class="control-label ">Drawn On :</label>
+                                                    </td>
+                                                    <td width="50%">
+                                                        @Html.TextBoxFor(m => m.DrawnOn, new { id = "DrawnOn", @class = "form-control", value = "@Model.DrawnOn", placeholder = "DrawnOn", data_toggle = "tooltip", data_placement = "bottom", title = "DrawnOn" })
+                                                    </td>
+                                                </tr>
+                                                <tr id="divDemandDraftDate">
+                                                    <td width="50%">
+                                                        <label class="control-label ">Demand Draft Date :</label>
+                                                    </td>
+                                                    <td width="50%">
+                                                        @Html.TextBoxFor(m => m.DdDate, "{0:dd-MMM-yyyy}", new { id = "DDDate", @class = "form-control", value = "@Model.DDDate", placeholder = "Click to select Demand Draft Date", data_toggle = "tooltip", data_placement = "bottom", title = "Demand Draft Date" })
+                                                        @*<span class="fa fa-calendar txt-danger form-control-feedback"></span>*@
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <label class="control-label">Convocation Fee :</label>
+                                        </th>
+                                        <td>
+                                            @Html.DisplayFor(m => m.ConvocationFee, new { id = "convocationFee" })
+                                        </td>
+                                    </tr>
+                                    <tr id="divPostalCharges">
+                                        <th>
+                                            <label class="control-label" id="postal">Postal Charges :</label>
+                                        </th>
+                                        <td>
+                                            <label class="control-label" id="postalChargeInIndia">@Model.PostalChargeInIndia</label>
+                                            <label class="control-label" id="postalChargeAbroad">@Model.PostalChargeInAbroad</label>
+                                            @*@Html.DisplayFor(m => m.PostalChargeInIndia, new { id = "postalChargeInIndia" })
+                                        @Html.DisplayFor(m => m.PostalChargeInAbroad, new { id = "postalChargeAbroad" })*@
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <label class="control-label">Total Fee :</label>
+                                        </th>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.TotalFee, new { id = "totalFee", @readonly = "true" })
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="k--actions k-actions-horizontal k-actions-start">
+                                <button type="submit" name="SubmitValue" value="Create" title="Create" class="btn btn-primary btn-label-left pull-right">
+                                    <span><i class="fa fa-save"></i></span>
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    function error_handler(e) {
+        if (e.errors) {
+            var message = "Errors:\n";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () {
+                        message += this + "\n";
+                    });
+                }
+            });
+        }
+    }
+
+    $('#PRNNo').change(function () {
+        $('#form').append('<input type="text" name="submitType" value="Search" />');
+        $("form").submit();
+        //$("#PRNChange").click();
+    });
+
+
+    function isNumber(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+        return true;
+    }
+
+    function disableEnterKey(evt) {
+        if (evt.which === 13 || evt.which === 9)
+            return false;
+        return true;
+    }
+
+    function FeeForInPerson() {
+        $('#divPostalCharges').hide();
+        $('#divabroad').hide();
+        $('#divpostal').hide();
+        var convocationFee = @Model.ConvocationFee;
+        $('#totalFee').val(convocationFee);
+    }
+
+    function FeeForIndia() {
+        $('#postalChargeInIndia').show();
+        $('#postalChargeAbroad').hide();
+        $('#postal').show();
+        $('#divPostalCharges').show();
+        $('#divpostal').show();
+        $('#divabroad').hide();
+        var total = parseInt( @Model.PostalChargeInIndia) + parseInt(@Model.ConvocationFee);
+        $("#totalFee").val(total);
+    }
+
+    function FeeForAbroad() {
+        $('#postal').show();
+
+        $('#postalChargeInIndia').hide();
+        $('#postalChargeAbroad').show();
+        $('#divpostal').hide();
+        $('#divabroad').show();
+        var total = parseInt( @Model.PostalChargeInAbroad) + parseInt(@Model.ConvocationFee);
+        $("#totalFee").val(total);
+        $('InAbroad').checked = false;
+    }
+
+    $(document).ready(function () {
+        $('InIndia').checked = false;
+        $('InAbroad').checked = false;
+        $('#divpostal').hide();
+        $('#divabroad').hide();
+        $('#postal').hide();
+        //var convocationfee = @Model.ConvocationFee;
+
+        document.getElementById("divDemandDraftNo").style.display = 'none';
+        document.getElementById("divDrawnOn").style.display = 'none';
+        document.getElementById("divDemandDraftDate").style.display = 'none';
+        document.getElementById("divPostalChangesIndina").style.display = 'none';
+        document.getElementById("divPostalChargesAbroad").style.display = 'none';
+        document.getElementById("divPostalCharges").style.display = 'none';
+
+        // Specific for error case on submit
+        if ('@Model.InPerson' === 'True'){
+            $('#InPerson').click();
+        }
+        else{
+            $('#InAbsentia').click();
+            $('#InIndia').click();
+            $('#divPostalChangesIndina').show();
+            $('#divPostalChargesAbroad').show();
+            $('#postalCharges').show();
+        }
+
+        $('#InPerson').click(function () {
+            $('#postalCharges').hide();
+            $('#divPostalChangesIndina').hide();
+            $('#divPostalChargesAbroad').hide();
+            //$('#divDemandDraftNo').hide();
+        });
+
+        $('#InAbsentia').click(function () {
+            $('#InIndia').click();
+            $('#divPostalChangesIndina').show();
+            $('#divPostalChargesAbroad').show();
+            $('#postalCharges').show();
+            //$('#divDemandDraftNo').hide();
+        });
+
+        $('#ByCash').click(function () {
+            $('#divDemandDraftNo').hide();
+            $('#divDrawnOn').hide();
+            $('#divDemandDraftDate').hide();
+        });
+        $('#ByDD').click(function () {
+            $('#divDemandDraftNo').show();
+            $('#divDrawnOn').show();
+            $('#divDemandDraftDate').show();
+        });
+
+        // Add the "focus" value to class attribute
+        $('ul.radio li').focusin(function () {
+            $(this).addClass('focus');
+        }
+        );
+
+        // Remove the "focus" value to class attribute
+        $('ul.radio li').focusout(function () {
+            $(this).removeClass('focus');
+        }
+        );
+
+        $('.form-control').tooltip();
+        // Initialize datepicker
+        $('#DDDate').datepicker({ setDate: new Date(), dateFormat: 'dd-M-yy' });
+        //LoadSelect2Script(DemoSelect2);
+
+        $('#ApprovalDate').datepicker({ setDate: new Date(), dateFormat: 'dd-M-yy' });
+        //LoadSelect2Script(DemoSelect2);
+
+        //// Load example of form validation
+        LoadBootstrapValidatorScript(DemoFormValidator);
+    });
+</script>

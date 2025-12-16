@@ -1,0 +1,120 @@
+﻿@model HandleErrorInfo
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Error</a></li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <div class="box ui-draggable ui-droppable">
+            <div class="box-header">
+                <div class="box-name">
+                    <i class="fa fa-plus-square large"></i>
+                    <span>Error</span>
+                </div>
+                <div class="box-icons">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="expand-link">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+                <div class="no-move"></div>
+            </div>
+            <div class="box-content">
+                <div class="box">
+                    <a href="javascript:history.back()" class="btn btn-primary">
+                        <i class="icon-angle-left"></i>
+                        Back to previous page
+                    </a>
+                    <hr />
+                    <div style="color: red">
+                        <strong>Validations : </strong>
+                        <br />
+                        @Html.ValidationSummary()
+                    </div>
+                    <hr />
+                    <div style="color: red">
+                        <strong>Error : </strong>
+                        <br />
+                        @Model.Exception.Message
+                    </div>
+                    <hr />
+                    <div style="color: red">
+                        <strong>Stack Trace :</strong>
+                        <br />
+                        @Model.Exception.StackTrace
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<div id="main">
+    <div class="container-fluid">
+        <div class="page-header">
+            <div class="pull-left">
+                <h3>Error Info</h3>
+            </div>
+            <div class="pull-right">
+                <ul class="stats">
+                    <li class="lightred">
+                        <i class="icon-calendar"></i>
+                        <div class="details">
+                            <span class="big">February 22, 2013</span>
+                            <span>Wednesday, 13:56</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="breadcrumbs">
+            <ul>
+            </ul>
+            <div class="close-bread">
+                <a href="#"><i class="icon-remove"></i></a>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="box">
+                    <a href="javascript:history.back()" class="btn btn-primary">
+                        <i class="icon-angle-left"></i>
+                        Back to previous page
+                    </a>
+                    <hr />
+                    <div style="color: red">
+                        <strong>Validations : </strong>
+                        <br />
+                        @Html.ValidationSummary()
+                    </div>
+                    <hr />
+                    <div style="color: red">
+                        <strong>Error : </strong>
+                        <br />
+                        @Model.Exception.Message
+                    </div>
+                    <hr />
+                    <div style="color: red">
+                        <strong>Stack Trace :</strong>
+                        <br />
+                        @Model.Exception.StackTrace
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>*@
+

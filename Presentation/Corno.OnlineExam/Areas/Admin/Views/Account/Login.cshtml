@@ -1,0 +1,121 @@
+﻿@model Corno.Data.Admin.LoginViewModel
+
+<html>
+<head>
+    <title>Corno</title>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="icon" type="image/png" href="~/Content/img/Concept logo.png" />
+
+    <link href="~/Content/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+    <link href="~/Content/plugins/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/Content/plugins/fancybox/jquery.fancybox.css" rel="stylesheet">
+    <link href="~/Content/plugins/select2/select2.css" rel="stylesheet">
+    <link href="~/Content/css/style.css" rel="stylesheet">
+    <link href="@Url.Content("~/Content/kendo/2023.1.117/kendo.default-v2.min.css")" rel="stylesheet" type="text/css" />
+
+    <script src="~/Content/plugins/jquery/jquery-2.1.0.min.js"></script>
+    <script src="~/Content/plugins/jquery-ui/jquery-ui.js"></script>
+    <script src="~/Content/plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="~/Content/plugins/justified-gallery/jquery.justifiedgallery.min.js"></script>
+    <script src="~/Content/plugins/tinymce/tinymce.min.js"></script>
+    <script src="~/Content/plugins/tinymce/jquery.tinymce.min.js"></script>
+    <script src="~/Scripts/js/devoops.js"></script>
+    <script src="~/Content/plugins/bootbox/bootbox.min.js"></script>
+
+    <script src="@Url.Content("~/Scripts/kendo/2023.1.117/jquery.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2023.1.117/jszip.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2023.1.117/kendo.all.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2023.1.117/kendo.aspnetmvc.min.js")"></script>
+
+    @{
+        Layout = null;
+    }
+</head>
+
+<body @*onload="FocusOnInput()"*@>
+    <div id="page-login" class="">
+        <div class="col-xs-12 col-sm-12">
+            <div class="form-horizontal">
+                <div class="box-content">
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <img src="~/Content/images/banner 1.jpg" class="" alt="Image" width="100%" height="180" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-6 text-center">
+                            <img src="~/Content/img/BV.png" class="" alt="Image" width="60%" height="300" />
+                        </div>
+                        <div class="col-sm-offset-1 col-sm-5">
+                            @using (Html.BeginForm("Login", "Account", new { ViewBag.ReturnUrl }, FormMethod.Post, new { autocomplete = "off" }))
+                            {
+                                @Html.AntiForgeryToken()
+
+                                @(Html.Kendo().TabStrip()
+                                    .Name("tabStrip")
+                                    .Animation(animation =>
+                                        animation.Open(effect =>
+                                            effect.Fade(FadeDirection.In)))
+                                    .Items(tabStrip =>
+                                    {
+                                        tabStrip.Add().Text("User Login")
+                                            .Selected(string.IsNullOrEmpty(Model.Prn))
+                                            .Content(@<text>
+                                                         @Html.Partial("Partial/Logins/_UserLogin")
+                                                      </text>);
+
+                                        tabStrip.Add().Text("OTP Login")
+                                            .Selected(!string.IsNullOrEmpty(Model.Prn))
+                                            //.Selected(true)
+                                            .Content(@<text>
+                                                         <div>
+                                                             @Html.Partial("Partial/Logins/_OtpLogin")
+                                                         </div>
+                                                      </text>);
+                                    }))
+                            }
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <img src="~/Content/images/banner 2.jpg" class="" alt="Image" width="100%" height="50" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+<script type="text/javascript">
+    function FocusOnInput() {
+        document.getElementById("Username").focus();
+    }
+    @*$(document).ready(function () {
+        // Add tooltip to form-controls
+        $('.form-control').tooltip();
+
+        LoadSelect2Script(initializeSelect2Dropdwons);
+
+        //// Load example of form validation
+        LoadBootstrapValidatorScript(DemoFormValidator);
+
+        // any validation summary items should be encapsulated by a class alert and alert-danger
+        $('.validation-summary-errors').each(function () {
+            $(this).addClass('alert');
+            $(this).addClass('alert-danger');
+        });
+
+        function initializeSelect2Dropdwons() {
+            $('#S2_instance').select2({ placeholder: "Select Instance" });
+        }
+    });*@
+</script>

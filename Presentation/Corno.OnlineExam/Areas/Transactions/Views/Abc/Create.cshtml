@@ -1,0 +1,39 @@
+﻿@model Corno.Data.Corno.AbcViewModel
+
+@{
+    ViewBag.Title = "ABC";
+}
+
+@if (TempData["Success"] != null)
+{
+    <script type="text/javascript">
+        bootbox.alert("@TempData["Success"]")
+    </script>
+}
+<div class="k-card">
+    <div class="k-card-header">
+        <h5 class="k-card-title">Academic Bank of Credits (Data Download)</h5>
+    </div>
+    <div class="k-card-separator"></div>
+    <div class="k-card-body">
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form", enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(false)
+            
+                <div class="form-horizontal">
+                    @*@Html.Partial("Partial/_StudentInfoSelection1")*@
+                    @Html.Partial("Partial/_Abc")
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-10 col-sm-2">
+                        <button type="submit" name="SubmitValue" value="Create" title="Create" class="btn btn-primary btn-label-left pull-right">
+                            <span><i class="fa fa-save"></i></span>
+                            Submit
+                        </button>
+                    </div>
+                </div>
+            
+        }
+    </div>
+</div>

@@ -1,0 +1,22 @@
+﻿@using Corno.Globals.Constants
+@model Corno.Data.Corno.Masters.Instance
+@{
+    var viewDataDictionary = new ViewDataDictionary
+{
+        { ModelConstants.FormEnabled, true },
+        { "Title", "Create New Instance" },
+        { "Action", "Create"}
+    };
+}
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">OnlineExam</a></li>
+            <li><a href="#">Masters</a></li>
+            <li><a href="#">Create Instance</a></li>
+        </ol>
+    </div>
+</div>
+
+@Html.ValidationSummary(false)
+@Html.Partial("~/Areas/Masters/Views/Instance/_Instance.cshtml", Model, viewDataDictionary)

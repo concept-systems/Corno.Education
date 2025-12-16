@@ -1,0 +1,835 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{64D16E5C-D661-4BB1-87FE-70D58E46D91B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Corno.Reports</RootNamespace>
+    <AssemblyName>Corno.Reports</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\Bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\Bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Corno.OnlineExam\bin\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportSource">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Corno.OnlineExam\bin\CrystalDecisions.ReportSource.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Shared">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Corno.OnlineExam\bin\CrystalDecisions.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="LINQtoCSV, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\LINQtoCSV.1.5.0.0\lib\net35\LINQtoCSV.dll</HintPath>
+    </Reference>
+    <Reference Include="Mapster, Version=7.3.0.0, Culture=neutral, PublicKeyToken=2f39883af23c29a8, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Mapster.7.3.0\lib\netstandard2.0\Mapster.dll</HintPath>
+    </Reference>
+    <Reference Include="Mapster.Core, Version=1.2.0.0, Culture=neutral, PublicKeyToken=e64997d676a9c1d3, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Mapster.Core.1.2.0\lib\net45\Mapster.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MoreLinq, Version=3.4.2.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\morelinq.3.4.2\lib\net462\MoreLinq.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Telerik.Reporting">
+      <HintPath>..\Corno.OnlineExam\bin\Telerik.Reporting.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="Telerik.ReportViewer.WebForms">
+      <HintPath>..\Corno.OnlineExam\bin\Telerik.ReportViewer.WebForms.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Accounts\PayoutExamRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Accounts\PayoutExamRpt.designer.cs">
+      <DependentUpon>PayoutExamRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Accounts\PayoutStudentsRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Accounts\PayoutStudentsRpt.designer.cs">
+      <DependentUpon>PayoutStudentsRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Accounts\PayoutMissingRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Accounts\PayoutMissingRpt.designer.cs">
+      <DependentUpon>PayoutMissingRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Accounts\PayoutSummaryRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Accounts\PayoutSummaryRpt.designer.cs">
+      <DependentUpon>PayoutSummaryRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AnswerSheet\AnswerSheetRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AnswerSheet\AnswerSheetRpt.designer.cs">
+      <DependentUpon>AnswerSheetRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AnswerSheet\AnswerSheetChallanRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AnswerSheet\AnswerSheetChallanRpt.designer.cs">
+      <DependentUpon>AnswerSheetChallanRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Base\BaseReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Convocation\ConvocationChallanRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Convocation\ConvocationChallanRpt.designer.cs">
+      <DependentUpon>ConvocationChallanRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Convocation\ConvocationFeeSummaryRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Convocation\ConvocationFeeSummaryRpt.designer.cs">
+      <DependentUpon>ConvocationFeeSummaryRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Convocation\ConvocationStudentsRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Convocation\ConvocationStudentsRpt.designer.cs">
+      <DependentUpon>ConvocationStudentsRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Convocation\ReceiptRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Convocation\ReceiptRpt.designer.cs">
+      <DependentUpon>ReceiptRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Convocation\StudentResultRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Convocation\StudentResultRpt.designer.cs">
+      <DependentUpon>StudentResultRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Convocation\StudentSummaryRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Convocation\StudentSummaryRpt.Designer.cs">
+      <DependentUpon>StudentSummaryRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CrystalReports\ExamAppForm.cs">
+      <DependentUpon>ExamAppForm.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CrystalReports\HallTicket.cs">
+      <DependentUpon>HallTicket.rpt</DependentUpon>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="CrystalReports\MarkSlip_BlankAll.cs">
+      <DependentUpon>MarkSlip_BlankAll.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CrystalReports\MarkSlip_BlankAll_Medical.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MarkSlip_BlankAll_Medical.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DataSets\Data_HallTicket.cs">
+      <DependentUpon>Data_HallTicket.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSets\Data_HallTicket.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Data_HallTicket.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSets\DSBlankfromCAP.Designer.cs">
+      <DependentUpon>DSBlankfromCAP.xsd</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DataSets\Ds_ExamForm.Designer.cs">
+      <DependentUpon>Ds_ExamForm.xsd</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Enrollment\EnrollmentRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Enrollment\EnrollmentRpt.designer.cs">
+      <DependentUpon>EnrollmentRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Environment\EnvironmentChallanRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Environment\EnvironmentChallanRpt.designer.cs">
+      <DependentUpon>EnvironmentChallanRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Environment\EnvironmentFeeSummaryRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Environment\EnvironmentFeeSummaryRpt.designer.cs">
+      <DependentUpon>EnvironmentFeeSummaryRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Environment\ReceiptRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Environment\ReceiptRpt.designer.cs">
+      <DependentUpon>ReceiptRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Environment\StudentSummaryRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Environment\StudentSummaryRpt.Designer.cs">
+      <DependentUpon>StudentSummaryRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Exam\ReceiptRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Exam\ReceiptRpt.designer.cs">
+      <DependentUpon>ReceiptRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Exam\ExamChallanRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Exam\ExamChallanRpt.designer.cs">
+      <DependentUpon>ExamChallanRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Exam\ExamNameListSubRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Exam\ExamNameListSubRpt.designer.cs">
+      <DependentUpon>ExamNameListSubRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Exam\ExamFeeSummaryRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Exam\ExamFeeSummaryRpt.designer.cs">
+      <DependentUpon>ExamFeeSummaryRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Convocation\ConvocationRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Convocation\ConvocationRpt.designer.cs">
+      <DependentUpon>ConvocationRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Environment\EnvironmentCAPRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Environment\EnvironmentCAPRpt.designer.cs">
+      <DependentUpon>EnvironmentCAPRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Exam\ExamNameListRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Exam\ExamNameListRpt.designer.cs">
+      <DependentUpon>ExamNameListRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Exam\ExamSubjectViewModel.cs" />
+    <Compile Include="Exam\SubjectSummary1Rpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Exam\SubjectSummary1Rpt.Designer.cs">
+      <DependentUpon>SubjectSummary1Rpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Exam\SubjectSummaryRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Exam\SubjectSummaryRpt.Designer.cs">
+      <DependentUpon>SubjectSummaryRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Exam\StudentSummaryRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Exam\StudentSummaryRpt.Designer.cs">
+      <DependentUpon>StudentSummaryRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Extensions\RangeExtensions.cs" />
+    <Compile Include="Marks Entry\MarksSlipRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Marks Entry\MarksSlipRpt.designer.cs">
+      <DependentUpon>MarksSlipRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Marks Entry\MarksSummaryRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Marks Entry\MarksSummaryRpt.Designer.cs">
+      <DependentUpon>MarksSummaryRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Environment\StudentResultRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Environment\StudentResultRpt.designer.cs">
+      <DependentUpon>StudentResultRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Mobile Update\AbcRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Mobile Update\AbcRpt.designer.cs">
+      <DependentUpon>AbcRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Mobile Update\MobileUpdateRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Mobile Update\MobileUpdateRpt.designer.cs">
+      <DependentUpon>MobileUpdateRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Registration\CategoryStudentsRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Registration\CategoryStudentsRpt.designer.cs">
+      <DependentUpon>CategoryStudentsRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Registration\StudentSummaryRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Registration\StudentSummaryRpt.Designer.cs">
+      <DependentUpon>StudentSummaryRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Registration\OtherStateStudentsRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Registration\OtherStateStudentsRpt.designer.cs">
+      <DependentUpon>OtherStateStudentsRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Registration\CountryStudentsRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Registration\CountryStudentsRpt.designer.cs">
+      <DependentUpon>CountryStudentsRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Registration\MinorityStudentsRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Registration\MinorityStudentsRpt.designer.cs">
+      <DependentUpon>MinorityStudentsRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Registration\StateClassStudentsRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Registration\StateClassStudentsRpt.designer.cs">
+      <DependentUpon>StateClassStudentsRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Registration\CountryClassStudentsRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Registration\CountryClassStudentsRpt.designer.cs">
+      <DependentUpon>CountryClassStudentsRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Registration\MinorityClassStudentsRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Registration\MinorityClassStudentsRpt.designer.cs">
+      <DependentUpon>MinorityClassStudentsRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Registration\CollegewiseRegistration.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Registration\CollegewiseRegistration.designer.cs">
+      <DependentUpon>CollegewiseRegistration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Environment\EnvNameListRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Environment\EnvNameListRpt.designer.cs">
+      <DependentUpon>EnvNameListRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Registration\CategoryClassStudentsRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Registration\CategoryClassStudentsRpt.designer.cs">
+      <DependentUpon>CategoryClassStudentsRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Registration\CountryStateClassStudentsRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Registration\CountryStateClassStudentsRpt.designer.cs">
+      <DependentUpon>CountryStateClassStudentsRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Registration\StudentRollListRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Registration\StudentRollListRpt.designer.cs">
+      <DependentUpon>StudentRollListRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Registration\CollegewiseStudent.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Registration\CollegewiseStudent.designer.cs">
+      <DependentUpon>CollegewiseStudent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Revaluation\RevaluationChallanRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Revaluation\RevaluationChallanRpt.designer.cs">
+      <DependentUpon>RevaluationChallanRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Revaluation\RevaluationRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Revaluation\RevaluationRpt.designer.cs">
+      <DependentUpon>RevaluationRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TelerikReportHelper.cs" />
+    <Compile Include="Time Table\ResultDeclarationRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Time Table\ResultDeclarationRpt.Designer.cs">
+      <DependentUpon>ResultDeclarationRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Time Table\CapRecordsRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Time Table\CapRecordsRpt.Designer.cs">
+      <DependentUpon>CapRecordsRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Time Table\ScheduleExaminationMinRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Time Table\ScheduleExaminationMinRpt.Designer.cs">
+      <DependentUpon>ScheduleExaminationMinRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Time Table\ScheduleExaminationRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Time Table\ScheduleExaminationRpt.Designer.cs">
+      <DependentUpon>ScheduleExaminationRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Time Table\ScheduleCAPRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Time Table\ScheduleCAPRpt.Designer.cs">
+      <DependentUpon>ScheduleCAPRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Time Table\ClashesRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Time Table\ClashesRpt.Designer.cs">
+      <DependentUpon>ClashesRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Time Table\TimeTableCoursePartRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Time Table\TimeTableCoursePartRpt.Designer.cs">
+      <DependentUpon>TimeTableCoursePartRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Time Table\TimeTablePracticalRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Time Table\TimeTablePracticalRpt.Designer.cs">
+      <DependentUpon>TimeTablePracticalRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Time Table\TimeTableStartDatesRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Time Table\TimeTableStartDatesRpt.Designer.cs">
+      <DependentUpon>TimeTableStartDatesRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Time Table\TimeTableTheoryDateWiseRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Time Table\TimeTableTheoryDateWiseRpt.Designer.cs">
+      <DependentUpon>TimeTableTheoryDateWiseRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Time Table\TimeTableTheoryRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Time Table\TimeTableTheoryRpt.Designer.cs">
+      <DependentUpon>TimeTableTheoryRpt.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <Content Include="DataSets\Ds_ExamForm.xsc">
+      <DependentUpon>Ds_ExamForm.xsd</DependentUpon>
+    </Content>
+    <Content Include="DataSets\DSBlankfromCAP.xsc">
+      <DependentUpon>DSBlankfromCAP.xsd</DependentUpon>
+    </Content>
+    <None Include="DataSets\Data_HallTicket.xsc">
+      <DependentUpon>Data_HallTicket.xsd</DependentUpon>
+    </None>
+    <None Include="DataSets\Data_HallTicket.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>Data_HallTicket.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DataSets\Data_HallTicket.xss">
+      <DependentUpon>Data_HallTicket.xsd</DependentUpon>
+    </None>
+    <None Include="DataSets\Data_HallTicket.xsx">
+      <DependentUpon>Data_HallTicket.xsd</DependentUpon>
+    </None>
+    <None Include="DataSets\DSBlankfromCAP.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DSBlankfromCAP.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="DataSets\DSBlankfromCAP.xss">
+      <DependentUpon>DSBlankfromCAP.xsd</DependentUpon>
+    </Content>
+    <None Include="DataSets\DSBlankfromCAP.xsx">
+      <DependentUpon>DSBlankfromCAP.xsd</DependentUpon>
+    </None>
+    <None Include="DataSets\Ds_ExamForm.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>Ds_ExamForm.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="DataSets\Ds_ExamForm.xss">
+      <DependentUpon>Ds_ExamForm.xsd</DependentUpon>
+    </Content>
+    <Content Include="DataSets\Ds_ExamForm.xsx">
+      <DependentUpon>Ds_ExamForm.xsd</DependentUpon>
+    </Content>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Accounts\PayoutExamRpt.resx">
+      <DependentUpon>PayoutExamRpt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Accounts\PayoutStudentsRpt.resx">
+      <DependentUpon>PayoutStudentsRpt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Accounts\PayoutMissingRpt.resx">
+      <DependentUpon>PayoutMissingRpt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Accounts\PayoutSummaryRpt.resx">
+      <DependentUpon>PayoutSummaryRpt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AnswerSheet\AnswerSheetRpt.resx">
+      <DependentUpon>AnswerSheetRpt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AnswerSheet\AnswerSheetChallanRpt.resx">
+      <DependentUpon>AnswerSheetChallanRpt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Base\BaseReport.resx">
+      <DependentUpon>BaseReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Convocation\ConvocationChallanRpt.resx">
+      <DependentUpon>ConvocationChallanRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Convocation\ConvocationFeeSummaryRpt.resx">
+      <DependentUpon>ConvocationFeeSummaryRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Convocation\ConvocationStudentsRpt.resx">
+      <DependentUpon>ConvocationStudentsRpt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Convocation\ReceiptRpt.resx">
+      <DependentUpon>ReceiptRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Convocation\StudentResultRpt.resx">
+      <DependentUpon>StudentResultRpt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Convocation\StudentSummaryRpt.resx">
+      <DependentUpon>StudentSummaryRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CrystalReports\ExamAppForm.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>ExamAppForm.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CrystalReports\HallTicket.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>HallTicket.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CrystalReports\MarkSlip_BlankAll.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>MarkSlip_BlankAll.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CrystalReports\MarkSlip_BlankAll_Medical.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>MarkSlip_BlankAll_Medical.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Enrollment\EnrollmentRpt.resx">
+      <DependentUpon>EnrollmentRpt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Environment\EnvironmentChallanRpt.resx">
+      <DependentUpon>EnvironmentChallanRpt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Environment\EnvironmentFeeSummaryRpt.resx">
+      <DependentUpon>EnvironmentFeeSummaryRpt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Environment\ReceiptRpt.resx">
+      <DependentUpon>ReceiptRpt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Environment\StudentSummaryRpt.resx">
+      <DependentUpon>StudentSummaryRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Exam\ReceiptRpt.resx">
+      <DependentUpon>ReceiptRpt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Exam\ExamChallanRpt.resx">
+      <DependentUpon>ExamChallanRpt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Exam\ExamNameListSubRpt.resx">
+      <DependentUpon>ExamNameListSubRpt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Exam\ExamFeeSummaryRpt.resx">
+      <DependentUpon>ExamFeeSummaryRpt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Convocation\ConvocationRpt.resx">
+      <DependentUpon>ConvocationRpt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Environment\EnvironmentCAPRpt.resx">
+      <DependentUpon>EnvironmentCAPRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Exam\ExamNameListRpt.resx">
+      <DependentUpon>ExamNameListRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Exam\SubjectSummary1Rpt.resx">
+      <DependentUpon>SubjectSummary1Rpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Exam\SubjectSummaryRpt.resx">
+      <DependentUpon>SubjectSummaryRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Exam\StudentSummaryRpt.resx">
+      <DependentUpon>StudentSummaryRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Marks Entry\MarksSlipRpt.resx">
+      <DependentUpon>MarksSlipRpt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Marks Entry\MarksSummaryRpt.resx">
+      <DependentUpon>MarksSummaryRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Environment\StudentResultRpt.resx">
+      <DependentUpon>StudentResultRpt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mobile Update\AbcRpt.resx">
+      <DependentUpon>AbcRpt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mobile Update\MobileUpdateRpt.resx">
+      <DependentUpon>MobileUpdateRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Registration\CategoryStudentsRpt.resx">
+      <DependentUpon>CategoryStudentsRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Registration\StudentSummaryRpt.resx">
+      <DependentUpon>StudentSummaryRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Registration\OtherStateStudentsRpt.resx">
+      <DependentUpon>OtherStateStudentsRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Registration\CountryStudentsRpt.resx">
+      <DependentUpon>CountryStudentsRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Registration\MinorityStudentsRpt.resx">
+      <DependentUpon>MinorityStudentsRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Registration\StateClassStudentsRpt.resx">
+      <DependentUpon>StateClassStudentsRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Registration\CountryClassStudentsRpt.resx">
+      <DependentUpon>CountryClassStudentsRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Registration\MinorityClassStudentsRpt.resx">
+      <DependentUpon>MinorityClassStudentsRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Registration\CollegewiseRegistration.resx">
+      <DependentUpon>CollegewiseRegistration.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Environment\EnvNameListRpt.resx">
+      <DependentUpon>EnvNameListRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Registration\CategoryClassStudentsRpt.resx">
+      <DependentUpon>CategoryClassStudentsRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Registration\CountryStateClassStudentsRpt.resx">
+      <DependentUpon>CountryStateClassStudentsRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Registration\StudentRollListRpt.resx">
+      <DependentUpon>StudentRollListRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Registration\CollegewiseStudent.resx">
+      <DependentUpon>CollegewiseStudent.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Revaluation\RevaluationChallanRpt.resx">
+      <DependentUpon>RevaluationChallanRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Revaluation\RevaluationRpt.resx">
+      <DependentUpon>RevaluationRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Time Table\ResultDeclarationRpt.resx">
+      <DependentUpon>ResultDeclarationRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Time Table\CapRecordsRpt.resx">
+      <DependentUpon>CapRecordsRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Time Table\ScheduleExaminationMinRpt.resx">
+      <DependentUpon>ScheduleExaminationMinRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Time Table\ScheduleExaminationRpt.resx">
+      <DependentUpon>ScheduleExaminationRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Time Table\ScheduleCAPRpt.resx">
+      <DependentUpon>ScheduleCAPRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Time Table\ClashesRpt.resx">
+      <DependentUpon>ClashesRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Time Table\TimeTableCoursePartRpt.resx">
+      <DependentUpon>TimeTableCoursePartRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Time Table\TimeTablePracticalRpt.resx">
+      <DependentUpon>TimeTablePracticalRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Time Table\TimeTableStartDatesRpt.resx">
+      <DependentUpon>TimeTableStartDatesRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Time Table\TimeTableTheoryDateWiseRpt.resx">
+      <DependentUpon>TimeTableTheoryDateWiseRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Time Table\TimeTableTheoryRpt.resx">
+      <DependentUpon>TimeTableTheoryRpt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Libraries\Corno.Data\Corno.Data.csproj">
+      <Project>{c0d7aa89-dedb-493e-a4f7-6075e6d403d2}</Project>
+      <Name>Corno.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\Corno.Globals\Corno.Globals.csproj">
+      <Project>{274c71ea-3701-4c3d-827a-1ae5cfb30c40}</Project>
+      <Name>Corno.Globals</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\Corno.Logger\Corno.Logger.csproj">
+      <Project>{AB956E51-8A79-43C1-AA42-348AA1C2FD65}</Project>
+      <Name>Corno.Logger</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\Corno.Services\Corno.Services.csproj">
+      <Project>{c41d6c9e-ee7b-4b1a-b6a6-30ae1dfa9360}</Project>
+      <Name>Corno.Services</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

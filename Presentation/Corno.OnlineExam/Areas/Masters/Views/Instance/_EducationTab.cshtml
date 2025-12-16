@@ -1,0 +1,39 @@
+﻿@using Corno.Data.Helpers
+@using Corno.Globals.Constants
+@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Masters.Instance
+
+@{
+    var formEnabled = ViewData[ModelConstants.FormEnabled].ToBoolean();
+}
+
+<div class="">
+    <div class="col-sm-4">
+        <div class="form-group row">
+            @(Html.Kendo().DatePickerFor(m => m.StartDate)
+                    .Enable(formEnabled)
+                    .Rounded(Rounded.Medium)
+                    .Label(label => label
+                        .Content("Start Date")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "Enter Start Date",
+                        @class = "required w-100"
+                    }))
+        </div>
+        <div class="form-group row">
+            @(Html.Kendo().DatePickerFor(m => m.EndDate)
+                    .Enable(formEnabled)
+                    .Rounded(Rounded.Medium)
+                    .Label(label => label
+                        .Content("End Date")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "Enter End Date",
+                        @class = "required w-100"
+                    }))
+        </div>
+    </div>
+</div>

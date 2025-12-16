@@ -1,0 +1,219 @@
+﻿@using Corno.OnlineExam.Helpers
+@using Kendo.Mvc.UI
+@model Corno.OnlineExam.Areas.Transactions.Dtos.AddlCreditsDto
+
+@{
+    ViewBag.BoxTitle = "Additional Credits";
+}
+
+@using (Html.BeginForm("Create", "AdditionalCredits", FormMethod.Post))
+{
+    @Html.ValidationSummary()
+    @Html.AntiForgeryToken()
+
+    <!-- Hidden fields for full model -->
+    @Html.HiddenFor(m => m.Prn)
+    @Html.HiddenFor(m => m.InstanceId)
+    @Html.HiddenFor(m => m.InstanceName)
+    @Html.HiddenFor(m => m.CollegeId)
+    @Html.HiddenFor(m => m.CollegeName)
+    @Html.HiddenFor(m => m.CourseId)
+    @Html.HiddenFor(m => m.CourseName)
+    @Html.HiddenFor(m => m.BranchId)
+    @Html.HiddenFor(m => m.BranchName)
+
+    <div class="k-card k-card-vertical">
+        <div class="k-card-header k-card-tertiary"><h3>@ViewBag.BoxTitle</h3></div>
+        <div class="k-card-body">
+            <div style="margin-bottom:20px;">
+                <label>PRN:</label>
+                <input type="text" id="prnInput" class="k-textbox" />
+                @(Html.Kendo().Button()
+                    .Name("btnSearch")
+                    .Content("Search")
+                    .Icon("search")
+                    .FillMode(ButtonFillMode.Outline)
+                    .Rounded(Rounded.Full)
+                    .ThemeColor(ThemeColor.Info)
+                    .HtmlAttributes(new { type = "button", style = "margin-left:10px;" }))
+            </div>
+
+            <!-- Student Info -->
+            <table id="studentInfo" class="table table-responsive table-primary" style="width:100%; ">
+                <tr><th>PRN</th><td id="lblPRN"></td></tr>
+                <tr><th>Name</th><td id="lblStudentName"></td></tr>
+                <tr><th>College</th><td id="lblCollegeName"></td></tr>
+                <tr><th>Programme</th><td id="lblCourseName"></td></tr>
+                <tr><th>Branch</th><td id="lblBranchName"></td></tr>
+            </table>
+            
+            <!-- Telerik Grid -->
+            @(Html.Kendo().Grid(Model.Subjects)
+                .Name("grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(c => c.SerialNo)
+                        .ClientTemplate("#= SerialNo #" + "<input type='hidden' name='Subjects[#= index(data)#].SerialNo' value='#= SerialNo #'   />")
+                        .Title("Sr. No").Width(80);
+                    columns.Bound(c => c.SubjectId).Title("Subject Code")
+                        .ClientTemplate("#= SubjectId #" + "<input type='hidden' name='Subjects[#= index(data)#].SubjectId' value='#= SubjectId #'   />")
+                        .Width(100);
+                    columns.Bound(c => c.SubjectName).Title("Subject Name")
+                        .ClientTemplate("#= SubjectName #" + "<input type='hidden' name='Subjects[#= index(data)#].SubjectName' value='#= SubjectName #'   />")
+                        .Width(200)
+                        .Align(TextAlign.Left);
+                    columns.Bound(c => c.MaximumCredits)
+                        .ClientTemplate("#= MaximumCredits #" + "<input type='hidden' name='Subjects[#= index(data)#].MaximumCredits' value='#= MaximumCredits #'   />")
+                        .Title("Credits").Width(80);
+                    @*columns.Template(@<text></text>)
+                        .ClientTemplate("<input type='checkbox' #= IsCompleted ? checked='checked':'' # class='chkbx' name='Subjects[#= index(data)#].IsCompleted' value='#= IsCompleted #' />")
+                        //.HeaderTemplate("<input type='checkbox' id='masterCheckBox' onclick='checkAll(this)'/>")
+                        //.HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                        .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                        .Width(40);*@
+                    columns.Bound(p => p.IsCompleted)
+                        .ClientTemplate("<input type='checkbox' name='Subjects[#= index(data)#].IsCompleted' value='true' #= IsCompleted ? checked='checked' : '' # />")
+                        .Title("Complete?")
+                        .Width(50);
+                    columns.Bound(c => c.CompletedDate).Title("Completed Date")
+                        .ClientTemplate(
+                            "<input type='text' name='Subjects[#= index(data)#].CompletedDate' " +
+                            "value='#= CompletedDate ? kendo.toString(CompletedDate, \"yyyy-MM-dd\") : \"\" #' " +
+                            "class='completed-date' />"
+                        ).Width(150);
+                })
+                
+                .DataSource(dataSource => dataSource
+                    .Ajax()
+                    .Model(model =>
+                    {
+                        model.Id(m => m.SubjectId);
+                        model.Field(m => m.IsCompleted).Editable(true);
+                        model.Field(m => m.CompletedDate).Editable(true);
+                    })
+                )
+                //.Scrollable()
+                //.Editable(e => e.Mode(GridEditMode.InCell))
+                .Events(events => events.DataBound("onLocalGridDataBound"))
+                .HtmlAttributes(new { style = "" }))
+        </div>
+        <div class="k-card-footer">
+            <div class="k-card-actions k-card- k-card-actions-horizontal k-actions-end">
+                @(Html.Kendo().Button()
+                    .Name("btnSave")
+                    .Content("Save")
+                    .Icon("save")
+                    .FillMode(ButtonFillMode.Outline)
+                    .Rounded(Rounded.Full)
+                    .ThemeColor(ThemeColor.Success)
+                    .HtmlAttributes(new { type = "submit", style = " margin-top:20px;" }))
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    @*$(function () {
+        $('#grid').on('click',
+            '.chkbx',
+            function () {
+                var checked = $(this).is(':checked');
+                var grid = $('#grid').data().kendoGrid;
+                var dataItem = grid.dataItem($(this).closest('tr'));
+                dataItem.set('IsCompleted', checked);
+            });
+    });*@
+
+    @*$(function () {
+        $('#grid').on('click', '.chkbx', function () {
+            var grid = $('#grid').data('kendoGrid');
+
+            var checked = $(this).is(':checked');
+            var dataItem = grid.dataItem($(this).closest('tr'));
+            dataItem.set('IsCompleted', checked);
+
+            // Loop through all rows
+            $('#grid tbody tr').each(function () {
+                var $row = $(this);
+                var dataItem = grid.dataItem($row);
+
+                // Get checkbox value
+                var isChecked = $row.find('.chkbx').is(':checked');
+
+                // Get CompletedDate value from input
+                var completedDate = $row.find("input.completed-date").val();
+
+                // Reassign both values to dataItem to preserve them
+                dataItem.set('IsCompleted', isChecked);
+                dataItem.set('CompletedDate', completedDate);
+            });
+        });
+    });*@
+
+    @*$(function () {
+        $('#grid').on('change', '.chkbx', function (e) {
+            e.stopPropagation(); // Prevent triggering row selection or edit mode
+
+            var checked = $(this).is(':checked');
+            var $row = $(this).closest('tr');
+
+            // Update the hidden input value manually
+            $row.find("input[type='hidden'][name*='IsCompleted']").val(checked);
+
+            // Optionally, update the dataItem without triggering a full refresh
+            var grid = $('#grid').data('kendoGrid');
+            var dataItem = grid.dataItem($row);
+            dataItem.IsCompleted = checked;
+        });
+    });
+    *@
+
+
+    function onLocalGridDataBound(e) {
+        $(".completed-date").each(function () {
+            if (!$(this).data("kendoDatePicker")) {
+                console.log("onLocalGridDataBound");
+                $(this).kendoDatePicker({
+                    format: "dd/MM/yyyy",
+                    parseFormats: ["dd/MM/yyyy"]
+                });
+            }
+        });
+    }
+    $(document).ready(function () {
+        $("#btnSearch").click(function () {
+            var prn = $("#prnInput").val();
+            $.getJSON('/AdditionalCredits/GetStudentDetails', { prn: prn }, function (data) {
+                if (data.success) {
+                    // Fill hidden fields
+                    $("[name='Prn']").val(data.student.Prn);
+                    $("[name='InstanceId']").val(data.student.InstanceId);
+                    $("[name='InstanceName']").val(data.student.InstanceName);
+                    $("[name='CollegeId']").val(data.student.CollegeId);
+                    $("[name='CollegeName']").val(data.student.CollegeName);
+                    $("[name='CourseId']").val(data.student.CourseId);
+                    $("[name='CourseName']").val(data.student.CourseName);
+                    $("[name='BranchId']").val(data.student.BranchId);
+                    $("[name='BranchName']").val(data.student.BranchName);
+
+                    // Show student info
+                    $("#studentInfo").show();
+                    $("#lblPRN").text(data.student.Prn);
+                    $("#lblStudentName").text(data.student.StudentName);
+                    $("#lblCollegeName").text(data.student.CollegeName);
+                    $("#lblCourseName").text(data.student.CourseName);
+                    $("#lblBranchName").text(data.student.BranchName);
+
+                    // Populate Telerik Grid
+                    var grid = $("#grid").data("kendoGrid");
+                    grid.dataSource.data(data.student.Subjects);
+
+                    $("#subjectsGrid").show();
+                    $("#btnSave").show();
+                } else {
+                    alert('Student not found!');
+                }
+            });
+        });
+    });
+</script>

@@ -1,0 +1,250 @@
+﻿@model Corno.Data.Corno.TimeTable
+@using Corno.Globals.Constants
+@using Kendo.Mvc.UI;
+@{
+    ViewBag.Title = "Theory Time Table";
+}
+
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Online Exam</a></li>
+            <li><a href="#">Time Table</a></li>
+        </ol>
+    </div>
+</div>
+@Html.ValidationSummary(false)
+@if (TempData["Success"] != null)
+{
+    <script type="text/javascript">
+        bootbox.alert("@TempData["Success"]")
+    </script>
+}
+
+@if (null == Session[ModelConstants.Password])
+{
+    <script type="text/javascript">
+        var result = passWord();
+    </script>
+}
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <div class="box ui-draggable ui-droppable">
+            <div class="box-header">
+                <div class="box-name">
+                    <i class="fa fa-plus-square large"></i>
+                    <span>Theory Time Table </span>
+                </div>
+                <div class="box-icons">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="expand-link">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+                <div class="no-move"></div>
+            </div>
+            <div class="box-content">
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form", enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    @Html.HiddenFor(m => m.Id)
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-2 text-center dropdown">
+                                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                                    <span><i class="fa fa-file-excel-o"></i></span>
+                                    Reports
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = "TimeTableTheoryRpt", description = "Theory time table"})">
+                                            <span><i class="fa fa-file-excel-o"></i></span>
+                                            Time Table
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = "TimeTableStartDatesRpt", description = "Time table start dates"})">
+                                            <span><i class="fa fa-file-excel-o"></i></span>
+                                            Time Table Start Dates
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = "Schedule1Rpt", description = "Schedule"})">
+                                            <span><i class="fa fa-file-excel-o"></i></span>
+                                            Schedule of Examinations
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = "Schedule3Rpt", description = "Schedule"})">
+                                            <span><i class="fa fa-file-excel-o"></i></span>
+                                            Min Schedule of Examinations
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = "Schedule2Rpt", description = "Schedule"})">
+                                            <span><i class="fa fa-file-excel-o"></i></span>
+                                            Schedule of CAP
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = "ClashesRpt", description = "Clashes"})">
+                                            <span><i class="fa fa-file-excel-o"></i></span>
+                                            Clashes
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = "ResultDeclarationRpt", description = "Declaration of Result"})">
+                                            <span><i class="fa fa-file-excel-o"></i></span>
+                                            Declaration of Result
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = "CapRecordsRpt", description = "CAP Results"})">
+                                            <span><i class="fa fa-file-excel-o"></i></span>
+                                            CAP Records
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = "TimeTableTheoryDateWiseRpt", description = "Date wise Time Table"})">
+                                            <span><i class="fa fa-file-excel-o"></i></span>
+                                            Date wise Time Table
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-offset-7 col-sm-2">
+                                <button type="submit" value="Create" title="Save" class="btn btn-primary btn-label-left pull-right">
+                                    <span><i class="fa fa-save"></i></span>
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <strong>Time Table [<font color="red">Please Press TAB After Every Entry</font>] </strong>
+                            </div>
+                            <div class="panel-body">
+
+                                <div class="tab-content">
+                                    @{Html.RenderPartial("Partial/_StudentInfoEditTimeTable");}
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-10 col-sm-2 text-right">
+                                        <button type="submit" id="submit" name="submitType" value="Search" class="btn btn-warning" onclick="getTimeTableInfo">
+                                            <span><i class="fa fa-search"></i> Find Subjects</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="form-group  has-feedback">
+                                    <table class="table table-bordered table-responsive table-hover table-heading table-datatable" id="datatable">
+                                        <thead>
+                                        <tr>
+                                            @*<th class="text-center col-sm-1">Sr. No.</th>*@
+                                            <th class="text-center col-sm-3">Subject</th>
+                                            <th class="text-center col-sm-1">Subject Category</th>
+                                            @*<th class="text-center">Division</th>*@
+                                            <th class="text-center col-sm-2">Start Date</th>
+                                            <th class="text-center col-sm-1">Start Time</th>
+                                            <th class="text-center col-sm-1">End Time</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="tBody">
+                                        @{
+                                            var index = 0;
+                                            var subjectType = string.Empty;
+                                            Model.TimeTableTheoryDetails = Model.TimeTableTheoryDetails.OrderBy(t => t.SubjectType)
+                                                .ThenBy(t => t.SubjectId).ThenByDescending(t => t.CategoryCode).ToList();
+                                        }
+                                        @foreach (var item in Model.TimeTableTheoryDetails)
+                                        {
+                                                @*Extra Hidden Fields*@
+                                            @Html.Hidden("TimeTableTheoryDetails[" + index + "].PaperCode", item.PaperCode)
+                                            @Html.Hidden("TimeTableTheoryDetails[" + index + "].SubjectDivisionCode", item.SubjectDivisionCode)
+                                            @Html.Hidden("TimeTableTheoryDetails[" + index + "].SubjectType", item.SubjectType)
+                                            if (null != item.SubjectType && subjectType != item.SubjectType)
+                                            {
+                                                <tr class="@(item.CategoryCode != 2 && item.CategoryCode != 10 && item.CategoryCode != 26 && item.CategoryCode != 48 ? "hidden" : "")">
+                                                    <td colspan="6" class="text-uppercase text-muted btn-primary">
+                                                        @item.SubjectType
+                                                        @{subjectType = item.SubjectType;}
+                                                    </td>
+                                                </tr>
+                                            }
+                                            <tr class="@(item.CategoryCode != 2 && item.CategoryCode != 10 && item.CategoryCode != 26 && item.CategoryCode != 48 ? "hidden" : "")">
+
+                                                <td>
+                                                    @Html.Hidden("TimeTableTheoryDetails[" + index + "].SubjectName", item.SubjectName)
+                                                    @Html.Hidden("TimeTableTheoryDetails[" + index + "].SubjectId", item.SubjectId)
+
+                                                    @Html.DisplayFor(m => m.TimeTableTheoryDetails.ToList()[index].SubjectName)
+                                                    (@Html.DisplayFor(m => m.TimeTableTheoryDetails.ToList()[index].SubjectId))
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.Hidden("TimeTableTheoryDetails[" + index + "].CategoryCode", item.CategoryCode)
+                                                    @Html.Hidden("TimeTableTheoryDetails[" + index + "].CategoryName", item.CategoryName)
+                                                    @Html.DisplayFor(m => m.TimeTableTheoryDetails.ToList()[index].CategoryName)
+                                                    (@Html.DisplayFor(m => m.TimeTableTheoryDetails.ToList()[index].CategoryCode))
+                                                </td>
+
+                                                <td class="text-center">
+                                                    @(Html.Kendo().DatePicker()
+                                                          .Name("TimeTableTheoryDetails[" + index + "].StartDate")
+                                                          .Format("dd-MMM-yyyy dddd")
+                                                          .Value(item.StartDate)
+                                                          .HtmlAttributes(new {style = "width: 100%"})
+                                                          )
+                                                </td>
+
+                                                <td class="text-center">
+                                                    @(Html.Kendo().TimePicker()
+                                                          .Name("TimeTableTheoryDetails[" + index + "].StartTime")
+                                                          .Format("hh:mm tt")
+                                                          .Value(item.StartTime)
+                                                          .HtmlAttributes(new {style = "width: 100%"})
+                                                          )
+                                                </td>
+                                                <td class="text-center">
+                                                    @(Html.Kendo().TimePicker()
+                                                          .Name("TimeTableTheoryDetails[" + index + "].EndTime")
+                                                          .Format("hh:mm tt")
+                                                          .Value(item.EndTime)
+                                                          .HtmlAttributes(new {style = "width: 100%"})
+                                                          )
+                                                </td>
+                                            </tr>
+                                            index++;
+                                        }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-10 col-sm-2">
+                                <button type="submit" value="Create" title="Save" class="btn btn-primary btn-label-left pull-right">
+                                    <span><i class="fa fa-save"></i></span>
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('#submit').change(function () {
+        $('#form').append('<input type="text" name="submitType" value="Search" />');
+        $("form").submit();
+    });
+</script>

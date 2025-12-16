@@ -1,0 +1,241 @@
+﻿@using Kendo.Mvc.UI;
+@model Corno.Data.Corno.MarksEntry
+
+@{
+    ViewBag.Title = "Marks Entry";
+}
+
+@if (TempData["Success"] != null)
+{
+    <script type="text/javascript">
+        bootbox.alert("@TempData["Success"]")
+    </script>
+}
+
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Online Exam</a></li>
+            <li><a href="#">Marks Entry</a></li>
+        </ol>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <div class="box ui-draggable">
+            <div class="box-header">
+                <div class="box-name">
+                    <i class="fa fa-plus-square large"></i>
+                    <span>Marks Entry </span>
+                </div>
+            </div>
+            <div class="box-content">
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form", enctype = "multipart/form-data" }))
+                {
+                    @Html.ValidationSummary(false)
+                    @Html.AntiForgeryToken()
+
+                    <div class="k-card k-card-flat form-horizontal">
+                        <div class="k-card-header">
+                            <strong>Marks Entry Form [<span color="red">Please Press TAB After Every Entry</span>] </strong>
+                        </div>
+                        <div class="k-card-body">
+                            @{Html.RenderPartial("Partial/Selection/_MarksEntry", Model);}
+                            <div class="k-card-actions k-card-actions-horizontal k-card-actions-end">
+                                @*@(Html.Kendo().Button()
+                                    .Name("import")
+                                    .Icon("import")
+                                    .SpriteCssClass("k-icon-64")
+                                    .ThemeColor(ThemeColor.Tertiary)
+                                    .FillMode(ButtonFillMode.Solid)
+                                    .Rounded(Rounded.Medium)
+                                    .Content("Import")
+                                    .HtmlAttributes(new
+                                    {
+                                        type = "submit",
+                                        name = "submitType",
+                                        value = "Import",
+                                        @class = "w-100"
+                                    }))*@
+                                @(Html.Kendo().Upload()
+                                    .Name("UploadedFile")
+                                    /*.Async(a => a
+                                        .Save("Upload", "MarksEntry", new {model = Model})
+                                        .AutoUpload(false))*/
+                                    .Multiple(false)
+                                    .HtmlAttributes(new { accept = ".xls,.xlsx" }) // Specify accepted file types
+                                    )
+                                @*@(Html.Kendo().Upload()
+                                    .Name("files")
+                                    .Async(a => a
+                                        .Save("Upload", "MarksEntry")
+                                        .AutoUpload(false)
+                                    )
+                                    .Multiple(false)
+                                    .HtmlAttributes(new { accept = ".xls,.xlsx" }) // Specify accepted file types
+                                    .Events(events => events
+                                        .Select("onFileSelect")
+                                        .Upload("onFileUpload")
+                                    ))*@
+                                @(Html.Kendo().Button()
+                                    .Name("summary_report")
+                                    .Icon("file-report")
+                                    .SpriteCssClass("k-icon-64")
+                                    .ThemeColor(ThemeColor.Tertiary)
+                                    .FillMode(ButtonFillMode.Solid)
+                                    .Rounded(Rounded.Medium)
+                                    .Content("Summary Report")
+                                    .HtmlAttributes(new
+                                    {
+                                        type = "submit",
+                                        name = "submitType",
+                                        value = "Summary",
+                                        @class = "w-100"
+                                    }))
+                                @(Html.Kendo().Button()
+                                    .Name("slip_report")
+                                    .Icon("file-report")
+                                    .SpriteCssClass("k-icon-64")
+                                    .ThemeColor(ThemeColor.Tertiary)
+                                    .FillMode(ButtonFillMode.Solid)
+                                    .Rounded(Rounded.Medium)
+                                    .Content("Slip Report")
+                                    .HtmlAttributes(new
+                                    {
+                                        type = "submit",
+                                        name = "submitType",
+                                        value = "Report",
+                                        @class = "w-100"
+                                    }))
+                                @(Html.Kendo().Button()
+                                    .Name("find_students")
+                                    .Icon("search")
+                                    .SpriteCssClass("k-icon-64")
+                                    .FillMode(ButtonFillMode.Solid)
+                                    .ThemeColor(ThemeColor.Tertiary)
+                                    .Content("Find Students")
+                                    .HtmlAttributes(new
+                                    {
+                                        type = "submit",
+                                        name = "submitType",
+                                        value = "Search",
+                                    }))
+                            </div>
+                            <div class="form-group row">
+                                <div id="progress" style="display:none;">
+                                    @(Html.Kendo().ProgressBar()
+                                        .Name("progressBar")
+                                        .Type(ProgressBarType.Percent)
+                                        )
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <table class="table table-bordered table-responsive table-hover table-heading table-datatable col-sm-12" id="datatable">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center col-sm-1">Sr. No.</th>
+                                                <th class="text-center col-sm-2">PRN</th>
+                                                <th class="text-center col-sm-2">Seat No</th>
+                                                <th class="text-center col-sm-1">Max Marks</th>
+                                                <th class="text-center col-sm-1">Marks</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tBody">
+                                            @{
+                                                var index = 0;
+                                                Model.MarksEntryDetails = Model.MarksEntryDetails.OrderBy(t => t.SeatNo).ToList();
+                                            }
+                                            @foreach (var item in Model.MarksEntryDetails)
+                                            {
+                                                <tr>
+                                                    <td class="text-center">
+                                                        @(index + 1)
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @Html.Hidden("MarksEntryDetails[" + index + "].Prn", item.Prn)
+                                                        @item.Prn
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @item.SeatNo
+                                                        @Html.Hidden("MarksEntryDetails[" + index + "].SeatNo", item.SeatNo)
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @item.MaxMarks
+                                                        @Html.Hidden("MarksEntryDetails[" + index + "].MaxMarks", item.MaxMarks)
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @(Html.Kendo().NumericTextBox()
+                                                        .Name("MarksEntryDetails[" + index + "].Marks")
+                                                        //.Value(item.Marks.ToInt())
+                                                            .Format("#")
+                                                            .Max(999)
+                                                            .Min(0)
+                                                            .Decimals(0)
+                                                        .HtmlAttributes(new { style = "width: 100%" }))
+                                                    </td>
+                                                </tr>
+                                                index++;
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="k-card-actions k-card-actions-horizontal k-card-actions-end">
+                            @(Html.Kendo().Button()
+                                .Name("save")
+                                .Icon("save")
+                                .SpriteCssClass("k-icon-64")
+                                .ThemeColor(ThemeColor.Tertiary)
+                                .FillMode(ButtonFillMode.Solid)
+                                .Rounded(Rounded.Medium)
+                                .Content("Submit")
+                                .HtmlAttributes(new
+                                {
+                                    type = "submit",
+                                    //name = "submitType",
+                                    value = "Create",
+                                    @class = "w-100"
+                                }))
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Intercept form submission
+        $("#form").submit(function (event) {
+            // Enable the ComboBox before form submission
+            $("#CollegeId").data("kendoComboBox").enable(true);
+        });
+    });
+
+    $('#submit').change(function () {
+        $('#form').append('<input type="text" name="submitType" value="Search" />');
+        $("form").submit();
+    });
+
+    function onFileSelect(e) {
+        var progressBar = $("#progressBar").data("kendoProgressBar");
+        progressBar.value(0);
+        $("#progress").show();
+    }
+
+    function onFileUpload(e) {
+        if (e.operation == "upload") {
+            var progressBar = $("#progressBar").data("kendoProgressBar");
+            progressBar.value(e.percentComplete);
+
+            if (e.percentComplete == 100) {
+                $("#progress").hide();
+            }
+        }
+    }
+
+</script>

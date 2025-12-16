@@ -1,0 +1,108 @@
+﻿@using Kendo.Mvc.UI;
+@model Corno.Data.ViewModels.MarksApiViewModel
+
+@{
+    ViewBag.Title = "Marks API Integration";
+}
+
+@if (TempData["Success"] != null)
+{
+    <script type="text/javascript">
+        bootbox.alert("@TempData["Success"]")
+    </script>
+}
+
+@if (TempData["Info"] != null)
+{
+    <div class="alert alert-info">
+        @TempData["Info"]
+    </div>
+}
+
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Online Exam</a></li>
+            <li><a href="#">Marks API</a></li>
+        </ol>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <div class="box ui-draggable">
+            <div class="box-header">
+                <div class="box-name">
+                    <i class="fa fa-plus-square large"></i>
+                    <span>Marks API </span>
+                </div>
+            </div>
+            <div class="box-content">
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form", enctype = "multipart/form-data" }))
+                {
+                    @Html.ValidationSummary(false)
+                    @Html.AntiForgeryToken()
+
+                    @Html.HiddenFor(m => m.InstanceId)
+
+                    <div class="k-card k-card-flat form-horizontal">
+                        <div class="k-card-header">
+                            <strong>Marks API Form [<span color="red">Please Press TAB After Every Entry</span>] </strong>
+                        </div>
+                        <div class="k-card-body">
+                            @{Html.RenderPartial("Partial/Selection/_MarksApi", Model);}
+                            <div class="k-card-actions k-card-actions-horizontal k-card-actions-end">
+                                @(Html.Kendo().Button()
+                                    .Name("import_from_marks_api")
+                                    .Icon("search")
+                                    .SpriteCssClass("k-icon-64")
+                                    .FillMode(ButtonFillMode.Outline)
+                                    .ThemeColor(ThemeColor.Tertiary)
+                                    .Content("Import From Marks API")
+                                    .HtmlAttributes(new
+                                    {
+                                        type = "submit",
+                                        name = "action:ImportFromMarksApi"
+                                    }))
+                            </div>
+                            <div class="form-group row">
+                                <div id="progress" style="display:none;">
+                                    @(Html.Kendo().ProgressBar()
+                                        .Name("progressBar")
+                                        .Type(ProgressBarType.Percent)
+                                        )
+                                </div>
+                            </div>
+                            
+                            @if (Model.ImportedMarks != null && Model.ImportedMarks.Any())
+                            {
+                                <hr />
+                                <div class="form-group">
+                                    <h4>Imported Marks Data</h4>
+                                    @(Html.Kendo().Grid(Model.ImportedMarks)
+                                        .Name("ImportedMarksGrid")
+                                        .Columns(columns =>
+                                        {
+                                            columns.Bound(m => m.SeatNo).Title("Seat No").Width(100);
+                                            columns.Bound(m => m.Prn).Title("PRN").Width(150);
+                                            columns.Bound(m => m.Marks).Title("Marks").Width(100);
+                                            columns.Bound(m => m.Status).Title("Status").Width(100);
+                                        })
+                                        .Scrollable()
+                                        .Pageable(p => p.PageSizes(new[] { 10, 20, 50, 100 }))
+                                        .Sortable()
+                                        .Filterable()
+                                        .DataSource(dataSource => dataSource
+                                            .Server()
+                                            .Model(model => model.Id(m => m.SeatNo))
+                                        )
+                                    )
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,22 @@
+﻿<li>
+    <a href="@Url.Action("Index", "Home")" data-toggle="tooltip" data-placement="bottom" title="Home">
+        <i class="fa fa-home"></i>
+        <span class="hidden-xs">Home</span>
+    </a>
+</li>
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" title="Masters">
+        <i class="fa fa-credit-card"></i>
+        <span class="k-font-weight-bold">Question Bank</span>
+        <i class="fa fa-angle-double-down pull-right hidden-xs"></i>
+        <span class="label label-success pull-right hidden-xs">3</span>
+    </a>
+    <ul class="dropdown-menu padding-15">
+        <li>
+            <a href="@Url.Action("Index", new {area = "Question Bank", controller = "Question"})" data-toggle="tooltip" data-placement="bottom" title="Result">
+                <i class="fa fa-question-circle"></i>
+                <span class="hidden-xs">Questions</span>
+            </a>
+        </li>
+    </ul>
+</li>

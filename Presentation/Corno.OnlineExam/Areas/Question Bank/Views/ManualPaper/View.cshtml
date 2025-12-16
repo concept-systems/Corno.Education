@@ -1,0 +1,71 @@
+﻿@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Question_Bank.Models.Paper
+
+@{
+    ViewBag.Controller = "ManualPaper";
+
+    var pdfBytes = ViewBag.PdfBytes as byte[];
+    var base64Pdf = pdfBytes != null ? Convert.ToBase64String(pdfBytes) : null;
+}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.2.2/pdf.js"></script>
+
+@if (TempData["Success"] != null)
+{
+    <script type="text/javascript">
+        bootbox.alert("@TempData["Success"]")
+    </script>
+}
+
+<div class="form-horizontal box-content">
+    <div class="k-card k-card-vertical">
+        <div class="k-card-header k-card-tertiary">
+            <div class="row">
+                <div class="col-sm-11">
+                    <h3>Preview</h3>
+                </div>
+                <div class="col-sm-1 text-right">
+                    @(Html.Kendo().Button()
+                        .Name("New")
+                        .Icon("arrow-left")
+                        .SpriteCssClass("k-icon-64")
+                        .FillMode(ButtonFillMode.Outline)
+                        .ThemeColor(ThemeColor.Info)
+                        .Content("Back")
+                        .HtmlAttributes(new { @class = "w-100", onclick = "window.history.back();" }))
+                </div>
+            </div>
+        </div>
+        <div class="k-card-body">
+            @(Html.Kendo().PDFViewer()
+                .Name("pdfViewer")
+                .PdfjsProcessing(pdf => pdf.File("data:application/pdf;base64," + base64Pdf))
+                .HtmlAttributes(new { @class = "w-100" /*style = "width: 100%; height: 100%;" */ })
+                .Toolbar(toolbar => toolbar
+                    .Items(items =>
+                    {
+                        items.Add().Name("pager");
+                        items.Add().Name("spacer");
+                        items.Add().Name("zoom");
+                        items.Add().Name("zoomInOut");
+                        items.Add().Name("toggleSelection");
+                        items.Add().Name("search");
+                        //items.Add().Name("open");
+                        items.Add().Name("download");
+                        //items.Add().Name("print");
+                    })))
+            @*@Html.Raw(ViewBag.HtmlContent)*@
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var viewer = $("#pdfViewer").data("kendoPDFViewer");
+        if (viewer) {
+            // Adjust width after initialization
+            viewer.wrapper.css("width", "100%");
+        }
+    });
+</script>
+

@@ -1,0 +1,45 @@
+﻿@using Kendo.Mvc.UI
+@{
+    ViewBag.Title = "Details";
+}
+
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Online Exam</a></li>
+            <li><a href="#">@ViewData["ReportDescription"]</a></li>
+        </ol>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-offset-11 col-sm-1">
+        @(Html.Kendo().Button()
+            .Name("back_to_list")
+            .Icon("arrow-left")
+            .SpriteCssClass("k-icon-64")
+            .FillMode(ButtonFillMode.Outline)
+            .ThemeColor(ThemeColor.Dark)
+            .Size(ComponentSize.Small)
+            .Content("Back")
+            .Events(e => e.Click("onBack"))
+            .HtmlAttributes(new { @class = "w-100 float-right" }))
+    </div>
+</div>
+
+<div id="webFormContainer">
+    @if (ViewData["ReportName"].Equals("CheckList") || ViewData["ReportName"].Equals("Hall Ticket") || ViewData["ReportName"].Equals("CAP Mark Slip"))
+    {
+        <iframe src="@Url.Content("/Report Viewers/CrystalReportViewer.aspx")" width="100%" height="1200px"></iframe>
+    }
+    else
+    {
+        <iframe src="@Url.Content("/Report Viewers/TelerikReportViewer.aspx")" width="100%" height="1200px"></iframe>
+    }
+</div>
+
+<script>
+    function onBack() {
+        history.back();
+    }
+</script>

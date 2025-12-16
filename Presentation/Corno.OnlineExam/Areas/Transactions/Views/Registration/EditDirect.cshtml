@@ -1,0 +1,870 @@
+﻿@model Corno.Data.Corno.RegistrationViewModel
+@{
+    ViewBag.Title = "Edit Registration : " + Model.PrnNo;
+
+    var photoImageSource = "data:image/gif;base64, ";
+    if (null != Model.Photo)
+    {
+        photoImageSource = photoImageSource + Convert.ToBase64String(Model.Photo);
+    }
+
+    var document1ImageSource = "data:image;base64, ";
+    if (null != Model.Document1)
+    {
+        document1ImageSource = document1ImageSource + Convert.ToBase64String(Model.Document1);
+    }
+
+    var document2ImageSource = "data:image;base64, ";
+    if (null != Model.Document2)
+    {
+        document2ImageSource = document2ImageSource + Convert.ToBase64String(Model.Document2);
+    }
+    var document3ImageSource = "data:image;base64, ";
+    if (null != Model.Document3)
+    {
+        document3ImageSource = document3ImageSource + Convert.ToBase64String(Model.Document3);
+    }
+    var document4ImageSource = "data:image;base64, ";
+    if (null != Model.Document4)
+    {
+        document4ImageSource = document4ImageSource + Convert.ToBase64String(Model.Document4);
+    }
+    var document5ImageSource = "data:image;base64, ";
+    if (null != Model.Document5)
+    {
+        document5ImageSource = document5ImageSource + Convert.ToBase64String(Model.Document5);
+    }
+}
+
+@{
+    Layout = null;
+}
+
+<html>
+<head>
+    <title></title>
+    <link rel="icon" type="image/png" href="~/Content/img/Concept logo.png" />
+
+    <link href="~/Content/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+    <link href="~/Content/plugins/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/Content/css/build.css" rel="stylesheet" />
+    <link href="~/Content/plugins/fancybox/jquery.fancybox.css" rel="stylesheet">
+    <link href="~/Content/plugins/select2/select2.css" rel="stylesheet">
+    <link href="~/Content/css/style.css" rel="stylesheet">
+    <link href="~/Content/css/awesome-bootstrap-checkbox.css" rel="stylesheet" />
+    <link href="~/Content/Kendo/2019.1.115/kendo.common.min.css" rel="stylesheet">
+    <link href="~/Content/Kendo/2019.1.115/kendo.default.min.css" rel="stylesheet">
+    <link href="~/Content/Kendo/2019.1.115/kendo.blueopal.min.css" rel="stylesheet">
+
+    <link href="~/Content/plugins/fileinput/fileinput.min.css" rel="stylesheet" type="text/css" />
+
+    <script src="~/Content/plugins/jquery/jquery-2.1.0.min.js"></script>
+    <link href="@Url.Content("~/Content/kendo/2019.1.115/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2019.1.115/kendo.dataviz.blueopal.min.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/kendo/2019.1.115/jszip.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2019.1.115/kendo.all.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2019.1.115/kendo.aspnetmvc.min.js")"></script>
+    <script src="~/Content/plugins/jquery-ui/jquery-ui.js"></script>
+    <script src="~/Content/plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="~/Content/plugins/justified-gallery/jquery.justifiedgallery.min.js"></script>
+    <script src="~/Scripts/js/devoops.js"></script>
+    <script src="~/Content/plugins/fileinput/fileinput.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/js/printThis.js"></script>
+    <script src="~/Content/plugins/bootbox/bootbox.min.js"></script>
+
+    <script data-pace-options='{ "ajax": true, "document": true, "eventLag": true, "restartOnPushState": true, restartOnRequestAfter: true }' src="~/Content/plugins/pace-1.0.2/pace.min.js"></script>
+    <link href="~/Content/plugins/pace-1.0.2/themes/blue/pace-theme-corner-indicator.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="box ui-draggable ui-droppable">
+                <div class="box-content">
+                    @using (Html.BeginForm("EditDirect", "Registration", FormMethod.Post, new { id = "dd", enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(false)
+
+                        @Html.HiddenFor(model => model.StudentName)
+                        @Html.HiddenFor(model => model.Gender)
+
+                        @Html.HiddenFor(model => model.PrnNo)
+                        @Html.HiddenFor(model => model.PrnSerialNo)
+                        @Html.HiddenFor(model => model.FacultyId)
+
+                        @Html.HiddenFor(model => model.Photo)
+                        @Html.HiddenFor(model => model.Signature)
+                        @Html.HiddenFor(model => model.Document1)
+                        @Html.HiddenFor(model => model.Document2)
+                        @Html.HiddenFor(model => model.Document3)
+                        @Html.HiddenFor(model => model.Document4)
+                        @Html.HiddenFor(model => model.Document5)
+                        <div class="form-horizontal">
+                            <div class="box-content">
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <button type="button" value="Index" class="btn btn-primary btn-label-left"
+                                                onclick="onEditStudent();" data_toggle="tooltip" data_placement="bottom" title="PRN">
+                                            <span><i class="fa fa-edit"></i></span>
+                                            Edit Student Info
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <button type="button" value="Index" class="btn btn-primary btn-label-left"
+                                                onclick="onViewStudent();" data_toggle="tooltip" data_placement="bottom" title="PRN">
+                                            <span><i class="fa fa-edit"></i></span>
+                                            View / Print Student Info
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-offset-6 col-sm-2">
+                                        <button type="submit" value="Edit" title="Save" class="btn btn-primary btn-label-left pull-right">
+                                            <span><i class="fa fa-save"></i></span>
+                                            Save
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">
+                                        <strong>Registration Details For PRN - @Model.PrnNo</strong>
+                                    </div>
+
+                                    <div id="collapse1" class="panel-body panel-collapse">
+                                        <div role="tabpanel">
+                                            <ul class="nav nav-tabs " role="tablist">
+                                                <li role="presentation" class="active">
+                                                    <a href="#RegistrationInfo" aria-controls="RegistrationInfo"
+                                                       role="tab" data-toggle="tab">Registration Info</a>
+                                                </li>
+
+                                                <li role="presentation">
+                                                    <a href="#PersonalInfo" aria-controls="PersonalInfo"
+                                                       role="tab" data-toggle="tab">Personal Info</a>
+                                                </li>
+                                                <li role="presentation">
+                                                    <a href="#ContactInfo" aria-controls="ContactInfo"
+                                                       role="tab" data-toggle="tab">Contact Info</a>
+                                                </li>
+                                                <li role="presentation">
+                                                    <a href="#AdditionalInfo" aria-controls="AdditionalInfo"
+                                                       role="tab" data-toggle="tab">University Info</a>
+                                                </li>
+                                                <li role="presentation">
+                                                    <a href="#EducationalInfo" aria-controls="EducationalInfo"
+                                                       role="tab" data-toggle="tab">Educational Info</a>
+                                                </li>
+                                                <li role="presentation">
+                                                    <a href="#Others" aria-controls="Others"
+                                                       role="tab" data-toggle="tab">Others</a>
+                                                </li>
+                                            </ul>
+                                            <div class="tab-content">
+                                                <div role="tabpanel" class="tab-pane active" id="RegistrationInfo">
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2 control-label">Admission Year <code>*</code>:</label>
+                                                        <div class="col-sm-2">
+                                                            @Html.TextBoxFor(m => m.Year, new { @readonly = "true", id = "Year", minlength = "4", maxlength = "4", @class = "form-control", value = "@Model.Year", placeholder = "Enter Year", data_toggle = "tooltip", data_placement = "bottom", title = "Year" })
+                                                        </div>
+                                                    </div>
+                                                    @Html.Partial("Partial/_StudentInfoEdit")
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label">Student Name <code>*</code>:</label>
+                                                        <div class="col-sm-4">
+                                                            @Html.TextBoxFor(m => m.StudentName, new { @readonly = "true", id = "StudentName", onkeyup = "InputToUpper(this);", @class = "form-control UpperCase", value = "@Model.StudentName", placeholder = "Enter Student Name", data_toggle = "tooltip", data_placement = "bottom", title = "Student Name" })
+                                                            @Html.ValidationMessageFor(m => m.StudentName)
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label">Gender <code>*</code>:</label>
+                                                        <div class="col-sm-4 control-label">
+                                                            @Html.RadioButton("gender", "M", Model.Gender == "M", new { disabled = "disabled" }) Male
+                                                            <label class="control-label"></label>
+                                                            @Html.RadioButton("gender", "F", Model.Gender == "F", new { disabled = "disabled" }) Female
+                                                            @Html.ValidationMessageFor(m => m.Gender)
+                                                        </div>
+                                                    </div>
+                                                    <div class="alert alert-warning col-sm-12">
+                                                        <strong>Note : </strong>Student should write his/her name as per the Marksheet of previous qualifying examination. No change in the name will be made there after.
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button type="button" class="col-sm-offset-11 col-sm-1 btn btn-circle btn-info btnNext" id="nxt3">Next</button>
+                                                    </div>
+                                                </div>
+                                                <div role="tabpanel" class="tab-pane" id="PersonalInfo">
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2 control-label">Local Address :</label>
+                                                        <div class="col-sm-4">
+                                                            @Html.TextAreaFor(model => model.LocalAddress, new { rows = 5, columns = 60, id = "LocalAddress", @class = "form-control", value = "@Model.LocalAddress", placeholder = " Enter Address", data_toggle = "tooltip", data_placement = "bottom", title = " Address" })
+                                                        </div>
+                                                        <label class="col-sm-2 col-sm-offset-1 control-label">DOB :</label>
+                                                        <div class="col-sm-3 control-label">
+                                                            @Html.TextBoxFor(m => m.Dob, "{0:dd-MMM-yyyy}", new { id = "DOB", value = "@Model.DOB", style = "width: 230px;", data_toggle = "tooltip", data_placement = "bottom", title = "e.g:01-Jan-2016" })
+                                                        </div>
+                                                        <label class="col-sm-2 col-sm-offset-1 control-label ">Mobile :</label>
+                                                        <div class="col-sm-3  control-label">
+                                                            @Html.TextBoxFor(m => m.Mobile1, new { id = "Mobile1", @class = "form-control", value = "@Model.Mobile1", placeholder = "Enter Mobile", data_toggle = "tooltip", data_placement = "bottom", title = "Mobile" })
+                                                            @Html.ValidationMessageFor(m => m.Mobile1)
+                                                        </div>
+                                                        <label class="col-sm-2 col-sm-offset-1 control-label ">Student Email :</label>
+                                                        <div class="col-sm-3">
+                                                            @Html.TextBoxFor(m => m.StudentEmail, new { id = "StudentEmail", @class = "form-control", value = "@Model.StudentEmail", placeholder = "Enter Student Email", data_toggle = "tooltip", data_placement = "bottom", title = "Student Email" })
+                                                            @Html.ValidationMessageFor(m => m.StudentEmail)
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2  control-label ">Birth Place :</label>
+                                                        <div class="col-sm-3">
+                                                            @Html.TextBoxFor(m => m.BirthPlace, new { id = "BirthPlace", @class = "form-control", value = "@Model.BirthPlace", placeholder = "Enter Birth Place", data_toggle = "tooltip", data_placement = "bottom", title = "Birth Place" })
+                                                        </div>
+                                                        <label class="col-sm-2 col-sm-offset-2 control-label">Birth District :</label>
+                                                        <div class="col-sm-3 control-label">
+                                                            @Html.TextBoxFor(m => m.BirthPlaceDistrictName, new { id = "BirthPlaceDistrictName", @class = "form-control", value = "@Model.BirthPlaceDistrictName", placeholder = "Enter Birth Place District", data_toggle = "tooltip", data_placement = "bottom", title = "Birth District" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2 control-label"> Birth State :</label>
+                                                        <div class="col-sm-3 control-label">
+                                                            @Html.TextBoxFor(m => m.BirthPlaceStateName, new { id = "BirthPlaceStateName", @class = "form-control", value = "@Model.BirthPlaceStateName", placeholder = "Enter Birth Place State", data_toggle = "tooltip", data_placement = "bottom", title = "Birth State" })
+                                                        </div>
+                                                        <label class="col-sm-2 col-sm-offset-2 control-label"> Birth Country :</label>
+                                                        <div class="col-sm-3  control-label">
+                                                            @Html.TextBoxFor(m => m.BirthPlaceCountryName, new { id = "BirthPlaceCountryName", @class = "form-control", value = "@Model.BirthPlaceCountryName", placeholder = "Enter Birth Place Country", data_toggle = "tooltip", data_placement = "bottom", title = "Birth Country" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2 control-label">If Backward :</label>
+                                                        <div class="col-sm-3">
+                                                            @Html.DropDownListFor(model => model.IfBackward, new SelectList(
+                                                            new List<object>
+                                                            {
+                                                                new
+                                                                {
+                                                                    value =
+                                                                        "Yes",
+                                                                    text = "Yes"
+                                                                },
+
+                                                                new {value = "No", text = "No"}
+                                                            }, "value", "text"), "Select Backward Region", new { id = "s2_IfBackward" })
+                                                        </div>
+                                                        <label class="col-sm-2 col-sm-offset-2 control-label ">Minority :</label>
+                                                        <div class="col-sm-3">
+                                                            @Html.TextBoxFor(m => m.Minority, new { id = "Minority", @class = "form-control", value = "@Model.Minority", placeholder = "Enter Minority", data_toggle = "tooltip", data_placement = "bottom", title = "Minority" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2 control-label">Religion :</label>
+                                                        <div class="col-sm-3">
+                                                            @Html.TextBoxFor(m => m.Religion, new { id = "Religion", @class = "form-control", value = "@Model.Religion", placeholder = "Enter Religion", data_toggle = "tooltip", data_placement = "bottom", title = "Religion" })
+                                                        </div>
+                                                        <label class="col-sm-2 col-sm-offset-2 control-label ">Caste :</label>
+                                                        <div class="col-sm-3">
+                                                            @Html.TextBoxFor(m => m.Caste, new { id = "Caste", @class = "form-control", value = "@Model.Caste", placeholder = "Enter Caste", data_toggle = "tooltip", data_placement = "bottom", title = "Caste" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2 control-label">Nationality :</label>
+                                                        <div class="col-sm-3">
+                                                            @Html.TextBoxFor(m => m.Nationality, new { id = "Nationality", @class = "form-control", value = "@Model.Nationality", placeholder = "Enter Nationality", data_toggle = "tooltip", data_placement = "bottom", title = "Nationality" })
+                                                        </div>
+                                                        <label class="col-sm-2 col-sm-offset-2 control-label  ">Native Place :</label>
+                                                        <div class="col-sm-3">
+                                                            @Html.TextBoxFor(m => m.NativePlace, new { id = "NativePlace", @class = "form-control", value = "@Model.NativePlace", placeholder = "Enter Native Place", data_toggle = "tooltip", data_placement = "bottom", title = "Native Place" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2 control-label ">Domocile District :</label>
+                                                        <div class="col-sm-3 control-label">
+                                                            @Html.TextBoxFor(m => m.DomicileDistrictName, new { id = "DomicileDistrictName", @class = "form-control", value = "@Model.DomicileDistrictName", placeholder = "Enter Domocile District", data_toggle = "tooltip", data_placement = "bottom", title = "Native Domocile District Name" })
+                                                        </div>
+                                                        <label class="col-sm-2 col-sm-offset-2 control-label ">Domocile State :</label>
+                                                        <div class="col-sm-3 control-label">
+                                                            @Html.TextBoxFor(m => m.DomicileStateName, new { id = "DomicileStateName", @class = "form-control", value = "@Model.DomicileStateName", placeholder = "Enter Domocile State", data_toggle = "tooltip", data_placement = "bottom", title = "Domicile State Name" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group  has-feedback">
+                                                        <label class=" col-sm-2 control-label ">Area :</label>
+                                                        <div class="col-sm-3 control-label">
+                                                            @if (null != Model.Area && Model.Area == "Rural")
+                                                            {
+                                                                @Html.RadioButton("Area", "Rural", true)
+                                                            }
+                                                            else
+                                                            {
+                                                                @Html.RadioButton("Area", "Rural", false)
+                                                            }
+                                                            Rural
+                                                            <label class="control-label"></label>
+                                                            @if (null != Model.Area && Model.Area == "Urban")
+                                                            {
+                                                                @Html.RadioButton("Area", "Urban", true)
+                                                            }
+                                                            else
+                                                            {
+                                                                @Html.RadioButton("Area", "Urban", false)
+                                                            }
+                                                            Urban
+                                                        </div>
+                                                        <label class="col-sm-2 col-sm-offset-2 control-label ">Blood Group :</label>
+                                                        <div class="col-sm-3">
+                                                            @Html.TextBoxFor(m => m.BloodGroup, new { id = "Religion", @class = "form-control", value = "@Model.BloodGroup", placeholder = "Enter Blood Group", data_toggle = "tooltip", data_placement = "bottom", title = "Blood Group" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2 control-label">NAD Id :</label>
+                                                        <div class="col-sm-3">
+                                                            @Html.TextBoxFor(m => m.FormNo, new { id = "FormNo", @class = "form-control", value = "@Model.FormNo", placeholder = "Enter NAD Id", data_toggle = "tooltip", data_placement = "bottom", title = "NAD Id" })
+                                                            @Html.ValidationMessageFor(m => m.FormNo)
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2">Photo :</label>
+                                                        <div class="col-xs-2 pull-left">
+                                                            <input type="file" id="UploadPhoto" name="UploadPhoto">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button type="button" class="col-sm-1 btn btn-circle btn-info">Previous</button>
+                                                        <button type="button" class="col-sm-offset-10 col-sm-1 btn btn-circle btn-info btnNext" id="nxt">Next</button>
+                                                    </div>
+                                                </div>
+                                                <div role="tabpanel" class="tab-pane" id="ContactInfo">
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2 control-label">Father Name :</label>
+                                                        <div class="col-sm-4">
+                                                            @Html.TextBoxFor(m => m.FatherName, new { id = "FatherName", @class = "form-control UpperCase", value = "@Model.FatherName", placeholder = "Enter Father Name", data_toggle = "tooltip", data_placement = "bottom", title = "Father Name" })
+                                                        </div>
+                                                        <label class="col-sm-2 control-label col-sm-offset-1 ">Mother Name :</label>
+                                                        <div class="col-sm-3 control-label">
+                                                            @Html.TextBoxFor(m => m.MotherName, new { id = "MotherName", @class = "form-control UpperCase", value = "@Model.MotherName", placeholder = "Enter Mother Name", data_toggle = "tooltip", data_placement = "bottom", title = "Mother Name" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2 control-label">Permanent Add. :</label>
+                                                        <div class="col-sm-4">
+                                                            @Html.TextAreaFor(model => model.PermanentAddress, new { rows = 5, columns = 60, id = "PermanentAddress", @class = "form-control", value = "@Model.PermanentAddress", placeholder = " Enter Address", data_toggle = "tooltip", data_placement = "bottom", title = " Address" })
+                                                        </div>
+                                                        <label class="col-sm-2 control-label col-sm-offset-1 ">City :</label>
+                                                        <div class="col-sm-3 control-label">
+                                                            @Html.TextBoxFor(m => m.CityName, new { id = "CityName", @class = "form-control UpperCase", value = "@Model.CityName", placeholder = "Enter City Name", data_toggle = "tooltip", data_placement = "bottom", title = "City Name" })
+                                                        </div>
+                                                        <label class="col-sm-2 control-label col-sm-offset-1">State :</label>
+                                                        <div class="col-sm-3 control-label">
+                                                            @Html.TextBoxFor(m => m.StateName, new { id = "StateName", @class = "form-control UpperCase", value = "@Model.StateName", placeholder = "Enter State Name", data_toggle = "tooltip", data_placement = "bottom", title = "State Name" })
+                                                        </div>
+
+                                                        <label class="col-sm-2 col-sm-offset-1 control-label ">Country :</label>
+                                                        <div class="col-sm-3 control-label">
+                                                            @Html.TextBoxFor(m => m.CountryName, new { id = "CountryName", @class = "form-control UpperCase", value = "@Model.CountryName", placeholder = "Enter Country Name", data_toggle = "tooltip", data_placement = "bottom", title = "Country Name" })
+                                                        </div>
+                                                        <label class="col-sm-2 col-sm-offset-1 control-label ">Pincode :</label>
+                                                        <div class="col-sm-3 control-label">
+                                                            @Html.TextBoxFor(m => m.Pincode, new { id = "Pincode", @class = "form-control", value = "@Model.Pincode", placeholder = "Enter Pincode", data_toggle = "tooltip", data_placement = "bottom", title = "Pin code" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2 control-label ">Email :</label>
+                                                        <div class="col-sm-4  control-label">
+                                                            @Html.TextBoxFor(m => m.ParentEmail, new { id = "ParentEmail", @class = "form-control", value = "@Model.ParentEmail", placeholder = "Enter Email", data_toggle = "tooltip", data_placement = "bottom", title = "Email" })
+                                                        </div>
+
+                                                        <label class="col-sm-2 col-sm-offset-1 control-label  ">Residence Phone :</label>
+                                                        <div class="col-sm-3  control-label">
+                                                            @Html.TextBoxFor(m => m.ParentTelephone, new { id = "ParentTelephone", @class = "form-control", value = "@Model.ParentTelephone", placeholder = "Enter Parent Telephone", data_toggle = "tooltip", data_placement = "bottom", title = "ParentTelephone" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2 control-label">Parent Qualification :</label>
+                                                        <div class="col-sm-4  control-label">
+                                                            @Html.TextBoxFor(m => m.ParentQualification, new { id = "ParentQualification", @class = "form-control", value = "@Model.ParentQualification", placeholder = "Enter Parent Qualification", data_toggle = "tooltip", data_placement = "bottom", title = "Parent Qualification" })
+                                                        </div>
+                                                        <label class="col-sm-2 col-sm-offset-1 control-label ">Parent Mobile No :</label>
+                                                        <div class="col-sm-3  control-label">
+                                                            @Html.TextBoxFor(m => m.ParentMobileNo, new { id = "Mobile", @class = "form-control", value = "@Model.Mobile", placeholder = "Enter Mobile No", data_toggle = "tooltip", data_placement = "bottom", title = "Mobile" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2 control-label ">Parent Occupation :</label>
+                                                        <div class="col-sm-4  control-label">
+                                                            @Html.TextBoxFor(m => m.ParentOccupation, new { id = "ParentOccupation", @class = "form-control", value = "@Model.ParentOccupation", placeholder = "Enter Parent Occupation", data_toggle = "tooltip", data_placement = "bottom", title = " Parent Occupation" })
+                                                        </div>
+                                                        <label class="col-sm-2 col-sm-offset-1 control-label ">Office Name :</label>
+                                                        <div class="col-sm-3  control-label">
+                                                            @Html.TextBoxFor(m => m.ParentOfficeName, new { id = "ParentOfficeName", @class = "form-control", value = "@Model.ParentOfficeName", placeholder = "Enter Parent Office", data_toggle = "tooltip", data_placement = "bottom", title = " Parent OfficeName" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2 control-label ">Office phone :</label>
+                                                        <div class="col-sm-4  control-label">
+                                                            @Html.TextBoxFor(m => m.ParentOfficeTelephone, new { id = "ParentOfficeTelephone", @class = "form-control", value = "@Model.ParentOfficeTelephone", placeholder = "Enter Parent Office Telephone", data_toggle = "tooltip", data_placement = "bottom", title = "Parent Office Telephone" })
+                                                        </div>
+                                                        <label class="col-sm-2 col-sm-offset-1 control-label ">Office Mobile :</label>
+                                                        <div class="col-sm-3  control-label">
+                                                            @Html.TextBoxFor(m => m.ParentOfficeMobile, new { id = "ParentOfficeMobile", @class = "form-control", value = "@Model.ParentOfficeMobile ", placeholder = "Enter Parent Office Mobile", data_toggle = "tooltip", data_placement = "bottom", title = " Parent Office Telephone" })
+                                                        </div>
+                                                    </div>
+                                                    <hr />
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2 control-label">Guardian Name : </label>
+                                                        <div class="col-sm-6">
+                                                            @Html.TextBoxFor(model => model.GuardianName, new { id = "GuardianName", @class = "form-control UpperCase", value = "@Model.GuardianName", placeholder = " Enter Guardian Name", data_toggle = "tooltip", data_placement = "bottom", title = " Guardian Name" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2 control-label">Local Guardian Address : </label>
+                                                        <div class="col-sm-4">
+                                                            @Html.TextAreaFor(model => model.LocalGuardianAddress, new { rows = 5, columns = 60, id = "LocalGuardianAddress", @class = "form-control", value = "@Model.LocalGuardianAddress", placeholder = " Enter Address", data_toggle = "tooltip", data_placement = "bottom", title = " Address" })
+                                                        </div>
+                                                        <label class="col-sm-2 col-sm-offset-1 control-label">Mobile No :</label>
+                                                        <div class="col-sm-3">
+                                                            @Html.TextBoxFor(m => m.GuardianMobileNo, new { id = "Phone", @class = "form-control", value = "@Model.Phone1", placeholder = "Enter Phone", data_toggle = "tooltip", data_placement = "bottom", title = "Phone" })
+                                                            @Html.ValidationMessageFor(m => m.GuardianMobileNo)
+                                                        </div>
+                                                        <label class="col-sm-2 col-sm-offset-1 control-label ">City :</label>
+                                                        <div class="col-sm-3 control-label">
+                                                            @Html.TextBoxFor(m => m.CityName1, new { id = "CityName1", @class = "form-control UpperCase", value = "@Model.CityName1", placeholder = "City Name", data_toggle = "tooltip", data_placement = "bottom", title = "City Name" })
+                                                        </div>
+                                                        <label class="col-sm-2 col-sm-offset-1 control-label ">State :</label>
+                                                        <div class="col-sm-3 control-label">
+                                                            @Html.TextBoxFor(m => m.StateName1, new { id = "StateName1", @class = "form-control UpperCase", value = "@Model.StateName1", placeholder = "State Name", data_toggle = "tooltip", data_placement = "bottom", title = "State Name" })
+                                                        </div>
+                                                        <label class="col-sm-2 col-sm-offset-1 control-label">Country :</label>
+                                                        <div class="col-sm-3 control-label">
+                                                            @Html.TextBoxFor(m => m.CountryName1, new { id = "CountryName1", @class = "form-control UpperCase", value = "@Model.CountryName1", placeholder = "Country Name", data_toggle = "tooltip", data_placement = "bottom", title = "Country Name" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2 control-label ">Email : </label>
+                                                        <div class="col-sm-4">
+                                                            @Html.TextBoxFor(model => model.GuardianEmail, new { id = "GuardianEmail", @class = "form-control", value = "@Model.GuardianEmail", placeholder = " Enter Guardian Email", data_toggle = "tooltip", data_placement = "bottom", title = "Guardian Email" })
+                                                        </div>
+                                                        <label class="col-sm-2 col-sm-offset-1 control-label ">Pincode :</label>
+                                                        <div class="col-sm-3 control-label">
+                                                            @Html.TextBoxFor(m => m.LocalPinCode, new { id = "LocalPinCode", @class = "form-control", value = "@Model.LocalPinCode", placeholder = "Enter Local Pin Code", data_toggle = "tooltip", data_placement = "bottom", title = "Local Pin Code" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2 control-label ">Relationship With Candidate :</label>
+                                                        <div class="col-sm-5">
+                                                            @Html.TextBoxFor(m => m.RelationshipWithCandidate, new { id = "RelationshipWithCandidate", @class = "form-control", value = "@Model.RelationshipWithCandidate", placeholder = "Enter Relationship with Candidate", data_toggle = "tooltip", data_placement = "bottom", title = "RelationshipWith Candidate" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group  has-feedback">
+                                                        <label class=" col-sm-2 control-label">Annual Income :</label>
+                                                        <div class="col-sm-4 control-label">
+                                                            <label class="control-label"></label>
+                                                            @if (null != Model.AnnualIncome && Model.AnnualIncome == "Less Than 100000")
+                {
+                                                                @Html.RadioButton("AnnualIncome", "Less Than 100000", true)
+                                                            }
+                                                            else
+                                                            {
+                                                                @Html.RadioButton("AnnualIncome", "Less Than 100000", false)
+                                                            }
+                                                            Less Than 100000
+                                                            <label class="control-label"></label><br />
+                                                            @if (null != Model.AnnualIncome && Model.AnnualIncome == "100000 - 300000")
+                                                            {
+                                                                @Html.RadioButton("AnnualIncome", "100000 - 300000", true)
+                                                            }
+                                                            else
+                                                            {
+                                                                @Html.RadioButton("AnnualIncome", "100000 - 300000", false)
+                                                            }
+                                                            100000 - 300000
+                                                            <label class="control-label"></label><br />
+                                                            @if (null != Model.AnnualIncome && Model.AnnualIncome == "Above 300000")
+                                                            {
+                                                                @Html.RadioButton("AnnualIncome", "Above 300000", true)
+                                                            }
+                                                            else
+                                                            {
+                                                                @Html.RadioButton("AnnualIncome", "Above 300000", false)
+                                                            }
+                                                            Above 300000
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button type="button" class="col-sm-1 btn btn-circle btn-info btnPrevious">Previous</button>
+                                                        <button type="button" class="col-sm-offset-10 col-sm-1 btn btn-circle btn-info btnNext" id="nxt1">Next</button>
+                                                    </div>
+                                                </div>
+                                                <div role="tabpanel" class="tab-pane" id="AdditionalInfo">
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2 control-label">General Register No :</label>
+                                                        <div class="col-sm-3">
+                                                            @Html.TextBoxFor(m => m.RegisterNo, new { id = "RegisterNo", @class = "form-control", value = "@Model.RegisterNo", placeholder = "Enter General Register No", data_toggle = "tooltip", data_placement = "bottom", title = "General Register No" })
+                                                            @Html.ValidationMessageFor(m => m.RegisterNo)
+                                                        </div>
+                                                        <label class="col-sm-3 control-label  col-sm-offset-1">Enrollment No :</label>
+                                                        <div class="col-sm-3">
+                                                            @Html.TextBoxFor(m => m.EnrollmentNo, new { id = "EnrollmentNo", @class = "form-control", value = "@Model.EnrollmentNo", placeholder = "Enter Enrollment No", data_toggle = "tooltip", data_placement = "bottom", title = "Enrollment No" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2 control-label">PAN :</label>
+                                                        <div class="col-sm-3">
+                                                            @Html.TextBoxFor(m => m.Pan, new { id = "Pan", @class = "form-control", value = "@Model.Pan", placeholder = "Enter PAN", data_toggle = "tooltip", data_placement = "bottom", title = "PAN" })
+                                                            @Html.ValidationMessageFor(m => m.Pan)
+                                                        </div>
+                                                        <label class="col-sm-3 control-label  col-sm-offset-1">Adhaar No :</label>
+                                                        <div class="col-sm-3">
+                                                            @Html.TextBoxFor(m => m.AdhaarNo, new { id = "AdhaarNo", @class = "form-control", value = "@Model.AdhaarNo", placeholder = "Enter Adhaar No", data_toggle = "tooltip", data_placement = "bottom", title = "Adhaar No" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group has-feedback">
+                                                        <label class="col-sm-2 control-label ">Date Of Admission :</label>
+                                                        <div class="col-sm-3">
+                                                            @Html.TextBoxFor(m => m.AdmissionDate, "{0:dd-MMM-yyyy}", new { id = "DateOfAdmission", value = "@Model.AdmissionDate", style = "width: 230px;", data_toggle = "tooltip", data_placement = "bottom", title = "e.g:01-Jan-2016" })
+                                                        </div>
+                                                        <label class="col-sm-3 col-sm-offset-1 control-label ">Date Of Leaving :</label>
+                                                        <div class="col-sm-3">
+                                                            @Html.TextBoxFor(m => m.LeavingDate, "{0:dd-MMM-yyyy}", new { id = "DateOfLeaving", value = "@Model.LeavingDate", style = "width: 230px;", data_toggle = "tooltip", data_placement = "bottom", title = "e.g:01-Jan-2016" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2 control-label">Passport No :</label>
+                                                        <div class="col-sm-3">
+                                                            @Html.TextBoxFor(m => m.PassportNo, new { id = "PassportNo", @class = "form-control", value = "@Model.PassportNo", placeholder = "Enter Passport No", data_toggle = "tooltip", data_placement = "bottom", title = "Passport No" })
+                                                        </div>
+                                                        <label class="col-sm-3 col-sm-offset-1 control-label ">Passport Issued On :</label>
+                                                        <div class="col-sm-3">
+                                                            @Html.TextBoxFor(m => m.PassportIssuedOn, "{0:dd-MMM-yyyy}", new { id = "PassportIssuedOn", value = "@Model.PassportIssuedOn", style = "width: 230px;", data_toggle = "tooltip", data_placement = "bottom", title = "e.g:01-Jan-2016" })
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="form-group has-feedback">
+                                                        <label class="col-sm-2 control-label"> Renewed Passport No :</label>
+                                                        <div class="col-sm-3">
+                                                            @Html.TextBoxFor(m => m.RenewedPassportNo, new { id = "RenewedPassportNo", @class = "form-control", value = "@Model.RenewedPassportNo", placeholder = "Enter Renewed Passport No", data_toggle = "tooltip", data_placement = "bottom", title = "Renewed Passport No" })
+                                                        </div>
+                                                        <label class="col-sm-3 col-sm-offset-1 control-label "> Renewed Passport Issued On:</label>
+                                                        <div class="col-sm-3">
+                                                            @Html.TextBoxFor(m => m.RenewedPassportIssuedOn, "{0:dd-MMM-yyyy}", new { id = "RenewedPassportIssuedOn", value = "@Model.RenewedPassportIssuedOn", style = "width: 230px;", data_toggle = "tooltip", data_placement = "bottom", title = "e.g:01-Jan-2016" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2 control-label">Visa No :</label>
+                                                        <div class="col-sm-3">
+                                                            @Html.TextBoxFor(m => m.VisaNo, new { id = "VisaNo", @class = "form-control", value = "@Model.VisaNo", placeholder = "Enter Visa No", data_toggle = "tooltip", data_placement = "bottom", title = "Visa No" })
+                                                            @Html.ValidationMessageFor(m => m.VisaNo)
+                                                        </div>
+                                                        <label class="col-sm-3 control-label  col-sm-offset-1"> Visa Issued On :</label>
+                                                        <div class="col-sm-3">
+                                                            @Html.TextBoxFor(m => m.VisaIssuedOn, "{0:dd-MMM-yyyy}", new { id = "VisaIssuedOn", value = "@Model.VisaIssuedOn", style = "width: 230px;", data_toggle = "tooltip", data_placement = "bottom", title = "e.g:01-Jan-2016" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2 control-label">Admission Cancelled :</label>
+                                                        <div class="col-sm-3">
+                                                            @Html.TextBoxFor(m => m.IsAdmissionCancelled, new { id = "IsAdmissionCancelled", @class = "form-control", value = "@Model.IsAdmissionCancelled", placeholder = "Enter Yes/No", data_toggle = "tooltip", data_placement = "bottom", title = "IsAdmissionCancelled" })
+                                                        </div>
+                                                        <label class="col-sm-3 control-label  col-sm-offset-1"> Admission Cancelled Date :</label>
+                                                        <div class="col-sm-3">
+                                                            @Html.TextBoxFor(m => m.AdmissionCancelledDate, "{0:dd-MMM-yyyy}", new { id = "AdmissionCancelledDate", value = "@Model.AdmissionCancelledDate", style = "width: 230px;", data_toggle = "tooltip", data_placement = "bottom", title = "e.g:01-Jan-2016" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group has-feedback">
+                                                        <label class="col-sm-3 col-sm-offset-6 control-label ">Eligibility No :</label>
+                                                        <div class="col-sm-3">
+                                                            @Html.TextBoxFor(m => m.EligibilityNo, new { id = "EligibilityNo", @class = "form-control", value = "@Model.EligibilityNo", placeholder = "Enter Eligibility No", data_toggle = "tooltip", data_placement = "bottom", title = "Eligibility No" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button type="button" class="col-sm-1 btn btn-circle btn-info btnPrevious">Previous</button>
+                                                        <button type="button" class="col-sm-offset-10 col-sm-1 btn btn-circle btn-info btnNext" id="nxt">Next</button>
+
+                                                    </div>
+                                                </div>
+                                                <div role="tabpanel" class="tab-pane" id="EducationalInfo">
+                                                    <div class="panel-heading">
+                                                        <strong>Previous Exam Details ( For the admission above mention Course )</strong>
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <div class="form-group  has-feedback">
+                                                            <label class="col-sm-2 control-label">Exam Name :</label>
+                                                            <div class="col-sm-4">
+                                                                @Html.TextBoxFor(m => m.ExamName, new { id = "ExamName", @class = "form-control", value = "@Model.ExamName", placeholder = "Enter Exam Name", data_toggle = "tooltip", data_placement = "bottom", title = "Exam Name" })
+                                                            </div>
+                                                            <label class="col-sm-2 control-label">Qualifying Examinations </label>
+                                                            <div class="col-sm-4">
+                                                                @Html.TextBoxFor(m => m.QualifyingExaminations, new { id = "QualifyingExaminations", @class = "form-control", value = "@Model.QualifyingExaminations", placeholder = "Enter Qualifying Examinations", data_toggle = "tooltip", data_placement = "bottom", title = "Qualifying Examinations" })
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group  has-feedback">
+                                                            <label class="col-sm-2 control-label">Subject List : </label>
+                                                            <div class="col-sm-4">
+                                                                @Html.TextAreaFor(m => m.ExamSubjectList, new { id = "ExamSubjectList", @class = "form-control", value = "@Model.ExamSubjectList", placeholder = " Enter Subject", data_toggle = "tooltip", data_placement = "bottom", title = " Subject" })
+                                                            </div>
+                                                            <label class="col-sm-2 control-label">Qualifying Subjects </label>
+                                                            <div class="col-sm-4">
+                                                                @Html.TextAreaFor(m => m.QualifyingSubjects, new { id = "QualifyingSubjects", @class = "form-control", value = "@Model.QualifyingSubjects", placeholder = "Enter Qualifying Subjects", data_toggle = "tooltip", data_placement = "bottom", title = "Qualifying Subjects" })
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group  has-feedback">
+                                                            <label class="col-sm-2 control-label ">Exam Attempts :</label>
+                                                            <div class="col-sm-4">
+                                                                @Html.TextBoxFor(m => m.QualifyingExamAttempts, new { id = "QualifyingExamAttempts", @class = "form-control", value = "@Model.QualifyingExamAttempts ", placeholder = "Enter Exam Attempts", data_toggle = "tooltip", data_placement = "bottom", title = "Qualifying Exam Attempts" })
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="form-group  has-feedback">
+                                                            <label class="col-sm-2 control-label ">Total Marks :</label>
+                                                            <div class="col-sm-4">
+                                                                @Html.TextBoxFor(m => m.QualifyingExamTotalMarks, new { id = "QualifyingExamTotalMarks", @class = "form-control", value = "@Model.QualifyingExamTotalMarks ", placeholder = "Enter Total Marks", data_toggle = "tooltip", data_placement = "bottom", title = "QualifyingExamTotalMarks" })
+                                                            </div>
+                                                            <label class="col-sm-2 control-label ">Marks Out Of :</label>
+                                                            <div class="col-sm-4">
+                                                                @Html.TextBoxFor(m => m.QualifyingExamOutOfMarks, new { id = "QualifyingExamOutOfMarks", @class = "form-control", value = "@Model.QualifyingExamOutOfMarks ", placeholder = "Enter Out Of Marks", data_toggle = "tooltip", data_placement = "bottom", title = "QualifyingExamOutOfMarks" })
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group  has-feedback">
+                                                            <label class="col-sm-2 control-label">SSC Total Marks : </label>
+                                                            <div class="col-sm-4">
+                                                                @Html.TextBoxFor(m => m.SscTotalMarks, new { id = "SscTotalMarks", @class = "form-control", value = "@Model.SscTotalMarks", placeholder = " Enter Ssc Total Marks", data_toggle = "tooltip", data_placement = "bottom", title = " Ssc Total Marks" })
+                                                            </div>
+                                                            <label class="col-sm-2 control-label">SSC Marks Out Of : </label>
+                                                            <div class="col-sm-4">
+                                                                @Html.TextBoxFor(m => m.SscMarksOutOf, new { id = "SscMarksOutOf", @class = "form-control", value = "@Model.SscMarksOutOf", placeholder = " Enter Ssc Marks Out Of", data_toggle = "tooltip", data_placement = "bottom", title = " Ssc Marks Out Of" })
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group  has-feedback">
+                                                            <label class="col-sm-2 control-label">HSC Total Marks : </label>
+                                                            <div class="col-sm-4">
+                                                                @Html.TextBoxFor(m => m.HscTotalMarks, new { id = "HscTotalMarks", @class = "form-control", value = "@Model.HscTotalMarks", placeholder = " Enter Hsc Total Marks", data_toggle = "tooltip", data_placement = "bottom", title = " Hsc Total Marks" })
+                                                            </div>
+                                                            <label class="col-sm-2 control-label">HSC Marks Out Of : </label>
+                                                            <div class="col-sm-4">
+                                                                @Html.TextBoxFor(m => m.HscMarksOutOf, new { id = "HscMarksOutOf", @class = "form-control", value = "@Model.HscMarksOutOf", placeholder = " Enter Hsc Marks Out Of", data_toggle = "tooltip", data_placement = "bottom", title = " Hsc Marks Out Of" })
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group  has-feedback">
+                                                            <label class="col-sm-2 control-label">UG Total Marks : </label>
+                                                            <div class="col-sm-4">
+                                                                @Html.TextBoxFor(m => m.UgTotalMarks, new { id = "UgTotalMarks", @class = "form-control", value = "@Model.UgTotalMarks", placeholder = " Enter UG Total Marks", data_toggle = "tooltip", data_placement = "bottom", title = " UG Total Marks" })
+                                                            </div>
+                                                            <label class="col-sm-2 control-label">UG Marks Out Of : </label>
+                                                            <div class="col-sm-4">
+                                                                @Html.TextBoxFor(m => m.UgMarksOutOf, new { id = "UgMarksOutOf", @class = "form-control", value = "@Model.UgMarksOutOf", placeholder = " Enter UG Marks Out Of", data_toggle = "tooltip", data_placement = "bottom", title = " UG Marks Out Of" })
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <button type="button" class="col-sm-1 btn btn-circle btn-info btnPrevious">Previous</button>
+                                                            <button type="button" class="col-sm-offset-10 col-sm-1 btn btn-circle btn-info btnNext" id="nxt2">Next</button>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div role="tabpanel" class="tab-pane" id="Others">
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2 control-label ">Extra Curricular Activities :</label>
+                                                        <div class="col-sm-5">
+                                                            @Html.TextAreaFor(model => model.ExtraCurricularActivities, new { rows = 3, columns = 60, id = "ExtraCurricularActivities", @class = "form-control", value = "@Model.ExtraCurricularActivities", placeholder = " Enter Extra Curricular Activities", data_toggle = "tooltip", data_placement = "bottom", title = "Activities" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2 control-label ">Close Rel. Details :</label>
+                                                        <div class="col-sm-5">
+                                                            @Html.TextAreaFor(model => model.CloseRelativeDetails, new { rows = 3, columns = 60, id = "CloseRelativeDetails", @class = "form-control", value = "@Model.CloseRelativeDetails", placeholder = " Enter Close Relative Details", data_toggle = "tooltip", data_placement = "bottom", title = "Details" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="alert alert-warning col-sm-12">
+                                                        <strong>Note : </strong> Qualifying Examination Images Upload.
+                                                    </div>
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2 control-label">Upload Jpeg Image - 1:</label>
+                                                        <div class="col-sm-4">
+                                                            <img src="@document1ImageSource" alt="" height="100px" width="100px" />
+                                                            <input type="file" id="UploadDocument1" name="UploadDocument1" class="file">
+                                                        </div>
+                                                        <label class="col-sm-2 control-label">Upload Jpeg Image - 2:</label>
+                                                        <div class="col-sm-4">
+                                                            <img src="@document2ImageSource" alt="" height="100px" width="100px" />
+                                                            <input type="file" id="UploadDocument2" name="UploadDocument2" class="file">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2 control-label">Upload Jpeg Image - 3:</label>
+                                                        <div class="col-sm-4">
+                                                            <img src="@document3ImageSource" alt="" height="100px" width="100px" />
+                                                            <input type="file" id="UploadDocument3" name="UploadDocument3" class="file">
+                                                        </div>
+                                                        <label class="col-sm-2 control-label">Upload Jpeg Image - 4:</label>
+                                                        <div class="col-sm-4">
+                                                            <img src="@document4ImageSource" alt="" height="100px" width="100px" />
+                                                            <input type="file" id="UploadDocument4" name="UploadDocument4" class="file">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2 control-label">Upload Jpeg Image - 5:</label>
+                                                        <div class="col-sm-4">
+                                                            <img src="@document5ImageSource" alt="" height="100px" width="100px" />
+                                                            <input type="file" id="UploadDocument5" name="UploadDocument5" class="file">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button type="button" class="col-sm-1 btn btn-circle btn-info btnPrevious">Previous</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-10 col-sm-2">
+                                        <button type="submit" value="Edit" title="Save" class="btn btn-primary btn-label-left pull-right">
+                                            <span><i class="fa fa-save"></i></span>
+                                            Save
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script type="text/javascript">
+
+    function onEditStudent() {
+        bootbox.prompt('Enter PRN!',
+            function (prn) {
+                var url = '@Url.Action("EditDirect", "Registration", new { prn = "__prn__"})';
+                window.location.href = url.replace('__prn__', prn);
+            });
+    }
+
+    function onViewStudent() {
+        //var prn;
+        bootbox.prompt('Enter PRN!',
+            function (prn) {
+                var url = '@Url.Action("DetailsDirect", "Registration", new { prn = "__prn__"})';
+                window.location.href = url.replace('__prn__', prn);
+            });
+    }
+
+    $(function () {
+        $("#nxt3").click(function () {
+            $("#StudentName").focus();
+        });
+        $("#nxt").click(function () {
+            $("#FatherName").focus();
+        });
+        $("#nxt1").click(function () {
+            $("#ExamName").focus();
+        });
+        $("#nxt2").click(function () {
+            $("#ExtraCurricularActivities").focus();
+        });
+    });
+
+    $('.btnNext').click(function () {
+        $('.nav-tabs > .active').next('li').find('a').trigger('click');
+    });
+
+    $('.btnPrevious').click(function () {
+        $('.nav-tabs > .active').prev('li').find('a').trigger('click');
+    });
+
+    function DemoSelect2() {
+        $('#s2_centre').select2({ placeholder: "Select Centre" });
+        $('#s2_course').select2({ placeholder: "Select Course" });
+        $('#s2_college').select2({ placeholder: "Select College" });
+        $('#s2_coursepart').select2({ placeholder: "Select Course Part" });
+        $('#s2_coursetype').select2({ placeholder: "Select Course Type" });
+        $('#s2_branch').select2({ placeholder: "Select Branch" });
+        $('#s2_IfBackward').select2({ placeholder: "Select Backward" });
+        $('#s2_state').select2({ placeholder: "Select State" });
+        $('#s2_city').select2({ placeholder: "Select City" });
+        $('#s2_state1').select2({ placeholder: "Select State" });
+        $('#s2_city1').select2({ placeholder: "Select City" });
+        $('#s2_country').select2({ placeholder: "Select Country" });
+        $('#s2_DistrictDom').select2({ placeholder: "Select District" });
+        $('#s2_District').select2({ placeholder: "Select District" });
+        $('#s2_StateDom').select2({ placeholder: "Select State" });
+        $('#s2_BState').select2({ placeholder: "Select State" });
+        $('#s2_country1').select2({ placeholder: "Select Country" });
+    }
+
+    $(document).ready(function () {
+
+        $("select[id$=CentreId]").remove();
+
+        $("#UploadPhoto").fileinput(
+        {
+            initialPreview: [
+                "<img src='@photoImageSource' class='file-preview-image' alt='The Moon' title='The Moon'>"
+            ],
+            initialPreviewAsData: true,
+            initialPreviewFileType: 'image',
+            showUpload: false,
+            previewFileType: 'any'
+        });
+
+        $("#UploadSignature").fileinput({ 'showUpload': false, 'previewFileType': 'any' });
+        $("#UploadDocument1").fileinput({ 'showUpload': false, 'previewFileType': 'any' });
+        $("#UploadDocument2").fileinput({ 'showUpload': false, 'previewFileType': 'any' });
+        $("#UploadDocument3").fileinput({ 'showUpload': false, 'previewFileType': 'any' });
+        $("#UploadDocument4").fileinput({ 'showUpload': false, 'previewFileType': 'any' });
+        $("#UploadDocument5").fileinput({ 'showUpload': false, 'previewFileType': 'any' });
+        $("#DOB").kendoDatePicker({
+            setDate: new Date(),
+            format: "dd-MMM-yyyy"
+        });
+
+        $("#DateOfAdmission").kendoDatePicker({
+            setDate: new Date(),
+            format: "dd-MMM-yyyy"
+        });
+
+        $("#DateOfLeaving").kendoDatePicker({
+            setDate: new Date(),
+            format: "dd-MMM-yyyy"
+        });
+
+        $("#PassportIssuedOn").kendoDatePicker({
+            setDate: new Date(),
+            format: "dd-MMM-yyyy"
+        });
+
+        $("#RenewedPassportIssuedOn").kendoDatePicker({
+            setDate: new Date(),
+            format: "dd-MMM-yyyy"
+        });
+
+        $("#VisaIssuedOn").kendoDatePicker({
+            setDate: new Date(),
+            format: "dd-MMM-yyyy"
+        });
+
+        $("#AdmissionCancelledDate").kendoDatePicker({
+            setDate: new Date(),
+            format: "dd-MMM-yyyy"
+        });
+
+        $("#GuardianName").attr('maxlength', '100').keypress(function (e) {
+
+        });
+        //$('#CardNo').attr('maxlength', '4');
+        $("#Nationality").attr('maxlength', '100').keypress(function (e) {
+
+        });
+        // Create Wysiwig editor for textare
+        //TinyMCEStart('#wysiwig_simple', null);
+        //TinyMCEStart('#Description', 'extreme');
+        //// Add tooltip to form-controls
+        $('.form-control').tooltip();
+        // Initialize datepicker
+        LoadSelect2Script(DemoSelect2);
+
+        //// Load example of form validation
+        LoadBootstrapValidatorScript(DemoFormValidator);
+    });
+
+</script>

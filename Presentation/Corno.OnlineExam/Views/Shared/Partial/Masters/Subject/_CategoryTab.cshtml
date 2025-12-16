@@ -1,0 +1,74 @@
+﻿@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Masters.Subject
+
+<div class="">
+    @(Html.Kendo().Grid(Model.SubjectCategoryDetails)
+        .Name("grid")
+        .Columns(columns =>
+        {
+
+            columns.Bound(s => s.SubjectCategoryId)
+                //.ClientTemplate("#= CategoryName #" + "<input type='hidden' name='SubjectCategoryDetails[#= index(data)#].SubjectCategoryId' value='#= SubjectCategoryId #'   />")
+                .ClientTemplate("#= getCategoryName(SubjectCategoryId) #" + "<input type='hidden' name='SubjectCategoryDetails[#= index(data)#].SubjectCategoryId' value='#= SubjectCategoryId #'   />")
+                .EditorTemplateName(@"/Subject/_CategoryComboBox")
+                .ClientFooterTemplate("Total")
+                .Title("Category")
+                .Width(100);
+
+            /*columns.Bound(s => s.CategoryViewModel)
+                .ClientTemplate("#= CategoryViewModel == null? '' : CategoryViewModel.NameWithId  #" +
+                                "<input type='hidden' name='SubjectCategoryDetails[#= index(data)#].SubjectCategoryId' value='#= CategoryViewModel == null? '' : CategoryViewModel.Id  #'   />")
+                .EditorTemplateName(@"/Subject/_CategoryComboBox")
+                .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                .Title("Category")
+                .Width(150);*/
+
+            columns.Bound(p => p.MaxMarks)
+                .ClientTemplate("#= MaxMarks #" + "<input type='hidden' name='SubjectCategoryDetails[#= index(data)#].MaxMarks' value='#= MaxMarks #'   />")
+                .EditorTemplateName("Number")
+                .Title("Max Marks")
+                .Width(50);
+            columns.Bound(p => p.PassingMarks)
+                .ClientTemplate("#= PassingMarks #" +
+                                "<input type='hidden' name='SubjectCategoryDetails[#= index(data)#].PassingMarks' value='#= PassingMarks #'   />")
+                .EditorTemplateName("Number")
+                .Title("Passing Marks")
+                .Width(50);
+            columns.Command(command =>
+            {
+                command.Edit();
+                command.Destroy();
+            }).Width(100);
+        })
+        .ToolBar(toolbar => toolbar.Create())
+        //.Editable(editable => editable.Mode(GridEditMode.InLine))
+        .Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("/Subject/_CategoryDetailPopup"))
+        .Sortable()
+        .Pageable()
+        .Scrollable()
+        //.Events(events => events.Edit("onEdit"))
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            .PageSize(20)
+            .Events(events => events.Error("error_handler")
+            /*.Change("onChange")*/)
+            //.GroupPaging(true)
+            //.Group(x => x.Add(y => y.PackingType.Name))
+            .Model(model =>
+            {
+                model.Id(p => p.SubjectCategoryId);
+                model.Field(p => p.MaxMarks);
+                model.Field(p => p.PassingMarks);
+                /*model.Field(p => p.CategoryViewModel).DefaultValue(new MasterViewModel())
+                    .Editable();*/
+            })
+            .ServerOperation(false)
+            .Create(update => update.Action("Inline_Create_Update_Destroy", "Subject"))
+            .Update(update => update.Action("Inline_Create_Update_Destroy", "Subject"))
+            .Destroy(update => update.Action("Inline_Create_Update_Destroy", "Subject"))
+        )
+        .Resizable(resize => resize.Columns(true))
+        .Reorderable(reorder => reorder.Columns(true)))
+</div>
+

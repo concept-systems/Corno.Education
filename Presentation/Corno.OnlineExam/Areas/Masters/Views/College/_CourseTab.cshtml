@@ -1,0 +1,60 @@
+﻿@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Masters.College
+
+<div class="row">
+    @(Html.Kendo().Grid(Model.CollegeCourseDetails)
+        .Name("gridCategory")
+        .Columns(columns =>
+        {
+            columns.Bound(s => s.Id)
+                .ClientTemplate("<input type='hidden' name='CollegeCourseDetails[#= index(data, 'gridCategory')#].Id' value='#= Id #'   />")
+                .Hidden();
+            columns.Bound(s => s.SerialNo)
+                .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center text-align-middle" })
+                .Width(30);
+            columns.Bound(s => s.FacultyId)
+                .ClientTemplate("#= FacultyName #" + "<input type='hidden' name='CollegeCourseDetails[#= index(data, 'gridCategory')#].FacultyId' value='#= FacultyId #'   />")
+                .HtmlAttributes(new { @class = "k-text-left !k-justify-content-left text-align-middle" })
+                .Title("Faculty")
+                .Width(100);
+            columns.Bound(s => s.CourseId)
+                .ClientTemplate("#= CourseName #" + "<input type='hidden' name='CollegeCourseDetails[#= index(data, 'gridCategory')#].CourseId' value='#= CourseId #'   />")
+                .HtmlAttributes(new { @class = "k-text-left !k-justify-content-left text-align-middle" })
+                .Title("Course")
+                .Width(180);
+
+            columns.Command(command =>
+            {
+                command.Edit();
+                command.Destroy();
+            }).Width(60);
+        })
+        .ToolBar(toolbar => toolbar.Create())
+        //.Editable(editable => editable.Mode(GridEditMode.InLine))
+        .Editable(editable => editable.Mode(GridEditMode.PopUp)
+            .TemplateName("/Popup Editors/_CollegeCoursePopup"))
+        .Sortable()
+        //.Pageable()
+        .Scrollable()
+        //.Events(events => events.Edit("onEdit"))
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            //.PageSize(20)
+            .Events(events => events.Error("error_handler"))
+            .Model(model =>
+            {
+                model.Id(p => p.Id);
+            })
+            .ServerOperation(false)
+            .Create(update => update.Action("Inline_Create_Update_Destroy", "College"))
+            .Update(update => update.Action("Inline_Create_Update_Destroy", "College"))
+            .Destroy(update => update.Action("Inline_Create_Update_Destroy", "College"))
+        )
+        .Resizable(resize => resize.Columns(true))
+        .Reorderable(reorder => reorder.Columns(true)))
+</div>
+
+
+@* Include the Editor Template Partial View *@
+@*@Html.Partial("_CategoryTabPopup", Model)*@

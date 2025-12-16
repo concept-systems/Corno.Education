@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <metadata name="sdsCourse.ParameterValues" xml:space="preserve">
+    <value>{"@NUM_FK_COLLEGE_CD":"1"}</value>
+  </metadata>
+  <data name="sdsCourse.SelectCommand" xml:space="preserve">
+    <value>Select Num_PK_CO_CD as ID, Var_CO_NM as Name,Tbl_COLLEGE_COURSE_MSTR.NUM_FK_COLLEGE_CD as CollegeID 
+From Tbl_COLLEGE_COURSE_MSTR
+	Inner Join Tbl_COURSE_MSTR On Tbl_COLLEGE_COURSE_MSTR.NUM_FK_CO_CD = Tbl_COURSE_MSTR.Num_PK_CO_CD 
+Where Tbl_COLLEGE_COURSE_MSTR.NUM_FK_COLLEGE_CD IN (@NUM_FK_COLLEGE_CD) AND Tbl_COURSE_MSTR.Chr_Close_Flg != 'Y'</value>
+  </data>
+  <metadata name="sdsCoursePart.ParameterValues" xml:space="preserve">
+    <value>{"@CourseID":"1015"}</value>
+  </metadata>
+  <metadata name="sdsBranch.ParameterValues" xml:space="preserve">
+    <value>{"@NUM_PK_CO_CD":"103"}</value>
+  </metadata>
+  <data name="sdsBranch.SelectCommand" xml:space="preserve">
+    <value>SELECT        Tbl_BRANCH_MSTR.Num_PK_BR_CD AS ID, Tbl_BRANCH_MSTR.Var_BR_NM AS Name, Tbl_COURSE_MSTR.Num_PK_CO_CD AS CourseID
+FROM            Tbl_COURSE_MSTR INNER JOIN
+                         Tbl_BRANCH_MSTR ON Tbl_COURSE_MSTR.Num_PK_CO_CD = Tbl_BRANCH_MSTR.Num_FK_CO_CD
+WHERE   Tbl_BRANCH_MSTR.Chr_DELETE_FLG != 'Y' and (Tbl_COURSE_MSTR.Num_PK_CO_CD IN (@NUM_PK_CO_CD))</value>
+  </data>
+  <metadata name="sdsMain.ParameterValues" xml:space="preserve">
+    <value>{"@InstanceID":"39","@CollegeID":"14","@CourseID":"1173","@CoursePartID":"1432","@BranchID":"472"}</value>
+  </metadata>
+  <data name="sdsMain.SelectCommand" xml:space="preserve">
+    <value>SELECT Chr_REG_PRN_NO AS PRNNO, Chr_PK_FORM_NO AS FormNo, Chr_REG_COPRT_NO AS CoursePartID, Chr_REG_COLLEGE_CD AS CollegeID, dbo.GetCourseIDFromCoursePart(Chr_REG_COPRT_NO) AS CourseID, dbo.GetCourseNameFromCoursePart(Chr_REG_COPRT_NO) 
+             AS CourseName, dbo.GetCollegeName(Chr_REG_COLLEGE_CD) AS CollegeName, dbo.GetCoursePartName(Chr_REG_COPRT_NO) AS CoursePartName, dbo.GetBranchName(Chr_REG_BR_CD) AS BranchName, Chr_REG_BR_CD AS BranchID, Var_REG_RELIGION AS RELIGION, 
+             Chr_REG_FATH_NM AS FathersName, Chr_REG_MOTH_NM AS MotherName, Var_REG_CASTE AS CASTE, Var_PASSPORT AS PassportNo, Num_MOBILE AS Mobile, Chr_PREV_EXAM AS PrevExam, Chr_PREV_EXAM_UNI AS PrevUniversity, Chr_REG_ADD1 AS LocalAddress, 
+             Chr_REG_ADD2 AS PermanentAddress, Chr_DIST_EDU AS DistanceEducation, Var_FOREIGN_ADD AS ForeignAddress, ISNULL(Ima_REG_PHOTO, NULL) AS Photo, Chr_REG_ST_NM AS StudentName, Chr_REG_DOB_DT AS DOBDay, Chr_REG_DOB_MONTH AS DOBMonth, 
+             Chr_REG_DOB_YEAR AS DOBYear, Chr_STUDENT_NATIONALITY AS Nationality, Chr_REG_SEX_CD AS Gender
+FROM   Tbl_REG_TEMP
+WHERE (Num_FK_INST_NO = @InstanceID) AND (Chr_REG_COLLEGE_CD IN (@CollegeID)) AND (dbo.GetCourseIDFromCoursePart(Chr_REG_COPRT_NO) IN (@CourseID)) AND (Chr_REG_COPRT_NO IN (@CoursePartID)) AND (Chr_REG_BR_CD IN (@BranchID))</value>
+  </data>
+  <metadata name="$this.ShowSnapGrid" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+</root>

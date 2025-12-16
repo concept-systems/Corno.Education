@@ -1,0 +1,24 @@
+﻿@using Corno.Globals.Constants
+@model Corno.Data.ViewModels.Admin.UserCrudViewModel
+@{
+    var viewDataDictionary = new ViewDataDictionary
+    {
+        { ModelConstants.FormEnabled, true },
+        { ModelConstants.Title, "Edit User : " + Model.UserName },
+        { ModelConstants.Action, "Edit"}
+    };
+}
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">OnlineExam</a></li>
+            <li><a href="#">Masters</a></li>
+            <li><a href="#">Edit User</a></li>
+        </ol>
+    </div>
+</div>
+
+@Html.ValidationSummary(false)
+
+@Html.Partial("~/Areas/Admin/Views/User/_User.cshtml", Model, viewDataDictionary)
+

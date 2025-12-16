@@ -1,0 +1,731 @@
+﻿@model Corno.Data.Transactions.ExamViewModel
+@using Kendo.Mvc.UI
+@{
+    ViewBag.Title = "Edit Exam Form No : " + Model.Id;
+}
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Online Exam</a></li>
+            <li><a href="#">Edit Exam Form</a></li>
+        </ol>
+    </div>
+</div>
+@Html.ValidationSummary(false)
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <div class="box ui-draggable ui-droppable">
+            <div class="box-header">
+                <div class="box-name">
+                    <i class="fa fa-edit large"></i>
+                    <span>Edit Exam Form No :  @Model.FormNo</span>
+                </div>
+                <div class="box-icons">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="expand-link">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+                <div class="no-move"></div>
+            </div>
+            <div class="box-content">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(m => m.PrnNo)
+                    @Html.HiddenFor(m => m.StudentId)
+                    @Html.HiddenFor(m => m.CollegeId)
+                    @Html.HiddenFor(m => m.CentreId)
+                    @Html.HiddenFor(m => m.CourseId)
+                    @Html.HiddenFor(m => m.CoursePartId)
+                    @Html.HiddenFor(m => m.BranchId)
+                    @Html.HiddenFor(m => m.InstanceId)
+                    @Html.HiddenFor(m => m.ID)
+
+                    @Html.HiddenFor(m => m.ExamFee, new { @id = "ExamFee" })
+                    @Html.HiddenFor(m => m.BacklogFee)
+                    @Html.HiddenFor(m => m.CapFee)
+                    @Html.HiddenFor(m => m.StatementOfMarksFee)
+                    @Html.HiddenFor(m => m.PracticalFee)
+                    @Html.HiddenFor(m => m.DissertationFee)
+                    @Html.HiddenFor(m => m.OthersFee)
+                    @Html.HiddenFor(m => m.LateFee)
+                    @Html.HiddenFor(m => m.SuperLateFee)
+                    @Html.HiddenFor(m => m.EnvironmentalExaminationFee)
+                    @Html.HiddenFor(m => m.CertificateOfPassingFee)
+                    @Html.HiddenFor(m => m.Total)
+                    
+                    <div class="form-horizontal">
+                        <div class="box-content">
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <button type="button" value="Index" class="btn btn-primary btn-label-left pull-left" onclick="location.href = '@Url.Action("Index", "Exam")'">
+                                        <span><i class="fa fa-list-ul"></i></span>
+                                        Back to List
+                                    </button>
+                                </div>
+                                <div class="col-sm-offset-8 col-sm-2">
+                                    <button type="submit" value="Edit" title="Save" class="btn btn-primary btn-label-left pull-right">
+                                        <span><i class="fa fa-save"></i></span>
+                                        Save
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="panel panel-info">
+                                <div class="panel-heading"><strong>PRN Details</strong></div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label">PRN :</label>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(m => m.PrnNo, new { @id = "PRNNo", @class = "form-control", placeholder = "Enter PRN", @readonly = true, data_toggle = "tooltip", data_placement = "bottom", title = "PRN" })
+                                    </div>
+                                    <label class="col-sm-2 control-label">Student Name :</label>
+                                    <div class="col-sm-6">
+                                        @Html.TextBoxFor(m => m.StudentName, new { @id = "tdStudentName", @class = "form-control", @readonly = true })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-info">
+                                <div class="panel-heading"><strong>Exam Form Details</strong></div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label">Form No <code>*</code>:</label>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(m => m.FormNo, new { @id = "FormNo", @class = "form-control", placeholder = "Enter Form No", data_toggle = "tooltip", data_placement = "bottom", title = "Form No" })
+                                        @Html.ValidationMessageFor(x => x.FormNo)
+                                    </div>
+                                    <label class="col-sm-offset-3 col-sm-2 control-label">Date <code>*</code>:</label>
+                                    <div class="col-sm-3">
+                                        @Html.TextBoxFor(m => m.Date, "{0:yyyy-MM-dd}", new { @id = "Date", @class = "form-control", value = "@Model.Date", @type = "date", @readonly = true, title = "Date" })
+                                        <span class="fa fa-calendar txt-danger form-control-feedback"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label">Lot No <code>*</code>:</label>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(m => m.Bundle, new { @id = "Bundle", @class = "form-control", value = "@Model.Bundle", placeholder = "Enter Bundle", data_toggle = "tooltip", data_placement = "bottom", title = "Form No" })
+                                        @Html.ValidationMessageFor(x => x.Bundle)
+                                    </div>
+                                </div>
+                                @*<div class="form-group  has-feedback" style="display:none">
+                <label class="col-sm-2 control-label">Activity :</label>
+                <div class="col-sm-2">
+                    @Html.TextBoxFor(m => m.Activity, new { @id = "Activity", @class = "form-control", value = "@Model.Activity", placeholder = "Enter Activity", data_toggle = "tooltip", data_placement = "bottom", title = "Activity" })
+                </div>
+                <label class="col-sm-offset-2  col-sm-2 control-label"></label>
+                <div class="col-sm-3">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" id="ApplyForImprovement" name="ApplyForImprovement" value="true" @(Model.ApplyForImprovement ? "checked=\"checked\"" : "")> Apply For Improvement ?
+                            <i class="fa fa-square-o small"></i>
+                        </label>
+                    </div>
+                </div>
+            </div>*@
+                            </div>
+                            <div class="panel panel-info">
+                                <div class="panel-heading"><strong>Course Info</strong></div>
+                                <table class="table">
+                                    <tr>
+                                        <td class="text-left col-sm-2"><strong>College :</strong></td>
+                                        <td>
+                                            <div class="col-sm-12">
+                                                @Html.TextBoxFor(m => m.CollegeName, new { @id = "tdCollegeName", @class = "form-control", @readonly = true })
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left col-sm-2"><strong>Centre :</strong></td>
+                                        <td>
+                                            <div class="col-sm-12">
+                                                @Html.TextBoxFor(m => m.CentreName, new { @id = "tdCentreName", @class = "form-control", @readonly = true })
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left col-sm-2"><strong>Course Type :</strong></td>
+                                        <td>
+                                            <div class="col-sm-12">
+                                                @Html.TextBoxFor(m => m.CourseTypeName, new { @id = "tdCourseTypeName", @class = "form-control", @readonly = true })
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left col-sm-2"><strong>Course :</strong></td>
+                                        <td>
+                                            <div class="col-sm-12">
+                                                @Html.TextBoxFor(m => m.CourseName, new { @id = "tdCourseName", @class = "form-control", @readonly = true })
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left col-sm-2"><strong>Course Part :</strong> </td>
+                                        <td id="tdCoursePart" class="text-left">
+                                            <div class="col-sm-12">
+                                                @Html.TextBoxFor(m => m.CoursePartName, new { @id = "tdCoursePartName", @class = "form-control", @readonly = true })
+                                                @*@(Html.Kendo().ComboBox()
+                                                    .Name("CoursePartID")
+                                                    .HtmlAttributes(new { style = "width:100%" })
+                                                    .Placeholder("Select Course Part...")
+                                                    .DataTextField("NameWithID")
+                                                    .DataValueField("ID")
+                                                    .Filter(FilterType.Contains)
+                                                    .SelectedIndex(0)
+                                                    .DataSource(source =>
+                                                    {
+                                                        source.Read(read =>
+                                                        {
+                                                            read.Action("GetCascadeCourseParts", "Exam")
+                                                                .Data("filterCourseParts");
+                                                        })
+                                                        .ServerFiltering(true);
+                                                    })
+                                                    .Events(e =>
+                                                    {
+                                                        e.Change("onCoursePartChange").Select("onCoursePartSelect");
+                                                    })
+                                                    .AutoBind(false)
+                                                    )
+                                                    <script>
+                                                        function filterCourseParts() {
+                                                            return {
+                                                                courseID: $("#lblCourseID").html(),
+                                                            };
+                                                        }
+                                                    </script>*@
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr id="trBranch">
+                                        <td class="text-left col-sm-2"><strong>Branch :</strong> </td>
+                                        <td id="tdBranch" class="text-left">
+                                            <div class="col-sm-12">
+                                                @Html.TextBoxFor(m => m.BranchName, new { @id = "tdBranchName", @class = "form-control", @readonly = true })
+                                                @*@(Html.Kendo().ComboBox()
+                                                    .Name("BranchID")
+                                                    .HtmlAttributes(new { style = "width:100%" })
+                                                    .Placeholder("Select Branch...")
+                                                    .DataTextField("NameWithID")
+                                                    .DataValueField("ID")
+                                                    .Filter(FilterType.Contains)
+                                                    .SelectedIndex(0)
+                                                    .DataSource(source =>
+                                                    {
+                                                        source.Read(read =>
+                                                        {
+                                                            read.Action("GetCascadeBranches", "Exam")
+                                                                .Data("filterBranches");
+                                                        })
+                                                        .ServerFiltering(true);
+                                                    })
+
+                                                    .AutoBind(false)
+                                                    //.CascadeFrom("CoursePartID")
+                                                    )
+                                                    <script>
+                                                        function filterBranches() {
+                                                            return {
+                                                                courseID: $("#lblCourseID").html()
+                                                            };
+                                                        }
+                                                    </script>*@
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="panel panel-info">
+                                @(Html.Kendo().Grid(Model.ExamSubjectViewModels.OrderBy(e => e.SubjectCode))
+                                        .Name("ExamSubjectViewModels")
+                                        .Columns(columns =>
+                                        {
+                                            @*columns.Template(@<text></text>).ClientTemplate("<input type='checkbox' #= RowSelector ? checked='checked':'' # class='chkbx' />")
+                                                .HeaderTemplate("<input type='checkbox' id='masterCheckBox' onclick='checkAll(this)'/>").Width(50);*@
+                                            columns.Bound(c => c.RowSelector).Title("Select").Width(80).Template(@<input type="checkbox" />).ClientTemplate("#= RowSelector #" +
+                                                                                               "<input type='hidden' name='ExamSubjectViewModels[#= index(data)#].RowSelector' value='#= RowSelector #'  />");
+                                            //"<input class='chkbox' type='checkbox' name='ExamSubjectViewModels[#= index(data)#].RowSelector' value='#= RowSelector #' />");
+                                            //columns.Bound(c => c.ID).Title("").Format("<input type='checkbox' />").Encoded(false).Width(50);
+                                            columns.Bound(p => p.CoursePartId).Title("Course Part Code").Width(130).ClientTemplate("#= CoursePartID #" + "<input type='hidden' name='ExamSubjectViewModels[#= index(data)#].CoursePartID' value='#= CoursePartID #' />");
+                                            columns.Bound(p => p.CoursePartName).Title("Course Part").Width(150).ClientTemplate("#= CoursePartName #" + "<input type='hidden' name='ExamSubjectViewModels[#= index(data)#].CoursePartName' value='#= CoursePartName #' />");
+                                            columns.Bound(p => p.SubjectCode).ClientTemplate("#= SubjectCode #" + "<input type='hidden' name='ExamSubjectViewModels[#= index(data)#].SubjectCode' value='#= SubjectCode #' />").Width(120); ;
+                                            columns.Bound(p => p.SubjectName).Title("Subject").ClientTemplate("#= SubjectName #" + "<input type='hidden' name='ExamSubjectViewModels[#= index(data)#].SubjectName' value='#= SubjectName #' />");
+                                            columns.Bound(p => p.MaxOptionalCount).Title("Max Optionals").Width(80).Hidden().ClientTemplate("#= MaxOptionalCount #" +
+                                                                                               "<input type='hidden' name='ExamSubjectViewModels[#= index(data)#].MaxOptionalCount' value='#= MaxOptionalCount #'  />");
+                                            columns.Bound(p => p.OptionalIndex).Hidden().Title("Optional Index").Width(80).ClientTemplate("#= OptionalIndex #" +
+                                                                                                "<input type='hidden' name='ExamSubjectViewModels[#= index(data)#].OptionalIndex' value='#= OptionalIndex #'  />");
+                                            columns.Bound(p => p.SubjectType).Title("Subject Type").Hidden().ClientTemplate("#= SubjectType #" + "<input type='hidden' name='ExamSubjectViewModels[#= index(data)#].SubjectType' value='#= SubjectType #' />");
+                                            columns.Bound(p => p.InstanceId).Title("Instance").Hidden().ClientTemplate("#= InstanceID #" + "<input type='hidden' name='ExamSubjectViewModels[#= index(data)#].InstanceID' value='#= InstanceID #' />");
+                                            columns.Bound(p => p.InstanceId).Title("ID").Hidden().ClientTemplate("#= ID #" + "<input type='hidden' name='ExamSubjectViewModels[#= index(data)#].ID' value='#= ID #' />");
+                                            //columns.Bound(p => p.InstanceID).Title("ExamID").Hidden().ClientTemplate("#= ExamID #" + "<input type='hidden' name='ExamSubjectViewModels[#= index(data)#].ExamID' value='#= ExamID #' />");
+                                        })
+                        .Editable(ed => ed.Mode(GridEditMode.InCell))
+                        //.Pageable()
+                        .Sortable()
+                        .Groupable()// settings => settings.Groups(groups => groups.Add(o => o.SubjectType)).Visible(false))
+                        //.Scrollable()
+                        .Selectable()
+                        //.HtmlAttributes(new { style = "height:300px;" })
+                        .DataSource(dataSource => dataSource
+                            .Ajax()
+                            //.PageSize(10)
+                            .Events(events => events.Error("onError"))
+                            .Group(group => group.Add(p => p.SubjectType))
+                            .Model(model =>
+                            {
+                                // Following line is important. Don't Delete. Model's id field needs to be assigned to value field.
+                                // Otherwise, Row will be deleted after cancel action of edit command.
+                                model.Id(p => p.SubjectCode);
+                                model.Field(p => p.SubjectName).Editable(false);
+                                model.Field(p => p.CoursePartId).Editable(false);
+                                model.Field(p => p.SubjectCode).Editable(false);
+                                model.Field(p => p.CoursePartName).Editable(false);
+                                model.Field(p => p.MaxOptionalCount).Editable(false);
+                                model.Field(p => p.OptionalIndex).Editable(false);
+                                model.Field(p => p.SubjectType).Editable(false);
+                                model.Field(p => p.InstanceId).Editable(false);
+                            })
+                            .Batch(true)
+                            .ServerOperation(false)
+                            .Read(read => read.Action("ReadExamSubjects", "Exam").Data("filterSubjects"))
+                        )
+                        .Events(events => events.DataBound("dataBound"))
+                                )
+                                <script>
+                                    function filterSubjects() {
+                                        return {
+                                            prnNo: $("#PRNNo").val(),
+                                            coursePartID: selectedCoursePartID,
+                                        };
+                                    }
+
+                                    function index(dataItem) {
+                                        var data = $("#ExamSubjectViewModels").data("kendoGrid").dataSource.data();
+                                        return data.indexOf(dataItem);
+                                    }
+
+                                    function onError(e, status) {
+                                        if (e.status == "customerror") {
+                                            //ClearForm();
+                                            alert(e.errors);
+                                            $("#CoursePartID").data("kendoComboBox").value(null);
+                                            $("#ExamSubjectViewModels").data("kendoGrid").dataSource.data([]);
+                                        }
+                                        else {
+                                            alert("Generic server error.");
+                                        }
+                                    }
+                                </script>
+                            </div>
+
+                      
+                            @*<div class="panel panel-info" style="display:none">
+                                    <div class="panel-heading"><strong>Approval Details</strong></div>
+                                    <div class="form-group  has-feedback">
+                                        <label class=" col-sm-2 control-label"></label>
+                                        <div class="col-sm-3">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" id="AttendanceFullfilled" name="AttendanceFullfilled" value="true" @(Model.AttendanceFullfilled ? "checked=\"checked\"" : "")> Attendance Fullfilled ?
+                                                    <i class="fa fa-square-o small"></i>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group  has-feedback">
+                                        <label class="col-sm-2 control-label">Approval Date:</label>
+                                        <div class="col-sm-2">
+                                            @Html.TextBoxFor(m => m.ApprovalDate, "{0:dd-MMM-yyyy}", new { @id = "ApprovalDate", @class = "form-control", value = "@Model.ApprovalDate", placeholder = "Approval Date", data_toggle = "tooltip", data_placement = "bottom", title = "Approval Date" })
+                                            <span class="fa fa-calendar txt-danger form-control-feedback"></span>
+                                        </div>
+                                        <label class="col-sm-offset-2 col-sm-2 control-label">Remark :</label>
+                                        <div class="col-sm-3">
+                                            @Html.TextAreaFor(m => m.Remark, new { @id = "Remark", @class = "form-control", placeholder = "Enter Remark", data_toggle = "tooltip", data_placement = "bottom", title = "Remark" })
+                                        </div>
+                                    </div>
+                                </div>*@
+                            @*<div class="panel panel-info">
+                                    <div class="panel-heading"><strong>Fee Details</strong></div>
+                                    <div class="form-group  has-feedback">
+                                        <label class="col-sm-2 control-label">Exam Fee :</label>
+                                        <div class="col-sm-2">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-inr"></i></span>
+                                                @Html.TextBoxFor(m => m.ExamFee, new { @id = "tdExamFee", @class = "form-control", @onChange = "onChange();", value = "@Model.ExamFee", data_toggle = "tooltip", data_placement = "bottom", title = "Exam Fee" })
+                                            </div>
+                                        </div>
+                                        <label class="col-sm-offset-2 col-sm-3 control-label">Backlog Fee :</label>
+                                        <div class="col-sm-2">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-inr"></i></span>
+                                                @Html.TextBoxFor(m => m.BacklogFee, new { @id = "BacklogFee", @class = "form-control", @onChange = "onChange();", value = "@Model.BacklogFee", data_toggle = "tooltip", data_placement = "bottom", title = "Backlog Fee" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group  has-feedback">
+                                        <label class="col-sm-2 control-label">Statement Marks Fee:</label>
+                                        <div class="col-sm-2">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-inr"></i></span>
+                                                @Html.TextBoxFor(m => m.StatementOfMarksFee, new { @id = "StatementOfMarksFee", @class = "form-control", @onChange = "onChange();", value = "@Model.StatementOfMarksFee", data_toggle = "tooltip", data_placement = "bottom", title = "Statement Marks Fee" })
+                                            </div>
+                                        </div>
+
+                                        <label class="col-sm-offset-2 col-sm-3 control-label">Passing Certificate Fee :</label>
+                                        <div class="col-sm-2">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-inr"></i></span>
+                                                @Html.TextBoxFor(m => m.CertificateOfPassingFee, new { @id = "CertificateOfPassingFee", @class = "form-control", @onChange = "onChange();", value = "@Model.CertificateOfPassingFee", data_toggle = "tooltip", data_placement = "bottom", title = "PassingCertificate Fee" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group  has-feedback">
+                                        <label class="col-sm-2 control-label">CAP Fee :</label>
+                                        <div class="col-sm-2">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-inr"></i></span>
+                                                @Html.TextBoxFor(m => m.CAPFee, new { @id = "CAPFee", @class = "form-control", @onChange = "onChange();", value = "@Model.CAPFee", data_toggle = "tooltip", data_placement = "bottom", title = "CAP Fee" })
+                                            </div>
+                                        </div>
+
+                                        <label class="col-sm-offset-2 col-sm-3 control-label">Late Fee :</label>
+                                        <div class="col-sm-2">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-inr"></i></span>
+                                                @Html.TextBoxFor(m => m.LateFee, new { @id = "LateFee", @class = "form-control", @onChange = "onChange();", value = "@Model.LateFee", data_toggle = "tooltip", data_placement = "bottom", title = "Late Fee" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group  has-feedback">
+                                        <label class="col-sm-2 control-label">Super Late Fee :</label>
+                                        <div class="col-sm-2">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-inr"></i></span>
+                                                @Html.TextBoxFor(m => m.SuperLateFee, new { @id = "SuperLateFee", @class = "form-control", @onChange = "onChange();", value = "@Model.SuperLateFee", data_toggle = "tooltip", data_placement = "bottom", title = "SuperLate Fee" })
+                                            </div>
+                                        </div>
+
+                                        <label class="col-sm-offset-2 col-sm-3 control-label">Environmental Studies Fee :</label>
+                                        <div class="col-sm-2">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-inr"></i></span>
+                                                @Html.TextBoxFor(m => m.EnvironmentalExaminationFee, new { @id = "EnvironmentalExaminationFee", @class = "form-control", @onChange = "onChange();", value = "@Model.EnvironmentalExaminationFee", data_toggle = "tooltip", data_placement = "bottom", title = "Environmental Studies Fees" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="form-group  has-feedback">
+                                        <label class="col-sm-2 control-label">Total :</label>
+                                        <div class="col-sm-2">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-inr"></i></span>
+                                                @Html.TextBoxFor(m => m.Total, new { @id = "Total", @class = "form-control", @onChange = "onChange();", value = "@Model.Total", data_toggle = "tooltip", data_placement = "bottom", title = "Total" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>*@
+                            <div class="panel panel-info">
+                                <div class="panel-heading"><strong>Fee Details</strong></div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-3 control-label">Regular Exam Fee :</label>
+                                    <div class="col-sm-1 text-right" id="divExamFee">
+                                        @Html.DisplayFor(m => m.ExamFee)
+                                    </div>
+                                    <label class="col-sm-3 control-label">Backlog Exam Fee :</label>
+                                    <div class="col-sm-1 text-right" id="divBacklogFee">
+                                        @Html.DisplayFor(m => m.BacklogFee)
+                                    </div>
+                                    <label class="col-sm-3 control-label">CAP Fee :</label>
+                                    <div class="col-sm-1 text-right" id="divCAPFee">
+                                        @Html.DisplayFor(m => m.CapFee)
+                                    </div>
+                                </div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-3 control-label">Statement Of Marks Fee :</label>
+                                    <div class="col-sm-1 text-right" id="divStatementOfMarksFee">
+                                        @Html.DisplayFor(m => m.StatementOfMarksFee)
+                                    </div>
+                                    <label class="col-sm-3 control-label">Practical Fee :</label>
+                                    <div class="col-sm-1 text-right" id="divPracticalFee">
+                                        @Html.DisplayFor(m => m.PracticalFee)
+                                    </div>
+                                    <label class="col-sm-3 control-label">Dissertation Fee :</label>
+                                    <div class="col-sm-1 text-right" id="divDissertationFee">
+                                        @Html.DisplayFor(m => m.DissertationFee)
+                                    </div>
+                                </div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-3 control-label">Others Fee:</label>
+                                    <div class="col-sm-1 text-right" id="divOthersFee">
+                                        @Html.DisplayFor(m => m.OthersFee)
+                                    </div>
+                                    <label class="col-sm-3 control-label">Late Fee :</label>
+                                    <div class="col-sm-1 text-right" id="divLateFee">
+                                        @Html.DisplayFor(m => m.LateFee)
+                                    </div>
+                                    <label class="col-sm-3 control-label">Super Late Fee :</label>
+                                    <div class="col-sm-1 text-right" id="divSuperLateFee">
+                                        @Html.DisplayFor(m => m.SuperLateFee)
+                                    </div>
+                                </div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-3 control-label">Environmental Examination Fee:</label>
+                                    <div class="col-sm-1 text-right" id="divEnvironmentalExaminationFee">
+                                        @Html.DisplayFor(m => m.EnvironmentalExaminationFee)
+                                    </div>
+                                    <label class="col-sm-3 control-label">Passing Certificate Fee :</label>
+                                    <div class="col-sm-1 text-right" id="divCertificateOfPassingFee">
+                                        @Html.DisplayFor(m => m.CertificateOfPassingFee)
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="form-group  has-feedback">
+                                    <div class="col-sm-10">
+                                        <label class="col-sm-3 control-label ">Backlog Summary :-</label>
+                                        @*<span id="BacklogSummary"></span>*@
+                                        @Html.DisplayFor(m => m.BacklogSummary)
+                                    </div>
+                                </div>
+                                <div class="form-group  has-feedback">
+                                    <div class="col-sm-10">
+                                        <label class="col-sm-3 control-label ">Amount In Word :-</label>
+                                        @Html.DisplayFor(m => m.FeeInWord)
+                                        <span class="pull-left" id="FeeInWord"></span>
+                                    </div>
+                                    <label class="col-sm-1 control-label text-right">Total :</label>
+                                    @Html.DisplayFor(m => m.Total)
+                                    <div class="col-sm-1 text-right" id="divTotal">
+                                       
+                                    </div>
+                                </div>
+                                @*<div class="form-group  has-feedback">
+                                    <div class="col-sm-10">
+                                        <span id="BacklogSummary"></span>
+                                    </div>
+                                    <label class="col-sm-1 control-label text-right">Total:</label>
+                                    <div class="col-sm-1 text-right" id="divTotal">
+                                        @Html.DisplayFor(m => m.Total)
+                                    </div>
+                                </div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label ">Amount In Word :-</label><span class="pull-left" id="FeeInWord"></span>
+                                </div>*@
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <button type="button" value="Index" class="btn btn-primary btn-label-left pull-left" onclick="location.href = '@Url.Action("Index", "Exam")'">
+                                        <span><i class="fa fa-list-ul"></i></span>
+                                        Back to List
+                                    </button>
+                                </div>
+                                <div class="col-sm-offset-8 col-sm-2">
+                                    <button type="submit" value="Edit" title="Save" class="btn btn-primary btn-label-left pull-right">
+                                        <span><i class="fa fa-save"></i></span>
+                                        Save
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(function () {
+        $("#PRNNo").focus();
+    });
+
+    function dataBound() {
+        this.expandRow(this.tbody.find("tr.k-master-row").first());
+    }
+
+    function error_handler(e) {
+        if (e.errors) {
+            var message = "Errors:\n";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () {
+                        message += this + "\n";
+                    });
+                }
+            });
+            //alert(message);
+        }
+    }
+
+    function ClearForm() {
+        $('#tdStudentName').html('')
+        $('#tdCentre').html('');
+        $('#tdCollege').html('');
+        $('#tdCourseType').html('');
+        $('#tdCourse').html('');
+        $('#lblCourseID').html('');
+        //$('#tdCoursePart').html('');
+        $('#tdExamFee').html('');
+        $('#tdBranch').html('');
+        $('#FormNo').val('');
+        $('#Activity').val('');
+        $('input:checkbox').removeAttr('checked');
+        $('#ApprovalDate').val('');
+        $('#Remark').val('');
+
+        $("#CoursePartID").data("kendoComboBox").value(null);
+        $("#ExamSubjectViewModels").data("kendoGrid").dataSource.data([]);
+    }
+
+    $('#PRNNo').change(function onChange(arg) {
+        // Clear or reset the form
+        var prnNo = $('#PRNNo').val();
+        $.ajax({
+            url: '@Url.Action("OnPRNChange", "Exam")',
+            type: 'post',
+            data: {
+                prnNo: $('#PRNNo').val()
+            },
+            success: function (_result) {
+                //alert(_result);
+                if (null == _result.Centre || undefined == _result.Centre) {
+                    alert(_result);
+                }
+                else {
+
+                    ClearForm();
+
+                    //$('#tdStudentName').html(_result.StudentName);
+                    //$('#tdCentre').html(_result.Centre);
+                    //$('#tdCollege').html(_result.College);
+                    //$('#tdCourseType').html(_result.CourseType);
+                    //$('#lblCourseID').html(_result.CourseID);
+                    //$('#tdCourse').html(_result.Course);
+                    //$('#tdCoursePart').html(_result.CoursePart);
+
+                    $('#tdBranch').html(_result.Branch);
+                    $('#lblCourseID').html(_result.CourseID);
+                    $('#tdStudentName').val(_result.StudentName);
+                    $('#tdCollegeName').val(_result.College);
+                    $('#tdCentreName').val(_result.Centre);
+                    $('#tdCourseTypeName').val(_result.CourseType);
+                    $('#tdCourseName').val(_result.Course);
+
+                    $('#tdExamFee').val(_result.ExamFee);
+                    $('#LateFee').val(_result.LateFee);
+                    $('#SuperLateFee').val(_result.SuperLateFee);
+                    $('#StatementMarksFee').val(_result.StatementMarksFee);
+                    $('#PassingCertificateFee').val(_result.PassingCertificateFee);
+                    $('#EnvironmentalStudiesFee').val(_result.EnvironmentalStudiesFee);
+                    $('#CAPFee').val(_result.CAPFee);
+                    $('#BacklogFee').val(_result.BacklogFee);
+                    $('#FeeInWord').html(_result.FeeInWord);
+
+
+                    var examfee = $("#tdExamFee").val() || 0;
+                    //alert(examfee);
+                    var backlogfee = $("#BacklogFee").val() || 0;
+                    //alert(backlogfee);
+                    var statemarksfee = $("#StatementMarksFee").val() || 0;
+                    var capfee = $("#CAPFee").val() || 0;
+                    var passingfee = $("#PassingCertificateFee").val() || 0;
+                    var latefee = $("#LateFee").val() || 0;
+                    var superlatefee = $("#SuperLateFee").val() || 0;
+                    var environment = $("#EnvironmentalStudiesFee").val() || 0;
+                    var total = 0;
+                    total = parseInt(examfee) + parseInt(backlogfee) + parseInt(statemarksfee) + parseInt(capfee) + parseInt(passingfee) + parseInt(latefee) + parseInt(superlatefee) + parseInt(environment);
+                    //alert(total);
+                    $("#Total").val(total.toFixed(2));
+
+                    //$('#Date').val(_result.Date);
+                    //alert(val(_result.Date));
+
+
+                    //if (_result.ShowBranchCombo == false) {
+                    //    $('#tdBranch').val(_result.BranchID)
+                    //    $('#BranchID').hide();
+                    //}
+
+                    $("#CoursePartID").data("kendoComboBox").dataSource.read();
+                    $("#CoursePartID").data("kendoComboBox").value(_result.CoursePartID);
+
+                    // Select Subjects
+                    selectedCoursePartID = _result.CoursePartID;
+                    //$("#ExamSubjectViewModels").data("kendoGrid").dataSource.read();
+
+                    //alert('Branch: ' + _result.Branch + ' Course Part ID :' + _result.CoursePartID);
+                    if ('-' != _result.Branch) {
+                        $('#trBranch').show();
+                        //$("#BranchID").data("kendoComboBox").dataSource.read();
+                        //$("#BranchID").data("kendoComboBox").value(_result.BranchID);
+                        $('#tdBranch').val(_result.Branch);
+                        selectedBranchID = _result.BranchID;
+                    }
+                    else {
+                        $('#trBranch').hide();
+                    }
+
+                    // Set Current Date
+                    //$('#Date').val(Date.now);
+
+                }
+            }
+
+        });
+    });
+
+    var selectedCoursePartID = null;
+    var selectedBranchID = null;
+
+    function onCoursePartChange(e) {
+        var text = this.text();
+        var value = this.value();
+        selectedCoursePartID = value;
+
+        //var object = this.dataItem(this.select());
+        //$("#ExamSubjectViewModels").data("kendoGrid").dataSource.read();
+
+        //$("#BranchID").data("kendoComboBox").dataSource.read();
+        //$("#BranchID").data("kendoComboBox").value(selectedBranchID);
+    }
+
+    function onCoursePartSelect(e) {
+        //var dataItem = this.dataItem(e.item.index());
+        //alert('In onCoursePartSelect : ' + dataItem.value);
+        //$("#ExamSubjectViewModels").data("kendoGrid").dataSource.read();
+        //alert('Reading Subjects Finished');
+    }
+
+
+    function DemoSelect2() {
+
+        //$('#s2_ExamFee').select2({ placeholder: "Enter ExamFee " });
+        $('#s2_BacklogFee').select2({ placeholder: "Enter BacklogFee" });
+        $('#s2_StatementMarksFee').select2({ placeholder: "Enter StatementMarksFee" });
+        $('#s2_CAPFee').select2({ placeholder: "Enter CAPFee" });
+        $('#s2_PassingCertificateFee').select2({ placeholder: "Enter PassingCertificate Fee" });
+        $('#s2_LateFee').select2({ placeholder: "Enter LateFee" });
+        $('#s2_SuperLateFee').select2({ placeholder: "Enter SuperLateFee" });
+        $('#s2_EnvironmentalStudiesFee').select2({ placeholder: "Enter EnvironmentalStudies Fee" });
+    }
+
+    $(document).ready(function () {
+        // Add tooltip to form-controls
+        $('.form-control').tooltip();
+
+        // Initialize datepicker
+        //$('#Date').datepicker({ setDate: new Date(), dateFormat: 'dd-M-yy',  });
+
+
+        //$('#ApprovalDate').datepicker({ setDate: new Date(), dateFormat: 'dd-M-yy' });
+
+        // Load example of form validation
+        LoadBootstrapValidatorScript(DemoFormValidator);
+        //$("#PRNNo").change();
+    });
+
+</script>

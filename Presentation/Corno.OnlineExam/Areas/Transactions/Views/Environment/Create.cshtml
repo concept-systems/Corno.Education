@@ -1,0 +1,271 @@
+﻿@model Corno.Data.Corno.EnvironmentStudy
+@{
+    ViewBag.Title = "Environmental Studies Form";
+}
+@if (ViewData["Error"] != null)
+{
+    <div class="red">
+        <p>Error: @ViewData["Error"].ToString()</p>
+    </div>
+    <script type="text/javascript">
+        bootbox.alert("@TempData["Error"]")
+    </script>
+}
+@if (TempData["Success"] != null)
+{
+    <div class="green">
+        <p>Success: @TempData["Success"].ToString()</p>
+    </div>
+    <script type="text/javascript">
+        bootbox.alert("@TempData["Success"]")
+    </script>
+}
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Online Exam</a></li>
+            <li><a href="#">Environmental Studies</a></li>
+        </ol>
+    </div>
+</div>
+@Html.ValidationSummary()
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <div class="box ui-draggable ui-droppable">
+            <div class="box-header">
+                <div class="box-name">
+                    <i class="fa fa-plus-square large"></i>
+                    <span>Create a new Environmental Studies Form.</span>
+                </div>
+                <div class="box-icons">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="expand-link">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+                <div class="no-move"></div>
+            </div>
+            <div class="box-content">
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form", enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    @Html.HiddenFor(m => m.Id)
+                    @Html.HiddenFor(m => m.Photo)
+                    @Html.HiddenFor(m => m.StudentName)
+                    @Html.HiddenFor(m => m.CollegeId)
+                    @Html.HiddenFor(m => m.CenterId)
+                    @Html.HiddenFor(m => m.CenterName)
+                    @Html.HiddenFor(m => m.CollegeName)
+                    @Html.HiddenFor(m => m.CourseId)
+                    @Html.HiddenFor(m => m.CourseName)
+                    @Html.HiddenFor(m => m.CoursePartId)
+                    @Html.HiddenFor(m => m.CoursePartName)
+                    @Html.HiddenFor(m => m.LateFeeDate)
+                    @Html.HiddenFor(m => m.SuperLateFeeDate)
+                    @Html.HiddenFor(m => m.EnvironmentFee)
+                    @Html.HiddenFor(m => m.LateFee)
+                    @Html.HiddenFor(m => m.SuperLateFee)
+                    @Html.HiddenFor(m => m.OtherFee)
+                    @Html.HiddenFor(m => m.TotalFee)
+                    @Html.HiddenFor(m => m.FeeInWord)
+
+                    <div class="form-horizontal">
+                        <div class="box-content">
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <div class="k-actions k-actions-horizontal k-actions-start">
+                                        <button type="button" value="Index" class="btn btn-primary btn-label-left pull-left"
+                                                onclick="location.href = '@Url.Action("Details", new { area = "Reports", controller = "Report", reportName = "EnvNameListRpt" })'">
+                                            <span><i class="fa fa-file-excel-o"></i></span>
+                                            Name List
+                                        </button>
+                                        <button type="button" value="Index" class="btn btn-primary btn-label-left pull-left"
+                                                onclick="location.href = '@Url.Action("Details", new { area = "Reports", controller = "Report", reportName = "EnvironmentCAPRpt" })'">
+                                            <span><i class="fa fa-file-excel-o"></i></span>
+                                            CAP List
+                                        </button>
+                                        <button type="button" value="Index" class="btn btn-primary btn-label-left"
+                                                onclick="location.href='@Url.Action("Details", new { area = "Reports", controller = "Report", reportName = "EnvironmentChallanRpt", description = "Environment form Challan" })' ">
+                                            <span><i class="fa fa-file-excel-o"></i></span>
+                                            Challan
+                                        </button>
+                                        <button type="button" value="Index" class="btn btn-primary btn-label-left pull-left"
+                                                onclick="location.href = '@Url.Action("Details", new { area = "Reports", controller = "Report", reportName = "EnvironmentStudentResults" })'">
+                                            <span><i class="fa fa-file-excel-o"></i></span>
+                                            Environment Record
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="k-actions k-actions-horizontal k-actions-end">
+                                        <button type="submit" value="Create" title="Save" class="btn btn-primary btn-label-left pull-right">
+                                            <span><i class="fa fa-save"></i></span>
+                                            Submit
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-info">
+                                <div class="panel-heading"><strong>PRN Details</strong></div>
+                                <div class="panel-body">
+                                    <div class="form-group  has-feedback">
+                                        <label class="col-sm-2 control-label">PRN :</label>
+                                        <div class="col-sm-2">
+                                            @Html.TextBoxFor(m => m.PrnNo, new { id = "PRNNo", @class = "form-control", placeholder = "Enter PRN", data_toggle = "tooltip", data_placement = "bottom", title = "PRN No" })
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <button type="submit" name="submitType" value="Search" class="btn btn-warning">
+                                                <span><i class="fa fa-search"></i></span>
+                                            </button>
+                                        </div>
+                                        <label class="col-sm-2 control-label text-right">Photo :</label>
+                                        <div class="col-sm-5 control-label">
+                                            @if (Model.Photo != null)
+                                            {
+                                                var imageBase64 = Convert.ToBase64String(Model.Photo);
+                                                var imageSrc = string.Format("data:image/gif;base64,{0}", imageBase64);
+                                                <img src="@imageSrc" width="100px" height="130px" alt="" />
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-info">
+                                <div class="panel-heading"><strong>Other Info</strong></div>
+                                <table class="table">
+                                    <tr>
+                                        <td class="text-left col-sm-2"><strong>Name :</strong></td>
+                                        <td class="text-left">
+                                            @Html.DisplayFor(m => m.StudentName)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left col-sm-2"><strong>College :</strong></td>
+                                        <td class="text-left">
+                                            (@Model.CollegeId) @Html.DisplayFor(m => m.CollegeName)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left col-sm-2"><strong>Center :</strong></td>
+                                        <td class="text-left">
+                                            (@Model.CenterId) @Html.DisplayFor(m => m.CenterName)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left col-sm-2"><strong>Course :</strong></td>
+                                        <td id="lblCourseID" style="display:none"></td>
+                                        <td class="text-left">
+                                            (@Model.CourseId) @Html.DisplayFor(m => m.CourseName)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left col-sm-2"><strong>Course Part :</strong></td>
+                                        <td class="text-left">
+                                            (@Model.CoursePartId) @Html.DisplayFor(m => m.CoursePartName)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left col-sm-2"><strong>Late Fee Date :</strong></td>
+                                        <td class="text-left">
+                                            @string.Format("{0:dd/MM/yyyy}", Model.LateFeeDate)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left col-sm-2"><strong>Super Late Fee Date :</strong></td>
+                                        <td class="text-left">
+                                            @string.Format("{0:dd/MM/yyyy}", Model.SuperLateFeeDate)
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="panel panel-info">
+                                <div class="panel-heading">Fee Details</div>
+                                <div class="panel-body">
+                                    <div class="form-group  has-feedback">
+                                        <label class="col-sm-3 control-label"> Environment Exam Fee :</label>
+                                        <div class="col-sm-1 text-right">
+                                            @Html.TextBoxFor(m => m.EnvironmentFee, new { value = "@Model.EnvironmentFee", @class = "form-control text-right", @readonly = true })
+                                        </div>
+                                        <label class="col-sm-3 control-label">Late Fee :</label>
+                                        <div class="col-sm-1 text-right">
+                                            @Html.TextBoxFor(m => m.LateFee, new { value = "@Model.LateFee", @class = "form-control text-right", @readonly = true })
+                                        </div>
+                                        <label class="col-sm-3 control-label">Super Late Fee :</label>
+                                        <div class="col-sm-1 text-right">
+                                            @Html.TextBoxFor(m => m.SuperLateFee, new { value = "@Model.SuperLateFee", @class = "form-control text-right", @readonly = true })
+                                        </div>
+                                    </div>
+                                    <div class="form-group  has-feedback">
+                                        <label class="col-sm-3 control-label">Other Fee :</label>
+                                        <div class="col-sm-1 text-right">
+                                            @Html.TextBoxFor(m => m.OtherFee, new { value = "@Model.OtherFee", @class = "form-control text-right", @readonly = true })
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    <div class="form-group has-feedback">
+                                        <div class="col-sm-10">
+                                            <label class="col-sm-3 control-label ">Amount In Word :-</label><span class="pull-left" id="FeeInWord"></span>
+                                            @Model.FeeInWord
+                                        </div>
+                                        <label class="col-sm-1 control-label"><strong>Total : </strong></label>
+                                        <div class="col-sm-1 text-right" id="divPracticalFee">
+                                            @Html.TextBoxFor(m => m.TotalFee, new { value = "@Model.TotalFee", @class = "form-control text-right", @readonly = true })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <div class="k-actions k-actions-horizontal k-actions-start">
+                                        <button type="button" value="Index" class="btn btn-primary btn-label-left pull-left"
+                                                onclick="location.href = '@Url.Action("Details", new { area = "Reports", controller = "Report", reportName = "EnvNameListRpt" })'">
+                                            <span><i class="fa fa-file-excel-o"></i></span>
+                                            Name List
+                                        </button>
+                                        <button type="button" value="Index" class="btn btn-primary btn-label-left pull-left"
+                                                onclick="location.href = '@Url.Action("Details", new { area = "Reports", controller = "Report", reportName = "EnvironmentCAPRpt" })'">
+                                            <span><i class="fa fa-file-excel-o"></i></span>
+                                            CAP List
+                                        </button>
+                                        <button type="button" value="Index" class="btn btn-primary btn-label-left pull-left"
+                                                onclick="location.href = '@Url.Action("Details", new { area = "Reports", controller = "Report", reportName = "EnvironmentStudentSummary" })'">
+                                            <span><i class="fa fa-file-excel-o"></i></span>
+                                            Summary
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="k-actions k-actions-horizontal k-actions-end">
+                                        <button type="submit" value="Create" title="Save" class="btn btn-primary btn-label-left pull-right">
+                                            <span><i class="fa fa-save"></i></span>
+                                            Submit
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('#PRNNo').change(function () {
+        $('#form').append('<input type="text" name="submitType" value="Search" />');
+        $("form").submit();
+    });
+
+    $(document).ready(function () {
+
+    });
+
+</script>

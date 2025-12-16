@@ -1,0 +1,79 @@
+﻿<li>
+    <a href="@Url.Action("Index", "Home")" data-toggle="tooltip" data-placement="bottom" title="Home">
+        <i class="fa fa-home"></i>
+        <span class="hidden-xs">Home</span>
+    </a>
+</li>
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" title="Masters">
+        <i class="fa fa-credit-card"></i>
+        <span class="k-font-weight-bold">Masters</span>
+        <i class="fa fa-angle-double-down pull-right hidden-xs"></i>
+        <span class="label label-success pull-right hidden-xs">8</span>
+    </a>
+    <ul class="dropdown-menu padding-15">
+        <li>
+            <a href="@Url.Action("Index", new {area = "Question Bank", controller = "Instance"})" data-toggle="tooltip" data-placement="bottom" title="Course">
+                <i class="fa fa-book"></i>
+                <span class="hidden-xs">Instance</span>
+            </a>
+            <a href="@Url.Action("Index", new { area = "Question Bank", controller = "Faculty" })" data-toggle="tooltip" data-placement="bottom" title="Course">
+                <i class="fa fa-book"></i>
+                <span class="hidden-xs">Faculty</span>
+            </a>
+            <a href="@Url.Action("Index", new { area = "Question Bank", controller = "College" })" data-toggle="tooltip" data-placement="bottom" title="Course">
+                <i class="fa fa-book"></i>
+                <span class="hidden-xs">College</span>
+            </a>
+            <a href="@Url.Action("Index", new { area = "Question Bank", controller = "Course" })" data-toggle="tooltip" data-placement="bottom" title="Course">
+                <i class="fa fa-book"></i>
+                <span class="hidden-xs">Course</span>
+            </a>
+            <a href="@Url.Action("Index", new { area = "Question Bank", controller = "CoursePart" })" data-toggle="tooltip" data-placement="bottom" title="Course">
+                <i class="fa fa-book"></i>
+                <span class="hidden-xs">Course Part</span>
+            </a>
+            <a href="@Url.Action("Index", new { area = "Question Bank", controller = "Branch" })" data-toggle="tooltip" data-placement="bottom" title="Subject">
+                <i class="fa fa-book"></i>
+                <span class="hidden-xs">Branch</span>
+            </a>
+            <a href="@Url.Action("Index", new { area = "Question Bank", controller = "Subject" })" data-toggle="tooltip" data-placement="bottom" title="Subject">
+                <i class="fa fa-book"></i>
+                <span class="hidden-xs">Subject</span>
+            </a>
+            <a href="@Url.Action("Index", new { area = "Question Bank", controller = "Staff" })" data-toggle="tooltip" data-placement="bottom" title="Staff">
+                <i class="fa fa-book"></i>
+                <span class="hidden-xs">Staff</span>
+            </a>
+        </li>
+    </ul>
+</li>
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" title="Masters">
+        <i class="fa fa-credit-card"></i>
+        <span class="k-font-weight-bold">Paper Setting</span>
+        <i class="fa fa-angle-double-down pull-right hidden-xs"></i>
+        <span class="label label-success pull-right hidden-xs">2</span>
+    </a>
+    <ul class="dropdown-menu padding-15">
+        <li>
+            <a href="@Url.Action("Create", new {area = "Paper Setting", controller = "Schedule"})" data-toggle="tooltip" data-placement="bottom" title="Result">
+                <i class="fa fa-tasks"></i>
+                <span class="hidden-xs">Schedule</span>
+            </a>
+            <a href="@Url.Action("Create", new {area = "Paper Setting", controller = "Remuneration"})" data-toggle="tooltip" data-placement="bottom" title="Result">
+                <i class="fa fa-tasks"></i>
+                <span class="hidden-xs">Remuneration</span>
+            </a>
+            <a href="@Url.Action("Create", new {area = "Paper Setting", controller = "Appointment"})" data-toggle="tooltip" data-placement="bottom" title="Result">
+                <i class="fa fa-tasks"></i>
+                <span class="hidden-xs">Appointment</span>
+            </a>
+            <a href="@Url.Action("Create", new {area = "Paper Setting", controller = "Bill"})" data-toggle="tooltip" data-placement="bottom" title="Result">
+                <i class="fa fa-tasks"></i>
+                <span class="hidden-xs">Bill</span>
+            </a>
+        </li>
+    </ul>
+</li>
+

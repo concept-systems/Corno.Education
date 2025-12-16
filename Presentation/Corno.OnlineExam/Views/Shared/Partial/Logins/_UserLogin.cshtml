@@ -1,0 +1,90 @@
+﻿@using Corno.Globals.Constants
+@model Corno.Data.Admin.LoginViewModel
+
+@Html.ValidationSummary()
+@*@using (Html.BeginForm("Login", "Account", new { ViewBag.ReturnUrl }, FormMethod.Post, new { autocomplete = "off" }))
+{
+    @Html.AntiForgeryToken()*@
+
+    <div class="k-card">
+        <div class="k-card-body">
+            <div class="form-group">
+                <label class=" col-sm-4 control-label">User Name :</label>
+                <div class="col-sm-8 input-group">
+                    @*<span class="input-group-addon"><i class="fa fa-user"></i></span>
+                        <input type="text" class="form-control" id="username" name="username" autocomplete="off" title="" value="" tabindex="1" />*@
+                    @(Html.Kendo().TextBoxFor(m => m.UserName)
+                        .Value("umesh")
+                        //.Value("9881997999")
+                        //.Name("username")
+                        .HtmlAttributes(new
+                        {
+                            //id = "username",
+                            //type = "text",
+                            placeholder = "User Name",
+                            //required = "required",
+                            @class = "w-100"
+                        }))
+                </div>
+            </div>
+            <div class="form-group has-feedback">
+                <label class=" col-sm-4 control-label">Password :</label>
+                <div class="col-sm-8 input-group">
+                    @*<span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                        <input type="password" class="form-control" name="password" autocompletetype="disable" x-autocompletetype="disable" autocomplete="off" tabindex="2" value="" />*@
+                    @(Html.Kendo().TextBoxFor(m => m.Password)
+                        .Value("umesh@321")
+                        //.Value("tsVdQpd&")
+                        .Placeholder("Password")
+                        .HtmlAttributes(new
+                        {
+                            type = "password",
+                            //required = "required",
+                            @class = "w-100"
+                        }))
+                </div>
+            </div>
+            <div class="form-group  has-feedback">
+                <label class="col-sm-4 control-label">Instance :</label>
+                <div class="col-sm-8 input-group">
+                    @*<span class="input-group-addon"><i class="fa fa-institution"></i></span>
+                        @Html.DropDownListFor(model => model.InstanceId, new SelectList(Model.Instances, "ID", "Name"), new { id = "S2_instance", @class = "populate placeholder", @tabindex = "3" })*@
+                    @(Html.Kendo().ComboBox()
+                        //.Enable(Model.bEnable)
+                        .Name(ModelConstants.InstanceId)
+                        .HtmlAttributes(new {style = "width:100%"})
+                        .Placeholder("Select Instance...")
+                        .Filter(FilterType.Contains)
+                        .DataTextField(ModelConstants.NameWithId)
+                        .DataValueField(ModelConstants.Id)
+                        .SelectedIndex(0)
+                        .BindTo(Model.Instances))
+                </div>
+            </div>
+            <div class="form-group has-feedback">
+                <button type="submit" value="Sign in" id="log_in" name="action:LogIn" class="k-button k-button-md k-rounded-lg
+                            k-button-outline k-button-outline-info w-100 col-sm-offset-10 col-sm-2 text-right">
+                    <span><i class="fa fa-sign-in "></i></span>
+                    Sign In
+                </button>
+
+            </div>
+        </div>
+        <div class="k-card-footer">
+            <div class="row">
+                <div class="col-sm-6 k-text-left">
+                    <a href="@Url.Action("CreateDirect", new { area = "Transactions", controller = "Result" })"
+                       class="">
+                        <span>Show Result</span>
+                    </a>
+                </div>
+                <div class="col-sm-6 k-text-right">
+                    <a href="@Url.Action("EditDirect", new { area = "Transactions", controller = "Registration" })"
+                       class="">
+                        <span>Edit Student Info</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+@*}*@ 

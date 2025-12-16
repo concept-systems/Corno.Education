@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Corno.Data.Admin.AspNetRole>
+@{
+    ViewBag.Title = "Roles List";
+}
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Admin</a></li>
+            <li><a href="#">Roles</a></li>
+
+        </ol>
+    </div>
+</div>
+<div class="panel panel-primary">
+    <div class="panel-heading"><strong>Roles</strong>
+        <a href="@Url.Action("Create", "AspNetRole")" class="btn btn-small btn-success pull-right">
+            <span><i class="fa fa-plus-square large "></i></span> Add New
+        </a>
+    </div>
+    <div class="box-content no-padding">
+        <table class="table table-bordered table-striped table-responsive table-hover table-heading table-datatable" id="datatable-2">
+            <thead>
+                <tr>
+                    <th class="text-center col-sm-8">Name</th>
+                    <th class="col-sm-3"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="text-left">@item.Name </td>
+                        <td class="text-right">
+                            <a href="@Url.Action("Edit", "AspNetRole", new { id = item.Id })" class="btn btn-small btn-primary">
+                                <span><i class="fa fa-edit large"></i></span> Edit
+                            </a>
+                            <a href="@Url.Action("Delete", "AspNetRole", new { id = item.Id })" class="btn btn-small btn-danger">
+                                <span><i class="fa fa-trash-o large"></i></span> Delete
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+ 
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Load Datatables and run plugin on tables
+        LoadDataTablesScripts(AllTables);
+        // Add Drag-n-Drop feature
+        WinMove();
+    });
+    // Run Datables plugin and create 3 variants of settings
+    function AllTables() {
+        TestTable1();
+        TestTable2();
+        TestTable3();
+        LoadSelect2Script(MakeSelect2);
+    }
+    function MakeSelect2() {
+        $('select').select2();
+        $('.dataTables_filter').each(function () {
+            $(this).find('label input[type=text]').attr('placeholder', 'Search');
+        });
+    }
+</script>

@@ -1,0 +1,258 @@
+﻿@model Corno.Data.Transactions.RevalutionViewModel
+@using Kendo.Mvc.UI
+@{
+    ViewBag.Title = "Delete Revalution Form No : " + Model.Id;
+}
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Online Exam</a></li>
+            <li><a href="#">Delete Revalution Form</a></li>
+        </ol>
+    </div>
+</div>
+@Html.ValidationSummary()
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <div class="box ui-draggable ui-droppable">
+            <div class="box-header">
+                <div class="box-name">
+                    <i class="fa fa-trash-o large"></i>
+                    <span>Delete Revalution Form No :  @Model.Id</span>
+                </div>
+                <div class="box-icons">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="expand-link">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+                <div class="no-move"></div>
+            </div>
+            <div class="box-content">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(m => m.ID)
+                    <div class="form-horizontal">
+                        <div class="box-content">
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <button type="button" value="Index" class="btn btn-primary btn-label-left pull-left" onclick="location.href = '@Url.Action("Index", "Convocation")'">
+                                        <span><i class="fa fa-list-ul"></i></span>
+                                        Back to List
+                                    </button>
+                                </div>
+                                <div class="col-sm-offset-8 col-sm-2">
+                                    <button type="submit" value="Delete" onclick="return confirm('Are you sure you wish to delete this Registration form?')" title=" Delete" class="btn btn-danger btn-label-left pull-right">
+                                        <span><i class="fa fa-trash-o large"></i></span>
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-info">
+                                <div class="panel-heading"><strong>Revalution Form Details</strong></div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label">Seat No :</label>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(m => m.SeatNo, new { @id = "SeatNo", @class = "form-control", value = "@Model.SeatNo", placeholder = "Enter Seat No", data_toggle = "tooltip", data_placement = "bottom", title = "Seat No" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">College :</label>
+                                    <div class="col-sm-10">
+                                        @(Html.Kendo().ComboBox()
+                                        .Name("CollegeID")
+                                        .HtmlAttributes(new { style = "width:100%" })
+                                        .Placeholder("Select College...")
+                                        .SelectedIndex(0)
+                                        .Filter(FilterType.Contains)
+                                        .BindTo(new SelectList(Model.Colleges, "ID", "Name"))
+                                        )
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Course :</label>
+                                    <div class="col-sm-10">
+                                        @(Html.Kendo().ComboBox()
+                                        .Name("CourseID")
+                                        .HtmlAttributes(new { style = "width:100%" })
+                                        .Placeholder("Select Course...")
+                                        .DataTextField("Name")
+                                        .DataValueField("ID")
+                                        .Filter(FilterType.Contains)
+                        //.BindTo(new SelectList(Model.Courses, "ID", "Name"))
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GetCascadeCourses", "Revalution")
+                                                    .Data("filterCourses");
+                                            })
+                                            .ServerFiltering(true);
+                                        })
+                                        .Enable(false)
+                                        .AutoBind(false)
+                                        .CascadeFrom("CollegeID")
+                                        )
+                                        <script>
+                                            function filterCourses() {
+                                                return {
+                                                    CollegeID: $("#CollegeID").val(),
+                                                    //courseFilter: $("#CourseID").data("kendoComboBox").input.val()
+                                                };
+                                            }
+                                        </script>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Course Part Name :</label>
+                                    <div class="col-sm-10">
+                                        @(Html.Kendo().ComboBox()
+                                        .Name("CoursePartID")
+                                        .HtmlAttributes(new { style = "width:100%" })
+                                        .Placeholder("Select Course Part...")
+                                        .DataTextField("Name")
+                                        .DataValueField("ID")
+                                        .Filter(FilterType.Contains)
+                        //.BindTo(new SelectList(Model.Courses, "ID", "Name"))
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GetCascadeCourseParts", "Revalution")
+                                                    .Data("filterCourseParts");
+                                            })
+                                            .ServerFiltering(true);
+                                        })
+                                        .Enable(false)
+                                        .AutoBind(false)
+                                        .CascadeFrom("CourseID")
+                                        )
+
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Subject :</label>
+                                    <div class="col-sm-10">
+                                        @(Html.Kendo().ComboBox()
+                                        .Name("SubjectID")
+                                        .HtmlAttributes(new { style = "width:100%" })
+                                        .Placeholder("Select Subject Part...")
+                                        .DataTextField("Name")
+                                        .DataValueField("ID")
+                                        .Filter(FilterType.Contains)
+                        //.BindTo(new SelectList(Model.Courses, "ID", "Name"))
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GetCascadeSubjects", "Revalution")
+                                                    .Data("filterSubjects");
+                                            })
+                                            .ServerFiltering(true);
+                                        })
+                                        .Enable(false)
+                                        .AutoBind(false)
+                                        .CascadeFrom("CoursePartID")
+                                        )
+                                        <script>
+                                            function filterSubjects() {
+                                                return {
+                                                    coursePartID: $("#CoursePartID").val(),
+                                                    //courseFilter: $("#CourseID").data("kendoComboBox").input.val()
+                                                };
+                                            }
+                                        </script>
+                                    </div>
+                                </div>
+                                <div class=" form-group  has-feedback">
+                                    <label class="col-sm-2 control-label"></label>
+                                    <div class="col-sm-4">
+                                        <div class="checkbox ">
+                                            <label>
+                                                <input type="checkbox" id="RevalutionAndVerification" name="RevalutionAndVerification" value="true" @(Model.RevalutionAndVerification ? "checked=\"checked\"" : "")>Revalution And Verification
+                                                <i class="fa fa-square-o small"></i>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class=" form-group  has-feedback">
+                                    <label class="col-sm-2"></label>
+                                    <div class="col-sm-4">
+                                        <div class="checkbox ">
+                                            <label>
+                                                <input type="checkbox" id="Verification" name="Verification" value="true" @(Model.Verification ? "checked=\"checked\"" : "")>Verification
+                                                <i class="fa fa-square-o small"></i>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <button type="button" value="Index" class="btn btn-primary btn-label-left pull-left" onclick="location.href = '@Url.Action("Index", "Convocation")'">
+                                        <span><i class="fa fa-list-ul"></i></span>
+                                        Back to List
+                                    </button>
+                                </div>
+                                <div class="col-sm-offset-8 col-sm-2">
+                                    <button type="submit" value="Delete" onclick="return confirm('Are you sure you wish to delete this Registration form?')" title=" Delete" class="btn btn-danger btn-label-left pull-right">
+                                        <span><i class="fa fa-trash-o large"></i></span>
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    function filterCourseParts() {
+        return {
+            CourseID: $("#CourseID").val(),
+            //courseFilter: $("#CourseID").data("kendoComboBox").input.val()
+        };
+    }
+    function DemoSelect2() {
+    }
+    $(document).ready(function () {
+        // Add the "focus" value to class attribute
+        $('ul.radio li').focusin(function () {
+            $(this).addClass('focus');
+        }
+        );
+
+        // Remove the "focus" value to class attribute
+        $('ul.radio li').focusout(function () {
+            $(this).removeClass('focus');
+        }
+        );
+
+
+        $('.form-control').tooltip();
+        // Initialize datepicker
+        $('#Date').datepicker({ setDate: new Date(), dateFormat: 'dd-M-yy' });
+        LoadSelect2Script(DemoSelect2);
+
+        $('#ApprovalDate').datepicker({ setDate: new Date(), dateFormat: 'dd-M-yy' });
+        LoadSelect2Script(DemoSelect2);
+
+        //// Load example of form validation
+        LoadBootstrapValidatorScript(DemoFormValidator);
+    });
+</script>
+
+

@@ -1,0 +1,413 @@
+﻿@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Paper_Setting.Models.AppointmentBillDetail
+
+<div class="form-horizontal box-content">
+    @using (Html.BeginForm("Create", "Appointment", FormMethod.Post, new { id = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.ValidationSummary(false)
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.AppointmentId)
+        @Html.HiddenFor(m => m.StaffId)
+        @Html.HiddenFor(m => m.Id)
+
+        <div class="k-card k-card-vertical">
+        <div class="k-card-header k-card-tertiary">
+            <div class="col-sm-11">
+                <h3>Bill</h3>
+            </div>
+            <div class="col-sm-1 text-right">
+                @(Html.Kendo().Button()
+                    .Name("back")
+                    .Icon("arrow-left")
+                    .SpriteCssClass("k-icon-64")
+                    .FillMode(ButtonFillMode.Outline)
+                    .ThemeColor(ThemeColor.Info)
+                    .Content("Back")
+                    .Events(e => e.Click("onBack"))
+                    .HtmlAttributes(new { @class = "w-100" }))
+            </div>
+        </div>
+            <div class="k-card-body">
+                <div class="form-group">
+                    <div class="col-sm-2">
+                        @(Html.Kendo().DatePickerFor(m => m.DateOfJourney)
+                    .Rounded(Rounded.Medium)
+                    .Label(label => label
+                        .Content("Date of Journey")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "Enter Date of Journey",
+                        @class = "w-100"
+                    }))
+                    </div>
+                    <div class="col-sm-offset-4 col-sm-2">
+                        @(Html.Kendo().NumericTextBoxFor(m => m.SetsDrawn)
+                    .Decimals(0)
+                    .Min(0)
+                    .Format("n0")
+                    .Value(Model.SetsDrawn ?? 0)
+                    .Label(label => label
+                        .Content("Sets Drawn")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "Sets Drawn",
+                        @class = "text-right"
+                    }))
+                    </div>
+                    <div class="col-sm-offset-1 col-sm-3">
+                        @(Html.Kendo().NumericTextBoxFor(m => m.CourseFee)
+                    .Decimals(0)
+                    .Min(0)
+                    .Format("n2")
+                    .Value(Model.CourseFee ?? 0)
+                    .Events(e => e.Change("change").Spin("change"))
+                    .Label(label => label
+                        .Content("Course Fee")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "Course Fee",
+                        @class = "numeric-input text-right"
+                    }))
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-4">
+                        @(Html.Kendo().TextBoxFor(m => m.FromPlace)
+                    .Rounded(Rounded.Medium)
+                    .Label(label => label
+                        .Content("From Place")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "Enter place from",
+                        @class = "w-100"
+                    }))
+                    </div>
+                    <div class="col-sm-offset-2 col-sm-2">
+                        @(Html.Kendo().CheckBoxFor(m => m.IsHindi)
+                    .Label("Is Hindi")
+                    .Size(ComponentSize.Large)
+                    .HtmlAttributes(new
+                    {
+                        @class = "text-bottom"
+                    }))
+                    </div>
+                    <div class="col-sm-offset-1 col-sm-3">
+                        @(Html.Kendo().NumericTextBoxFor(m => m.AllottedFee)
+                    .Decimals(0)
+                    .Min(0)
+                    .Format("n2")
+                    .Value(Model.AllottedFee ?? 0)
+                    .Events(e => e.Change("change").Spin("change"))
+                    .Label(label => label
+                        .Content("Allotted Fee")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "Allotted Fee",
+                        @class = " text-right"
+                    }))
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-4">
+                        @(Html.Kendo().TextBoxFor(m => m.ToPlace)
+                    .Rounded(Rounded.Medium)
+                    .Label(label => label
+                        .Content("To Place")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "To Place",
+                        @class = "w-100"
+                    }))
+                    </div>
+                    <div class="col-sm-offset-2 col-sm-2">
+                        @(Html.Kendo().CheckBoxFor(m => m.IsMarathi)
+                    .Label("Is Marathi")
+                    .Size(ComponentSize.Large)
+                    .HtmlAttributes(new
+                    {
+                        @class = "text-bottom"
+                    }))
+                    </div>
+                    <div class="col-sm-offset-1 col-sm-3">
+                        @(Html.Kendo().NumericTextBoxFor(m => m.Ta)
+                    .Decimals(0)
+                    .Min(0)
+                    .Format("n2")
+                    .Value(Model.Ta ?? 0)
+                    .Events(e => e.Change("change").Spin("change"))
+                    .Label(label => label
+                        .Content("TA")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "TA",
+                        @class = " text-right"
+                    }))
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-4">
+                        @(Html.Kendo().TextBoxFor(m => m.TravelingMode)
+                    .Rounded(Rounded.Medium)
+                    .Label(label => label
+                        .Content("Traveling Mode")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "Traveling Mode",
+                        @class = "w-100"
+                    }))
+                    </div>
+                    <div class="col-sm-offset-2 col-sm-2">
+                        @(Html.Kendo().CheckBoxFor(m => m.IsSanskrit)
+                    .Label("Is Sanskrit")
+                    .Size(ComponentSize.Large)
+                    .HtmlAttributes(new
+                    {
+                        @class = "text-bottom"
+                    }))
+                    </div>
+                    <div class="col-sm-offset-1 col-sm-3">
+                        @(Html.Kendo().NumericTextBoxFor(m => m.Da)
+                    .Decimals(0)
+                    .Min(0)
+                    .Format("n2")
+                    .Value(Model.Da ?? 0)
+                    .Events(e => e.Change("change").Spin("change"))
+                    .Label(label => label
+                        .Content("DA")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "DA",
+                        @class = " text-right"
+                    }))
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-4">
+                        @(Html.Kendo().TextBoxFor(m => m.TotalDistance)
+                    .Rounded(Rounded.Medium)
+                    .Label(label => label
+                        .Content("Total Distance")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "Total Distance",
+                        @class = "w-100"
+                    }))
+                    </div>
+                    <div class="col-sm-offset-2 col-sm-2">
+                        @(Html.Kendo().NumericTextBoxFor(m => m.TranslationCharges)
+                    .Decimals(0)
+                    .Min(0)
+                    .Format("n2")
+                    .Value(Model.TranslationCharges ?? 0)
+                    .Events(e => e.Change("change").Spin("change"))
+                    .Label(label => label
+                        .Content("Transl. Charges")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "Transl. Charges",
+                        @class = "text-right"
+                    }))
+                    </div>
+                    <div class="col-sm-offset-1 col-sm-3">
+                        @(Html.Kendo().NumericTextBoxFor(m => m.ChairmanAllowance)
+                    .Decimals(0)
+                    .Min(0)
+                    .Format("n2")
+                    .Value(Model.ChairmanAllowance ?? 0)
+                    .Events(e => e.Change("change").Spin("change"))
+                    .Label(label => label
+                        .Content("Chairman Allowance")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = " Chairman Allowance",
+                        @class = "text-right"
+                    }))
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-2">
+                        @(Html.Kendo().TimePickerFor(m => m.TimeIn)
+                    .Rounded(Rounded.Medium)
+                    .Label(label => label
+                        .Content("In Time")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "In Time",
+                        @class = "w-100"
+                    }))
+                    </div>
+                    <div class="col-sm-offset-4 col-sm-2">
+                        @(Html.Kendo().NumericTextBoxFor(m => m.OtherAllowance)
+                    .Decimals(0)
+                    .Min(0)
+                    .Format("n2")
+                    .Value(Model.OtherAllowance ?? 0)
+                    .Events(e => e.Change("change").Spin("change"))
+                    .Label(label => label
+                        .Content("Other Allowance")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "Other Allowance",
+                        @class = " text-right w-100"
+                    }))
+                    </div>
+                    <div class="col-sm-offset-1 col-sm-3">
+                        @(Html.Kendo().NumericTextBoxFor(m => m.Travel)
+                    .Decimals(0)
+                    .Min(0)
+                    .Format("n2")
+                    .Value(Model.Travel ?? 0)
+                    .Events(e => e.Change("change").Spin("change"))
+                    .Label(label => label
+                        .Content("Local Conveyance Allowance")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "Local Conveyance Allowance",
+                        @class = " text-right w-100"
+                    }))
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-2">
+                        @(Html.Kendo().TimePickerFor(m => m.TimeOut)
+                    .Rounded(Rounded.Medium)
+                    .Label(label => label
+                        .Content("In Out")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "In Out",
+                        @class = "w-100"
+                    }))
+                    </div>
+                    <div class="col-sm-offset-4 col-sm-3">
+
+                    </div>
+                    <div class="col-sm-3">
+                        @(Html.Kendo().NumericTextBoxFor(m => m.BasicPay)
+                    .Decimals(0)
+                    .Min(0)
+                    .Format("n2")
+                    .Value(Model.BasicPay ?? 0)
+                    .Events(e => e.Change("change").Spin("change"))
+                    .Label(label => label
+                        .Content("Allowances As Per Basic Pay")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "Allowances As Per Basic Pay",
+                        @class = " text-right w-100"
+                    }))
+                    </div>
+                </div>
+                <hr />
+                <div class="form-group">
+                    @Html.LabelFor(m => m.TotalFee, "Total Fee :",
+                        new { @class = "col-sm-offset-7 col-sm-2 control-label" })
+                    <div class="col-sm-3">
+                        @(Html.Kendo().NumericTextBoxFor(m => m.TotalFee)
+                    .Decimals(0)
+                    .Min(0)
+                    .Format("n2")
+                    .Value(Model.TotalFee ?? 0)
+                    /*.Label(label => label
+                            .Content("Total Fee")
+                            .Floating(true))*/
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "Total Fee",
+                        @class = "text-right"
+                    }))
+                    </div>
+                </div>
+            </div>
+            <div class="k-card-footer">
+                <div class="form-group">
+                    <div class="col-sm-offset-11 col-sm-1">
+                        @(Html.Kendo().Button()
+                        .Name("save")
+                        .Icon("save")
+                        .SpriteCssClass("k-icon-64")
+                        .FillMode(ButtonFillMode.Outline)
+                        .ThemeColor(ThemeColor.Success)
+                        .Content("Save")
+                        .HtmlAttributes(new
+                        {
+                            type = "submit",
+                            name = "action:SaveBill",
+                            @class="w-100"
+                        }))
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    function change() {
+        console.log("In change");
+        var total = 0;
+        var courseFee = $("#CourseFee").data("kendoNumericTextBox").value();
+        var alltedFee = $("#AllottedFee").data("kendoNumericTextBox").value();
+        var ta = $("#Ta").data("kendoNumericTextBox").value();
+        var da = $("#Da").data("kendoNumericTextBox").value();
+        var translationCharges = $("#TranslationCharges").data("kendoNumericTextBox").value();
+        var chairmanAllowance = $("#ChairmanAllowance").data("kendoNumericTextBox").value();
+        var otherAllowance = $("#OtherAllowance").data("kendoNumericTextBox").value();
+        var travel = $("#Travel").data("kendoNumericTextBox").value();
+        var basicPay = $("#BasicPay").data("kendoNumericTextBox").value();
+
+        total += courseFee ? courseFee : 0;
+        total += alltedFee ? alltedFee : 0;
+        total += ta ? ta : 0;
+        total += da ? da : 0;
+        total += translationCharges ? translationCharges : 0;
+        total += chairmanAllowance ? chairmanAllowance : 0;
+        total += otherAllowance ? otherAllowance : 0;
+        total += travel ? travel : 0;
+        total += basicPay ? basicPay : 0;
+
+        $("#TotalFee").data("kendoNumericTextBox").value(total);
+    }
+
+    $(document).ready(function () {
+        // Calculate total fee.
+        change();
+    });
+
+    function onBack() {
+        history.back();
+    }
+
+    function onSubjectChange() {
+        console.log("event: onSubjectChange In Bill");
+    }
+
+</script>

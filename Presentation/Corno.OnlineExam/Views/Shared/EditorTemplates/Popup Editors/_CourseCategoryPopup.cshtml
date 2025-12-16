@@ -1,0 +1,49 @@
+﻿@using Corno.Globals.Constants
+@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Masters.CourseCategoryDetail
+
+@Html.HiddenFor(model => model.Id)
+
+<div class="form-group">
+    <div class="col-sm-6">
+        @(Html.Kendo().MultiColumnComboBoxFor(m => m.CategoryId)
+            .DataTextField(ModelConstants.Name)
+            .DataValueField(ModelConstants.Id)
+            .HtmlAttributes(new { @class = "w-100" })
+            .Filter("contains")
+            .Placeholder("Select ...")
+            .Label(label => label
+                .Content("Category")
+                .Floating(true))
+            .Columns(columns =>
+            {
+                columns.Add().Field(ModelConstants.Id).Title(ModelConstants.Id).Width("100px");
+                columns.Add().Field(ModelConstants.Name).Title(ModelConstants.Name).Width("600px");
+            })
+            .DataSource(dataSource => dataSource
+                .Read(read => read.Action("GetAllCategories", "Corno"))
+            ))
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-sm-6">
+        @(Html.Kendo().MultiColumnComboBoxFor(m => m.RootCategoryId)
+            .DataTextField(ModelConstants.Name)
+            .DataValueField(ModelConstants.Id)
+            .HtmlAttributes(new { @class = "w-100" })
+            .Filter("contains")
+            .Placeholder("Select ...")
+            .Label(label => label
+                .Content("Root Category")
+                .Floating(true))
+            .Columns(columns =>
+            {
+                columns.Add().Field(ModelConstants.Id).Title(ModelConstants.Id).Width("100px");
+                columns.Add().Field(ModelConstants.Name).Title(ModelConstants.Name).Width("600px");
+            })
+            .DataSource(dataSource => dataSource
+                .Read(read => read.Action("GetAllCategories", "Corno"))
+            ))
+    </div>
+</div>

@@ -1,0 +1,154 @@
+﻿@model OnlineExam.Models.SubjectViewModel
+@{
+    ViewBag.Title = "Delete Subject No : " + Model.ID;
+}
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">OnlineExam</a></li>
+            <li><a href="#">Billing</a></li>
+            <li><a href="#">Delete Subject</a></li>
+        </ol>
+    </div>
+</div>
+@Html.ValidationSummary()
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <div class="box ui-draggable ui-droppable">
+            <div class="box-header">
+                <div class="box-name">
+                    <i class="fa fa-trash-o large"></i>
+                    <span>Delete Subject No :  @Model.ID</span>
+                </div>
+                <div class="box-icons">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="expand-link">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+                <div class="no-move"></div>
+            </div>
+            <div class="box-content">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                     @Html.HiddenFor(m => m.ID)
+                <div class="form-horizontal">
+                        <div class="box-content">
+                             <div class="form-group  has-feedback">
+                            <label class="col-sm-2 control-label">Faculty : </label>
+                                <div class="col-sm-4">
+                                    @Html.DropDownListFor(model => model.FacultyID, new SelectList(Model.Facultys, "ID", "Name"),"Select Faculty", new { id = "s2_facultys", @class = "populate placeholder" })
+                                </div>
+                               </div>
+                              <div class="form-group  has-feedback">
+                                 <label class="col-sm-2 control-label">Course  :</label>
+                                <div class="col-sm-4">
+                                    @Html.DropDownListFor(model => model.CourseID, new SelectList(Model.Courses, "ID", "Name"), "Select Course", new { id = "s2_course", @class = "populate placeholder" })
+                                </div>
+                                 <label class="col-sm-2 control-label">Course Part : </label>
+                                <div class="col-sm-4">
+                                    @Html.DropDownListFor(model => model.CoursePartID, new SelectList(Model.CourseParts, "ID", "Name"),"Select CoursePart", new { id = "s2_coursepart", @class = "populate placeholder" })
+                                </div>
+                                </div>
+                            <div class="form-group  has-feedback">
+                                <label class="col-sm-2 control-label">Name :</label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(m => m.Name, new { @id = "Name", @class = "form-control", value = "@Model.Name", placeholder = "Enter Name", data_toggle = "tooltip", data_placement = "bottom", title = "Name" })
+                                </div>
+                            </div>
+                            <hr >
+                                 <div class="form-group  has-feedback">
+                                      <label class="col-sm-2 control-label for form-styles">Marks :</label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(m => m.Marks, new { @id = "Marks", @class = "form-control", value = "@Model.Marks", placeholder = "Enter Marks", data_toggle = "tooltip", data_placement = "bottom", title = "Marks" })
+                                </div>
+                                      <label class="col-sm-2 control-label for form-styles">Passing Marks :</label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(m => m.PassingMarks, new { @id = "PassingMarks", @class = "form-control", value = "@Model.PassingMarks", placeholder = "Enter Passing Marks", data_toggle = "tooltip", data_placement = "bottom", title = "Passing Marks" })
+                                </div>
+                            </div>
+                            <div class="form-group  has-feedback">
+                                 <label class="col-sm-2 control-label">Subject Type :</label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(m => m.SubjectType, new { @id = "SubjectType", @class = "form-control", value = "@Model.SubjectType", placeholder = "Enter Subject Type", data_toggle = "tooltip", data_placement = "bottom", title = "Subject Type" })
+                                </div>
+                                  <label class="col-sm-2 control-label for form-styles">Common SubjectID :</label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(m => m.CommonSubjectID, new { @id = "CommonSubjectID", @class = "form-control", value = "@Model.CommonSubjectID", placeholder = "Enter Common SubjectID ", data_toggle = "tooltip", data_placement = "bottom", title = "Common SubjectID"  })
+                                </div>
+                            </div>
+                               <div class="form-group  has-feedback">
+                                <label class="col-sm-2 control-label for form-styles">Minimum Sets :</label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(m => m.MinimumSets, new { @id = "MinimumSets", @class = "form-control", value = "@Model.MinimumSets", placeholder = "Enter Minimum Sets", data_toggle = "tooltip", data_placement = "bottom", title = "Minimum Sets" })
+                                </div>
+                                  <label class="col-sm-2 control-label for form-styles">Stock Sets :</label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(m => m.StockSets, new { @id = "StockSets", @class = "form-control", value = "@Model.StockSets", placeholder = "Enter Stock Sets", data_toggle = "tooltip", data_placement = "bottom", title = "Stock Sets"  })
+                                </div>
+                            </div>
+                             <div class="form-group  has-feedback">
+                                <label class="col-sm-2 control-label for form-styles">Narration1 :</label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(m => m.Narration1, new { @id = "Narration1", @class = "form-control", value = "@Model.Narration1", placeholder = "Enter Narration1", data_toggle = "tooltip", data_placement = "bottom", title = "Narration1" })
+                                </div>
+                                  <label class="col-sm-2 control-label for form-styles">Narration2 :</label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(m => m.Narration2, new { @id = "PatternFileName", @class = "form-control", value = "@Model.Narration2", placeholder = "Enter Narration2", data_toggle = "tooltip", data_placement = "bottom", title = "Narration2"  })
+                                </div>
+                            </div>
+                        <div class="form-group">
+                            <div class="col-sm-2">
+                                <button type="button" value="Index" class="btn btn-primary btn-label-left pull-left" onclick="location.href='@Url.Action("Index", "Subject")'">
+                                    <span><i class="fa fa-list-ul"></i></span>
+                                    Back to List
+                                </button>
+                            </div>
+                            <div class="col-sm-offset-8 col-sm-2">
+                                <button type="submit" value="Delete" onclick="return confirm('Are you sure you wish to delete this Subject?')" title=" Delete" class="btn btn-danger btn-label-left pull-right">
+                                    <span><i class="fa fa-trash-o large"></i></span>
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                        </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function DemoSelect2() {
+        $('#s2_course').select2({ placeholder: "Select Course" });
+        $('#s2_facultys').select2({ placeholder: "Select Faculty" });
+        $('#s2_coursepart').select2({ placeholder: "Select CoursePart" });
+
+
+    }
+    $(document).ready(function () {
+        // Create Wysiwig editor for textare
+        //TinyMCEStart('#wysiwig_simple', null);
+        //TinyMCEStart('#Description', 'extreme');
+        //// Add tooltip to form-controls
+        $('.form-control').tooltip();
+        // Initialize datepicker
+
+
+
+        LoadSelect2Script(DemoSelect2);
+
+        //// Load example of form validation
+        LoadBootstrapValidatorScript(DemoFormValidator);
+
+
+    });
+
+</script>

@@ -1,0 +1,93 @@
+﻿@using Corno.Data.Helpers
+@using Corno.Globals.Constants
+@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Masters.Staff
+
+@{
+    var formEnabled = ViewData[ModelConstants.FormEnabled].ToBoolean();
+}
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="form-group">
+            @(Html.Kendo().TextBoxFor(m => m.BankAccountType)
+                .Enable(formEnabled)
+                .Rounded(Rounded.Medium)
+                .Label(label => label
+                    .Content("Account Type")
+                    .Floating(true))
+                .HtmlAttributes(new
+                {
+                    placeholder = "Enter bank account type",
+                    @class = "w-100"
+                }))
+        </div>
+        <div class="form-group">
+            @(Html.Kendo().TextBoxFor(m => m.BankAccountNo)
+                .Enable(formEnabled)
+                .Rounded(Rounded.Medium)
+                .Label(label => label
+                    .Content("Account No")
+                    .Floating(true))
+                .HtmlAttributes(new
+                {
+                    placeholder = "Enter bank account No.",
+                    @class = "w-100"
+                }))
+        </div>
+        <div class="form-group">
+            @(Html.Kendo().TextBoxFor(m => m.BankName)
+                .Enable(formEnabled)
+                .Rounded(Rounded.Medium)
+                .Label(label => label
+                    .Content("Bank Name")
+                    .Floating(true))
+                .HtmlAttributes(new
+                {
+                    placeholder = "Enter bank name",
+                    @class = "w-100"
+                }))
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group">
+            @(Html.Kendo().TextBoxFor(m => m.IfscCode)
+                .Enable(formEnabled)
+                .Rounded(Rounded.Medium)
+                .Label(label => label
+                    .Content("IFSC Code")
+                    .Floating(true))
+                .HtmlAttributes(new
+                {
+                    placeholder = "Enter IFSC code",
+                    @class = "w-100"
+                }))
+        </div>
+        <div class="form-group">
+            @(Html.Kendo().TextBoxFor(m => m.BranchName)
+                .Enable(formEnabled)
+                .Rounded(Rounded.Medium)
+                .Label(label => label
+                    .Content("Branch Name")
+                    .Floating(true))
+                .HtmlAttributes(new
+                {
+                    placeholder = "Enter branch name",
+                    @class = "w-100"
+                }))
+        </div>
+        <div class="form-group">
+            @(Html.Kendo().TextBoxFor(m => m.BankCity)
+                .Enable(formEnabled)
+                .Rounded(Rounded.Medium)
+                .Label(label => label
+                    .Content("Branch City")
+                    .Floating(true))
+                .HtmlAttributes(new
+                {
+                    placeholder = "Enter city",
+                    @class = "w-100"
+                }))
+        </div>
+    </div>
+</div>

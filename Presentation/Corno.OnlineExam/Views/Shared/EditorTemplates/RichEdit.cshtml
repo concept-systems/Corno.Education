@@ -1,0 +1,22 @@
+@using System.Text
+@using System.Web.UI.WebControls
+@using Corno.Globals.Constants
+@model string
+
+@Html.DevExpress().RichEdit(settings =>
+{
+    settings.Name = ModelConstants.Description;
+    settings.CallbackRouteValues = new { Controller = "ManualPaper", Action = "RichEditPartial" };
+    settings.Width = Unit.Percentage(100);
+    settings.Height = Unit.Pixel(400);
+    //settings.AutoSaveMode = AutoSaveMode.On; // Change AutoSaveMode
+    settings.Saving = (s, e) =>
+    {
+        var docBytes = RichEditExtension.SaveCopy(ModelConstants.Description,
+            DevExpress.XtraRichEdit.DocumentFormat.Rtf);
+        e.Handled = true; // Prevents the default save operation
+    };  
+}).Open(ModelConstants.Description, DevExpress.XtraRichEdit.DocumentFormat.Rtf, () =>
+    Encoding.UTF8.GetBytes(Model ?? string.Empty) ?? Array.Empty<byte>()).GetHtml()
+
+

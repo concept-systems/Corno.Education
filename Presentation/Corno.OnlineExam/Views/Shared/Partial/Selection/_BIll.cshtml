@@ -1,0 +1,50 @@
+﻿@using Corno.Globals.Constants
+@model Corno.Data.Corno.Paper_Setting.Models.Appointment
+
+@{
+    Html.RenderPartial("Partial/Selection/_Appointment", Model);
+}
+
+<div class="form-group">
+    @Html.LabelFor(m => m.StaffId, "Staff :",
+        new { @class = "col-sm-2 control-label" })
+    <div class="col-sm-10">
+        @(Html.Kendo().MultiColumnComboBoxFor(m => m.StaffId)
+            //.Enable(Model.EnableHeader)
+            .DataTextField(ModelConstants.Name)
+            .DataValueField(ModelConstants.Id)
+            .HtmlAttributes(new { @class = "w-100" })
+            .Filter("contains")
+            .Placeholder("Select ...")
+            .Events(e => e.Change("onStaffChange"))
+            .Columns(columns =>
+            {
+                columns.Add().Field(ModelConstants.Id).Width("100px");
+                columns.Add().Field(ModelConstants.Code).Width("100px");
+                columns.Add().Field(ModelConstants.Name).Width("600px");
+            })
+            .DataSource(dataSource =>
+            {
+                dataSource.Read(read =>
+                {
+                    read.Action("GetAppointmentStaffs", "Corno").Data("filterStaffs");
+                }).ServerFiltering(true);
+            })
+            .Enable(false)
+            .AutoBind(false)
+            .CascadeFrom(ModelConstants.SubjectId))
+        <script>
+            function filterStaffs() {
+                return {
+                    FacultyId: $("#FacultyId").val(),
+                    CollegeId: $("#CollegeId").val(),
+                    CourseId: $("#CourseId").val(),
+                    CoursePartId: $("#CoursePartId").val(),
+                    BranchId: $("#BranchId").val(),
+                    CategoryId: $("#CategoryId").val(),
+                    SubjectId: $("#SubjectId").val(),
+                };
+            }
+        </script>
+    </div>
+</div>

@@ -1,0 +1,149 @@
+﻿@using Kendo.Mvc.UI
+@model Corno.Data.Corno.MarkSheet
+@{
+    ViewBag.Title = "Result";
+}
+
+@{
+    Layout = null;
+}
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="icon" type="image/png" href="~/Content/img/Concept logo.png" />
+
+    <link href="~/Content/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+    <link href="~/Content/plugins/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/Content/plugins/fancybox/jquery.fancybox.css" rel="stylesheet">
+    <link href="~/Content/plugins/select2/select2.css" rel="stylesheet">
+    <link href="~/Content/css/style.css" rel="stylesheet">
+
+    <script src="~/Content/plugins/jquery/jquery-2.1.0.min.js"></script>
+    <script src="~/Content/plugins/jquery-ui/jquery-ui.js"></script>
+    <script src="~/Content/plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="~/Content/plugins/justified-gallery/jquery.justifiedgallery.min.js"></script>
+    <script src="~/Content/plugins/tinymce/tinymce.min.js"></script>
+    <script src="~/Content/plugins/tinymce/jquery.tinymce.min.js"></script>
+    <script src="~/Scripts/js/devoops.js"></script>
+    <script src="~/Content/plugins/bootbox/bootbox.min.js"></script>
+
+</head>
+
+
+<body>
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <div class="box ui-draggable ui-droppable">
+            <div class="box-content">
+                @using (Html.BeginForm("CreateDirect", "Result", new { enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <div style="font-size:25px" class="text-center"><strong>Bharati Vidyapeeth <br/>(Deemed to be University),<br/>Pune</strong> </div>
+                            <hr/>
+                            <div style="font-size:20px" class="text-center text-success">Result Viewing by PRN</div>
+                            <hr/>
+                            <div style="font-size:15px" class="text-danger text-justify"><strong>Disclaimer:</strong> The result published online are for immediate information to the examinees. The University or the service provider company are not responsible for any inadvertent error or consequence thereof. These cannot be treated as original mark sheets. Original mark sheets have been issued by the institution separately.</div>
+                        </div>
+                        <div class="panel-body">
+                            @Html.ValidationSummary(false)
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group  has-feedback">
+                                        <label class="col-sm-2 col-xs-2  control-label ">PRN :</label>
+                                        <div class="col-sm-7 col-xs-6">
+                                            @(Html.Kendo().TextBoxFor(m => m.PrnNo)
+                                                  .HtmlAttributes(new
+                                                  {
+                                                      required = "required",
+                                                      @class = "col-sm-12 col-xs-12"
+                                                  }))
+                                        </div>
+                                        <div class="col-sm-3 col-xs-4">
+                                            <button type="button"
+                                                    class="btn btn-lg btn-info form-control"
+                                                    onclick="send_otp()">
+                                                <i class="fa fa-send"></i>
+                                                Send OTP
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group  has-feedback">
+                                        <label class="col-sm-2 col-xs-2  control-label ">OTP :</label>
+                                        <div class="col-sm-7 col-xs-6">
+                                            @(Html.Kendo().TextBoxFor(m => m.Otp).HtmlAttributes(new
+                                              {
+                                                  PlaceHolder = "Enter OTP here",
+                                                  @class = "col-sm-12 col-xs-12"
+                                              }))
+                                        </div>
+                                        <div class="col-sm-3 col-xs-4">
+                                            <button type="submit" value="Create"
+                                                    title="Save" class="btn btn-lg btn-danger btn-block form-control">
+                                                <span><i class="fa fa-file-pdf-o"></i></span>
+                                                View Result
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group  has-feedback">
+                        @if (!string.IsNullOrEmpty(Model.FileName))
+                        {
+                            <div class="col-sm-12">
+                                <object type="application/pdf" width="100%" height="1300px"
+                                        data="~/Content/MarkSheets/@Model.FileName?#scrollbar=0">
+                                    <p style="font-size: 5vw; padding: 10px" class="text-center text-justify">Your web browser doesn't have a PDF plugin.
+                                        Instead you can
+                                        <a href="~/Content/MarkSheets/@Model.FileName?#scrollbar=0">click here to
+                                            download the PDF file.</a></p>
+                                </object>
+                                                    
+                                @*@Html.Raw(TempData["Embed"])*@
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+<script type="text/javascript">
+    function send_otp() {
+        console.log("Sending OTP request");
+        var url = '@Url.Action("SendOtp", "Result")'; // url
+        var formData = new FormData($('form')[0]); // Create an arbitrary FormData instance
+        //formData.append('action', action);
+        console.log("Form Data: " + formData);
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            url: url,
+            data: formData,
+            processData: false,
+            contentType: false,
+            cache: false,
+            success: function (result) {
+                console.log("OTP result :" + result.message);
+                bootbox.alert(result.message);
+            },
+            error: function(e) {
+                bootbox.alert(e.responseText);
+            }
+        });
+    }
+</script>

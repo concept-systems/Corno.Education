@@ -1,0 +1,171 @@
+﻿@using Corno.Data.Corno.Question_Bank.Dtos
+@using Corno.Globals.Constants
+@using Corno.OnlineExam.Helpers
+@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Question_Bank.Models.Question
+
+@{
+    const string controller = "Question";
+    string action = ViewBag.Action.ToString();
+}
+
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    td.auto-width {
+        width: auto;
+        white-space: nowrap;
+    }
+
+    td.full-width {
+        width: 30%;
+    }
+</style>
+
+<div class="form-horizontal box-content">
+    @using (Html.BeginForm(action, controller, FormMethod.Post, new { id = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.ValidationSummary(false)
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.FacultyId)
+        @Html.HiddenFor(m => m.CourseId)
+        @Html.HiddenFor(m => m.CoursePartId)
+        @Html.HiddenFor(m => m.SubjectId)
+        @Html.HiddenFor(m => m.SubjectName)
+        @Html.HiddenFor(m => m.PaperCategoryId)
+
+        <div class="k-card k-card-vertical">
+            <div class="k-card-title k-card-tertiary row">
+                <div class="col-sm-6">
+                    <h4>Add new question</h4>
+                </div>
+                <div class="k-card-actions k-card-actions-horizontal k-card-actions-end col-sm-6">
+                    @(Html.Kendo().Button()
+                                 .Name("back_to_list")
+                                 .Icon("arrow-left")
+                                 .SpriteCssClass("k-icon-64")
+                                 .FillMode(ButtonFillMode.Outline)
+                                 .ThemeColor(ThemeColor.Info)
+                                 .Content("Back To list")
+                                 .Events(e => e.Click("onBackToList"))
+                                 .HtmlAttributes(new { @class = "w-100" }))
+                </div>
+            </div>
+            <div class="k-card-body">
+                <div style="overflow-x: auto;">
+                    @(Html.Kendo().Grid<QuestionListDto>()
+                             .Name("gridQuestion")
+                             .ApplyCommonSettings() // 👈 Apply shared settings
+                             .Events(events => events.ApplyCommonEvents())
+                             .Columns(columns =>
+                             {
+                                 columns.Bound(m => m.Id);
+                                 columns.Bound(m => m.Date)
+                                     .Format("{0:dd/MM/yyyy}");
+                                 columns.Bound(m => m.Description)
+                                     .Title("Question")
+                                     .Encoded(false).Align(TextAlign.Left);
+                                 columns.Bound(m => m.QuestionTypeName)
+                                     .Align(TextAlign.Left)
+                                     .Title("Question Type");
+                                 columns.Bound(m => m.Marks);
+                                 columns.Bound(m => m.ChapterName)
+                                     .Align(TextAlign.Left)
+                                     .Title("Chapter");
+                                 columns.Bound(m => m.DifficultyLevelName)
+                                     .Title("Difficulty Level");
+                                 columns.Bound(m => m.PaperCategoryName)
+                                     .Align(TextAlign.Left)
+                                     .Title("Paper Category");
+                                 columns.Bound(m => m.CoNo);
+                                 columns.AddStatusColumn();
+                                 columns.AddCommandColumns(new List<GridCommandConfig>
+                                 {
+                                     new GridCommandConfig { Name = "Accept", Text = "", IconClass = "fa fa-check", ClickHandler = "onAccept" },
+                                     new GridCommandConfig { Name = "Reject", Text = "", IconClass = "fa fa-ban", ClickHandler = "onReject" },
+                                 });
+                             })
+                             .DataSource(dataSource => dataSource
+                                 //.ApplyCommonDataSourceSettings("GetQuestionDtos", "Question", "Question Bank")
+                                 .Ajax()
+                                 .PageSize(10)
+                                 .Read(read => read.Action("GetQuestionDtos", "Checker", new { area = "Question Bank", subjectId = @Model.SubjectId }).Data("sendData"))
+                                 .Model(model => model.Id(ModelConstants.Id))
+                                 .Events(events => events.Error("onGridError"))
+                                 .Sort(s => s.Add(ModelConstants.Id).Descending())
+                             ))
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+
+<script>
+    function onBackToList() {
+        window.location.href = '/Question Bank/Question/Index';
+    }
+
+    function sendData() {
+    }
+
+    function peformAction(id, action) {
+        fetch('/Question Bank/Checker/' + action, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ Id: id })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Data received:", data);
+                if (data.Success) {
+                    $("#gridQuestion").data("kendoGrid").dataSource.read();
+                    $("#gridQuestion").data("kendoGrid").refresh();
+
+                    bootbox.alert("✅ Success: " + data.Message);
+                } else {
+                    bootbox.alert("❌ Failed: " + data.Message);
+                }
+            })
+            .catch(error => {
+                console.error("Fetch error:", error);
+                bootbox.alert("⚠️ Error fetching data: " + error.message);
+            });
+    }
+
+    function onAccept(e) {
+        e.preventDefault();
+
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        peformAction(dataItem.Id, 'Accept');
+    }
+
+    function onReject(e) {
+        e.preventDefault();
+
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        peformAction(dataItem.Id, 'Reject');
+    }
+
+    @*function onEditClick(e) {
+        e.preventDefault();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        window.location.href = '@Url.Action("Edit", "Question")' + '/' + dataItem.Id;
+    }*@
+
+    function onBoundChange() {
+        console.log("event: bound change, Detail count : ");
+    }
+</script>

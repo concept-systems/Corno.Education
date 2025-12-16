@@ -1,0 +1,554 @@
+﻿.@model Corno.Data.Corno.RegistrationViewModel
+@{
+    ViewBag.Title = "Show Registration NAD Id : " + Model.FormNo;
+
+    var photoImageSource = "data:image/jpeg;base64, ";
+    if (null != Model.Photo)
+    {
+        photoImageSource = photoImageSource + Convert.ToBase64String(Model.Photo);
+    }
+    var document1ImageSource = "data:image/jpeg;base64,";
+    if (null != Model.Document1)
+    {
+        document1ImageSource = document1ImageSource + Convert.ToBase64String(Model.Document1);
+    }
+
+    var document2ImageSource = "data:image/jpeg;base64, ";
+    if (null != Model.Document2)
+    {
+        document2ImageSource = document2ImageSource + Convert.ToBase64String(Model.Document2);
+    }
+    var document3ImageSource = "data:image/jpeg;base64, ";
+    if (null != Model.Document3)
+    {
+        document3ImageSource = document3ImageSource + Convert.ToBase64String(Model.Document3);
+    }
+    var document4ImageSource = "data:image/jpeg;base64, ";
+    if (null != Model.Document4)
+    {
+        document4ImageSource = document4ImageSource + Convert.ToBase64String(Model.Document4);
+    }
+    var document5ImageSource = "data:image/jpeg;base64, ";
+    if (null != Model.Document5)
+    {
+        document5ImageSource = document5ImageSource + Convert.ToBase64String(Model.Document5);
+    }
+}
+<div id="printDiv">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <strong>Registration Details For PRN : @Model.PrnNo</strong>
+        </div>
+        <div class="panel-body">
+            <table class="table table-bordered">
+                <caption><strong>Registration Info</strong></caption>
+                <tr>
+                    <td class="col-sm-2" width="40%">Year of Admission </td>
+                    <td width="1%">:</td>
+                    <td>@Html.DisplayFor(m => m.Year)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Centre </td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(m => m.CentreName)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">College </td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(m => m.CollegeName)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Course Type  </td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(m => m.CourseTypeName)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Course </td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(m => m.CourseName)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Course Part Name </td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(m => m.CoursePartName)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Branch </td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(m => m.BranchName)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2" width="40%">Student Name </td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(m => m.StudentName)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Gender </td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(m => m.Gender)</td>
+                </tr>
+            </table>
+            <table class="table table-bordered">
+            <caption><strong>Personal Details</strong></caption>
+            <tr>
+                <td class="col-sm-2" width="40%">Photo : </td>
+                <td width="1%">:</td>
+                <td><img src="@photoImageSource" alt="" height="100px" width="100px" /></td>
+            </tr>
+            <tr>
+                <td class="col-sm-2">Local Address </td>
+                <td>:</td>
+                <td>@Model.LocalAddress</td>
+            </tr>
+            <tr>
+                <td class="col-sm-2">DOB </td>
+                <td>:</td>
+                <td>@string.Format("{0:dd-MMM-yyyy}", Model.Dob)</td>
+            </tr>
+            <tr>
+                <td class="col-sm-2">Mobile </td>
+                <td>:</td>
+                <td>@Html.DisplayFor(m => m.Mobile1)</td>
+            </tr>
+            <tr>
+                <td class="col-sm-2">Email </td>
+                <td>:</td>
+                <td>@Html.DisplayFor(m => m.StudentEmail)</td>
+            </tr>
+            <tr>
+                <td class="col-sm-2">Birth Place </td>
+                <td>:</td>
+                <td>@Html.DisplayFor(m => m.BirthPlace)</td>
+            </tr>
+            <tr>
+                <td class="col-sm-2">Birth District </td>
+                <td>:</td>
+                <td>@Html.DisplayFor(m => m.BirthPlaceDistrictName)</td>
+            </tr>
+            <tr>
+                <td class="col-sm-2">Birth State </td>
+                <td>:</td>
+                <td>@Html.DisplayFor(m => m.BirthPlaceStateName)</td>
+            </tr>
+            <tr>
+                <td class="col-sm-2">Birth Country </td>
+                <td>:</td>
+                <td>@Html.DisplayFor(m => m.BirthPlaceCountryName)</td>
+            </tr>
+            <tr>
+                <td class="col-sm-2">If Backward </td>
+                <td>:</td>
+                <td>@Html.DisplayFor(model => model.IfBackward)</td>
+            </tr>
+            <tr>
+                <td class="col-sm-2">Minority </td>
+                <td>:</td>
+                <td>@Html.DisplayFor(m => m.Minority)</td>
+            </tr>
+            <tr>
+                <td class="col-sm-2">Religion </td>
+                <td>:</td>
+                <td>@Html.DisplayFor(m => m.Religion)</td>
+            </tr>
+            <tr>
+                <td class="col-sm-2">Caste</td>
+                <td>:</td>
+                <td>@Html.DisplayFor(m => m.Caste)</td>
+            </tr>
+            <tr>
+                <td class="col-sm-2">Nationality </td>
+                <td>:</td>
+                <td>@Html.DisplayFor(m => m.Nationality)</td>
+            </tr>
+            <tr>
+                <td class="col-sm-2">Native Place </td>
+                <td>:</td>
+                <td>@Html.DisplayFor(m => m.NativePlace)</td>
+            </tr>
+            <tr>
+                <td class="col-sm-2">Domocile District </td>
+                <td>:</td>
+                <td>@Html.DisplayFor(m => m.DomicileDistrictName)</td>
+            </tr>
+            <tr>
+                <td class="col-sm-2">Domocile State </td>
+                <td>:</td>
+                <td>@Html.DisplayFor(m => m.DomicileStateName)</td>
+            </tr>
+            <tr>
+                <td class="col-sm-2">Area </td>
+                <td>:</td>
+                <td>@Html.DisplayFor(m => m.Area)</td>
+            </tr>
+            <tr>
+                <td class="col-sm-2">Blood Group</td>
+                <td>:</td>
+                <td>@Html.DisplayFor(m => m.BloodGroup)</td>
+            </tr>
+            <tr>
+                <td class="col-sm-2">NAD Id </td>
+                <td>:</td>
+                <td>@Html.DisplayFor(m => m.FormNo)</td>
+            </tr>
+        </table>
+            <table class="table table-bordered">
+                <caption><strong>Contact Details</strong></caption>
+                <tr>
+                    <td class="col-sm-2">Father Name </td>
+                    <td width="1%">:</td>
+                    <td>@Html.DisplayFor(m => m.FatherName)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Mother Name </td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(m => m.MotherName)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2"> Permanent Add.</td>
+                    <td>:</td>
+                    <td>@Model.PermanentAddress</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">City</td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(model => model.CityName)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2"> State.</td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(model => model.StateName)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Country</td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(model => model.CountryName)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2"> Pin Code</td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(model => model.Pincode)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Email</td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(m => m.ParentEmail)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2"> Residence Phone </td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(m => m.ParentTelephone)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Parent Qualification</td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(model => model.ParentQualification)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Parent Mobile No</td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(m => m.ParentMobileNo)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2"> Parent Occupation </td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(m => m.ParentOccupation)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Office Name</td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(m => m.ParentOfficeName)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Office Phone</td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(m => m.ParentOfficeTelephone)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2"> Office Mobile </td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(m => m.ParentOfficeMobile)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2"> Guardian Name </td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(model => model.GuardianName)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Guardian Address</td>
+                    <td>:</td>
+                    <td>@Model.LocalGuardianAddress</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Mobile No</td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(model => model.GuardianMobileNo)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">City </td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(model => model.CityName1)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">State</td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(model => model.StateName1)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Country </td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(model => model.CountryName)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Email</td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(model => model.GuardianEmail)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Pin Code</td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(model => model.LocalPinCode)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Relationship With Student</td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(model => model.RelationshipWithCandidate)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Annual Income</td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(model => model.AnnualIncome)</td>
+                </tr>
+            </table>
+            <table class="table table-bordered">
+                <caption><strong>University Info</strong></caption>
+                <tr>
+                    <td class="col-sm-2" width="40%">General Register No</td>
+                    <td width="1%">:</td>
+                    <td>@Html.DisplayFor(model => model.RegisterNo)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Enrollment No</td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(model => model.EnrollmentNo)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">PAN</td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(model => model.Pan)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Aadhaar No</td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(model => model.AdhaarNo)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Date Of Admission </td>
+                    <td>:</td>
+                    <td>@string.Format("{0:dd-MMM-yyyy}", Model.AdmissionDate)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Date Of Leaving</td>
+                    <td>:</td>
+                    <td>@string.Format("{0:dd-MMM-yyyy}", Model.LeavingDate)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Passport No</td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(model => model.PassportNo)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Passport Issued On </td>
+                    <td>:</td>
+                    <td>@string.Format("{0:dd-MMM-yyyy}", Model.PassportIssuedOn)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Renewed Passport No </td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(model => model.RenewedPassportNo)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Renewed Passport Issued On </td>
+                    <td>:</td>
+                    <td>@string.Format("{0:dd-MMM-yyyy}", Model.RenewedPassportIssuedOn)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Visa No </td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(model => model.VisaNo)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2"> Visa Issued On </td>
+                    <td>:</td>
+                    <td>@string.Format("{0:dd-MMM-yyyy}", Model.VisaIssuedOn)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Admission Cancelled </td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(model => model.IsAdmissionCancelled)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2"> Admission Cancelled Date </td>
+                    <td>:</td>
+                    <td>@string.Format("{0:dd-MMM-yyyy}", Model.AdmissionCancelledDate)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Eligibility No </td>
+                    <td>:</td>
+                    <td colspan="4">@Html.DisplayFor(m => m.EligibilityNo)</td>
+                </tr>
+            </table>
+            <table class="table table-bordered">
+                <caption><strong>Previous Exam Details ( For the admission above mention Course )</strong></caption>
+                <tr>
+                    <td class="col-sm-2" width="40%">Exam Name </td>
+                    <td width="1%">:</td>
+                    <td>@Html.DisplayFor(m => m.ExamName)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2"> Qualifying Examinations </td>
+                    <td>:</td>
+                    <td>@Model.QualifyingExaminations</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Subject List </td>
+                    <td>:</td>
+                    <td>@Model.ExamSubjectList</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2"> Qualifying Subjects </td>
+                    <td>:</td>
+                    <td>@Model.QualifyingSubjects</td>
+                </tr>
+
+                <tr>
+                    <td class="col-sm-2">Exam Attempts </td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(m => m.QualifyingExamAttempts)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Total Marks</td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(m => m.QualifyingExamTotalMarks)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Out Of Marks</td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(m => m.QualifyingExamOutOfMarks)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2"> SSC Total Marks </td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(m => m.SscTotalMarks)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2"> SSC Marks Ot Of </td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(m => m.SscMarksOutOf)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2"> HSC Total Marks </td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(m => m.HscTotalMarks)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2"> HSC Marks Out Of </td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(m => m.HscMarksOutOf)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2"> UG Total Marks </td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(m => m.UgTotalMarks)</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2"> UG Marks Out Of</td>
+                    <td>:</td>
+                    <td>@Html.DisplayFor(m => m.UgMarksOutOf)</td>
+                </tr>
+            </table>
+            <table class="table table-bordered">
+                <caption><strong> Other Info </strong></caption>
+                <tr>
+                    <td class="col-sm-2" width="40%" >Extra Activities</td>
+                    <td width="1%">:</td>
+                    <td colspan="4">@Model.ExtraCurricularActivities</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Relatives Details</td>
+                    <td>:</td>
+                    <td colspan="4">@Model.CloseRelativeDetails</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Upload Jpeg Image - 1</td>
+                    <td>:</td>
+                    <td><img src="@document1ImageSource" width="200px" height="250px" /></td>
+                    <td class="col-sm-2">Upload Jpeg Image - 2</td>
+                    <td>:</td>
+                    <td><img src="@document2ImageSource" width="200px" height="250px" /></td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Upload Jpeg Image - 3</td>
+                    <td>:</td>
+                    <td><img src="@document3ImageSource" width="200px" height="250px" /></td>
+                    <td class="col-sm-2">Upload Jpeg Image - 4</td>
+                    <td>:</td>
+                    <td><img src="@document4ImageSource" width="200px" height="250px" /></td>
+                </tr>
+                <tr>
+                    <td class="col-sm-2">Upload Jpeg Image - 5</td>
+                    <td>:</td>
+                    <td colspan="4"><img src="@document5ImageSource" width="200px" height="250px" /></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    function PrintForm() {
+        try {
+            var htmlPrintDiv = $('#printDiv').html();
+            $(htmlPrintDiv).printArea();
+        }
+        catch (e) {
+            alert(e);
+        }
+    }
+
+    function DemoGallery() {
+        $('.fancybox').fancybox({
+            openEffect: 'none',
+            closeEffect: 'none'
+        });
+    }
+    $(document).ready(function () {
+
+        //// Add tooltip to form-controls
+        $('.form-control').tooltip();
+
+        //// Add tooltip to form-controls
+        $('.form-control').tooltip();
+
+        LoadSelect2Script(DemoSelect2);
+
+        //// Load example of form validation
+        LoadBootstrapValidatorScript(DemoFormValidator);
+        LoadFancyboxScript(DemoGallery);
+        //onSelectedIndexChanged();
+    });
+
+    function DemoSelect2() {
+        $('#s2_course').select2({ placeholder: "Select Course" });
+        $('#s2_college').select2({ placeholder: "Select Faculty" });
+        $('#s2_coursepart').select2({ placeholder: "Select Course Part" });
+        $('#s2_coursetype').select2({ placeholder: "Select Course type" });
+        $('#s2_branch').select2({ placeholder: "Select Branch" });
+        $('#s2_IfBackward').select2({ placeholder: "Select Backward" });
+        $('#s2_state').select2({ placeholder: "Select State" });
+        $('#s2_city').select2({ placeholder: "Select City" });
+        $('#s2_state1').select2({ placeholder: "Select State" });
+        $('#s2_city1').select2({ placeholder: "Select City" });
+    }
+
+</script>

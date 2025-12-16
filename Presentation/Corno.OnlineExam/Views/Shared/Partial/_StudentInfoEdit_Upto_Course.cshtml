@@ -1,0 +1,134 @@
+﻿@model Corno.Data.Common.UniversityBaseModel
+@using Corno.Globals.Constants
+@using Kendo.Mvc.UI
+
+
+<div class="form-group">
+    <label class="col-sm-2 control-label">College <code>*</code>:</label>
+    <div class="col-sm-10">
+        @*@Html.HiddenFor(model => model.CollegeId)*@
+        @(Html.Kendo().ComboBox()
+              //.Enable(false)
+              .Name(ModelConstants.CollegeId)
+              .HtmlAttributes(new {style = "width:100%"})
+              .Placeholder("Select College...")
+              .Filter(FilterType.Contains)
+              .DataTextField(ModelConstants.NameWithId)
+              .DataValueField(ModelConstants.Id)
+              .SelectedIndex(Model.CollegeId ?? -1)
+              .DataSource(source =>
+              {
+                  source.Read(read =>
+                  {
+                      read.Action("GetColleges", "University");
+                  })
+                      .ServerFiltering(true);
+              })
+              )
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-sm-2 control-label">Centre <code>*</code>:</label>
+    <div class="col-sm-10">
+        @*@Html.HiddenFor(model => model.CentreId)*@
+        @(Html.Kendo().ComboBox()
+              .Name(ModelConstants.CentreId)
+              .HtmlAttributes(new {style = "width:100%"})
+              .Placeholder("Select Centre...")
+              .DataTextField(ModelConstants.NameWithId)
+              .DataValueField(ModelConstants.Id)
+              .Filter(FilterType.Contains)
+              .SelectedIndex(Model.CentreId ?? -1)
+              .DataSource(source =>
+              {
+                  source.Read(read =>
+                  {
+                      read.Action("GetCentersByCollege", "University")
+                          .Data("filterCentre");
+                  })
+                      .ServerFiltering(true);
+              })
+              .Enable(false)
+              .AutoBind(false)
+              .CascadeFrom("CollegeId")
+              )
+        @Html.ValidationMessageFor(m => m.CentreId)
+        <script>
+            function filterCentre() {
+                return {
+                    collegeId: $("#CollegeId").val()
+                };
+            }
+        </script>
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-sm-2 control-label">Course Type <code>*</code>:</label>
+    <div class="col-sm-10">
+        @*@Html.HiddenFor(model => model.CourseTypeId)*@
+        @(Html.Kendo().ComboBox()
+              .Enable(false)
+              .Name(ModelConstants.CourseTypeId)
+              .HtmlAttributes(new {style = "width:100%"})
+              .Placeholder("Select Course Type...")
+              .DataTextField(ModelConstants.NameWithId)
+              .DataValueField(ModelConstants.Id)
+              .Filter(FilterType.Contains)
+              .SelectedIndex(Model.CourseTypeId ?? -1)
+              .DataSource(source =>
+              {
+                  source.Read(read =>
+                  {
+                      read.Action("GetCourseTypesByCollege", "University")
+                          .Data("filterCourseTypes");
+                  })
+                      .ServerFiltering(true);
+              })
+              .AutoBind(false)
+              .CascadeFrom("CollegeId")
+              )
+        @Html.ValidationMessageFor(m => m.CourseTypeId)
+        <script>
+            function filterCourseTypes() {
+                return {
+                    collegeId: $("#CollegeId").val()
+                };
+            }
+        </script>
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-sm-2 control-label">Course <code>*</code>:</label>
+    <div class="col-sm-10">
+        @*@Html.HiddenFor(model => model.CourseId)*@
+        @(Html.Kendo().ComboBox()
+              .Name(ModelConstants.CourseId)
+              .HtmlAttributes(new {style = "width:100%", @diabled = "disabled"})
+              .Placeholder("Select Course...")
+              .DataTextField(ModelConstants.NameWithId)
+              .DataValueField(ModelConstants.Id)
+              .Filter(FilterType.Contains)
+              .SelectedIndex(Model.CourseId ?? -1)
+              .DataSource(source =>
+              {
+                  source.Read(read =>
+                  {
+                      read.Action("GetAllCoursesByCollegeAndCourseType", "University")
+                          .Data("filterCourses");
+                  })
+                      .ServerFiltering(true);
+              })
+              .Enable(false)
+              .AutoBind(false)
+              .CascadeFrom("CourseTypeId")
+              )
+        <script>
+            function filterCourses() {
+                return {
+                    CollegeId: $("#CollegeId").val(),
+                    CourseTypeId: $("#CourseTypeId").val()
+                };
+            }
+        </script>
+    </div>
+</div>

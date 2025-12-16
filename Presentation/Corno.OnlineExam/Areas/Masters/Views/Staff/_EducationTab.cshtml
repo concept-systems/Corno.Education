@@ -1,0 +1,104 @@
+﻿@using Corno.Data.Helpers
+@using Corno.Globals.Constants
+@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Masters.Staff
+
+@{
+    var formEnabled = ViewData[ModelConstants.FormEnabled].ToBoolean();
+}
+
+<div class="">
+    <div class="col-sm-6">
+        <div class="form-group row">
+            @Html.LabelFor(m => m.DesignationId, "Designation :",
+                new { @class = "col-sm-3 control-label" })
+            <div class="col-sm-8">
+                @(Html.Kendo().MultiColumnComboBoxFor(m => m.DesignationId)
+                    //.Enable(Model.EnableHeader)
+                    .DataTextField(ModelConstants.NameWithId)
+                    .DataValueField(ModelConstants.Id)
+                    .HtmlAttributes(new { @class = "w-100" })
+                    .Filter("contains")
+                    .Placeholder("Select ...")
+                    .Columns(columns =>
+                    {
+                        columns.Add().Field(ModelConstants.Id).Title(ModelConstants.Id).Width("100px");
+                        columns.Add().Field(ModelConstants.Name).Title(ModelConstants.Name).Width("600px");
+                    })
+                    .DataSource(dataSource => dataSource
+                        .Read(read => read.Action("GetMiscMasters", "Corno", new {miscType = "Designation" }))
+                    ))
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(m => m.DepartmentId, "Department :",
+                new { @class = "col-sm-3 control-label" })
+            <div class="col-sm-8">
+                @(Html.Kendo().MultiColumnComboBoxFor(m => m.DepartmentId)
+                    //.Enable(Model.EnableHeader)
+                    .DataTextField(ModelConstants.NameWithId)
+                    .DataValueField(ModelConstants.Id)
+                    .HtmlAttributes(new { @class = "w-100" })
+                    .Filter("contains")
+                    .Placeholder("Select ...")
+                    .Columns(columns =>
+                    {
+                        columns.Add().Field(ModelConstants.Id).Title(ModelConstants.Id).Width("100px");
+                        columns.Add().Field(ModelConstants.Name).Title(ModelConstants.Name).Width("600px");
+                    })
+                    .DataSource(dataSource =>
+                    {
+                        dataSource.Read(read => { read.Action("GetMiscMasters", "Corno", new { miscType = "Department" }); })
+                            .ServerFiltering(true);
+                    }))
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(m => m.GenderId, "Gender :",
+                new { @class = "col-sm-3 control-label" })
+            <div class="col-sm-8">
+                @(Html.Kendo().MultiColumnComboBoxFor(m => m.GenderId)
+                    //.Enable(Model.EnableHeader)
+                    .DataTextField(ModelConstants.NameWithId)
+                    .DataValueField(ModelConstants.Id)
+                    .HtmlAttributes(new { @class = "w-100" })
+                    .Filter("contains")
+                    .Placeholder("Select ...")
+                    .Columns(columns =>
+                    {
+                        columns.Add().Field(ModelConstants.Id).Title(ModelConstants.Id).Width("100px");
+                        columns.Add().Field(ModelConstants.Name).Title(ModelConstants.Name).Width("600px");
+                    })
+                    //.BindTo(miscMasterService.GetViewModelList(m => m.MiscType == ModelConstants.PackingType)))
+                    .DataSource(dataSource =>
+                    {
+                        dataSource.Read(read =>
+                        {
+                            read.Action("GetMiscMasters", "Corno", new { miscType = "Gender" });
+                        })
+                            .ServerFiltering(true);
+                    }))
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group row">
+            @Html.LabelFor(m => m.LastDegree, "Last Degree :",
+                new { @class = "col-sm-3" })
+            <div class="col-sm-8">
+                @(Html.Kendo().TextBoxFor(m => m.LastDegree)
+                    .Value(Model.LastDegree)
+                    .HtmlAttributes(new { @class = "text-right w-100" }))
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(m => m.Salutation, "Salutation :",
+                new { @class = "col-sm-3" })
+            <div class="col-sm-8">
+                @(Html.Kendo().TextBoxFor(m => m.Salutation)
+                    .Value(Model.Salutation)
+                    .HtmlAttributes(new { @class = "text-right w-100" }))
+            </div>
+        </div>
+    </div>
+</div>

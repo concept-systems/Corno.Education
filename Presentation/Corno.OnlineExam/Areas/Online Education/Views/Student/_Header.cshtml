@@ -1,0 +1,71 @@
+﻿@using Corno.Data.Helpers
+@using Corno.Globals.Constants
+@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Question_Bank.Models.Paper
+
+@{
+    var formEnabled = ViewData[ModelConstants.FormEnabled].ToBoolean();
+}
+
+<div class="form-group">
+    @Html.LabelFor(m => m.NoOfSections, "No. Of Sections :",
+        new { @class = "col-sm-2 control-label" })
+    <div class="col-sm-2">
+        @(Html.Kendo().NumericTextBoxFor(m => m.NoOfSections)
+            .Decimals(0)
+            .Min(0)
+            .Format("n0")
+            .Value(Model.NoOfSections ?? 0)
+            .Spinners(false)
+            .HtmlAttributes(new { @class = "text-right w-100", @readonly = "readonly" }))
+    </div>
+    @Html.LabelFor(m => m.NoOfChapters, "No. Of Chapters :",
+        new { @class = "col-sm-offset-2 col-sm-2 control-label" })
+    <div class="col-sm-2">
+        @*@Model.NoOfChapters*@
+        @(Html.Kendo().NumericTextBoxFor(m => m.NoOfChapters)
+            .Decimals(0)
+            .Min(0)
+            .Format("n0")
+            .Value(Model.NoOfChapters ?? 0)
+            .Spinners(false)
+            .HtmlAttributes(new { @class = "text-right w-100", @readonly = "readonly" }))
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.NoOfQuestions, "No. Of Questions :",
+        new { @class = "col-sm-2 control-label" })
+    <div class="col-sm-2">
+        @(Html.Kendo().NumericTextBoxFor(m => m.NoOfQuestions).Decimals(0)
+            .Min(0).Format("n0")
+            .Value(Model.NoOfQuestions ?? 0)
+            .Spinners(false)
+            .HtmlAttributes(new { @class = "text-right w-100", @readonly = "readonly" }))
+    </div>
+    @Html.LabelFor(m => m.MaxMarks, "Max Marks :",
+        new { @class = "col-sm-offset-2 col-sm-2 control-label" })
+    <div class="col-sm-2">
+        @*@Model.MaxMarks*@
+        @(Html.Kendo().NumericTextBoxFor(m => m.MaxMarks)
+            .Decimals(0).Min(0).Format("n0")
+            .Value(Model.MaxMarks ?? 0)
+            .Spinners(false)
+            .HtmlAttributes(new { @class = "text-right w-100", @readonly = "readonly" }))
+    </div>
+    <div class="col-sm-2 text-right">
+        @(Html.Kendo().Button()
+            .Name("get_questions")
+            .Icon("search")
+            .SpriteCssClass("k-icon-64")
+            .FillMode(ButtonFillMode.Outline)
+            .ThemeColor(ThemeColor.Tertiary)
+            .Content("Get Questions")
+            .Enable(formEnabled)
+            .HtmlAttributes(new
+            {
+                type = "submit",
+                name = "action:GetQuestions",
+            }))
+    </div>
+</div>

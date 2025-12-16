@@ -1,0 +1,140 @@
+﻿@model Corno.Data.Reports.ExamCheckListViewModel
+@using Corno.Globals.Constants
+@using Kendo.Mvc.UI;
+@{
+    ViewBag.Title = "Exam Form Check List";
+}
+
+<style>
+    .UpperCase {
+        text-transform: uppercase;
+    }
+</style>
+
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Exam</a></li>
+            <li><a href="#">Check List</a></li>
+        </ol>
+    </div>
+</div>
+@Html.ValidationSummary(false)
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <div class="box ui-draggable ui-droppable">
+            <div class="box-header">
+                <div class="box-name">
+                    <i class="fa fa-plus-square large"></i>
+                    <span>Show Exam form check list</span>
+                </div>
+                <div class="box-icons">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="expand-link">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+                <div class="no-move"></div>
+            </div>
+            <div class="box-content">
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-horizontal">
+                        <div class="box-content">
+                            <div class="form-group">
+                                <div class="col-sm-offset-10 col-sm-2">
+                                    <button type="submit" value="Create" title="Save" class="btn btn-primary btn-label-left pull-right">
+                                        <span><i class="fa fa-save"></i></span>
+                                        Show Report
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <strong>Selection Criteria</strong>
+                                </div>
+                                <div id="collapse1" class="panel-body panel-collapse">
+                                    @Html.Partial("Partial/_StudentInfoSelection2")
+                                    <div class="form-group  has-feedback">
+                                        <label class="col-sm-2 control-label">PRN :</label>
+                                        <div class="col-sm-2">
+                                            @Html.TextBoxFor(m => m.PrnNo, new { @class = "form-control", placeholder = "Enter PRN", data_toggle = "tooltip", data_placement = "bottom", title = "PRN No" })
+                                        </div>
+                                        <label class="col-sm-2 control-label">Lot No. <code>*</code>:</label>
+                                        <div class="col-sm-6">
+                                            @(Html.Kendo().ComboBox()
+                                            .Name("Bundle")
+                                                .HtmlAttributes(new { style = "width:100%" })
+                                                .Placeholder("Select Lot No...")
+                                                .DataTextField(ModelConstants.Name)
+                                                .DataValueField(ModelConstants.Id)
+                                                .Filter(FilterType.Contains)
+                                                .SelectedIndex(-1)
+                                                .DataSource(source =>
+                                                {
+                                                    source.Read(read =>
+                                                    {
+                                                        read.Action("GetCascadeBundles", "Report")
+                                                            .Data("filterBundles");
+                                                    })
+                                                    .ServerFiltering(true);
+                                                })
+                                                .Enable(false)
+                                                .AutoBind(false)
+                                                .CascadeFrom(ModelConstants.CoursePartId)
+                                            )
+                                            <script>
+                                                function filterBundles() {
+                                                    return {
+                                                        coursePartId: $("#CoursePartId").val(),
+                                                        collegeId: $("#CollegeId").val()
+                                                    };
+                                                }
+                                            </script>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-10 col-sm-2">
+                                <button type="submit" value="Create" title="Save" class="btn btn-primary btn-label-left pull-right">
+                                    <span><i class="fa fa-save"></i></span>
+                                    Show Report
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function DemoSelect2() {
+        $('#s2_centre').select2({ placeholder: "Select Centre" });
+        $('#s2_course').select2({ placeholder: "Select Course" });
+        $('#s2_college').select2({ placeholder: "Select College" });
+        $('#s2_coursepart').select2({ placeholder: "Select Course Part" });
+    }
+
+    $(document).ready(function () {
+        // Add tooltip to form-controls
+        $('.form-control').tooltip();
+
+        // Initialize datepicker
+        LoadSelect2Script(DemoSelect2);
+
+        // Load example of form validation
+        LoadBootstrapValidatorScript(DemoFormValidator);
+    });
+
+</script>

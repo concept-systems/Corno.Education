@@ -1,0 +1,494 @@
+﻿@model Corno.Data.ViewModels.ExamViewModel
+@using Corno.Globals
+@using Kendo.Mvc.UI
+@{
+    ViewBag.Title = "Student Exam Form";
+
+    var sessionData = Session[User.Identity.Name] as SessionData;
+}
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Online Exam</a></li>
+            <li><a href="#">Exam Form</a></li>
+        </ol>
+    </div>
+</div>
+@if (ViewData["Error"] != null)
+{
+    <div class="red">
+        <p>Error: @ViewData["Error"].ToString()</p>
+    </div>
+    <script type="text/javascript">
+        bootbox.alert("@TempData["Error"]")
+    </script>
+}
+@if (TempData["Success"] != null)
+{
+    <div class="green">
+        <p>Success: @TempData["Success"].ToString()</p>
+    </div>
+    <script type="text/javascript">
+        bootbox.alert("@TempData["Success"]")
+    </script>
+}
+@Html.ValidationSummary()
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <div class="box ui-draggable ui-droppable">
+            <div class="box-header">
+                <div class="box-name">
+                    <i class="fa fa-plus-square large"></i>
+                    <span>Create a new Exam Form.</span>
+                </div>
+            </div>
+            <div class="box-content">
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form", enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    @Html.HiddenFor(m => m.PrnNo)
+                    @Html.HiddenFor(m => m.StudentName)
+                    @Html.HiddenFor(m => m.Email)
+                    @Html.HiddenFor(m => m.Mobile)
+                    @Html.HiddenFor(m => m.Bundle)
+                    @Html.HiddenFor(m => m.FormNo)
+                    @Html.HiddenFor(m => m.Photo)
+                    @Html.HiddenFor(m => m.LateFeeDate)
+                    @Html.HiddenFor(m => m.SuperLateFeeDate)
+
+                    @Html.HiddenFor(m => m.Id)
+                    @Html.HiddenFor(m => m.InstanceId)
+                    @Html.HiddenFor(m => m.CollegeId)
+                    @Html.HiddenFor(m => m.CollegeName)
+                    @Html.HiddenFor(m => m.CentreId)
+                    @Html.HiddenFor(m => m.CentreName)
+                    @Html.HiddenFor(m => m.CourseTypeName)
+                    @Html.HiddenFor(m => m.CourseId)
+                    @Html.HiddenFor(m => m.CourseName)
+                    @Html.HiddenFor(m => m.CoursePartId)
+                    @Html.HiddenFor(m => m.CoursePartName)
+                    @Html.HiddenFor(m => m.BranchId)
+                    @Html.HiddenFor(m => m.BranchName)
+                    @Html.HiddenFor(m => m.ExamFee, new { id = "ExamFee" })
+                    @Html.HiddenFor(m => m.BacklogFee)
+                    @Html.HiddenFor(m => m.CapFee)
+                    @Html.HiddenFor(m => m.StatementOfMarksFee)
+                    @Html.HiddenFor(m => m.PracticalFee)
+                    @Html.HiddenFor(m => m.DissertationFee)
+                    @Html.HiddenFor(m => m.OthersFee)
+                    @Html.HiddenFor(m => m.LateFee)
+                    @Html.HiddenFor(m => m.SuperLateFee)
+                    @Html.HiddenFor(m => m.EnvironmentalExaminationFee)
+                    @Html.HiddenFor(m => m.CertificateOfPassingFee)
+                    @Html.HiddenFor(m => m.RegularFee45)
+                    @Html.HiddenFor(m => m.BackLogFee45)
+                    @Html.HiddenFor(m => m.TotalFee45)
+                    @Html.HiddenFor(m => m.Total)
+
+                    @Html.HiddenFor(m => m.FeeId)
+
+                    <div class="box-content">
+                        <div class="k-card">
+                            <div class="k-card-header k-card-info">
+                                <div class="form-group">
+                                    <div class="col-sm-10">
+                                        <h5 class="k-card-title">PRN Details</h5>
+                                        @*<h6 class="k-card-subtitle text-danger"><strong class="text-danger">Please Press TAB After Entering PRN</strong></h6>*@
+                                    </div>
+                                    <div class="col-sm-2 k-text-right">
+                                        @*<button type="submit" value="Create" title="Save" class="k-button k-button-md k-rounded-lg k-button-outline k-button-outline-base">
+                                        <span><i class="fa fa-save"></i></span>
+                                        Submit
+                                    </button>
+                                </div>*@
+                                        <button type="submit" id="pay1" name="submitType" value="Pay" class="k-button k-button-md k-rounded-lg k-button-outline k-button-outline-tertiary">
+                                            <span>
+                                                <i class="fa @(Model.Total <= 0 ? "fa-save" : "fa-paypal")"></i>
+                                            </span>&nbsp;@(Model.Total <= 0 ? "Submit" : "Pay")
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="k-card-body">
+                                <div class="form-group row">
+                                    <label class="col-sm-2 ">PRN : </label>
+                                    <div class="col-sm-4 text-primary">
+                                        @Html.DisplayFor(m => m.PrnNo)
+                                    </div>
+                                    <label class="col-sm-2">Name :</label>
+                                    <div class="col-sm-4 text-primary">
+                                        @Model.StudentName
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2">Form No :</label>
+                                    <div class="col-sm-4 text-primary">
+                                        @Model.FormNo
+                                    </div>
+                                    <label class="col-sm-2">Lot No :</label>
+                                    <div class="col-sm-4 text-primary">
+                                        @Model.Bundle
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 control-label">Mobile :</label>
+                                    <div class="col-sm-4 text-primary">
+                                        @Model.Mobile
+                                    </div>
+                                    <label class="col-sm-2 control-label">Email :</label>
+                                    <div class="col-sm-4 text-primary">
+                                        @Model.Email
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 control-label">Date :</label>
+                                    <div class="col-sm-3 text-primary">
+                                        @Model.Date
+                                    </div>
+                                    <label class="col-sm-offset-1 col-sm-2 control-label">Photo :</label>
+                                    <div class="col-sm-offset-4 text-primary">
+                                        @if (Model.Photo != null)
+                                        {
+                                            var imageBase64 = Convert.ToBase64String(Model.Photo);
+                                            var imageSrc = string.Format("data:image/gif;base64,{0}", imageBase64);
+                                            <img src="@imageSrc" width="130px" height="130px" />
+                                        }
+                                    </div>
+
+                                </div>
+                                @*<div class="form-group  has-feedback">
+                                    <label class="col-sm-6 row control-label text-primary">Late Fee Start After : @string.Format("{0:dd/MM/yyyy}", Model.LateFeeDate)</label>
+                                    <label class="col-sm-6 row control-label text-primary">Super Late Fee Start After : @string.Format("{0:dd/MM/yyyy}", Model.SuperLateFeeDate)</label>
+                                </div>*@
+                            </div>
+                        </div>
+                        <br />
+                        <div class="k-card">
+                            <div class="k-card-header k-card-info">Course Info</div>
+                            <div class="k-card-body">
+                                <table class="table table-responsive table-bordered">
+                                    <tr>
+                                        <td>College :</td>
+                                        <td colspan="3" class="text-primary">
+                                            @Model.CollegeName
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Centre :</td>
+                                        <td class="text-primary">
+                                            @Model.CentreName
+                                        </td>
+                                        <td>Course Type :</td>
+                                        <td class="text-primary">
+                                            @Model.CourseTypeName
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Course :</td>
+                                        <td colspan="3" class="text-primary">
+                                            @Model.CourseName
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Course Part : </td>
+                                        <td id="tdCoursePart" class="text-primary">
+                                            @Model.CoursePartName
+                                        </td>
+                                        <td>Branch : </td>
+                                        <td class="text-primary">
+                                            @Model.BranchName
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="k-card">
+                            <div class="k-card-header k-card-info">Subjects</div>
+                            <div class="k-card-body">
+                                @(Html.Kendo().Grid(Model.ExamSubjectViewModels.OrderBy(e => e.SubjectCode)).Name("ExamSubjectViewModels").Columns(columns =>
+                                {
+                                    columns.Bound(p => p.RowSelector)
+                                        .ClientTemplate("<input type='checkbox' #= RowSelector ? checked='checked' :'' # class='chkbx' name='ExamSubjectViewModels[#= index(data)#].RowSelector' value='#= RowSelector #' />")
+                                        .Title("Select")
+                                        .HtmlAttributes(new { @class = "text-center" });
+                                    columns.Bound(p => p.CoursePartId).Title("Course Part Code").Width(130).ClientTemplate("#= CoursePartId #" + "<input type='hidden' name='ExamSubjectViewModels[#= index(data)#].CoursePartId' value='#= CoursePartId #' />")
+                                        .HtmlAttributes(new { @class = "text-center" });
+                                    columns.Bound(p => p.CoursePartName).Title("Course Part").Width(150).ClientTemplate("#= CoursePartName #" + "<input type='hidden' name='ExamSubjectViewModels[#= index(data)#].CoursePartName' value='#= CoursePartName #' />");
+                                    columns.Bound(p => p.SubjectCode).ClientTemplate("#= SubjectCode #" + "<input type='hidden' name='ExamSubjectViewModels[#= index(data)#].SubjectCode' value='#= SubjectCode #' />")
+                                        .Width(120).HtmlAttributes(new { @class = "text-center" });
+                                    columns.Bound(p => p.SubjectName).Title("Subject").ClientTemplate("#= SubjectName #" + "<input type='hidden' name='ExamSubjectViewModels[#= index(data)#].SubjectName' value='#= SubjectName #' />");
+                                    columns.Bound(p => p.MaxOptionalCount).Title("Max Optionals").Width(80).Hidden().ClientTemplate("#= MaxOptionalCount #" +
+                                                                                                                                    "<input type='hidden' name='ExamSubjectViewModels[#= index(data)#].MaxOptionalCount' value='#= MaxOptionalCount #'  />");
+                                    columns.Bound(p => p.OptionalIndex).Hidden().Title("Optional Index").Width(80).ClientTemplate("#= OptionalIndex #" +
+                                                                                                                                  "<input type='hidden' name='ExamSubjectViewModels[#= index(data)#].OptionalIndex' value='#= OptionalIndex #'  />");
+                                    columns.Bound(p => p.SubjectType).Title("Subject Type").Hidden().ClientTemplate("#= SubjectType #" + "<input type='hidden' name='ExamSubjectViewModels[#= index(data)#].SubjectType' value='#= SubjectType #' />");
+                                    columns.Bound(p => p.InstanceId).Title("Instance").Hidden().ClientTemplate("#= InstanceId #" + "<input type='hidden' name='ExamSubjectViewModels[#= index(data)#].InstanceId' value='#= InstanceId #' />");
+                                }).Editable(ed => ed.Mode(GridEditMode.InCell))
+                                    //.Pageable()
+                                    .Sortable().Groupable()
+                                    //.Selectable()
+                                    //.Events(events => events.Change("onChange"))
+                                    .DataSource(dataSource => dataSource
+                                        .Ajax()
+                                        //.PageSize(10)
+                                        .Events(events => events.Error("onError"))
+                                        .Group(group => group.Add(p => p.SubjectType))
+                                        .Model(model =>
+                                        {
+                                            // Following line is important. Don't Delete. Model's id field needs to be assigned to value field.
+                                            // Otherwise, Row will be deleted after cancel action of edit command.
+                                            model.Id(p => p.SubjectCode);
+                                            model.Field(p => p.SubjectName).Editable(false);
+                                            model.Field(p => p.CoursePartId).Editable(false);
+                                            model.Field(p => p.SubjectCode).Editable(false);
+                                            model.Field(p => p.CoursePartName).Editable(false);
+                                            model.Field(p => p.MaxOptionalCount).Editable(false);
+                                            model.Field(p => p.OptionalIndex).Editable(false);
+                                            model.Field(p => p.SubjectType).Editable(false);
+                                            model.Field(p => p.InstanceId).Editable(false);
+                                        })
+                                        //.Batch(true)
+                                        .ServerOperation(false)
+                                    ))
+                                <script type="text/javascript">
+                                    $(function () {
+                                        $('#ExamSubjectViewModels')
+                                            .on('click',
+                                                '.chkbx',
+                                                function () {
+                                                    var checked = $(this).is(':checked');
+                                                    var grid = $('#ExamSubjectViewModels').data().kendoGrid;
+                                                    var dataItem = grid.dataItem($(this).closest('tr'));
+                                                    dataItem.set('RowSelector', checked);
+                                                });
+                                    });
+
+                                    function index(dataItem) {
+                                        var data = $("#ExamSubjectViewModels").data("kendoGrid").dataSource.data();
+                                        return data.indexOf(dataItem);
+                                    }
+
+                                    function onError(e) {
+                                        alert("Error");
+                                        if (e.status === "customerror") {
+                                            alert(e.errors);
+
+                                            $("#BranchId").data("kendoComboBox").value(null);
+                                            $("#CoursePartId").data("kendoComboBox").value(null);
+                                            $("#ExamSubjectViewModels").data("kendoGrid").dataSource.data([]);
+                                        } else {
+                                            alert("Generic server error.");
+                                        }
+                                    }
+
+                                </script>
+                            </div>
+                        </div>
+                        <div class="k-card" style="display: none">
+                            <div class="k-card-header k-card-info">Approval Details</div>
+                            <div class="k-card-body">
+                                <div class="form-group  has-feedback">
+                                    <label class=" col-sm-2 control-label"></label>
+                                    <div class="col-sm-3">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" id="AttendanceFullfilled" name="AttendanceFullfilled" value="true" @(Model.AttendanceFullfilled ? "checked=\"checked\"" : "")> Attendance Fullfilled ?
+                                                <i class="fa fa-square-o small"></i>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label">Approval Date:</label>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(m => m.ApprovalDate, "{0:dd-MMM-yyyy}", new { id = "ApprovalDate", @class = "form-control", value = "@Model.ApprovalDate", placeholder = "Approval Date", data_toggle = "tooltip", data_placement = "bottom", title = "Approval Date" })
+                                        <span class="fa fa-calendar txt-danger form-control-feedback"></span>
+                                    </div>
+                                    <label class="col-sm-offset-2 col-sm-2 control-label">Remark :</label>
+                                    <div class="col-sm-3">
+                                        @Html.TextAreaFor(m => m.Remark, new { id = "Remark", @class = "form-control", placeholder = "Enter Remark", data_toggle = "tooltip", data_placement = "bottom", title = "Remark" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="k-card">
+                            <div class="k-card-header k-card-info">Fees</div>
+                            <div class="k-card-body">
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-3 control-label"> Regular Exam Fee :</label>
+                                    <div class="col-sm-1 text-right">
+                                        @Html.TextBoxFor(m => m.ExamFee, new { value = "@Model.ExamFee", id = "divExamFee", @class = "form-control text-right", @readonly = true })
+                                    </div>
+                                    <label class="col-sm-3 control-label">Backlog Exam Fee :</label>
+                                    <div class="col-sm-1 text-right" id="divBacklogFee">
+                                        @Html.TextBoxFor(m => m.BacklogFee, new { value = "@Model.BacklogFee", id = "divBacklogFee", @class = "form-control text-right", @readonly = true })
+                                    </div>
+                                    <label class="col-sm-3 control-label">CAP Fee :</label>
+                                    <div class="col-sm-1 text-right" id="divCAPFee">
+                                        @Html.TextBoxFor(m => m.CapFee, new { value = "@Model.CAPFee", id = "divCAPFee", @class = "form-control text-right", @readonly = true })
+                                    </div>
+                                </div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-3 control-label">Statement Of Marks Fee :</label>
+                                    <div class="col-sm-1 text-right" id="divStatementOfMarksFee">
+                                        @Html.TextBoxFor(m => m.StatementOfMarksFee, new { value = "@Model.StatementOfMarksFee", id = "divStatementOfMarksFee", @class = "form-control text-right", @readonly = true })
+                                    </div>
+                                    <label class="col-sm-3 control-label">Practical Fee :</label>
+                                    <div class="col-sm-1 text-right" id="divPracticalFee">
+                                        @Html.TextBoxFor(m => m.PracticalFee, new { value = "@Model.PracticalFee", id = "divPracticalFee", @class = "form-control text-right", @readonly = true })
+                                    </div>
+                                    <label class="col-sm-3 control-label">Dissertation Fee :</label>
+                                    <div class="col-sm-1 text-right" id="divDissertationFee">
+                                        @Html.TextBoxFor(m => m.DissertationFee, new { value = "@Model.DissertationFee", id = "divDissertationFee", @class = "form-control text-right", @readonly = true })
+                                    </div>
+                                </div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-3 control-label">Others Fee:</label>
+                                    <div class="col-sm-1 text-right" id="divOthersFee">
+                                        @Html.TextBoxFor(m => m.OthersFee, new { value = "@Model.OthersFee", id = "divOthersFee", @class = "form-control text-right", @readonly = true })
+                                    </div>
+                                    <label class="col-sm-3 control-label">Late Fee :</label>
+                                    <div class="col-sm-1 text-right" id="divLateFee">
+                                        @Html.TextBoxFor(m => m.LateFee, new { value = "@Model.LateFee", id = "divLateFee", @class = "form-control text-right", @readonly = true })
+                                    </div>
+                                    <label class="col-sm-3 control-label">Super Late Fee :</label>
+                                    <div class="col-sm-1 text-right" id="divSuperLateFee">
+                                        @Html.TextBoxFor(m => m.SuperLateFee, new { value = "@Model.SuperLateFee", id = "divSuperLateFee", @class = "form-control text-right", @readonly = true })
+                                    </div>
+                                </div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-3 control-label">Passing Certificate Fee :</label>
+                                    <div class="col-sm-1 text-right" id="divCertificateOfPassingFee">
+                                        @Html.TextBoxFor(m => m.CertificateOfPassingFee, new { value = "@Model.CertificateOfPassingFee", id = "divCertificateOfPassingFee", @class = "form-control text-right", @readonly = true })
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="form-group  has-feedback">
+                                    <div class="col-sm-10">
+                                        <label class="col-sm-3 control-label ">Backlog Summary :-</label>
+                                        @Model.BacklogSummary
+                                    </div>
+                                </div>
+                                <div class="form-group  has-feedback">
+                                    <div class="col-sm-10">
+                                        <label class="col-sm-3 control-label ">Amount In Word :-</label><span class="pull-left" id="FeeInWord"></span>
+                                        @Model.FeeInWord
+                                    </div>
+                                    <label class="col-sm-1 control-label text-right">Total :</label>
+                                    <div class="col-sm-1 text-right" id="divTotal">
+                                        @Html.TextBoxFor(m => m.Total, new { value = "@Model.Total", id = "divTotal", @class = "form-control text-right text-primary", @readonly = true })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="k-card-footer">
+                                <div class="form-group">
+                                    <div class="col-sm-offset-10 col-sm-2 k-text-right">
+                                        <button type="submit" id="pay2" name="submitType" value="Pay" class="k-button k-button-md k-rounded-lg k-button-outline k-button-outline-tertiary">
+                                            <span>
+                                                <i class="fa @(Model.Total <= 0 ? "fa-save" : "fa-paypal")"></i>
+                                            </span>&nbsp;@(Model.Total <= 0 ? "Submit" : "Pay")
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#UploadPhoto").fileinput({
+            'showUpload': false,
+            'previewFileType': 'any'
+        });
+
+        // Load Course Parts
+        $("#CoursePartId").data("kendoComboBox").dataSource.read();
+        $("#CoursePartId").data("kendoComboBox").value('@Model.CoursePartId');
+
+        if('@Model.ShowBranchCombo'){
+            // Load Branches
+            $("#BranchId").data("kendoComboBox").dataSource.read();
+            $("#BranchId").data("kendoComboBox").value('@Model.BranchId');
+        }
+
+        // Add tooltip to form-controls
+        $('.form-control').tooltip();
+
+        // Load example of form validation
+        LoadBootstrapValidatorScript(DemoFormValidator);
+    });
+
+    $(function () {
+        $("#PrnNo").focus();
+    });
+
+    function error_handler(e) {
+        if (e.errors) {
+            var message = "Errors:\n";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () {
+                        message += this + "\n";
+                    });
+                }
+            });
+        }
+    }
+
+    $('#PrnNo').change(function () {
+        $('#form').append('<input type="text" name="submitType" value="Search" />');
+        $("form").submit();
+    });
+
+    function onCoursePartChange() {
+        $('#form').append('<input type="text" name="submitType" value="CoursePartChange" />');
+        $("form").submit();
+    }
+
+    function onBranchChange() {
+        $('#form').append('<input type="text" name="submitType" value="BranchChange" />');
+        $("form").submit();
+    }
+
+    function onReceiveChallan() {
+        //var prn = undefined;
+        bootbox.prompt('Enter PRN!',
+            function(result) {
+                //var prn = result;
+                $('#PrnNo').val(result);
+                $( "#ReceiveChallan" ).click();
+            });
+    }
+
+</script>
+
+<script>
+    var mykey = "2PBP7IABZ2";
+    var easebuzzCheckout = new EasebuzzCheckout(mykey, 'test')
+    document.getElementById("ebz-checkout-btn").onclick = function (e) {
+        //alert("abcd");
+        var options = {
+            //access_key: mykey, // access key received via Initiate Payment
+            txnid: '1234',
+            amount: 1,
+            onResponse: (response) => {
+                console.log(response);
+            },
+            theme: "#123456" // color hex
+        }
+        easebuzzCheckout.initiatePayment(options);
+    }
+
+</script>

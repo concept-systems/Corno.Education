@@ -1,0 +1,307 @@
+﻿@model Corno.Data.Transactions.ConvocationViewModel
+@using Kendo.Mvc.UI
+@{
+    ViewBag.Title = "Delete Convocation Form No : " + Model.Id;
+}
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Online Exam</a></li>
+            <li><a href="#">Delete Convocation Form</a></li>
+        </ol>
+    </div>
+</div>
+@Html.ValidationSummary()
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <div class="box ui-draggable ui-droppable">
+            <div class="box-header">
+                <div class="box-name">
+                    <i class="fa fa-trash-o large"></i>
+                    <span>Delete Convocation Form No :  @Model.Id</span>
+                </div>
+                <div class="box-icons">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="expand-link">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+                <div class="no-move"></div>
+            </div>
+            <div class="box-content">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(m => m.ID)
+                    <div class="form-horizontal">
+                        <div class="box-content">
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <button type="button" value="Index" class="btn btn-primary btn-label-left pull-left" onclick="location.href = '@Url.Action("Index", "Convocation")'">
+                                        <span><i class="fa fa-list-ul"></i></span>
+                                        Back to List
+                                    </button>
+                                </div>
+                                <div class="col-sm-offset-8 col-sm-2">
+                                    <button type="submit" value="Delete" onclick="return confirm('Are you sure you wish to delete this Convocation form?')" title=" Delete" class="btn btn-danger btn-label-left pull-right">
+                                        <span><i class="fa fa-trash-o large"></i></span>
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <strong>PRN Details</strong>
+                                    <div class="checkbox pull-right">
+                                        <label>
+                                            <input type="checkbox" id="IsApproved" name="IsApproved" value="true" @(Model.IsApproved ? "checked=\"checked\"" : "")> Is Approved
+                                            <i class="fa fa-square-o small"></i>
+                                        </label>
+                                    </div>
+                                </div>
+                                @*<div class="form-group  has-feedback">
+                                    <label class="  col-sm-2 control-label"></label>
+                                    <div class="col-sm-3">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" id="ClassImprovementStudent" name="ClassImprovementStudent" value="true" @(Model.ClassImprovementStudent ? "checked=\"checked\"" : "")> Class Improvement Student
+                                                <i class="fa fa-square-o small"></i>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>*@
+                                @*<div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label">Appear Exam :</label>
+                                    <div class="col-sm-3">
+                                        @Html.TextBoxFor(m => m.AppearExam, new { @id = "AppearExam", @class = "form-control", value = "@Model.AppearExam", placeholder = "Appear Exam", data_toggle = "tooltip", data_placement = "bottom", title = "Appear Exam" })
+                                    </div>
+                                    <label class="col-sm-4 control-label text-right">Record No:</label>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(m => m.RecordNo, new { @id = "RecordNo", @class = "form-control", value = "@Model.RecordNo", placeholder = "Record No", data_toggle = "tooltip", data_placement = "bottom", title = "Record No" })
+                                    </div>
+                                </div>*@
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label">PRN No :</label>
+                                    <div class="col-sm-3 control-label">
+                                        @Html.TextBoxFor(m => m.PrnNo, new { @id = "PRNNo", @class = "form-control", placeholder = "Enter PRN No", data_toggle = "tooltip", data_placement = "bottom", title = "PRN No" })
+                                    </div>
+                                    @*<label class=" col-sm-4 control-label"></label>
+                                    <div class="col-sm-2 ">
+                                        <div class="checkbox ">
+                                            <label>
+                                                <input type="checkbox" id="ForeignStudent" name="ForeignStudent" value="true" @(Model.ForeignStudent ? "checked=\"checked\"" : "")> Foreign Student?
+                                                <i class="fa fa-square-o small"></i>
+                                            </label>
+                                        </div>
+                                    </div>*@
+                                </div>
+                            </div>
+                            <div class="panel panel-info">
+                                <div class="panel-heading"><strong>Personal Details</strong></div>
+                                <table class="table">
+                                    <tr>
+                                        <td class="text-left col-sm-2"><strong>Name:</strong></td>
+                                        <td id="tdName" class="text-left col-sm-12"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left col-sm-2"><strong>Gender :</strong></td>
+                                        <td id="tdGender" class="text-left"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left col-sm-2"><strong>Address :</strong></td>
+                                        <td id="tdAddress" class="text-left"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left col-sm-2"><strong>Phone :</strong></td>
+                                        <td id="tdPhone" class="text-left"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left col-sm-2"><strong>Pincode :</strong></td>
+                                        <td id="tdPincode" class="text-left"></td>
+                                    </tr>
+
+                                </table>
+                            </div>
+                            <div class="panel panel-info">
+                                <div class="panel-heading"><strong>Exam Details</strong></div>
+                                <table class="table">
+                                    <tr>
+                                        <th class="text-left col-sm-2"><strong>Centre :</strong></th>
+                                        <td id="tdCentre" class="text-left col-sm-3"></td>
+                                        <th class="text-left col-sm-2"><strong>College :</strong></th>
+                                        <td id="tdCollege" class="text-left"></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-left col-sm-2"><strong>Course Type :</strong></th>
+                                        <td id="tdCourseType" class="text-left"></td>
+                                        <th class="text-left col-sm-2"><strong>Course :</strong></th>
+                                        <td id="tdCourse" class="text-left"></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-left col-sm-2"><strong>Course Part :</strong></th>
+                                        <td id="tdCoursePart" class="text-left"></td>
+                                        <th class="text-left col-sm-2"><strong>Passing Year :</strong></th>
+                                        <td id="tdLastPassingYear" class="text-left"></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-left col-sm-2"><strong>Seat No :</strong></th>
+                                        <td id="tdLastSeatNo" class="text-left"></td>
+                                        <td class="text-left col-sm-2"><strong>Class :</strong></td>
+                                        <td id="tdClass" class="text-left"></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-left col-sm-2"><strong>Percentage :</strong></th>
+                                        <td id="tdLastPercentage" class="text-left"></td>
+                                        <th class="text-left col-sm-2"><strong></strong></th>
+                                        <td id="tdLast" class="text-left"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="panel panel-info">
+                                <div class="panel-heading"><strong>Fee Details</strong></div>
+                                <div class="form-group  has-feedback">
+                                    <label class=" col-sm-2 control-label"></label>
+                                    <div class="col-sm-2">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" id="InPerson" name="fs1" value="@Model.InPerson"> In Person
+                                                <i class="fa fa-circle-o small"></i>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" id="InAbsentia" name="fs1" value="@Model.InAbsentia"> In Absentia
+                                                <i class="fa fa-circle-o small"></i>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-2">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" id="id1" name="radio" value="@Model.ByCash"> By Cash
+                                                <i class="fa fa-circle-o small"></i>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" id="id2" name="radio" value="@Model.ByDd"> By DD
+                                                <i class="fa fa-circle-o small"></i>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group  has-feedback" id="div1" style="display:none;">
+                                        <div class="form-group  has-feedback">
+                                            <label class="col-sm-2 control-label text-right">DD No :</label>
+                                            <div class="col-sm-2">
+                                                @Html.TextBoxFor(m => m.DdNo, new { @id = "DDNo", @class = "form-control", value = "@Model.DDNo", placeholder = "DDNo", data_toggle = "tooltip", data_placement = "bottom", title = "DDNo" })
+                                            </div>
+
+                                            <label class="col-sm-2 control-label text-right">Drawn On :</label>
+                                            <div class="col-sm-2">
+                                                @Html.TextBoxFor(m => m.DrawnOn, new { @id = "DrawnOn", @class = "form-control", value = "@Model.DrawnOn", placeholder = "DrawnOn", data_toggle = "tooltip", data_placement = "bottom", title = "DrawnOn" })
+                                            </div>
+
+                                            <label class="col-sm-2 control-label text-right">DD Date:</label>
+                                            <div class="col-sm-2">
+                                                @Html.TextBoxFor(m => m.DdDate, "{0:dd-MMM-yyyy}", new { @id = "DDDate", @class = "form-control", value = "@Model.DDDate", placeholder = "Select DDDate", data_toggle = "tooltip", data_placement = "bottom", title = "DD Date" })
+                                                <span class="fa fa-calendar txt-danger form-control-feedback"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group  has-feedback" id="div2" style="display:none;">
+                                        <div class="form-group  has-feedback">
+                                            <label class="col-sm-2 control-label">Fee Amount :</label>
+                                            <div class="col-sm-2">
+                                                @Html.TextBoxFor(m => m.FeesAmount, new { @id = "FeesAmount", @class = "form-control", value = "@Model.FeesAmount", placeholder = "Fees Amount", data_toggle = "tooltip", data_placement = "bottom", title = "Fees Amount" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <button type="button" value="Index" class="btn btn-primary btn-label-left pull-left" onclick="location.href = '@Url.Action("Index", "Convocation")'">
+                                        <span><i class="fa fa-list-ul"></i></span>
+                                        Back to List
+                                    </button>
+                                </div>
+                                <div class="col-sm-offset-8 col-sm-2">
+                                    <button type="submit" value="Delete" onclick="return confirm('Are you sure you wish to delete this Convocation form?')" title=" Delete" class="btn btn-danger btn-label-left pull-right">
+                                        <span><i class="fa fa-trash-o large"></i></span>
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('#PRNNo').change(function () {
+        //alert('hi');
+        $.ajax({
+            url: '@Url.Action("PRNChange", "Convocation")',
+            type: 'post',
+            data: {
+                prnNo: $('#PRNNo').val()
+            },
+            success: function (_result) {
+                $('#tdCentre').html(_result.Centre);
+                $('#tdCollege').html(_result.College);
+                $('#tdCourseType').html(_result.CourseType);
+                $('#tdCourse').html(_result.Course);
+                $('#tdCoursePart').html(_result.CoursePart);
+                $('#tdBranch').html(_result.Branch);
+                $('#tdName').html(_result.StudentName);
+                $('#tdAddress').html(_result.PermanentAddress);
+                $('#tdGender').html(_result.Gender);
+                $('#tdPhone').html(_result.Phone);
+                $('#tdPincode').html(_result.Pincode);
+                $('#tdLastPassingYear').html(_result.LastPassingYear);
+                $('#tdLastPercentage').html(_result.LastPercentage);
+                $('#tdLastSeatNo').html(_result.LastSeatNo);
+                $('#tdClass').html(_result.Class);
+            }
+        });
+    });
+
+
+    $(document).ready(function () {
+
+        $('#id1').click(function () {
+            $('#div2').show();
+            $('#div1').hide();
+        });
+        $('#id2').click(function () {
+            $('#div1').show();
+            $('#div2').hide();
+        });
+        // Add tooltip to form-controls
+        $('.form-control').tooltip();
+        // Initialize datepicker
+        $('#Date').datepicker({ setDate: new Date(), dateFormat: 'dd-M-yy' });
+        $('#ApprovalDate').datepicker({ setDate: new Date(), dateFormat: 'dd-M-yy' });
+
+        //// Load example of form validation
+        LoadBootstrapValidatorScript(DemoFormValidator);
+
+        $("#PRNNo").change();
+    });
+</script>

@@ -1,0 +1,78 @@
+﻿@using Corno.Globals.Constants
+@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Masters.Subject
+
+@*<div class="k-card-actions k-card-actions-horizontal k-card-actions-end">
+    @(Html.Kendo().Button()
+            .Name("btnCopyInstructions")
+            .Icon("copy")
+            .SpriteCssClass("k-icon-64")
+            .FillMode(ButtonFillMode.Outline)
+            .ThemeColor(ThemeColor.Info)
+            .Content("Copy Instructions")
+            //.Events(e => e.Click("onCopyInstructions"))
+            .HtmlAttributes(new
+            {
+                type = "submit",
+                name = "action:CopyInstructions",
+            }))
+</div>*@
+
+<div class="row">
+    @(Html.Kendo().Grid(Model.SubjectInstructionDetails)
+        .Name("gridInstruction")
+        .Columns(columns =>
+        {
+            columns.Bound(s => s.Id)
+                .ClientTemplate("#= Id #" + "<input type='hidden' name='SubjectInstructionDetails[#= index(data, 'gridInstruction')#].Id' value='#= Id #'   />")
+                //.ClientTemplate("<input type='hidden' name='SubjectInstructionDetails[#= index(data, 'gridInstruction')#].Id' value='#= Id #'   />")
+                .Hidden();
+            columns.Bound(s => s.SerialNo)
+                .ClientTemplate("#= SerialNo #" + "<input type='hidden' name='SubjectInstructionDetails[#= index(data, 'gridInstruction')#].SerialNo' value='#= SerialNo #'   />")
+                .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                .HtmlAttributes(new { @class = "k-text-left !k-justify-content-left text-align-middle" })
+                .Width(30);
+            columns.Bound(s => s.PaperCategoryId)
+                .ClientTemplate("#= PaperCategoryName #" + "<input type='hidden' name='SubjectInstructionDetails[#= index(data, 'gridInstruction')#].PaperCategoryId' value='#= PaperCategoryId #'   />")
+                .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                .HtmlAttributes(new { @class = "k-text-left !k-justify-content-left text-align-middle" })
+                .Title("Paper Category")
+                .Width(100);
+            columns.Bound(p => p.Description)
+                .ClientTemplate("#= Description #" + "<input type='hidden' name='SubjectInstructionDetails[#= index(data, 'gridInstruction')#].Description' value='#= Description #'   />")
+                .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                .HtmlAttributes(new { @class = "k-text-left !k-justify-content-left text-align-middle" })
+                .EditorTemplateName("Text")
+                .Width(240);
+            columns.Command(command =>
+            {
+                command.Edit();
+                command.Destroy();
+            }).Width(80);
+        })
+        .ToolBar(toolbar =>
+        {
+            toolbar.Create();
+        })
+        /*.Editable(editable => editable.Mode(GridEditMode.InLine))*/
+        .Editable(editable => editable.Mode(GridEditMode.PopUp)
+            .TemplateName("/Popup Editors/_SubjectInstructionPopup"))
+        .Sortable()
+        //.Pageable()
+        .Scrollable()
+        //.Events(events => events.Edit("onEdit"))
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            //.PageSize(20)
+            .Events(events => events.Error("error_handler"))
+            .Model(model => { model.Id(p => p.Id); })
+            .ServerOperation(false)
+            .Create(update => update.Action("Grid_Instruction_Operations", "Subject"))
+            .Update(update => update.Action("Grid_Instruction_Operations", "Subject"))
+            .Destroy(update => update.Action("Grid_Instruction_Operations", "Subject"))
+            .Sort(sort => sort.Add(ModelConstants.SerialNo).Descending())
+        )
+        .Resizable(resize => resize.Columns(true))
+        .Reorderable(reorder => reorder.Columns(true)))
+</div>
+

@@ -1,0 +1,135 @@
+﻿@using Corno.Data.ViewModels.Admin
+@using Corno.Globals.Constants
+@using Kendo.Mvc.UI
+
+@{
+    ViewBag.Title = "User";
+}
+
+<div class="row">
+    <div class="box-content">
+        <div id="breadcrumb" class="col-md-12">
+            <ol class="breadcrumb">
+                <li><a href="#">OnlineExam</a></li>
+                <li><a href="#">Masters</a></li>
+                <li><a href="#">Users</a></li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+<div class="k-card k-card-vertical">
+    <div class="k-card-header k-card-tertiary">
+        <div class="col-sm-10">
+            <h3>Users</h3>
+        </div>
+        <div class="col-sm-2 text-right">
+            @(Html.Kendo().Button()
+                    .Name("New")
+                    .Icon("plus")
+                    .SpriteCssClass("k-icon-64")
+                    .FillMode(ButtonFillMode.Outline)
+                    .ThemeColor(ThemeColor.Info)
+                    .Content("Add New")
+                    .Events(e => e.Click("onCreate"))
+                    .HtmlAttributes(new{@class = "w-100"}))
+        </div>
+    </div>
+    <div class="k-card-body">
+        <div class="">
+            @(Html.Kendo().Grid<UserIndexViewModel>()
+                .Name("grid")
+                .ToolBar(t => t.Search())
+                .Pageable()
+                .Sortable()
+                .Filterable()
+                .Resizable(resize => resize.Columns(true)) // Allow column resizing
+                .PersistSelection()
+                .HtmlAttributes(new { @class = "w-100" })
+                .Columns(columns =>
+                {
+                    columns.Bound(m => m.UserName)
+                        .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                        .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                        .Title("User Name")
+                        .Width(10);
+                    columns.Bound(m => m.Email)
+                        .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                        .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                        .Width(10);
+                    /*columns.Bound(m => m.FirstName)
+                        .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                        .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                        .Title("First Name")
+                        .Width(10);*/
+                    columns.Bound(m => m.LastName)
+                        .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                        .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                        .Title("Last Name")
+                        .Width(10);
+                    columns.Bound(m => m.Type)
+                        .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                        .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                        .Width(10);
+                    columns.Command(command =>
+                    {
+                        command.Custom("Edit").Text(" ").IconClass("k-icon k-i-pencil")
+                            .HtmlAttributes(new { @class = "k-grid-edit" });
+                        command.Custom("ChangePassword").Text(" ").IconClass("k-icon k-i-password")
+                            .HtmlAttributes(new { @class = "k-grid-change-password" });
+                        //.Visible("function(dataItem) { return dataItem.Status === 'Active'; }"); // Show only if Status is "Active";
+                    })
+                        .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                        //.HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                        .HtmlAttributes(new { @class = "k-command-buttons" })
+                        .Width(100)
+                        .Title("Actions"); // Add a class to identify the command column;
+
+                })
+                .Events(events => events.DataBound("onDataBound"))
+                .DataSource(dataSource => dataSource
+                    .Ajax()
+                    .Read(read => read.Action("GetIndexModels", "User"))
+                    .Sort(sort => sort.Add(ModelConstants.Id).Descending()) // Initial sort by Id in ascending order
+                    .Model(model => model.Id(ModelConstants.Id))
+                ))
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function onCreate() {
+        window.location.href = '/User/Create';
+    }
+
+    function onDataBound(e) {
+        var grid = $("#grid").data("kendoGrid");
+        // Auto-fit each column
+        grid.columns.forEach(function (column, index) {
+            grid.autoFitColumn(index);
+        });
+
+        $(".k-grid-edit").on("click", function () {
+            var grid = $("#grid").data("kendoGrid");
+            var row = $(this).closest("tr");
+            var dataItem = grid.dataItem(row);
+
+            if (dataItem) {
+                var id = dataItem.Id; // Assuming Id is the unique identifier of the item
+                window.location.href = '/User/Edit/' + id; // Replace with your edit page URL
+            }
+        });
+        $(".k-grid-change-password").on("click", function () {
+            var grid = $("#grid").data("kendoGrid");
+            var row = $(this).closest("tr");
+            var dataItem = grid.dataItem(row);
+
+            if (dataItem) {
+                var id = dataItem.Id; // Assuming Id is the unique identifier of the item
+                window.location.href = '/User/ChangePassword/' + id; // Replace with your edit page URL
+            }
+        });
+    }
+
+</script>

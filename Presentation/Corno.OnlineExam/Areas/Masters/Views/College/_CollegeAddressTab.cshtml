@@ -1,0 +1,68 @@
+﻿@using Corno.Data.Helpers
+@using Corno.Globals.Constants
+@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Masters.College
+
+@{
+    var formEnabled = ViewData[ModelConstants.FormEnabled].ToBoolean();
+}
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="form-group">
+            @(Html.Kendo().TextAreaFor(m => m.Address1)
+                .Rows(8)
+                .Enable(formEnabled)
+                .Rounded(Rounded.Medium)
+                .Label(label => label
+                    .Content("College Address")
+                    .Floating(true))
+                .HtmlAttributes(new
+                {
+                    placeholder = "Enter Address",
+                    @class = "required w-100"
+                }))
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group">
+            @(Html.Kendo().TextBoxFor(m => m.Phone)
+                .Enable(formEnabled)
+                .Rounded(Rounded.Medium)
+                .Label(label => label
+                    .Content(ModelConstants.Phone)
+                    .Floating(true))
+                .HtmlAttributes(new
+                {
+                    placeholder = "Enter phone",
+                    @class = "required w-100"
+                }))
+        </div>
+        <div class="form-group">
+            @(Html.Kendo().TextBoxFor(m => m.Mobile)
+                .Enable(formEnabled)
+                .Rounded(Rounded.Medium)
+                .Label(label => label
+                    .Content(ModelConstants.Mobile)
+                    .Floating(true))
+                .HtmlAttributes(new
+                {
+                    placeholder = "Enter mobile",
+                    @class = "required w-100"
+                }))
+        </div>
+        <div class="form-group">
+            @(Html.Kendo().TextBoxFor(m => m.Email)
+                .Enable(formEnabled)
+                .Rounded(Rounded.Medium)
+                .Label(label => label
+                    .Content(ModelConstants.Email)
+                    .Floating(true))
+                .HtmlAttributes(new
+                {
+                    placeholder = "Enter email",
+                    @class = "required w-100"
+                }))
+        </div>
+    </div>
+</div>

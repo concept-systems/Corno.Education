@@ -1,0 +1,39 @@
+﻿@using Corno.Data.Helpers
+@using Corno.Globals.Constants
+@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Masters.College
+
+@{
+    var formEnabled = ViewData[ModelConstants.FormEnabled].ToBoolean();
+}
+
+<div class="">
+    <div class="col-sm-4">
+        <div class="form-group row">
+            @(Html.Kendo().TextBoxFor(m => m.ShortName)
+                    .Enable(formEnabled)
+                    .Rounded(Rounded.Medium)
+                    .Label(label => label
+                        .Content("Short Name")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "Enter Short Name",
+                        @class = "required w-100"
+                    }))
+        </div>
+        <div class="form-group row">
+            @(Html.Kendo().TextBoxFor(m => m.Principal)
+                    .Enable(formEnabled)
+                    .Rounded(Rounded.Medium)
+                    .Label(label => label
+                        .Content("Concerned Principal / Director")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "Enter Principal / Director Name",
+                        @class = "required w-100"
+                    }))
+        </div>
+    </div>
+</div>

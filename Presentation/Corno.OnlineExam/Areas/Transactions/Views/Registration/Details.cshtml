@@ -1,0 +1,98 @@
+﻿@model Corno.Data.Corno.RegistrationViewModel
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Online Exam</a></li>
+            <li><a href="#">Student Registration Form</a></li>
+        </ol>
+    </div>
+</div>
+@Html.ValidationSummary()
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <div class="box ui-draggable ui-droppable">
+            <div class="box-header">
+                <div class="box-name">
+                    <i class="fa fa-edit large"></i>
+                    <span>Student Record Id:  @Model.Id</span>
+                </div>
+            </div>
+            <div class="box-content">
+                <div class="form-horizontal">
+                    <div class="box-content">
+                        <div class="form-group">
+                            <div class="col-sm-2">
+                                <button type="button" value="Index" class="btn btn-primary btn-label-left pull-left" onclick="location.href = '@Url.Action("Index", "Registration")'">
+                                    <span><i class="fa fa-list-ul"></i></span>
+                                    Back to List
+                                </button>
+                            </div>
+                            <div class="col-sm-offset-8 col-sm-2">
+                                <button type="submit" value="Edit" title="Save" onclick="PrintForm()" class="btn btn-primary btn-label-left pull-right">
+                                    <span><i class="fa fa-print"></i></span>
+                                    Print
+                                </button>
+                            </div>
+                        </div>
+                        @Html.Partial("_DetailsCommon")
+                        <div class="form-group">
+                            <div class="col-sm-2">
+                                <button type="button" value="Index" class="btn btn-primary btn-label-left pull-left" onclick="location.href = '@Url.Action("Index", "Registration")'">
+                                    <span><i class="fa fa-list-ul"></i></span>
+                                    Back to List
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function PrintForm() {
+        try {
+            var htmlPrintDiv = $('#printDiv').html();
+            $(htmlPrintDiv).printArea();
+        }
+        catch (e) {
+            alert(e);
+        }
+    }
+
+    function DemoGallery() {
+        $('.fancybox').fancybox({
+            openEffect: 'none',
+            closeEffect: 'none'
+        });
+    }
+    $(document).ready(function () {
+
+        //// Add tooltip to form-controls
+        $('.form-control').tooltip();
+
+        //// Add tooltip to form-controls
+        $('.form-control').tooltip();
+
+        LoadSelect2Script(DemoSelect2);
+
+        //// Load example of form validation
+        LoadBootstrapValidatorScript(DemoFormValidator);
+        LoadFancyboxScript(DemoGallery);
+        //onSelectedIndexChanged();
+    });
+
+    function DemoSelect2() {
+        $('#s2_course').select2({ placeholder: "Select Course" });
+        $('#s2_college').select2({ placeholder: "Select Faculty" });
+        $('#s2_coursepart').select2({ placeholder: "Select Course Part" });
+        $('#s2_coursetype').select2({ placeholder: "Select Course type" });
+        $('#s2_branch').select2({ placeholder: "Select Branch" });
+        $('#s2_IfBackward').select2({ placeholder: "Select Backward" });
+        $('#s2_state').select2({ placeholder: "Select State" });
+        $('#s2_city').select2({ placeholder: "Select City" });
+        $('#s2_state1').select2({ placeholder: "Select State" });
+        $('#s2_city1').select2({ placeholder: "Select City" });
+    }
+
+</script>

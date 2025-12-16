@@ -1,0 +1,228 @@
+﻿@using Corno.Data.ViewModels
+@using Corno.Globals.Enums
+@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Link
+
+@{
+    if(null != Model && null != Model.FormTypeId)
+    {
+        Page.Title = ViewBag.BoxTitle = string.Format("{0} Enrollments", ((FormType)Model.FormTypeId).ToString());
+    }
+    ViewBag.Controller = "Enrollment";
+    ViewBag.Details = "LinkDetails";
+    ViewBag.DetailName = "LinkDetails";
+    ViewBag.GridCommonAction = "Inline_Create_Update_Destroy";
+}
+
+@if (TempData["Success"] != null)
+{
+    <script type="text/javascript">
+        bootbox.alert("@TempData["Success"]")
+    </script>
+}
+
+<div class="form-horizontal box-content">
+    @using (Html.BeginForm("Create", "Enrollment", FormMethod.Post, new { id = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.ValidationSummary(false)
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.FormTypeId)
+
+        <div class="k-card k-card-vertical">
+            <div class="k-card-header k-card-tertiary"><h3>@ViewBag.BoxTitle</h3></div>
+            <div class="k-card-body">
+                @{
+                    Html.RenderPartial("Partial/Selection/_Enrollment", Model);
+                }
+                <div class="k-card-actions k-card-actions-horizontal k-card-actions-end">
+                    @if (null != Model && Model.FormTypeId == 1) // Only for exam form
+                    {
+                        @(Html.Kendo().Button()
+                            .Name("get_backlog_students")
+                            .Icon("hyperlink-open")
+                            .SpriteCssClass("k-icon-64")
+                            .FillMode(ButtonFillMode.Outline)
+                            .ThemeColor(ThemeColor.Tertiary)
+                            .HtmlAttributes(new
+                            {
+                                type = "submit",
+                                name = "action:GetBacklogStudents",
+                                value = "GetBacklogStudents",
+                                @class = "w-100"
+                            })
+                            .Content("Backlog Only"))
+                    }
+                    @*@(Html.Kendo().Button()
+                        .Name("get_student")
+                        .Icon("hyperlink-open")
+                        .SpriteCssClass("k-icon-64")
+                        .FillMode(ButtonFillMode.Outline)
+                        .ThemeColor(ThemeColor.Tertiary)
+                        .Content("Get Student")
+                        .HtmlAttributes(new
+                        {
+                            type = "submit",
+                            name = "action:GetAllStudents",
+                        }))*@
+                    @(Html.Kendo().Button()
+                        .Name("get_all_students")
+                        .Icon("search")
+                        .SpriteCssClass("k-icon-64")
+                        .FillMode(ButtonFillMode.Outline)
+                        .ThemeColor(ThemeColor.Tertiary)
+                        .Content("Get All Students")
+                        .HtmlAttributes(new
+                        {
+                            type = "submit",
+                            name = "action:GetAllStudents",
+                            //value = "SendOtp",
+                            //@class = "col-sm-2"
+                        }))
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(Html.Kendo().Grid(Model.LinkDetails)
+                            .Name("grid")
+                            .ToolBar(t => t.Search())
+                            .ToolBar(tools => tools.Excel())
+                            .Columns(columns =>
+                            {
+                                /*columns.Template(@<text></text>)
+                                    .ClientTemplate("<input type='checkbox' #= Selected ? checked='checked':'' # class='chkbx' name='LinkDetails[#= index(data)#].Selected' value='#= Selected #' />")
+                                    .HeaderTemplate("<input type='checkbox' id='masterCheckBox' onclick='checkAll(this)'/>")
+                                    .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .Width(50);*/
+                                columns.Bound(p => p.NotMapped.Index)
+                                    .Title("Sr.<br/>No.")
+                                    .ClientTemplate("#= NotMapped.Index #" + "<input type='hidden' name='LinkDetails[#= index(data)#].NotMapped.Index' value='#= NotMapped.Index #'   />")
+                                    .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .Width(50);
+                                columns.Bound(p => p.Prn)
+                                    .Title("PRN")
+                                    .ClientTemplate("#= Prn #" + "<input type='hidden' name='LinkDetails[#= index(data)#].Prn' value='#= Prn #'   />")
+                                    .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center text-align-middle" })
+                                    .Width(120);
+                                columns.Bound(p => p.NotMapped.StudentName)
+                                    .Title("Name")
+                                    .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .HtmlAttributes(new { @class = "k-text-left !k-justify-content-left text-align-middle" })
+                                    .Width(300);
+                                /*columns.Bound(p => p.BranchId)
+                                    .Title("Branch Id")
+                                    .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .Width(300);*/
+                                columns.Bound(s => s.BranchViewModel)
+                                    .Title("Branch")
+                                    .ClientTemplate("#= BranchViewModel == null? '' : BranchViewModel.NameWithId  #" +
+                                                    "<input type='hidden' name='LinkDetails[#= index(data)#].BranchId' value='#= BranchViewModel == null? '' : BranchViewModel.Id  #'   />")
+                                    .EditorTemplateName(@"/Corno/MultiColumnComboBoxMasterViewModel")
+                                    .EditorViewData(new { DataSource = Model.NotMapped.Branches, })
+                                    .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .Width(150)
+                                    .Hidden(!Model.NotMapped.BranchApplicable);
+                                columns.Bound(p => p.Mobile)
+                                    .ClientTemplate("#= Mobile #" + "<input type='hidden' name='LinkDetails[#= index(data)#].Mobile' value='#= Mobile #'   />")
+                                    .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .Width(120);
+                                columns.Bound(p => p.EmailId)
+                                    .ClientTemplate("#= EmailId #" + "<input type='hidden' name='LinkDetails[#= index(data)#].EmailId' value='#= EmailId #'   />")
+                                    .HtmlAttributes(new { @class = "k-text-left !k-justify-content-left text-align-middle" })
+                                    .Width(300);
+                            })
+                            //.ToolBar(toolbar => toolbar.Create())
+                            .Editable(editable => editable.Mode(GridEditMode.InCell))
+                            .Scrollable(s => s.Enabled(true).Height("auto"))
+                            .Sortable()
+                            .Search(s => {
+                                             s.Field(o => o.Prn, "contains");
+                                             /*s.Field(o => o.BranchId, "eq");*/
+                            })
+                            //.Pageable()
+                            .PersistSelection()
+                            .Events(events => events.DataBound("onGridDataBound"))
+                            .Height(500)
+                            .Excel(excel => excel
+                                .FileName("Enrollments.xlsx")
+                                .Filterable(true)
+                                .AllPages(true)
+                                .ProxyURL(Url.Action("Excel_Export_Save", "Enrollment"))
+                            )
+                            .DataSource(dataSource => dataSource
+                                .Ajax()
+                                //.PageSize(10)
+                                //.Events(events => events.Error("error_handler"))
+                                .Model(model =>
+                                {
+                                    model.Id(p => p.Prn);
+                                    model.Field(p => p.NotMapped.Index).Editable(false);
+                                    model.Field(p => p.Prn).Editable(false);
+                                    model.Field(p => p.NotMapped.StudentName).Editable(false);
+                                    model.Field(p => p.Mobile).Editable(false);
+                                    model.Field(p => p.EmailId).Editable(false);
+                                    model.Field(p => p.SentDate).Editable(false);
+                                    model.Field(p => p.BranchViewModel).DefaultValue(new MasterViewModel())
+                                        .Editable();
+                                })
+                                .Aggregates(aggregates =>
+                                {
+                                })
+                                .ServerOperation(false)
+                                .Create(update => update.Action(ViewBag.GridCommonAction, ViewBag.Controller))
+                                .Update(update => update.Action(ViewBag.GridCommonAction, ViewBag.Controller))
+                                .Destroy(update => update.Action(ViewBag.GridCommonAction, ViewBag.Controller))
+                            )
+                            .Resizable(resize => resize.Columns(true))
+                            .Reorderable(reorder => reorder.Columns(true)))
+                    </div>
+                </div>
+                <div class="k-card-actions k-card-actions-horizontal k-card-actions-end">
+                    @(Html.Kendo().Button()
+                        .Name("save")
+                        .Icon("save")
+                        .SpriteCssClass("k-icon-64")
+                        .FillMode(ButtonFillMode.Outline)
+                        .ThemeColor(ThemeColor.Success)
+                        .Content("Save")
+                        .HtmlAttributes(new
+                        {
+                            type = "submit",
+                            name = "action:Save",
+                        }))
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script type="text/javascript">
+    
+
+    function onGridDataBound(e) {
+        // Get the grid widget
+        var grid = e.sender;
+
+        var rows = grid.tbody.find("tr");
+        rows.each(function () {
+            var dataItem = grid.dataItem(this);
+            var disableIt = dataItem.SentDate != null;
+
+            if (disableIt) {
+                $(this).addClass("k-state-disabled");
+            }
+            // Hide other rows for PRN details
+            if (dataItem.NotMapped.Hide === true) {
+                var row = grid.tbody.find("tr[data-uid='" + dataItem.uid + "']");
+                row.hide();
+            }
+        });
+    }
+
+</script>

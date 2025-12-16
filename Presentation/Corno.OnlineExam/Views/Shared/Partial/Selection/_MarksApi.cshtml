@@ -1,0 +1,230 @@
+﻿@model Corno.Data.ViewModels.MarksApiViewModel
+@using Corno.Globals.Constants
+@using Kendo.Mvc.UI
+
+<!-- Faculty and College selections removed to match _MarksEntry configuration -->
+
+<div class="form-group">
+    <label class="col-sm-2 control-label">Course Type <code>*</code>:</label>
+    <div class="col-sm-10">
+        @(Html.Kendo().MultiColumnComboBoxFor(m => m.CourseTypeId)
+            .HtmlAttributes(new { style = "width:100%" })
+            .Placeholder("Select Course Type...")
+            .Filter(FilterType.Contains)
+            .DataTextField(ModelConstants.NameWithId)
+            .DataValueField(ModelConstants.Id)
+            .Columns(columns =>
+            {
+                columns.Add().Field(ModelConstants.Id).Width("100px");
+                columns.Add().Field(ModelConstants.Code).Width("100px");
+                columns.Add().Field(ModelConstants.Name).Width("600px");
+            })
+            .DataSource(source =>
+            {
+                source.Read(read =>
+                {
+                    read.Action("GetCourseTypes", "University");
+                });
+            }))
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-sm-2 control-label">Course <code>*</code>:</label>
+    <div class="col-sm-10">
+        @(Html.Kendo().MultiColumnComboBoxFor(m => m.CourseId)
+              .HtmlAttributes(new {style = "width:100%"})
+              .Placeholder("Select Course...")
+              .DataTextField(ModelConstants.NameWithId)
+              .DataValueField(ModelConstants.Id)
+            .Columns(columns =>
+            {
+                columns.Add().Field(ModelConstants.Id).Width("100px");
+                columns.Add().Field(ModelConstants.Code).Width("100px");
+                columns.Add().Field(ModelConstants.Name).Width("600px");
+            })
+            .Filter(FilterType.Contains)
+              .DataSource(source =>
+              {
+                  source.Read(read =>
+                  {
+                      read.Action("GetAllCoursesByCourseType", "University")
+                          .Data("filterCourses");
+                  })
+                      .ServerFiltering(true);
+              })
+              .Enable(false)
+              .AutoBind(false)
+              .CascadeFrom(ModelConstants.CourseTypeId)
+              )
+        <script>
+            function filterCourses() {
+                return {
+                    CourseTypeId: $("#CourseTypeId").val()
+                };
+            }
+        </script>
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-sm-2 control-label">Course Part <code>*</code>:</label>
+    <div class="col-sm-10">
+        @(Html.Kendo().MultiColumnComboBoxFor(m => m.CoursePartId)
+              .HtmlAttributes(new {style = "width:100%"})
+            .Placeholder("Select Course Part...")
+              .DataTextField(ModelConstants.NameWithId)
+              .DataValueField(ModelConstants.Id)
+              .Filter(FilterType.Contains)
+            .Columns(columns =>
+            {
+                columns.Add().Field(ModelConstants.Id).Width("100px");
+                columns.Add().Field(ModelConstants.Code).Width("100px");
+                columns.Add().Field(ModelConstants.Name).Width("600px");
+            })
+              .DataSource(source =>
+              {
+                  source.Read(read =>
+                  {
+                      read.Action("GetCoursePartsByCourse", "University")
+                          .Data("filterCourseParts");
+                  })
+                      .ServerFiltering(true);
+              })
+              .Enable(false)
+              .AutoBind(false)
+              .CascadeFrom(ModelConstants.CourseId)
+              )
+        <script>
+            function filterCourseParts() {
+                return {
+                    courseId: $("#CourseId").val()
+                };
+            }
+        </script>
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-sm-2 control-label">Subject :</label>
+    <div class="col-sm-10">
+        @(Html.Kendo().MultiColumnComboBoxFor(m => m.SubjectId)
+            .HtmlAttributes(new {style = "width:100%"})
+            .Placeholder("Select Subject...")
+            .DataTextField(ModelConstants.NameWithId)
+            .DataValueField(ModelConstants.Id)
+            .Filter(FilterType.Contains)
+            .Columns(columns =>
+            {
+                columns.Add().Field(ModelConstants.Id).Width("100px");
+                columns.Add().Field(ModelConstants.Code).Width("100px");
+                columns.Add().Field(ModelConstants.Name).Width("600px");
+            })
+            .DataSource(source =>
+            {
+                source.Read(read =>
+                {
+                    read.Action("GetSubjectsByCoursePart", "University")
+                        .Data("filterSubjects");
+                })
+                    .ServerFiltering(true);
+            })
+            .Enable(false)
+            .AutoBind(false)
+            .CascadeFrom(ModelConstants.CoursePartId)
+            )
+        <script>
+            function filterSubjects() {
+                return {
+                    coursePartId: $("#CoursePartId").val(),
+                };
+            }
+        </script>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label">Category <code>*</code>:</label>
+    <div class="col-sm-10">
+        @(Html.Kendo().MultiColumnComboBoxFor(m => m.CategoryId)
+            .HtmlAttributes(new { style = "width:100%" })
+            .Placeholder("Select Category...")
+            .Filter(FilterType.Contains)
+            .DataTextField(ModelConstants.NameWithId)
+            .DataValueField(ModelConstants.Id)
+            .Columns(columns =>
+            {
+                columns.Add().Field(ModelConstants.Id).Width("100px");
+                columns.Add().Field(ModelConstants.Code).Width("100px");
+                columns.Add().Field(ModelConstants.Name).Width("600px");
+            })
+            .DataSource(source =>
+            {
+                source.Read(read =>
+                {
+                    read.Action("GetTheoryCategories", "University")
+                        .Data("filterCategories");
+                }).ServerFiltering(true);
+            })
+            .Enable(false)
+            .AutoBind(false)
+            .CascadeFrom(ModelConstants.SubjectId))
+        <script>
+            function filterCategories() {
+                return {
+                    subjectId: $("#SubjectId").val(),
+                    coursePartId: $("#CoursePartId").val()
+                };
+            }
+        </script>
+    </div>
+    
+</div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label">Paper :</label>
+    <div class="col-sm-10">
+        @(Html.Kendo().MultiColumnComboBoxFor(m => m.PaperId)
+            .HtmlAttributes(new { style = "width:100%" })
+            .Placeholder("Select Paper...")
+            .Filter(FilterType.Contains)
+            .DataTextField(ModelConstants.NameWithId)
+            .DataValueField(ModelConstants.Id)
+            .Columns(columns =>
+            {
+                columns.Add().Field(ModelConstants.Id).Width("100px");
+                columns.Add().Field(ModelConstants.Code).Width("100px");
+                columns.Add().Field(ModelConstants.Name).Width("600px");
+            })
+            .DataSource(source =>
+            {
+                source.Read(read =>
+                {
+                    read.Action("GetPapersByCategory", "University")
+                        .Data("filterPapers");
+                }).ServerFiltering(true);
+            })
+            .Enable(false)
+            .AutoBind(false)
+            .CascadeFrom(ModelConstants.CategoryId))
+        <script>
+            function filterPapers() {
+                return {
+                    coursePartId: $("#CoursePartId").val(),
+                    subjectId: $("#SubjectId").val(),
+                    categoryId: $("#CategoryId").val()
+                };
+            }
+        </script>
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.PageSize, "Page Size",
+        new { @class = "col-sm-2 control-label" })
+    <div class="col-sm-10">
+        @(Html.Kendo().NumericTextBoxFor(m => m.PageSize)
+            .Decimals(0)
+            .Min(1)
+            .Format("n0")
+            .Value(Model.PageSize ?? 120)
+            .HtmlAttributes(new { @class = "text-right w-100" }))
+    </div>
+</div>

@@ -1,0 +1,12 @@
+﻿@model object
+@using Kendo.Mvc.UI
+@(Html.Kendo().ComboBoxFor(model => model)
+     .Name("CourseID")
+                .Filter(FilterType.Contains)
+                .Placeholder("Select Course...")
+                .BindTo(new SelectList((System.Collections.IEnumerable)ViewData["Courses"], "ID", "Name"))
+                .Suggest(true)
+                
+ )
+
+

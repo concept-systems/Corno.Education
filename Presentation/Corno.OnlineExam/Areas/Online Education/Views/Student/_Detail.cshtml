@@ -1,0 +1,250 @@
+﻿@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Question_Bank.Models.Paper
+
+<style>
+    .k-grid .k-grid-content tr td {
+        vertical-align: top;
+    }
+</style>
+
+@*@#1#Html.DevExpress().RichEdit(settings =>
+    {
+        settings.Name = "DocumentContent";
+        //settings.CallbackRouteValues = new { Controller = "ManualPaper", Action = "RichEditPartial" };
+        settings.Width = Unit.Percentage(100);
+        settings.Height = Unit.Pixel(400);
+    }).Open(Model.Id.ToString(), DevExpress.XtraRichEdit.DocumentFormat.Doc, () =>
+        string.IsNullOrEmpty(Model.PaperType) ? Array.Empty<byte>() :
+            Convert.FromBase64String(Model.PaperType)).GetHtml()#1#
+
+@#1#Html.DevExpress().RichEdit(settings =>
+    {
+        settings.Name = "PaperType";
+        //settings.CallbackRouteValues = new { Controller = "ManualPaper", Action = "RichEditPartial" };
+        settings.Width = Unit.Percentage(100);
+        settings.Height = Unit.Pixel(400);
+    }).Open(Model.Id.ToString(), DevExpress.XtraRichEdit.DocumentFormat.PlainText, () =>
+        System.Text.Encoding.UTF8.GetBytes(Model.PaperType)).GetHtml()#1#
+
+@Html.DevExpress().RichEdit(settings =>
+{
+    settings.Name = ModelConstants.Description;
+    settings.Width = Unit.Percentage(100);
+    settings.Height = Unit.Pixel(400);
+    settings.RibbonMode = RichEditRibbonMode.Auto;
+    settings.Settings.Views.ViewType = RichEditViewType.Simple;
+    settings.Init = (s, e) =>
+    {
+        var richEdit = s as MVCxRichEdit;
+        if (null == richEdit) return;
+        richEdit.CreateDefaultRibbonTabs(true);
+        richEdit.RibbonTabs[0].Visible = false;
+        richEdit.RibbonTabs.Find(c => c.Text.Contains("Merge")).Visible = false;
+        //richEdit.Open(ModelConstants.Description, () => Model.DocumentContent);
+        //richEdit.DocumentId = ModelConstants.Description;
+    };
+    // Clear content on page load
+    settings.PreRender = (s, e) =>
+    {
+        var richEdit = (MVCxRichEdit)s;
+        if (null == richEdit) return;
+
+        if (null != Model && null == Model.DocumentContent)
+            Model.DocumentContent = Array.Empty<byte>();
+        if (null == Model || Array.Empty<byte>() == Model.DocumentContent)
+            richEdit.New();
+        else
+            richEdit.Open(Guid.NewGuid().ToString(), DocumentFormat.Rtf, () => Model.DocumentContent);
+
+        /*// Set the unique document ID and open the document
+        var documentId = ModelConstants.Description; // Set your unique document ID here
+        Func<byte[]> contentAccessorByByte = () =>
+        {
+            // Retrieve your document content as byte array
+            return Model != null ? Model.DocumentContent : Array.Empty<byte>();
+        };*/
+        /*if (null == Model || Array.Empty<byte>() == Model.DocumentContent)
+            richEdit.New();
+        else
+            richEdit.Open(ModelConstants.Description, () => Model.DocumentContent);*/
+        //richEdit.Open(ModelConstants.Description, () => Model.DocumentContent);
+    };
+}).GetHtml()
+
+@#1#Html.DevExpress().RichEdit(settings =>
+    {
+        settings.Name = "PaperType";
+        settings.Width = Unit.Percentage(100);
+        settings.Height = Unit.Pixel(400);
+        settings.Saving = (s, e) =>
+        {
+            byte[] docBytes = RichEditExtension.SaveCopy("PaperType",
+                DevExpress.XtraRichEdit.DocumentFormat.Rtf);
+            e.Handled = true; // Prevents the default save operation
+        };
+    }).Open(Model.Id.ToString(), DevExpress.XtraRichEdit.DocumentFormat.Rtf, () =>
+        Model.DocumentContent).GetHtml()#1#
+
+@#1#Html.Partial("~/Views/Shared/EditorTemplates/Corno/_RichEditPartial.cshtml", Model)#1#
+@#1#using (Html.BeginForm())
+        {
+            @Html.Action("RichEditPartial", "ManualPaper")
+    }#1#
+
+<div class="form-group">
+    <div class="k-card-actions k-card-actions-horizontal k-card-actions-start col-sm-8">
+        @Html.LabelFor(m => m.QuestionSerialNo, "Sr. No. :",
+            new { @class = "control-label" })
+        <div class="col-sm-2">
+            @(Html.Kendo().NumericTextBoxFor(m => m.QuestionSerialNo)
+            .Decimals(0)
+            .Min(0)
+            .Format("n0")
+            .Spinners(true)
+            .HtmlAttributes(new { @class = "text-right w-100" }))
+        </div>
+        @Html.LabelFor(m => m.DifficultyLevel, "Diff. Level :",
+            new { @class = "control-label" })
+        <div class="col-sm-2">
+            @(Html.Kendo().NumericTextBoxFor(m => m.DifficultyLevel)
+            .Decimals(0)
+            .Min(0)
+            .Format("n0")
+            .Spinners(true)
+            .HtmlAttributes(new { @class = "text-right w-100" }))
+        </div>
+    </div>
+    <div class="k-card-actions k-card-actions-horizontal k-card-actions-end col-sm-4">
+        @(Html.Kendo().Button()
+            .Name("btnLoadDescription")
+            .Icon("edit")
+            .SpriteCssClass("k-icon-64")
+            .FillMode(ButtonFillMode.Outline)
+            .ThemeColor(ThemeColor.Tertiary)
+            .Content("Load")
+            .HtmlAttributes(new
+            {
+                type = "submit",
+                name = "action:LoadDescription",
+            }))
+        @(Html.Kendo().Button()
+            .Name("btnUpdateDescription")
+            .Icon("save")
+            .SpriteCssClass("k-icon-64")
+            .FillMode(ButtonFillMode.Outline)
+            .ThemeColor(ThemeColor.Success)
+            .Content("Save")
+            .HtmlAttributes(new
+            {
+                type = "submit",
+                name = "action:UpdateDescription",
+            }))
+    </div>
+</div>*@
+
+<div class="form-group">
+    <div class="col-sm-12 text-right">
+        @(Html.Kendo().Grid(Model.PaperDetails)
+            .Name("grid")
+            .Columns(columns =>
+            {
+                columns.Bound(p => p.Id)
+                    .ClientTemplate("#= Id #" + "<input type='hidden' name='PaperDetails[#= index(data)#].Id' value='#= Id #'   />")
+                    .Hidden(true);
+                columns.Bound(p => p.SerialNo)
+                    .ClientTemplate("#= SerialNo #" + "<input type='hidden' name='PaperDetails[#= index(data)#].SerialNo' value='#= SerialNo #'   />")
+                    .Hidden(true)
+                    .Title("Sr. <br/> No.")
+                    .Width(50);
+                columns.Bound(p => p.SectionNo)
+                    .ClientTemplate("#= SectionNo #" + "<input type='hidden' name='PaperDetails[#= index(data)#].SectionNo' value='#= SectionNo #'   />")
+                    .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center k-vertical-align-top" })
+                    .Title("Sec. <br/> No")
+                    .ClientGroupHeaderTemplate("<b>Section: #= value #</b>")
+                    .Hidden(true)
+                    .Width(60);
+                columns.Bound(p => p.QuestionNo)
+                    .ClientTemplate("#= QuestionNo #" + "<input type='hidden' name='PaperDetails[#= index(data)#].QuestionNo' value='#= QuestionNo #'   />")
+                    .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center k-vertical-align-top" })
+                    //.ClientGroupHeaderTemplate("#= formatGroupHeader(data) #")
+                    .Hidden(true)
+                    .Title("Q. <br/> No.")
+                    .Width(60);
+                columns.Bound(p => p.ChapterId)
+                    .ClientTemplate("#= ChapterId #" + "<input type='hidden' name='PaperDetails[#= index(data)#].ChapterId' value='#= ChapterId #'   />")
+                    .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                    .Title("Chapt.<br/>No.")
+                    .Hidden(true)
+                    .Width(60);
+                columns.Bound(p => p.QuestionTypeId)
+                    .ClientTemplate("#= QuestionTypeName #" + "<input type='hidden' name='PaperDetails[#= index(data)#].QuestionTypeId' value='#= QuestionTypeId #'   />")
+                    .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                    .Title("Type")
+                    .Hidden(true)
+                    .Width(120);
+                columns.Bound(p => p.Marks)
+                    .ClientTemplate("#= Marks #" + "<input type='hidden' name='PaperDetails[#= index(data)#].Marks' value='#= Marks #'   />")
+                    .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                    .Hidden(true)
+                    .Width(60);
+
+                columns.Bound(p => p.DifficultyLevel)
+                    .ClientTemplate("#= DifficultyLevel #" + "<input type='hidden' name='PaperDetails[#= index(data)#].DifficultyLevel' value='#= DifficultyLevel #'   />")
+                    .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                    .Hidden(true)
+                    .Title("Diff. <br/> Level")
+                    .Width(60);
+
+                /*columns.Bound(p => p)
+                    .ClientTemplate("Sr. No. : #= SerialNo #<br/> Section : #= SectionNo # <br/>" +
+                                    "Question : #= QuestionNo # <br/> Chapter : #= ChapterId <br/>#"
+                                   );*/
+                columns.Bound(p => p)
+                    .ClientTemplate("<strong>Sr. No. : #= SerialNo #</strong>, Section : #= SectionNo #, " +
+                                    "Question : #= QuestionNo #, Chapter : #= ChapterId #, " +
+                                    "Type : #= QuestionTypeName #<br/> Marks : #= Marks #, "  +
+                                    "Difficulty Level : #= DifficultyLevel # <br/> " +
+                                    "CO. No. : #= CoNo #, Taxonomy : #= Taxonomy #")
+                    .Width(30);
+                columns.Bound(p => p.Description)
+                    //.ClientTemplate("#= Description #" + "<input type='hidden' name='PaperDetails[#= index(data)#].Description' value='#= Description #'   />")
+                    .ClientTemplate("#= Description #")
+                    //.EditorTemplateName(@"Editor")
+                    .Width(70)
+                    .Hidden(false)
+                    .Encoded(false); // Prevent HTML encoding
+                columns.Bound(p => p.DocumentContent)
+                    //.ClientTemplate("#= DocumentContent #" + "<input type='hidden' name='PaperDetails[#= index(data)#].DocumentContent' value='#= DocumentContent #'   />")
+                    .ClientTemplate("#= kendo.toString(DocumentContent, 'base64') #")
+                    .Width(70)
+                    .Hidden(true);
+
+                //columns.Command(command => { command.Edit(); }).Width(80);
+            })
+            /*.Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("/Corno/_QuestionEditorTemplate")
+                .Window(w => w.Size("large").Events(events => events.Open("onPopupOpen"))))*/
+            //.Editable(editable => editable.Mode(GridEditMode.InLine))
+            .Pageable()
+            .Sortable()
+            .Scrollable()
+            //.Groupable()
+            .HtmlAttributes(new { @class = "w-100", style = "height:500px;" })
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(20)
+                .Events(events => events.Error("error_handler"))
+                //.Group(groups => groups.Add(p => p.SectionNo))
+                .Sort(sort =>
+                {
+                    sort.Add(p => p.Status).Ascending();
+                    sort.Add(p => p.SectionNo).Ascending();
+                    sort.Add(p => p.QuestionNo).Ascending();
+                })
+                .Model(model => model.Id(p => p.Id))
+                .ServerOperation(false)
+                .Create(update => update.Action("Inline_Create_Update_Destroy", "ManualPaper"))
+                .Update(update => update.Action("Inline_Create_Update_Destroy", "ManualPaper"))
+                .Destroy(update => update.Action("Inline_Create_Update_Destroy", "ManualPaper"))
+            ))
+    </div>
+</div>

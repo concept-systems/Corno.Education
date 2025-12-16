@@ -1,0 +1,121 @@
+﻿@model IEnumerable<Corno.Data.ViewModels.ExamIndexViewModel>
+@using Kendo.Mvc.UI
+
+@{
+    ViewBag.Title = "My Exams";
+
+    var firstExam = Model.FirstOrDefault();
+}
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Online Exam</a></li>
+            <li><a href="#">My Exams</a></li>
+        </ol>
+    </div>
+</div>
+
+<div class="k-card ">
+    <div class="k-card-header">
+        @if (null != firstExam)
+        {
+            <table class="table table-bordered">
+                <tr>
+                    <td class="col-sm-2">College : </td>
+                    <td class="col-sm-10">@firstExam.CollegeName</td>
+                </tr>
+                <tr>
+                    <td>Programme : </td>
+                    <td>@firstExam.CourseName</td>
+                </tr>
+                <tr>
+                    <td>Center : </td>
+                    <td>@firstExam.CentreName</td>
+                </tr>
+                <tr>
+                    <td>Prn : </td>
+                    <td>@firstExam.Prn</td>
+                </tr>
+            </table>
+        }
+    </div>
+    <div class="k-card-body">
+        @(Html.Kendo().Grid(Model)
+            .Name("Grid")
+            .Columns(columns =>
+            {
+                columns.Bound(p => p.Id)
+                    .HeaderHtmlAttributes(new { style = "text-align: center; justify-content: center" })
+                    .Hidden(true);
+                columns.Bound(p => p.SerialNo).Title("Sr. No.")
+                    .HeaderHtmlAttributes(new { style = "text-align: center; justify-content: center" })
+                    .HtmlAttributes(new { style = "text-align: center" })
+                    .Width(100);
+                columns.Bound(p => p.FormType).Title("Form")
+                    .HeaderHtmlAttributes(new { style = "text-align: center; justify-content: center" })
+                    .Width(150);
+                columns.Bound(p => p.InstanceName).Title("Instance")
+                    .HeaderHtmlAttributes(new { style = "text-align: center; justify-content: center" })
+                    .Width(200);
+                columns.Bound(p => p.FormDate).Format("{0:dd/MM/yyyy}")
+                    .Title("Date")
+                    .HeaderHtmlAttributes(new { style = "text-align: center; justify-content: center" })
+                    .HtmlAttributes(new { style = "text-align: center" })
+                    .Width(100);
+                columns.Bound(p => p.CoursePartName)
+                    .HeaderHtmlAttributes(new { style = "text-align: center; justify-content: center" })
+                    .Title("Course Part");
+                columns.Bound(p => p.TransactionId)
+                    .HeaderHtmlAttributes(new { style = "text-align: center; justify-content: center" })
+                    .HtmlAttributes(new { style = "text-align: center" })
+                    .Title("Transaction Id")
+                    .Width(180);
+                columns.Bound(p => p.TotalFee)
+                    .HeaderHtmlAttributes(new { style = "text-align: center; justify-content: center" })
+                    .HtmlAttributes(new { style = "text-align: right" })
+                    .Title("Fee Received")
+                    .Width(100);
+                columns.Command(command =>
+                {
+                    command.Custom("Receipt").Click("viewReceipt").Text("Receipt")
+                        .HtmlAttributes(new { @class = "k-button k-button-md k-rounded-md k-button-outline k-button-outline-tertiary" });
+                        //.Visible((item) => ((ExamIndexViewModel)item).FormType == FormType.Exam);
+                    command.Custom("View").Click("viewDetails").Text("View")
+                        .HtmlAttributes(new {@class= "k-button k-button-md k-rounded-md k-button-outline k-button-outline-tertiary" });
+                }).Title("Actions").Width(150);
+            })
+            .HtmlAttributes(new { style = "height: 550px;" })
+            .Pageable( pageable => pageable
+                .Input(true)
+                .Numeric(false)
+            )
+            .Sortable()
+            .Scrollable(scr=>scr.Height(430))
+            .Filterable()
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(20)
+                .ServerOperation(false)
+            ))
+    </div>
+</div>
+
+<script type="text/javascript">
+    function viewDetails(e) {
+        e.preventDefault();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        //var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        window.location.href = "@Url.Action("Details", "StudentExam")" + "/?formId=" + parseInt(dataItem.Id) + "&formType=" + parseInt(dataItem.FormType);
+        //window.location.href = "Transactions/StudentExam/Details/" + dataItem.Id; // Adjust the URL as needed
+    }
+
+    function viewReceipt(e) {
+        e.preventDefault();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        window.location.href = "@Url.Action("Receipt", "StudentExam")" + "/?instanceId=" + parseInt(dataItem.InstanceId) + "&prn=" + dataItem.Prn + "&formType=" + parseInt(dataItem.FormType);
+    }
+
+</script>
+
+
+

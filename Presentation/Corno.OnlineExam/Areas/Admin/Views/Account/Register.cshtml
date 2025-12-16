@@ -1,0 +1,130 @@
+﻿@model Corno.Data.Admin.RegisterViewModel
+@using Kendo.Mvc.UI
+@{
+    ViewBag.Title = "Register";
+}
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">OnlineExam</a></li>
+            <li><a href="#">Admin</a></li>
+            <li><a href="#">User Register</a></li>
+        </ol>
+    </div>
+</div>
+@Html.ValidationSummary()
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <div class="box ui-draggable">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                <div class="form-horizontal">
+                    <div class="box-content">
+                        <div class="panel panel-info">
+                            <div class="panel-heading"><strong>Register Info</strong></div>
+                            <div class="panel-body">
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label text-right">First Name :</label>
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", placeholder = "Edit First Name", data_toggle = "tooltip", data_placement = "bottom", title = "First Name" })
+                                        @Html.ValidationMessageFor(m => m.FirstName)
+                                    </div>
+                                    <label class="col-sm-2 control-label">Last Name :</label>
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", placeholder = "Edit Last Name", data_toggle = "tooltip", data_placement = "bottom", title = "Last Name" })
+                                        @Html.ValidationMessageFor(m => m.LastName)
+                                    </div>
+                                </div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label text-right">Email :</label>
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Edit Email", data_toggle = "tooltip", data_placement = "bottom", title = "Email" })
+                                        @Html.ValidationMessageFor(m => m.Email)
+                                    </div>
+                                    <label class="col-sm-2 control-label text-right">Mobile :</label>
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", placeholder = "Edit Mobile", data_toggle = "tooltip", data_placement = "bottom", title = "Mobile" })
+                                        @Html.ValidationMessageFor(m => m.Email)
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">College :</label>
+                                    <div class="col-sm-10">
+                                        @(Html.Kendo().ComboBox()
+                                            .Name("CollegeID")
+                                            .HtmlAttributes(new { style = "width:100%" })
+                                            .Placeholder("Select College...")
+                                            //.SelectedIndex(0)
+                                            .Filter(FilterType.Contains)
+                                            .BindTo(new SelectList(ViewBag.Colleges, "ID", "NameWithID"))
+                                            )
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label">User Name :</label>
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "User Name", data_toggle = "tooltip", data_placement = "bottom", title = "User Name" })
+                                        @Html.ValidationMessageFor(m => m.UserName)
+                                    </div>
+                                    <label class="col-sm-2 control-label text-right">Password :</label>
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(m => m.Password, new { @class = "form-control", placeholder = " Password", data_toggle = "tooltip", data_placement = "bottom", title = "Password", type = "Password" })
+                                        @Html.ValidationMessageFor(m => m.Password)
+                                    </div>
+                                </div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label">Confirm Password :</label>
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "Edit Confirm Password", data_toggle = "tooltip", data_placement = "bottom", title = "Confirm Password", type = "Password" })
+                                        @Html.ValidationMessageFor(m => m.ConfirmPassword)
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                            <div class="panel-footer">
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <button type="button" value="Index" class="btn btn-primary btn-label-left pull-left" onclick="location.href = '@Url.Action("Index", "Account")'">
+                                            <span><i class="fa fa-arrow-left"></i></span>
+                                            Back to List
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-10 ">
+                                        <button type="submit" value="Create" title="Save" class="btn btn-primary btn-label-left pull-right">
+                                            <span><i class="fa fa-save"></i></span>
+                                            Submit
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function DemoSelect2() {
+        $('#S2_college').select2({ placeholder: "Select College" });
+    }
+    $(document).ready(function () {
+        // Create Wysiwig editor for textare
+        //TinyMCEStart('#wysiwig_simple', null);
+        //TinyMCEStart('#Description', 'extreme');
+        //// Add tooltip to form-controls
+        $('.form-control').tooltip();
+        // Initialize datepicker
+
+        LoadSelect2Script(DemoSelect2);
+
+        //// Load example of form validation
+        LoadBootstrapValidatorScript(DemoFormValidator);
+    });
+
+</script>

@@ -1,0 +1,127 @@
+﻿@model ScheduleofExamination.Models.ScheduleofExamination
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>ScheduleofExamination</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CompanyID)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CompanyID)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.SerialNo)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SerialNo)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Code)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Code)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CoursePart.Code)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CoursePart.Code)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CommencementDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CommencementDate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.LastDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.LastDate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.LateFeeLastDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.LateFeeLastDate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.ExamFee.Code)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ExamFee.Code)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.ResultDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ResultDate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Status)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Status)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CreatedBy)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CreatedBy)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CreatedDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CreatedDate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.ModifiedBy)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ModifiedBy)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.ModifiedDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ModifiedDate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.DeletedBy)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DeletedBy)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.DeletedDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DeletedDate)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

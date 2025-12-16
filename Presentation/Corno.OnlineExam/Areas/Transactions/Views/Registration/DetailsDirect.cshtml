@@ -1,0 +1,70 @@
+﻿@model Corno.Data.Corno.RegistrationViewModel
+@{
+    Layout = null;
+}
+@Html.ValidationSummary()
+<html>
+<head>
+    <title></title>
+    <link rel="icon" type="image/png" href="~/Content/img/Concept logo.png" />
+
+    <link href="~/Content/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+    <link href="~/Content/plugins/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/Content/css/build.css" rel="stylesheet" />
+    <link href="~/Content/plugins/fancybox/jquery.fancybox.css" rel="stylesheet">
+    <link href="~/Content/plugins/select2/select2.css" rel="stylesheet">
+    <link href="~/Content/css/style.css" rel="stylesheet">
+    <link href="~/Content/css/awesome-bootstrap-checkbox.css" rel="stylesheet" />
+    <link href="~/Content/Kendo/2019.1.115/kendo.common.min.css" rel="stylesheet">
+    <link href="~/Content/Kendo/2019.1.115/kendo.default.min.css" rel="stylesheet">
+    <link href="~/Content/Kendo/2019.1.115/kendo.blueopal.min.css" rel="stylesheet">
+    <link href="~/Content/plugins/printArea/PrintArea.css" rel="stylesheet">
+
+    <link href="~/Content/plugins/fileinput/fileinput.min.css" rel="stylesheet" type="text/css" />
+
+    <script src="~/Content/plugins/jquery/jquery-2.1.0.min.js"></script>
+    <link href="@Url.Content("~/Content/kendo/2019.1.115/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2019.1.115/kendo.dataviz.blueopal.min.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/kendo/2019.1.115/jszip.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2019.1.115/kendo.all.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2019.1.115/kendo.aspnetmvc.min.js")"></script>
+    <script src="~/Content/plugins/jquery-ui/jquery-ui.js"></script>
+    <script src="~/Content/plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="~/Content/plugins/justified-gallery/jquery.justifiedgallery.min.js"></script>
+    <script src="~/Scripts/js/devoops.js"></script>
+    <script src="~/Content/plugins/fileinput/fileinput.min.js" type="text/javascript"></script>
+    <script src="~/Content/plugins/bootbox/bootbox.min.js"></script>
+    <script src="~/Content/plugins/printArea/jquery.PrintArea.js"></script>
+
+    <script data-pace-options='{ "ajax": true, "document": true, "eventLag": true, "restartOnPushState": true, restartOnRequestAfter: true }' src="~/Content/plugins/pace-1.0.2/pace.min.js"></script>
+    <link href="~/Content/plugins/pace-1.0.2/themes/blue/pace-theme-corner-indicator.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="row">
+            <div class="col-xs-12 col-sm-12">
+                <div class="box ui-draggable ui-droppable">
+                    <div class="box-content">
+                        <div class="form-horizontal">
+                            <div class="">
+                                <div class="col-sm-2">
+                                    <a class="btn btn-primary" href="javascript:history.back()">
+                                        <span>Back</span>
+                                    </a>
+                                </div>
+                                <div class="col-sm-offset-8 col-sm-2">
+                                    <button type="submit" value="Edit" title="Save" onclick="PrintForm()" class="btn btn-primary btn-label-left pull-right">
+                                        <span><i class="fa fa-print"></i></span>
+                                        Print
+                                    </button>
+                                </div>
+                            </div>
+                            @Html.Partial("_DetailsCommon")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</body>
+</html>
+

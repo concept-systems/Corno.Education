@@ -1,0 +1,20 @@
+@model object
+
+@{
+    var formEnabled = ConversionHelper.ToBoolean(ViewData[FieldConstants.FormEnabled]);
+    var description = ((string)Model).SplitCamelCase();
+}
+
+<div class="input-group pb-1">
+    @(Html.Kendo().TextBoxFor(m => m)
+          .Enable(formEnabled)
+          .Label(label => label
+              .Content(description)
+              .Floating(true))
+          .HtmlAttributes(new
+          {
+              placeholder = $"Enter {description}",
+              @class = "w-100"
+          }))
+</div>
+

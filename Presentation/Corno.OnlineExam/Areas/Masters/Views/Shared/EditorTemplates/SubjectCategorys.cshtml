@@ -1,0 +1,11 @@
+﻿@model object
+
+@(Html.Kendo().ComboBoxFor(model => model)
+          .Filter("contains")
+          .Placeholder("Select Subject Category...")
+          .DataTextField("Name")
+          
+              .BindTo((System.Collections.IEnumerable)ViewData["SubjectCategorys"])
+          .Suggest(true)
+)
+

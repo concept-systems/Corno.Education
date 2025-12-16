@@ -1,0 +1,63 @@
+﻿@using Corno.Data.Corno.Question_Bank.Dtos
+@using Corno.OnlineExam.Helpers
+@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Question_Bank.Models.Question
+
+
+<div id="indexForm" class="form-horizontal box-content">
+    <div class="k-card k-card-vertical">
+        <div class="k-card-header k-card-tertiary">
+            <div class="row">
+                <div class="col-sm-10">
+                    <h3>Questions</h3>
+                </div>
+            </div>
+        </div>
+        <div class="k-card-body">
+            <div class="form-group row">
+                <div style="overflow-x: auto;">
+                    @(Html.Kendo().Grid<QuestionIndexDto>()
+                             .Name("gridIndex")
+                             .ApplyCommonSettings() // 👈 Apply shared settings
+                             .Events(events => events.ApplyCommonEvents())
+                             .Columns(columns =>
+                             {
+                                 columns.Bound(m => m.SerialNo);
+                                 columns.Bound(m => m.FacultyName).Align(TextAlign.Left);
+                                 columns.Bound(m => m.CourseName).Align(TextAlign.Left);
+                                 columns.Bound(m => m.SubjectName).Align(TextAlign.Left);
+                                 columns.Bound(m => m.PaperCategoryName).Align(TextAlign.Left);
+                                 //columns.AddStatusColumn();
+                                 columns.AddCommandColumns(new List<GridCommandConfig>
+                                 {
+                                     new GridCommandConfig { Name = "Edit", Text = "", IconClass = "fa fa-edit", ClickHandler = "onEditClick" },
+                                     /*new() { Name = "Delete", Text = "", IconClass = "fa fa-trash", ClickHandler = "onDeleteClick" },
+                                     new() { Name = "View", Text = "", IconClass = "k-icon k-i-preview k-i-eye", ClickHandler = "onViewClick" },
+                                     new() { Name = "Print", Text = "", IconClass = "fa fa-print", ClickHandler = "onPrintClick" }*/
+                                 });
+                             })
+                             .DataSource(dataSource => dataSource
+                                 .ApplyCommonDataSourceSettings("GetIndexDtos", "Checker", "Question Bank")
+                        ))
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function onEditClick(e) {
+        e.preventDefault();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        window.location.href = '@Url.Action("View", "Checker")' +
+            '?FacultyId=' + dataItem.FacultyId +
+            '&CourseId=' + dataItem.CourseId +
+            '&CoursePartId=' + dataItem.CoursePartId +
+            '&SubjectId=' + dataItem.SubjectId + 
+            '&PaperCategoryId=' + dataItem.PaperCategoryId;
+    }
+
+    function sendData() {
+    }
+
+</script>

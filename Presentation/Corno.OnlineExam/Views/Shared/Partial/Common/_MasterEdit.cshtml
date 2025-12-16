@@ -1,0 +1,57 @@
+﻿@using Corno.Data.Helpers
+@using Corno.Globals.Constants
+@model Corno.Data.Common.MasterModel
+
+@{
+    var formEnabled = ViewData[ModelConstants.FormEnabled].ToBoolean();
+}
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="form-group">
+            @(Html.Kendo().TextBoxFor(m => m.Code)
+                .Enable(formEnabled)
+                .Rounded(Rounded.Medium)
+                .Label(label => label
+                    .Content(ModelConstants.Code)
+                    .Floating(true))
+                .HtmlAttributes(new
+                {
+                    placeholder = "Enter code",
+                    //@class = "form-control form-control-sm"
+                    @class = "required w-100"
+                }))
+        </div>
+        <div class="form-group">
+            @(Html.Kendo().TextBoxFor(m => m.Name)
+                .Enable(formEnabled)
+                .Rounded(Rounded.Medium)
+                  .Label(label => label
+                      .Content(ModelConstants.Name)
+                      .Floating(true))
+                  .HtmlAttributes(new
+                  {
+                      placeholder = "Enter name",
+                      required = "required",
+                      //@class = "form-control form-control-sm"
+                      @class = "required w-100"
+                  }))
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group">
+            @(Html.Kendo().TextAreaFor(m => m.Description)
+                  .Rows(4)
+                  .Enable(formEnabled)
+                .Rounded(Rounded.Medium)
+                  .Label(label => label
+                      .Content(ModelConstants.Description)
+                      .Floating(true))
+                  .HtmlAttributes(new
+                  {
+                      placeholder = "Enter description",
+                      @class = "required w-100"
+                  }))
+        </div>
+    </div>
+</div>

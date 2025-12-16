@@ -1,0 +1,62 @@
+﻿@using Corno.Globals.Constants
+@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Masters.SubjectSectionDetail
+
+@Html.HiddenFor(model => model.Id)
+
+<div class="form-group row">
+    <div class="col-sm-11">
+        @(Html.Kendo().MultiColumnComboBoxFor(m => m.PaperCategoryId)
+            .DataTextField(ModelConstants.Name)
+            .DataValueField(ModelConstants.Id)
+            .HtmlAttributes(new { @class = "w-100" })
+            .Filter("contains")
+            .Placeholder("Select ...")
+            .Label(label => label
+                .Content("Paper Category")
+                .Floating(true))
+            .Columns(columns =>
+            {
+                columns.Add().Field(ModelConstants.Id).Width("100px");
+                columns.Add().Field(ModelConstants.Name).Width("600px");
+            })
+            .DataSource(dataSource => dataSource
+                .Read(read => read.Action("GetMiscMasters", "Corno", new { miscType = "PaperCategory" }))
+            ))
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-sm-4">
+        @(Html.Kendo().NumericTextBoxFor(m => m.SectionNo)
+            .Format("n0")
+            .Label(label => label
+                .Content("Section No.")
+                .Floating(true))
+            .Value(Model.SectionNo)
+            .HtmlAttributes(new { @class = "text-right w-100" }))
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-sm-4">
+        @(Html.Kendo().NumericTextBoxFor(m => m.NoOfQuestions)
+            .Format("n0")
+            .Label(label => label
+                .Content("No. Of Questions")
+                .Floating(true))
+            .Value(Model.NoOfQuestions)
+            .HtmlAttributes(new { @class = "text-right w-100" }))
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-sm-4">
+        @(Html.Kendo().NumericTextBoxFor(m => m.AttemptCount)
+            .Format("n0")
+            .Label(label => label
+                .Content("Attempt Count")
+                .Floating(true))
+            .Value(Model.AttemptCount)
+            .HtmlAttributes(new { @class = "text-right w-100" }))
+    </div>
+</div>

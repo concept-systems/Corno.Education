@@ -1,0 +1,196 @@
+﻿@using Corno.Globals.Constants
+@using Corno.Services.Bootstrapper
+@using Corno.Services.Corno.Masters.Interfaces
+@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Question_Bank.Models.Paper
+
+@{
+    ViewBag.Controller = "ManualPaper";
+    ViewBag.Action = ModelConstants.Edit;
+
+    var facultyService = Bootstrapper.Get<IFacultyService>();
+    var courseService = Bootstrapper.Get<ICourseService>();
+    var coursePartService = Bootstrapper.Get<ICoursePartService>();
+    var branchService = Bootstrapper.Get<IBranchService>();
+    var subjectService = Bootstrapper.Get<ISubjectService>();
+    var miscMasterService = Bootstrapper.Get<IMiscMasterService>();
+
+    var theoryCategories = new List<int> { 2, 48 };
+    var subject = subjectService.GetById(Model.SubjectId);
+    var subjectMarks = subject.SubjectCategoryDetails
+        .Where(d => theoryCategories.Contains(d.CategoryId))
+        .Sum(d => d.MaxMarks);
+}
+
+@if (TempData["Success"] != null)
+{
+    <script type="text/javascript">
+        bootbox.alert("@TempData["Success"]")
+    </script>
+}
+
+<div class="form-horizontal box-content">
+    @using (Html.BeginForm("Edit", "ManualPaper", FormMethod.Post, new { id = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.ValidationSummary(false)
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(m => m.Id)
+        <div class="k-card k-card-vertical">
+            <div class=".card-header-without-margin-padding k-card-tertiary">
+                <div class="k-card-actions k-card-actions-horizontal k-card-actions-start col-sm-8">
+                    <h4>Edit Set : @Model.SerialNo</h4>
+                </div>
+                <div class="k-card-actions k-card-actions-horizontal k-card-actions-end col-sm-4">
+                    @(Html.Kendo().Button()
+                            .Name("back_to_list")
+                            .Icon("arrow-left")
+                            .SpriteCssClass("k-icon-64")
+                            .FillMode(ButtonFillMode.Outline)
+                            .ThemeColor(ThemeColor.Info)
+                            .Content("Back To list")
+                            .Events(e => e.Click("onBackToList"))
+                            .HtmlAttributes(new { @class = "w-100" }))
+                </div>
+            </div>
+            <div class="k-card-body">
+                <table class="table">
+                    <tr>
+                        <td>Faculty :</td>
+                        <td colspan="7">
+                            @Html.HiddenFor(p => p.FacultyId)
+                            @{@facultyService.GetViewModel(Model.FacultyId).NameWithId}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Course :</td>
+                        <td colspan="7">
+                            @Html.HiddenFor(p => p.CourseId)
+                            @{@courseService.GetViewModel(Model.CourseId).NameWithId}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Course Part :</td>
+                        <td colspan="7">
+                            @Html.HiddenFor(p => p.CoursePartId)
+                            @{@coursePartService.GetViewModel(Model.CoursePartId).NameWithId}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Branch :</td>
+                        <td colspan="7">
+                            @Html.HiddenFor(p => p.BranchId)
+                            @{
+                                if ((Model.BranchId ?? 0) > 0)
+                                {
+                                    @branchService.GetViewModel(Model.BranchId).NameWithId
+                                }
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Subject :</td>
+                        <td colspan="7">
+                            @Html.HiddenFor(p => p.SubjectId)
+                            (@subject.Id) - @subject.Name
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="1">
+                            @Html.HiddenFor(p => p.PaperCategoryId)
+                            Paper:
+                            @{
+                                if ((Model.PaperCategoryId ?? 0) > 0)
+                                {
+                                    <strong>@miscMasterService.GetViewModel(Model.PaperCategoryId).NameWithId</strong>
+                                }
+                            }
+                        </td>
+                        <td colspan="6">
+                            @Html.HiddenFor(p => p.NoOfSections)
+                            @Html.HiddenFor(p => p.NoOfChapters)
+                            @Html.HiddenFor(p => p.NoOfQuestions)
+                            @Html.HiddenFor(p => p.MaxMarks)
+
+                            Sections : <strong>@Model.NoOfSections</strong> | Chapters : <strong>@Model.NoOfChapters</strong> | Questions : <strong>@Model.NoOfQuestions</strong> | Paper Marks: <strong>@Model.MaxMarks</strong> | Subject Marks: <strong>@subjectMarks</strong>
+                        </td>
+                    </tr>
+                </table>
+
+                @Html.Partial("~/Areas/Question Bank/Views/ManualPaper/_QuestionInfo.cshtml", Model,
+                    new ViewDataDictionary { { ModelConstants.FormEnabled, false } })
+
+                @Html.Partial("~/Areas/Question Bank/Views/ManualPaper/_Detail.cshtml", Model)
+            </div>
+            <div class="k-card-footer">
+                <div class="row">
+                    <div class="k-card-actions k-card-actions-horizontal k-card-actions-end">
+                        @(Html.Kendo().Button()
+                                 .Name("btnAnalysis")
+                                 .Icon("display-inline-block")
+                                 .SpriteCssClass("k-icon-64")
+                                 .FillMode(ButtonFillMode.Outline)
+                                 .ThemeColor(ThemeColor.Tertiary)
+                                 .Content("Analysis Report")
+                                 .HtmlAttributes(new
+                                 {
+                                     type = "submit",
+                                     name = "action:Analysis",
+                                     @class = "w-100"
+                                 }))
+                        @if (User.IsInRole(RoleConstants.Admin) || User.IsInRole(RoleConstants.QuestionBank) ||
+                             User.IsInRole(RoleConstants.PaperSetter))
+                        {
+                            @(Html.Kendo().Button()
+                                .Name("draw_paper")
+                                .Icon("file-txt")
+                                .SpriteCssClass("k-icon-64")
+                                .FillMode(ButtonFillMode.Outline)
+                                .ThemeColor(ThemeColor.Tertiary)
+                                .Content("Draw")
+                                .HtmlAttributes(new
+                                {
+                                    type = "submit",
+                                    name = "action:Draw",
+                                    @class = "w-100"
+                                }))
+                        }
+
+                        @(Html.Kendo().Button()
+                            .Name("preview_paper")
+                            .Icon("display-inline-block")
+                            .SpriteCssClass("k-icon-64")
+                            .FillMode(ButtonFillMode.Outline)
+                            .ThemeColor(ThemeColor.Tertiary)
+                            .Content("Preview")
+                            .HtmlAttributes(new
+                            {
+                                type = "submit",
+                                name = "action:Preview",
+                                @class = "w-100"
+                            }))
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div id="output"></div>
+
+<script>
+    @*$(document).ready(function () {
+        $("#form").kendoValidator({
+            ignore: "#DifficultyLevel" // Exclude DifficultyLevel from validation
+        }).data("kendoValidator");
+    });*@
+    $(document).ready(function () {
+        $("#form").kendoValidator().data("kendoValidator");
+    });
+
+    function onBackToList() {
+        window.location.href = '/Question Bank/ManualPaper/Index';
+    }
+
+</script>
+

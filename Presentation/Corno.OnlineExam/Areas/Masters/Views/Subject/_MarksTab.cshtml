@@ -1,0 +1,81 @@
+﻿@using Corno.Data.Helpers
+@using Corno.Globals.Constants
+@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Masters.Subject
+
+@{
+    var formEnabled = ViewData[ModelConstants.FormEnabled].ToBoolean();
+}
+
+<div class="">
+    <div class="col-sm-6">
+        <div class="form-group row">
+            @Html.LabelFor(m => m.StandardSets, "Standard Set :",
+                new { @class = "col-sm-3" })
+            <div class="col-sm-8">
+                @(Html.Kendo().NumericTextBoxFor(m => m.StandardSets)
+                    .Enable(formEnabled)
+                    .Format("n0")
+                    .HtmlAttributes(new { @class = "w-100 text-right" }))
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(m => m.Narration1, "Narration1 :",
+                new { @class = "col-sm-3" })
+            <div class="col-sm-8">
+                @(Html.Kendo().TextBoxFor(m => m.Narration1)
+                    .Enable(formEnabled)
+                    .HtmlAttributes(new { @class = "w-100" }))
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(m => m.Narration2, "Narration2 :",
+                new { @class = "col-sm-3" })
+            <div class="col-sm-8">
+                @(Html.Kendo().TextBoxFor(m => m.Narration2)
+                    .Enable(formEnabled)
+                    .HtmlAttributes(new { @class = "w-100" }))
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group row">
+            @Html.LabelFor(m => m.CommonSubjectId, "Common Subject :",
+                new { @class = "col-sm-3" })
+            <div class="col-sm-8">
+                @(Html.Kendo().NumericTextBoxFor(m => m.CommonSubjectId)
+                    .Enable(formEnabled)
+                    .HtmlAttributes(new { @class = "w-100" }))
+            </div>
+        </div>
+        @*<div class="form-group row">
+            @Html.LabelFor(m => m.Marks, "Max Marks :",
+                new { @class = "col-sm-3" })
+            <div class="col-sm-8">
+                @(Html.Kendo().NumericTextBoxFor(m => m.Marks)
+                    .Enable(formEnabled)
+                    .Format("n0")
+                    .HtmlAttributes(new { @class = "w-100 text-right" }))
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(m => m.PassingMarks, "Passing Marks :",
+                new { @class = "col-sm-3" })
+            <div class="col-sm-8">
+                @(Html.Kendo().NumericTextBoxFor(m => m.PassingMarks)
+                    .Enable(formEnabled)
+                    .Format("n0")
+                    .HtmlAttributes(new { @class = "w-100 text-right" }))
+            </div>
+        </div>*@
+        @*<div class="form-group row">
+                @Html.LabelFor(m => m.BalanceSets, "Balance Set :",
+                    new { @class = "col-sm-4" })
+                <div class="col-8">
+                    @(Html.Kendo().TextBoxFor(m => m.BalanceSets)
+                        .Enable(formEnabled)
+                        .HtmlAttributes(new {@class = "w-100"}))
+                </div>
+            </div>*@
+    </div>
+</div>

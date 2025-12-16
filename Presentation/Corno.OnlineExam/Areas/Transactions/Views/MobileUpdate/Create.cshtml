@@ -1,0 +1,237 @@
+﻿@using Kendo.Mvc.UI
+@model Corno.Data.Corno.MobileUpdateViewModel
+@{
+    ViewBag.Title = "Update Mobile";
+}
+@*<div class="row">
+        <div id="breadcrumb" class="col-md-12">
+            <ol class="breadcrumb">
+                <li><a href="#">Online Exam</a></li>
+                <li><a href="#"> Create Convocation Form</a></li>
+            </ol>
+        </div>
+    </div>*@
+
+@if (TempData["Success"] != null)
+{
+    <script type="text/javascript">
+        bootbox.alert("@TempData["Success"]")
+    </script>
+}
+
+<div class="form-horizontal box-content">
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form", enctype = "multipart/form-data" }))
+    {
+        <div class="k-card">
+            <div class="k-card-header">
+                <h5 class="k-card-title">Update Mobile</h5>
+            </div>
+            <div class="k-card-separator"></div>
+            <div class="k-card-body">
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(false)
+
+                @*<div class="form-group">
+                        <div class="col-sm-2 text-center">
+                            <button type="button" class="btn btn-primary btn-label-left"
+                                    onclick="location.href = '@Url.Action("Details", new { area = "Reports", controller = "Report", reportName = "MobileUpdateRpt", description = "Agency Report" })' ">
+                                <span><i class="fa fa-file-excel-o"></i></span>
+                                Mobile Report
+                            </button>
+                        </div>
+                        <div class="col-sm-2 text-center">
+                            <button type="button" class="btn btn-primary btn-label-left"
+                                    onclick="location.href = '@Url.Action("Details", new { area = "Reports", controller = "Report", reportName = "AbcRpt", description = "ABC Report" })' ">
+                                <span><i class="fa fa-file-excel-o"></i></span>
+                                ABC Report
+                            </button>
+                        </div>
+                    </div>*@
+                <div class="form-group  has-feedback">
+                    <label class="col-sm-3 control-label text-left" style="text-align: left">PRN :</label>
+                    <div class="col-sm-4">
+                        @*@Html.TextBoxFor(m => m.PrnNo, new { id = "PRNNo", @class = "form-control", placeholder = "Enter PRN", data_toggle = "tooltip", data_placement = "bottom", title = "PRN No" })*@
+                        @(Html.Kendo().TextBoxFor(m => m.PrnNo)
+                            .HtmlAttributes(new { @class = "w-100" }))
+                    </div>
+                    <div class="col-sm-1 text-right">
+                        <button type="submit" name="submitType" value="Search" class="k-button k-button-md k-rounded-md k-button-outline k-button-outline-warning">
+                            <span><i class="fa fa-search"></i> Search</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group  has-feedback">
+                    <label class="col-sm-3 control-label" style="text-align: left">Name :</label>
+                    <div class="col-sm-5">
+                        @(Html.Kendo().TextBoxFor(m => m.Name)
+                            .HtmlAttributes(new { @class = "w-100" }))
+                        @*@Html.TextBoxFor(m => m.Name, new
+                            {
+                                @class = "form-control",
+                                placeholder = "Name",
+                                title = "Name",
+                                @readonly = "true"
+                            })*@
+                    </div>
+                </div>
+                <div class="form-group  has-feedback">
+                    <label class="col-sm-3 control-label" style="text-align: left">Mobile <code>*</code>:</label>
+                    <div class="col-sm-5">
+                        @(Html.Kendo().TextBoxFor(m => m.Mobile)
+                            .HtmlAttributes(new { @class = "w-100" }))
+                        @*@Html.TextBoxFor(m => m.Mobile, new
+                            {
+                                @class = "form-control",
+                                placeholder = "Mobile",
+                                title = "Mobile",
+                                onkeypress = "return isNumber(event)"
+                            })*@
+                    </div>
+                </div>
+                <div class="form-group  has-feedback">
+                    <label class="col-sm-3 control-label" style="text-align: left">Email <code>*</code>:</label>
+                    <div class="col-sm-5">
+                        @(Html.Kendo().TextBoxFor(m => m.Email)
+                            .HtmlAttributes(new { @class = "w-100" }))
+                        @*@Html.TextBoxFor(m => m.Email, new
+                            {
+                                @class = "form-control",
+                                placeholder = "Email",
+                                title = "Email",
+                            })*@
+                    </div>
+                </div>
+                <div class="form-group  has-feedback">
+                    <label class="col-sm-3 control-label" style="text-align: left">Academic Bank of Credits ID <code>*</code>:</label>
+                    <div class="col-sm-5">
+                        @(Html.Kendo().TextBoxFor(m => m.Abc)
+                            //.Placeholder("Academic Bank of Credits ID")
+                            .HtmlAttributes(new { @class = "w-100" }))
+                        @*@Html.TextBoxFor(m => m.Abc, new
+                            {
+                                @class = "form-control",
+                                placeholder = "Academic Bank of Credits ID",
+                                title = "Email",
+                            })*@
+                    </div>
+                </div>
+            </div>
+            <div class="k-card-footer">
+                <div class="row">
+                    <div class="col-sm-2">
+                        @(Html.Kendo().Button()
+                            .Name("mobile_report")
+                            .Icon("file-report")
+                            .SpriteCssClass("k-icon-64")
+                            .FillMode(ButtonFillMode.Outline)
+                            .ThemeColor(ThemeColor.Tertiary)
+                            .Content("Mobile Report")
+                            .HtmlAttributes(new
+                            {
+                                onclick = "location.href='" + Url.Action("Details", new { area = "Reports", controller = "Report", reportName = "MobileUpdateRpt", description = "Agency Report" }) + "'"
+                            }))
+                    </div>
+                    <div class="col-sm-2">
+                        @(Html.Kendo().Button()
+                            .Name("abc_report")
+                            .Icon("file-report")
+                            .SpriteCssClass("k-icon-64")
+                            .FillMode(ButtonFillMode.Outline)
+                            .ThemeColor(ThemeColor.Tertiary)
+                            .Content("ABC Report")
+                            .HtmlAttributes(new
+                            {
+                                onclick = "location.href='" + Url.Action("Details", new { area = "Reports", controller = "Report", reportName = "AbcRpt", description = "ABC Report" }) + "'"
+                            }))
+                    </div>
+                    <div class="col-sm-offset-7 col-sm-1 text-right">
+                        @(Html.Kendo().Button()
+                            .Name("save")
+                            .Icon("save")
+                            .SpriteCssClass("k-icon-64")
+                            .FillMode(ButtonFillMode.Outline)
+                            .ThemeColor(ThemeColor.Success)
+                            .Content("Save")
+                            .HtmlAttributes(new
+                            {
+                                type = "submit",
+                                //name = "action:Create",
+                            }))
+                    </div>
+                    @*<div class="form-group">
+                            <div class="col-sm-offset-10 col-sm-2">
+                                <button type="submit" name="SubmitValue" value="Create" title="Create" class="btn btn-primary btn-label-left pull-right">
+                                    <span><i class="fa fa-save"></i></span>
+                                    Submit
+                                </button>
+                            </div>
+                        </div>*@
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script type="text/javascript">
+    //$(document).ready(function () {
+    //    $("#form").kendoValidator().data("kendoValidator");
+    //});
+
+
+    $('#PRNNo').change(function () {
+        $('#form').append('<input type="text" name="submitType" value="Search" />');
+        $("form").submit();
+    });
+
+    $(document).ready(function () {
+        $('#Abc').on('keypress', function (e) {
+            var charCode = (e.which) ? e.which : e.keyCode;
+            // Allow only numbers (0-9)
+            if (charCode < 48 || charCode > 57) {
+                e.preventDefault();
+            }
+            // Prevent more than 12 digits
+            var currentVal = $(this).val();
+            if (currentVal.length >= 12) {
+                e.preventDefault();
+            }
+        });
+
+        @*$('#Abc').on('input', function () {
+            var currentVal = $(this).val();
+            if (currentVal.length > 12) {
+                $(this).val(currentVal.slice(0, 12));
+            }
+        });*@
+
+        $('#Mobile').on('keypress', function (e) {
+            var charCode = (e.which) ? e.which : e.keyCode;
+            // Allow only numbers (0-9)
+            if (charCode < 48 || charCode > 57) {
+                e.preventDefault();
+            }
+            // Prevent more than 10 digits
+            var currentVal = $(this).val();
+            if (currentVal.length >= 10) {
+                e.preventDefault();
+            }
+        });
+
+        @*$('#Mobile').on('input', function () {
+            var currentVal = $(this).val();
+            if (currentVal.length > 10) {
+                $(this).val(currentVal.slice(0, 10));
+            }
+        });*@
+    });
+
+    @*function isNumber(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+        return true;
+    }*@
+
+</script>

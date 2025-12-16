@@ -1,0 +1,450 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C0D7AA89-DEDB-493E-A4F7-6075E6D403D2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Corno.Data</RootNamespace>
+    <AssemblyName>Corno.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\Bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\Bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BouncyCastle.Cryptography, Version=2.0.0.0, Culture=neutral, PublicKeyToken=072edcf4a5328938, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\BouncyCastle.Cryptography.2.3.1\lib\net461\BouncyCastle.Cryptography.dll</HintPath>
+    </Reference>
+    <Reference Include="CsvHelper, Version=30.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CsvHelper.30.0.1\lib\net45\CsvHelper.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Enums.NET, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7ea1c1650d506225, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Enums.NET.4.0.1\lib\net45\Enums.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="ExcelMapper, Version=5.0.0.0, Culture=neutral, PublicKeyToken=6c3f2bec99465df3, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ExcelMapper.5.2.598\lib\net462\ExcelMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="ExtendedNumerics.BigDecimal, Version=2025.1001.2.129, Culture=neutral, PublicKeyToken=65f1315a45ad8949, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ExtendedNumerics.BigDecimal.2025.1001.2.129\lib\net48\ExtendedNumerics.BigDecimal.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=1.4.2.13, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SharpZipLib.1.4.2\lib\netstandard2.0\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Kendo.Mvc, Version=2023.1.117.545, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\KENDOUIMVC\2023.1.117.545\Kendo.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="Mapster.Core, Version=1.2.0.0, Culture=neutral, PublicKeyToken=e64997d676a9c1d3, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Mapster.Core.1.2.0\lib\net45\Mapster.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="MathNet.Numerics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cd8b63ad3d691a37, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MathNet.Numerics.Signed.5.0.0\lib\net48\MathNet.Numerics.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Identity.Core.2.2.3\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.3\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Bcl.AsyncInterfaces.9.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.HashCode, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Bcl.HashCode.1.1.1\lib\net461\Microsoft.Bcl.HashCode.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.IO.RecyclableMemoryStream, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.IO.RecyclableMemoryStream.3.0.0\lib\netstandard2.0\Microsoft.IO.RecyclableMemoryStream.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Web.Infrastructure.2.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.Core, Version=2.7.2.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NPOI.2.7.2\lib\net472\NPOI.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OOXML, Version=2.7.2.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NPOI.2.7.2\lib\net472\NPOI.OOXML.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXml4Net, Version=2.7.2.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NPOI.2.7.2\lib\net472\NPOI.OpenXml4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXmlFormats, Version=2.7.2.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NPOI.2.7.2\lib\net472\NPOI.OpenXmlFormats.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=110.2.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\RestSharp.110.2.0\lib\netstandard2.0\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="SixLabors.Fonts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d998eea7b14cab13, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SixLabors.Fonts.1.0.1\lib\netstandard2.0\SixLabors.Fonts.dll</HintPath>
+    </Reference>
+    <Reference Include="SixLabors.ImageSharp, Version=2.0.0.0, Culture=neutral, PublicKeyToken=d998eea7b14cab13, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SixLabors.ImageSharp.2.1.9\lib\net472\SixLabors.ImageSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.IO.Pipelines, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.IO.Pipelines.9.0.0\lib\net462\System.IO.Pipelines.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Security.AccessControl.6.0.0\lib\net461\System.Security.AccessControl.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Pkcs, Version=8.0.0.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Security.Cryptography.Pkcs.8.0.1\lib\net462\System.Security.Cryptography.Pkcs.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Xml, Version=8.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Security.Cryptography.Xml.8.0.2\lib\net462\System.Security.Cryptography.Xml.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Principal.Windows, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Security.Principal.Windows.5.0.0\lib\net461\System.Security.Principal.Windows.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encoding.CodePages, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Text.Encoding.CodePages.5.0.0\lib\net461\System.Text.Encoding.CodePages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encodings.Web, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Text.Encodings.Web.9.0.0\lib\net462\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Text.Json.9.0.0\lib\net462\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.5.2.9\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.2.9\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Admin\AccountViewModels.cs" />
+    <Compile Include="Admin\AspNetRole.cs" />
+    <Compile Include="Admin\AspNetUser.cs" />
+    <Compile Include="Admin\AspNetUserClaim.cs" />
+    <Compile Include="Admin\AspNetUserRole.cs" />
+    <Compile Include="Admin\AspNetUserLogin.cs" />
+    <Compile Include="Admin\IdentityModels.cs" />
+    <Compile Include="Api\ApiResponse.cs" />
+    <Compile Include="Api\DataItem.cs" />
+    <Compile Include="Api\MarksApiResponse.cs" />
+    <Compile Include="Common\PersonModel.cs" />
+    <Compile Include="Common\MiscMaster.cs" />
+    <Compile Include="Core\Tbl_ADDITIONAL_CREDITS.cs" />
+    <Compile Include="Core\Tbl_CONVO_MSTR.cs" />
+    <Compile Include="Core\ConvocationFee.cs" />
+    <Compile Include="Core\Mapping\ConvocationFeeMap.cs" />
+    <Compile Include="Core\Mapping\Tbl_APP_TEMPMap.cs" />
+    <Compile Include="Core\Mapping\Tbl_APP_TEMP_SUBMap.cs" />
+    <Compile Include="Core\Mapping\Tbl_BRANCH_MSTRMap.cs" />
+    <Compile Include="Core\Mapping\Tbl_CAP_SCHEDULE_MSTRMap.cs" />
+    <Compile Include="Core\Mapping\Tbl_CLASS_MSTRMap.cs" />
+    <Compile Include="Core\Mapping\Tbl_COLLEGE_COURSE_MSTRMap.cs" />
+    <Compile Include="Core\Mapping\Tbl_COLLEGE_MSTRMap.cs" />
+    <Compile Include="Core\Mapping\Tbl_COPART_SYLLABUSMap.cs" />
+    <Compile Include="Core\Mapping\Tbl_COPART_SYLLABUS_TRXMap.cs" />
+    <Compile Include="Core\Mapping\Tbl_COURSE_CLASS_MSTRMap.cs" />
+    <Compile Include="Core\Mapping\Tbl_COURSE_MSTRMap.cs" />
+    <Compile Include="Core\Mapping\Tbl_COURSE_PART_MSTRMap.cs" />
+    <Compile Include="Core\Mapping\Tbl_COURSE_TYPE_MSTRMap.cs" />
+    <Compile Include="Core\Mapping\TBL_DISTANCE_CENTERSMap.cs" />
+    <Compile Include="Core\Mapping\Tbl_FACULTY_MSTRMap.cs" />
+    <Compile Include="Core\Mapping\Tbl_FEE_DTLMap.cs" />
+    <Compile Include="Core\Mapping\Tbl_FEE_MSTRMap.cs" />
+    <Compile Include="Core\Mapping\Tbl_GRADE_MSTRMap.cs" />
+    <Compile Include="Core\Mapping\Tbl_REG_TEMPMap.cs" />
+    <Compile Include="Core\Mapping\Tbl_STUDENT_CAT_MARKSMap.cs" />
+    <Compile Include="Core\Mapping\TBL_STUDENT_CGPAMap.cs" />
+    <Compile Include="Core\Mapping\Tbl_STUDENT_CONVOMap.cs" />
+    <Compile Include="Core\Mapping\Tbl_STUDENT_COURSEMap.cs" />
+    <Compile Include="Core\Mapping\TBl_STUDENT_ENV_STUDIESMap.cs" />
+    <Compile Include="Core\Mapping\TBL_STUDENT_EXAMSMap.cs" />
+    <Compile Include="Core\Mapping\Tbl_STUDENT_INFOMap.cs" />
+    <Compile Include="Core\Mapping\Tbl_STUDENT_INFO_ADRMap.cs" />
+    <Compile Include="Core\Mapping\Tbl_STUDENT_PAP_MARKSMap.cs" />
+    <Compile Include="Core\Mapping\TBL_STUDENT_REVALUATIONMap.cs" />
+    <Compile Include="Core\Mapping\TBL_STUDENT_REVAL_CHILDMap.cs" />
+    <Compile Include="Core\Mapping\Tbl_STUDENT_SUBJECTMap.cs" />
+    <Compile Include="Core\Mapping\Tbl_STUDENT_YR_CHNGMap.cs" />
+    <Compile Include="Core\Mapping\Tbl_SUBJECT_CAT_MSTRMap.cs" />
+    <Compile Include="Core\Mapping\Tbl_SUBJECT_MSTRMap.cs" />
+    <Compile Include="Core\Mapping\Tbl_SUB_CATPAP_MSTRMap.cs" />
+    <Compile Include="Core\Mapping\Tbl_SYS_INSTMap.cs" />
+    <Compile Include="Core\Tbl_APP_TEMP.cs" />
+    <Compile Include="Core\Tbl_APP_TEMP_SUB.cs" />
+    <Compile Include="Core\Tbl_BRANCH_MSTR.cs" />
+    <Compile Include="Core\Tbl_CAP_SCHEDULE_MSTR.cs" />
+    <Compile Include="Core\Tbl_EVALCAT_MSTR.cs" />
+    <Compile Include="Core\Tbl_CLASS_MSTR.cs" />
+    <Compile Include="Core\Tbl_COLLEGE_COURSE_MSTR.cs" />
+    <Compile Include="Core\Tbl_COLLEGE_MSTR.cs" />
+    <Compile Include="Core\Tbl_COPART_SYLLABUS.cs" />
+    <Compile Include="Core\Tbl_COPART_SYLLABUS_TRX.cs" />
+    <Compile Include="Core\Tbl_COURSE_CLASS_MSTR.cs" />
+    <Compile Include="Core\Tbl_COURSE_MSTR.cs" />
+    <Compile Include="Core\Tbl_COURSE_PART_MSTR.cs" />
+    <Compile Include="Core\Tbl_COURSE_TYPE_MSTR.cs" />
+    <Compile Include="Core\TBL_DISTANCE_CENTERS.cs" />
+    <Compile Include="Core\Tbl_EXAM_SCHEDULE_COURSE.cs" />
+    <Compile Include="Core\Tbl_EXAM_SCHEDULE_MSTR.cs" />
+    <Compile Include="Core\Tbl_FACULTY_MSTR.cs" />
+    <Compile Include="Core\Tbl_FEE_DTL.cs" />
+    <Compile Include="Core\Tbl_DEGREE_MSTR.cs" />
+    <Compile Include="Core\Tbl_FEE_MSTR.cs" />
+    <Compile Include="Core\Tbl_GRADE_MSTR.cs" />
+    <Compile Include="Core\Tbl_REG_TEMP.cs" />
+    <Compile Include="Core\Tbl_MARKS_TMP.cs" />
+    <Compile Include="Core\Tbl_STUDENT_CAT_MARKS.cs" />
+    <Compile Include="Core\TBL_STUDENT_CGPA.cs" />
+    <Compile Include="Core\Tbl_STUDENT_CONVO.cs" />
+    <Compile Include="Core\Tbl_STUDENT_COURSE.cs" />
+    <Compile Include="Core\TBl_STUDENT_ENV_STUDIES.cs" />
+    <Compile Include="Core\TBL_STUDENT_EXAMS.cs" />
+    <Compile Include="Core\Tbl_STUDENT_INFO.cs" />
+    <Compile Include="Core\Tbl_STUDENT_INFO_ADR.cs" />
+    <Compile Include="Core\Tbl_STUDENT_PAP_MARKS.cs" />
+    <Compile Include="Core\TBL_STUDENT_REVAL_CHILD.cs" />
+    <Compile Include="Core\TBL_STUDENT_REVALUATION.cs" />
+    <Compile Include="Core\Tbl_STUDENT_SUBJECT.cs" />
+    <Compile Include="Core\Tbl_STUDENT_YR_CHNG.cs" />
+    <Compile Include="Core\Tbl_SUBJECT_CAT_MSTR.cs" />
+    <Compile Include="Core\Tbl_SUBJECT_MSTR.cs" />
+    <Compile Include="Core\Tbl_SUB_CATPAP_MSTR.cs" />
+    <Compile Include="Core\Tbl_SYS_INST.cs" />
+    <Compile Include="Core\Tbl_TimeTableINST.cs" />
+    <Compile Include="Core\Tbl_TIMETABLE_TRX.cs" />
+    <Compile Include="Common\BaseModel.cs" />
+    <Compile Include="Common\UniversityBaseModel.cs" />
+    <Compile Include="Common\MasterModel.cs" />
+    <Compile Include="Common\TransactionModel.cs" />
+    <Compile Include="Contexts\CoreContext.cs" />
+    <Compile Include="Contexts\CornoContext.cs" />
+    <Compile Include="Corno\AbcExportModel.cs" />
+    <Compile Include="Corno\AbcViewModel.cs" />
+    <Compile Include="Corno\Masters\BranchSubjectDetail.cs" />
+    <Compile Include="Corno\Masters\Branch.cs" />
+    <Compile Include="Corno\Masters\Category.cs" />
+    <Compile Include="Corno\Masters\SubjectSectionDetail.cs" />
+    <Compile Include="Corno\Masters\Instance.cs" />
+    <Compile Include="Corno\Masters\StudentThesisDetail.cs" />
+    <Compile Include="Corno\Masters\StudentProgressDetail.cs" />
+    <Compile Include="Corno\Masters\StudentAddressDetail.cs" />
+    <Compile Include="Corno\Masters\StudentProgramDetail.cs" />
+    <Compile Include="Corno\Masters\Student.cs" />
+    <Compile Include="Corno\Masters\Staff.cs" />
+    <Compile Include="Corno\Masters\SubjectCategoryDetail.cs" />
+    <Compile Include="Corno\Masters\StaffSubjectDetail.cs" />
+    <Compile Include="Corno\Masters\SubjectInstructionDetail.cs" />
+    <Compile Include="Corno\Masters\SubjectChapterDetail.cs" />
+    <Compile Include="Corno\Masters\Subject.cs" />
+    <Compile Include="Corno\Masters\CoursePart.cs" />
+    <Compile Include="Corno\Masters\CourseCategoryDetail.cs" />
+    <Compile Include="Corno\Masters\Course.cs" />
+    <Compile Include="Corno\Masters\CollegeCourseDetail.cs" />
+    <Compile Include="Corno\EnvironmentSetting.cs" />
+    <Compile Include="Corno\ExamCommon.cs" />
+    <Compile Include="Corno\Masters\College.cs" />
+    <Compile Include="Corno\Masters\Faculty.cs" />
+    <Compile Include="Corno\Online Education\College45OptionalSubject.cs" />
+    <Compile Include="Corno\Online Education\FeeInfo.cs" />
+    <Compile Include="Corno\Online Education\OnlineStudent.cs" />
+    <Compile Include="Corno\Paper Setting\Dtos\EvaluationDto.cs" />
+    <Compile Include="Corno\Paper Setting\Models\Schedule.cs" />
+    <Compile Include="Corno\Paper Setting\Models\ScheduleDetail.cs" />
+    <Compile Include="Corno\Question Bank\Dtos\EmailSmsDto.cs" />
+    <Compile Include="Corno\Question Bank\Dtos\QuestionAppointmentTypeDetailDto.cs" />
+    <Compile Include="Corno\Question Bank\Dtos\QuestionAppointmentDto.cs" />
+    <Compile Include="Corno\Question Bank\Dtos\QuestionAppointmentDetailDto.cs" />
+    <Compile Include="Corno\Question Bank\Dtos\QuestionIndexDto.cs" />
+    <Compile Include="Corno\Question Bank\Models\QuestionAppointment.cs" />
+    <Compile Include="Corno\Paper Setting\Models\AppointmentBillDetail.cs" />
+    <Compile Include="Corno\Question Bank\Models\QuestionAppointmentTypeDetail.cs" />
+    <Compile Include="Corno\Question Bank\Models\QuestionAppointmentDetail.cs" />
+    <Compile Include="Corno\Question Bank\Models\Question.cs" />
+    <Compile Include="Corno\Question Bank\Models\QuestionBankModel.cs" />
+    <Compile Include="Corno\Question Bank\Models\QuestionBankViewModel.cs" />
+    <Compile Include="Corno\Question Bank\Dtos\QuestionListDto.cs" />
+    <Compile Include="Corno\Paper Setting\Models\Appointment.cs" />
+    <Compile Include="Corno\Paper Setting\Models\AppointmentDetail.cs" />
+    <Compile Include="Corno\Question Bank\Models\Paper.cs" />
+    <Compile Include="Corno\Paper Setting\Models\Remuneration.cs" />
+    <Compile Include="Corno\Paper Setting\Models\RemunerationDetail.cs" />
+    <Compile Include="Corno\Question Bank\Models\Structure.cs" />
+    <Compile Include="Corno\Question Bank\Models\PaperDetail.cs" />
+    <Compile Include="Corno\Question Bank\Models\StructureDetail.cs" />
+    <Compile Include="Dtos\Import\ProgressDto.cs" />
+    <Compile Include="Dtos\Online Education\OnlineStudentImportDto.cs" />
+    <Compile Include="Dtos\Online Education\StudentIndexDto.cs" />
+    <Compile Include="Dtos\Report\BaseReportDto.cs" />
+    <Compile Include="Import\MarksImportModel.cs" />
+    <Compile Include="Operation\MultiColumnComboBoxRequest.cs" />
+    <Compile Include="Payment\Class1.cs" />
+    <Compile Include="Payment\Payout.cs" />
+    <Compile Include="Payment\PayoutsHistoryDatum.cs" />
+    <Compile Include="Payment\PayoutRoot.cs" />
+    <Compile Include="Payment\PebTransaction.cs" />
+    <Compile Include="ViewModels\Admin\RoleViewModel.cs" />
+    <Compile Include="ViewModels\Admin\UserCrudViewModel.cs" />
+    <Compile Include="ViewModels\Admin\UserIndexViewModel.cs" />
+    <Compile Include="ViewModels\Appointment\ReportBillModel.cs" />
+    <Compile Include="ViewModels\Appointment\ReportModel.cs" />
+    <Compile Include="ViewModels\Appointment\AppointmentIndexModel.cs" />
+    <Compile Include="ViewModels\BranchIndexViewModel.cs" />
+    <Compile Include="ViewModels\ExamDetailViewModel.cs" />
+    <Compile Include="ViewModels\PersonViewModel.cs" />
+    <Compile Include="ViewModels\StaffIndexViewModel.cs" />
+    <Compile Include="ViewModels\CourseIndexViewModel.cs" />
+    <Compile Include="ViewModels\PaperIndexDto.cs" />
+    <Compile Include="ViewModels\SubjectIndexViewModel.cs" />
+    <Compile Include="ViewModels\MarksApiViewModel.cs" />
+    <Compile Include="ViewModels\UniversityViewModel.cs" />
+    <Compile Include="ViewModels\ExamIndexViewModel.cs" />
+    <Compile Include="ViewModels\ExamViewModel.cs" />
+    <Compile Include="Corno\FeeStructure.cs" />
+    <Compile Include="Corno\Link.cs" />
+    <Compile Include="Corno\LinkDetail.cs" />
+    <Compile Include="Corno\MarksEntry.cs" />
+    <Compile Include="Corno\MarksEntryDetail.cs" />
+    <Compile Include="Corno\TransactionOtp.cs" />
+    <Compile Include="Helpers\Converter.cs" />
+    <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="Payment\EaseBuzz.cs" />
+    <Compile Include="ViewModels\CornoViewModel.cs" />
+    <Compile Include="Operation\OperationRequest.cs" />
+    <Compile Include="Operation\OperationResponse.cs" />
+    <Compile Include="Reports\ExamCheckList.cs" />
+    <Compile Include="Reports\HallTicket.cs" />
+    <Compile Include="Reports\MarkSlipViewModel.cs" />
+    <Compile Include="Corno\Answersheet.cs" />
+    <Compile Include="Corno\AnswersheetSubject.cs" />
+    <Compile Include="Corno\Complaint.cs" />
+    <Compile Include="Corno\Convocation.cs" />
+    <Compile Include="Corno\EnvironmentStudy.cs" />
+    <Compile Include="Corno\Exam.cs" />
+    <Compile Include="Corno\ExamSubject.cs" />
+    <Compile Include="Corno\Mapping\ComplaintMap.cs" />
+    <Compile Include="Corno\Mapping\ConvocationMap.cs" />
+    <Compile Include="Corno\Mapping\EnvironmentStudyMap.cs" />
+    <Compile Include="Corno\Mapping\ExamMap.cs" />
+    <Compile Include="Corno\Mapping\ExamSubjctMap.cs" />
+    <Compile Include="Corno\Mapping\RevalutionMap.cs" />
+    <Compile Include="Corno\Mapping\RevalutionSubjectMap.cs" />
+    <Compile Include="Corno\MarkSheet.cs" />
+    <Compile Include="Corno\MobileUpdateViewModel.cs" />
+    <Compile Include="Corno\Revalution.cs" />
+    <Compile Include="Corno\RevalutionSubject.cs" />
+    <Compile Include="Corno\Registration.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Corno\StudentProfile.cs" />
+    <Compile Include="Corno\StudentProfileDetail.cs" />
+    <Compile Include="Corno\TimeTable.cs" />
+    <Compile Include="Corno\TimeTableCoursePartDetail.cs" />
+    <Compile Include="Corno\TimeTablePracticalDetail.cs" />
+    <Compile Include="Corno\TimeTableTheoryDetail.cs" />
+    <Compile Include="ViewModels\EmailSetting.cs" />
+    <Compile Include="ViewModels\MasterViewModel.cs" />
+    <Compile Include="ViewModels\NotMapped.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Corno.Globals\Corno.Globals.csproj">
+      <Project>{274c71ea-3701-4c3d-827a-1ae5cfb30c40}</Project>
+      <Name>Corno.Globals</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Corno.Logger\Corno.Logger.csproj">
+      <Project>{AB956E51-8A79-43C1-AA42-348AA1C2FD65}</Project>
+      <Name>Corno.Logger</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

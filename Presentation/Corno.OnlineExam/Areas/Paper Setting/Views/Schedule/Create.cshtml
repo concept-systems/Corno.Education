@@ -1,0 +1,320 @@
+﻿@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Paper_Setting.Models.Schedule
+
+@{
+    ViewBag.Controller = "Schedule";
+    ViewBag.Details = "ScheduleDetails";
+    ViewBag.DetailName = "ScheduleDetails";
+
+    ViewBag.GridCommonAction = "Inline_Create_Update_Destroy";
+}
+
+@if (TempData["Success"] != null)
+{
+    <script type="text/javascript">
+        bootbox.alert("@TempData["Success"]")
+    </script>
+}
+
+<div class="form-horizontal box-content">
+    @using (Html.BeginForm("Create", "Schedule", FormMethod.Post, new { id = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.ValidationSummary(false)
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.InstanceId)
+
+        <!-- Hidden field to store the report type -->
+        <input type="hidden" id="type" name="type" />
+
+        <div class="k-card k-card-vertical">
+            <div class="k-card-header k-card-tertiary"><h3>Schedule</h3></div>
+            <div class="k-card-body">
+                @{
+                    Html.RenderPartial("Partial/Selection/_Schedule", Model);
+                }
+                <div class="k-card-actions k-card-actions-horizontal k-card-actions-end">
+                    @(Html.Kendo().DropDownButton()
+                         .Name("btnReports")
+                         .Text("Reports")
+                         .Icon("subreport")
+                         .SpriteCssClass("k-icon-64")
+                         .FillMode(FillMode.Outline)
+                         .ThemeColor(ThemeColor.Tertiary)
+                         .Items(items =>
+                         {
+                             items.Add().Id("schedule").Text("Schedule").Icon("file-report")
+                                 .HtmlAttributes(new { onclick = "submitForm('ShowReport','Schedule')" });
+                             /*items.Add().Id("scheduleForPaperSetting").Text("Schedule For Paper Setting").Icon("file-report")
+                                 .HtmlAttributes(new { onclick = "submitForm('ShowReport','ScheduleForPaperSetting')" });*/
+                             items.Add().Id("scheduledExaminers").Text("Scheduled Examiners").Icon("file-report")
+                                 .HtmlAttributes(new { onclick = "submitForm('ShowReport','ScheduledExaminers')" });
+                         }))
+                    @(Html.Kendo().Button()
+                    .Name("get_all_subjects")
+                    .Icon("search")
+                    .SpriteCssClass("k-icon-64")
+                    .FillMode(ButtonFillMode.Outline)
+                    .ThemeColor(ThemeColor.Tertiary)
+                    .Content("Get All Subjects")
+                    .HtmlAttributes(new
+                    {
+                        type = "submit",
+                        name = "action:GetAllSubjects",
+                    }))
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered table-responsive table-hover table-heading table-datatable k-table-scroller col-sm-12"
+                               id="tblSubjects">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" style="width: 50px">Sr. No.</th>
+                                    <th class="text-center">Subject Name</th>
+                                    <th class="text-center" style="width: 210px">From Date</th>
+                                    <th class="text-center" style="width: 210px">To Date</th>
+                                    <th class="text-center" style="width: 210px">End Date</th>
+                                    <th class="text-center" style="width: 130px">Time</th>
+                                    <th class="text-center" style="width: 100px">Available Sets</th>
+                                    <th class="text-center" style="width: 100px">Sets To Be Drawn</th>
+                                    <th class="text-center" style="width: 100px">Used Sets</th>
+                                    <th class="text-center" style="width: 100px">Outward No.</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tBody">
+                                @{
+                                    var index = 0;
+                                }
+                                @foreach (var item in Model.ScheduleDetails)
+                                {
+                                    <tr>
+                                        <td class="text-center">
+                                            @(index + 1)
+                                        </td>
+                                        <td class="text-left">
+                                            @Html.Hidden("ScheduleDetails[" + index + "].Id", item.Id)
+                                            @Html.Hidden("ScheduleDetails[" + index + "].SubjectId", item.SubjectId)
+                                            @Html.Hidden("ScheduleDetails[" + index + "].SubjectName", item.SubjectName)
+                                            @item.SubjectName
+                                        </td>
+                                        <td class="text-center">
+                                            @(Html.Kendo().DatePicker()
+                                                    .Name("ScheduleDetails[" + index + "].FromDate")
+                                                    .Value(item.FromDate)
+                                                    //.Format("dd/MM/yyyy")
+                                                    //.ParseFormats(new [] {"dd/MM/yyyy", "MM/dd/yyyy"})
+                                                    .ComponentType("modern")
+                                                    .HtmlAttributes(new { @class= "text-center w-100"/*style = "width: 100%"*/ }))
+                                        </td>
+                                        <td class="text-center">
+                                            @(Html.Kendo().DatePicker()
+                                                    .Name("ScheduleDetails[" + index + "].ToDate")
+                                                    .Value(item.ToDate)
+                                                    //.Format("dd/MM/yyyy")
+                                                    .ComponentType("modern")
+                                                    .HtmlAttributes(new { @class= "text-center w-100" }))
+                                        </td>
+                                        <td class="text-center">
+                                            @(Html.Kendo().DatePicker()
+                                                    .Name("ScheduleDetails[" + index + "].EndDate")
+                                                    .Value(item.EndDate)
+                                                    //.Format("dd/MM/yyyy")
+                                                    .ComponentType("modern")
+                                                    .HtmlAttributes(new { @class= "text-center w-100" }))
+                                        </td>
+                                        <td class="text-center">
+                                            @(Html.Kendo().TimePicker()
+                                                    .Name("ScheduleDetails[" + index + "].Time")
+                                                    .Value(item.Time)
+                                                    .ComponentType("modern")
+                                                    .Format("hh:mm")
+                                                    .Value(item.Time)
+                                                    .HtmlAttributes(new { @class= "text-center w-100" }))
+                                        </td>
+                                        <td class="text-center">
+                                            @Html.Hidden("ScheduleDetails[" + index + "].AvailableSets", item.AvailableSets)
+                                            @item.AvailableSets
+                                            @*</td>
+                                                <td class="text-center">
+                                                    @(Html.Kendo().NumericTextBox()
+                                                        .Name("ScheduleDetails[" + index + "].AvailableSets")
+                                                        .Format("n0")
+                                                        .Min(0)
+                                                        .Value(item.AvailableSets)
+                                                        .HtmlAttributes(new { @class = "text-right w-100" }))
+                                                </td>*@
+                                        <td class="text-center">
+                                            @(Html.Kendo().NumericTextBox()
+                                                    .Name("ScheduleDetails[" + index + "].SetsToBeDrawn")
+                                                    .Format("n0")
+                                                    .Min(0)
+                                                    .Value(item.SetsToBeDrawn)
+                                                    .HtmlAttributes(new { @class = "text-right w-100" }))
+                                        </td>
+                                        <td class="text-center">
+                                            @(Html.Kendo().NumericTextBox()
+                                                    .Name("ScheduleDetails[" + index + "].UsedSets")
+                                                    .Format("n0")
+                                                    .Min(0)
+                                                    .Value(item.UsedSets)
+                                                    .HtmlAttributes(new { @class = "text-right w-100" }))
+                                        </td>
+                                        <td class="text-center">
+                                            @Html.Hidden("ScheduleDetails[" + index + "].OutwardNo", item.OutwardNo)
+                                            @item.OutwardNo
+                                        </td>
+                                    </tr>
+                                    index++;
+                                }
+                            </tbody>
+                        </table>
+                        @*@(Html.Kendo().Grid(Model.ScheduleDetails)
+                            .Name("grid")
+                            .Columns(columns =>
+                            {
+                                columns.Bound(p => p.SubjectId)
+                                    .ClientTemplate("#= SubjectId #" + "<input type='hidden' name='ScheduleDetails[#= index(data)#].SubjectId' value='#= SubjectId #'   />")
+                                    .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .Hidden(true)
+                                    .Width(120);
+                                columns.Bound(p => p.SubjectName)
+                                    .ClientTemplate("#= SubjectName #" + "<input type='hidden' name='ScheduleDetails[#= index(data)#].SubjectName' value='#= SubjectName #'   />")
+                                    .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .Width(120);
+                                columns.Bound(x => x.FromDate)
+                                    .EditorTemplateName(@"Date")
+                                    .ClientTemplate("#= kendo.toString(kendo.parseDate(FromDate), 'dd/MM/yyyy') #")
+                                    //.Filterable(x => x.UI(GridFilterUIRole.DatePicker))
+                                    .EditorTemplateName("Date")
+                                    .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" });
+                                columns.Bound(m => m.ToDate)
+                                    .ClientTemplate("<input type='text' class='k-datepicker' name='ScheduleDetails[#= index(data)#].ToDate' value='#= ToDate #' />")
+                                    //.Filterable(x => x.UI(GridFilterUIRole.DatePicker))
+                                    //.ClientTemplate("#= kendo.toString(kendo.parseDate(FromDate), 'dd/MM/yyyy') #")
+                                    //.EditorTemplateName("Date")
+                                    .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" });
+                                columns.Bound(x => x.Time)
+                                    //.Filterable(x => x.UI(GridFilterUIRole.TimePicker))
+                                    .EditorTemplateName("Date")
+                                    .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" });
+                                columns.Bound(p => p.OutwardNo)
+                                    .ClientTemplate("#= OutwardNo #" + "<input type='hidden' name='ScheduleDetails[#= index(data)#].OutwardNo' value='#= OutwardNo #'   />")
+                                    .Width(200);
+                                columns.Command(c => c.Edit());
+                            })
+                            .Editable(editable => editable
+                                .Mode(GridEditMode.InLine))
+                            .Scrollable(s => s.Enabled(true).Height("auto"))
+                            .Sortable()
+                            .Height(500)
+                            .DataSource(dataSource => dataSource
+                                .Ajax()
+                                .Model(model =>
+                                {
+                                    model.Id(p => p.SubjectId);
+                                })
+                                .ServerOperation(false)
+                                .Create(update => update.Action(ViewBag.GridCommonAction, ViewBag.Controller))
+                                .Update(update => update.Action(ViewBag.GridCommonAction, ViewBag.Controller))
+                                .Destroy(update => update.Action(ViewBag.GridCommonAction, ViewBag.Controller))
+                            )
+                            .Resizable(resize => resize.Columns(true))
+                            .Reorderable(reorder => reorder.Columns(true)))*@
+                    </div>
+                </div>
+                <div class="k-card-actions k-card-actions-horizontal k-card-actions-end">
+                    @(Html.Kendo().Button()
+                        .Name("save")
+                        .Icon("save")
+                        .SpriteCssClass("k-icon-64")
+                        .FillMode(ButtonFillMode.Outline)
+                        .ThemeColor(ThemeColor.Success)
+                        .Content("Save")
+                        .HtmlAttributes(new
+                        {
+                            type = "submit",
+                            name = "action:Save",
+                        }))
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script type="text/javascript">
+
+    @*$(document).ready(function () {
+        $(".k-datepicker").kendoDatePicker({
+            format: "MM/dd/yyyy"
+        });
+        $(".k-timepicker").kendoTimePicker({
+            format: "hh:mm tt"
+        });
+    });*@
+
+    function onChange(e) {
+         console.log("event: change");
+
+        var multiColumnComboBox = $("#CategoryId").data("kendoMultiColumnComboBox");
+        var selectedValue = multiColumnComboBox.value();
+        if (!selectedValue && '@Model.ScheduleDetails.Count' > 0) {
+             submitForm("ClearControls", "")
+        }
+
+        @*// Target the HTML table by its ID
+        var table = document.getElementById("tblSubjects");
+        if (table) {
+            // Clear all rows except the header
+            var rows = table.getElementsByTagName("tr");
+            for (var i = rows.length - 1; i > 0; i--) {
+                table.deleteRow(i);
+            }
+        }*@
+    }
+
+
+    function submitForm(action, type) {
+        var form = document.getElementById("form");
+
+        // Send report type
+        document.getElementById("type").value = type;
+
+        // Action Name
+        var input = document.createElement("input");
+        input.type = "hidden";
+        input.name = "action:" + action;
+
+        form.appendChild(input);
+        form.submit();
+    }
+
+
+    @*function onGridDataBound(e) {
+        // Get the grid widget
+        var grid = e.sender;
+
+        var rows = grid.tbody.find("tr");
+        rows.each(function () {
+            var dataItem = grid.dataItem(this);
+            var disableIt = dataItem.SentDate != null;
+
+            if (disableIt) {
+                $(this).addClass("k-state-disabled");
+            }
+            // Hide other rows for PRN details
+            if (dataItem.NotMapped.Hide === true) {
+                var row = grid.tbody.find("tr[data-uid='" + dataItem.uid + "']");
+                row.hide();
+            }
+        });
+    }*@
+
+
+</script>

@@ -1,0 +1,231 @@
+﻿@model Corno.Data.Admin.EditUserViewModel
+@using Kendo.Mvc.UI
+@{
+    ViewBag.Title = "Edit User";
+}
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Admin</a></li>
+            <li><a href="#">User</a></li>
+            <li><a href="#">Edit User</a></li>
+        </ol>
+    </div>
+</div>
+@*@Html.ValidationSummary()*@
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <div class="box ui-draggable ui-droppable">
+            <div class="box-header">
+                <div class="box-name">
+                    <i class="fa fa-edit large"></i>
+                    <span>Edit User Name :  @Model.UserName</span>
+                </div>
+                <div class="box-icons">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="expand-link">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+                <div class="no-move"></div>
+            </div>
+            <div class="box-content">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    <div class="form-horizontal">
+                        <div class="form-group has-feedback">
+                            <label class="col-sm-2 control-label">User Name :</label>
+                            <div class="col-sm-4">
+                                @Html.TextBoxFor(m => m.UserName, new { id = "UserName", @class = "form-control ", @readonly = true, placeholder = "Enter User Name", data_toggle = "tooltip", data_placement = "bottom", title = "User Name" })
+                            </div>
+                            <label class="col-sm-2 control-label text-right">First Name :</label>
+                            <div class="col-sm-4">
+                                @Html.TextBoxFor(m => m.FirstName, new { id = "FirstName", @class = "form-control", placeholder = "Enter First Name", data_toggle = "tooltip", data_placement = "bottom", title = "First Name of User" })
+                            </div>
+                        </div>
+                        <div class="form-group  has-feedback">
+                            <label class="col-sm-2 control-label">Email :</label>
+                            <div class="col-sm-4">
+                                @Html.TextBoxFor(m => m.Email, new { id = "Email", @class = "form-control", placeholder = "Enter Email", data_toggle = "tooltip", data_placement = "bottom", title = "Email of User" })
+                                @*@Html.ValidationMessageFor(m => m.Email)*@
+                            </div>
+                            <label class="col-sm-2 control-label text-right">Last Name :</label>
+                            <div class="col-sm-4">
+                                @Html.TextBoxFor(m => m.LastName, new { id = "LastName", @class = "form-control", placeholder = "Enter Last Name", data_toggle = "tooltip", data_placement = "bottom", title = "User Last Name" })
+                            </div>
+                        </div>
+                        <div class="form-group  has-feedback">
+                            <label class="col-sm-2 control-label">Mobile :</label>
+                            <div class="col-sm-4">
+                                @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", placeholder = "Enter Mobile", data_toggle = "tooltip", data_placement = "bottom"})
+                                @*@Html.ValidationMessageFor(m => m.Email)*@
+                            </div>
+                        </div>
+                        @*<div class="form-group  has-feedback">
+                                <label class="col-sm-2 control-label">College :</label>
+                                <div class="col-sm-10">
+                                    @Html.DropDownListFor(model => model.CollegeID, new SelectList(Model.Colleges, "ID", "Name", Model.CollegeID.ToString()), "Select College", new { id = "S2_college", @class = "populate placeholder" })
+                                </div>
+                            </div>*@
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">College :</label>
+                            <div class="col-sm-10">
+                                @(Html.Kendo().ComboBox()
+                                        .Name("CollegeID")
+                                        .HtmlAttributes(new { style = "width:100%" })
+                                        .Placeholder("Select College...")
+                        //.SelectedIndex(0)
+                                        .Filter(FilterType.Contains)
+                                .BindTo(new SelectList(ViewBag.Colleges, "ID", "NameWithID"))
+                                )
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Course :</label>
+                            <div class="col-sm-10">
+                                @(Html.Kendo().ComboBox()
+                                        .Name("CourseID")
+                                        .HtmlAttributes(new { style = "width:100%" })
+                                        .Placeholder("Select Course...")
+                                        .DataTextField("Name")
+                                        .DataValueField("ID")
+                                        .Filter(FilterType.Contains)
+                        //.BindTo(new SelectList(Model.Courses, "ID", "Name"))
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GetAllCoursesByCollege", "University")
+                                                    .Data("filterCourses");
+                                            })
+                                            .ServerFiltering(true);
+                                        })
+                                        .Enable(false)
+                                        .AutoBind(false)
+                                        .CascadeFrom("CollegeID")
+                                )
+                                <script>
+                                    function filterCourses() {
+                                        return {
+                                            CollegeID: $("#CollegeID").val()
+                                            //courseFilter: $("#CourseID").data("kendoComboBox").input.val()
+                                        };
+                                    }
+                                </script>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-2">
+                                <button type="button" value="Index" class="btn btn-primary btn-label-left pull-left" onclick="location.href = '@Url.Action("Index", "Account")'">
+                                    <span><i class="fa fa-list-ul"></i></span>
+                                    Back to List
+                                </button>
+                            </div>
+                            <div class="col-sm-offset-8 col-sm-2">
+                                <button type="submit" value="Create" title="Save" class="btn btn-primary btn-label-left pull-right">
+                                    <span><i class="fa fa-save"></i></span>
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function DemoSelect2() {
+        $('#S2_college').select2({ placeholder: "Select College" });
+    }
+    $(document).ready(function () {
+        // Create Wysiwig editor for textare
+        //TinyMCEStart('#wysiwig_simple', null);
+        //TinyMCEStart('#Description', 'extreme');
+        //// Add tooltip to form-controls
+        $('.form-control').tooltip();
+        // Initialize datepicker
+
+        LoadSelect2Script(DemoSelect2);
+
+        //// Load example of form validation
+        LoadBootstrapValidatorScript(DemoFormValidator);
+    });
+
+</script>
+
+
+
+
+@*@model OnlineExam.Models.EditUserViewModel
+
+    @{
+        ViewBag.Title = "Edit";
+    }
+
+    <h2>Edit</h2>
+
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>Edit User</h4>
+            <hr />
+            @Html.ValidationSummary(true)
+
+            @Html.EditorFor(model => model.UserName)
+            @Html.EditorFor(model => model.FirstName)
+            @Html.EditorFor(model => model.LastName)
+            @Html.EditorFor(model => model.Email)
+
+            @*<div class="form-group">
+                @Html.LabelFor(model => model.UserName, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.UserName,new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.UserName)
+                </div>
+            </div>*@
+
+@*<div class="form-group">
+        @Html.LabelFor(model => model.FirstName, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.FirstName,new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.FirstName)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.LastName, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.LastName,new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.LastName)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Email, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.Email,new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Email)
+        </div>
+    </div>*@
+
+@*<hr />
+        <div class="form-group">
+            <div class="col-md-10">
+                <input type="submit" value="Save" class="btn btn-small btn-success" />
+                @Html.ActionLink("Back to List", "Index", null, new { @Class = "btn btn-small btn-primary" })
+            </div>
+        </div>
+    </div>*@
+

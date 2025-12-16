@@ -1,0 +1,27 @@
+﻿@using Corno.Data.Helpers
+@using Corno.Globals.Constants
+@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Masters.Staff
+
+@{
+    var formEnabled = ViewData[ModelConstants.FormEnabled].ToBoolean();
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="form-group">
+            @(Html.Kendo().TextAreaFor(m => m.Address2)
+                .Rows(8)
+                .Enable(formEnabled)
+                .Rounded(Rounded.Medium)
+                .Label(label => label
+                    .Content("Address")
+                    .Floating(true))
+                .HtmlAttributes(new
+                {
+                    placeholder = "Enter Address",
+                    @class = "w-100"
+                }))
+        </div>
+    </div>
+</div>

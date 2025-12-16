@@ -1,0 +1,579 @@
+﻿@using Corno.Globals.Constants
+@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Question_Bank.Models.Paper
+
+<style>
+    .k-grid .k-grid-content tr td {
+        vertical-align: top;
+    }
+
+    table {
+         width: 100%;
+         border-collapse: collapse;
+     }
+
+    td.auto-width {
+        width: auto;
+        white-space: nowrap;
+    }
+
+    td.full-width {
+        width: 30%;
+    }
+</style>
+
+<div class="row">
+    <div class="col-sm-4">
+        <table class="table">
+            <tr>
+                @if (null != Model.QuestionInfo)
+                {
+                    <td> Chapter : </td>
+                    <td>
+                        @Html.DisplayFor(m => m.QuestionInfo.ChapterId)
+                    </td>
+                }
+                <td> Sr. No.</td>
+                <td>
+                    @(Html.Kendo().NumericTextBoxFor(m => m.QuestionSerialNo)
+                            .Decimals(0)
+                            .Min(0)
+                            .Format("n0")
+                            .Spinners(true)
+                            .HtmlAttributes(new { @class = "text-right w-100" }))
+                </td>
+            </tr>
+            <tr>
+                @if (null != Model.QuestionInfo)
+                {
+                    <td> Question : </td>
+                    <td>
+                        @Html.DisplayFor(m => m.QuestionInfo.QuestionNo)
+                    </td>
+                }
+                @*<td> Difficulty Level <span class="text-danger">*</span> : </td>
+                    <td>
+                        @(Html.Kendo().MultiColumnComboBoxFor(m => m.DifficultyLevel)
+                                .DataTextField(ModelConstants.Name)
+                                .DataValueField(ModelConstants.Id)
+                                .HtmlAttributes(new { @class = "w-100" })
+                                .Filter(FilterType.Contains)
+                                .Value(Model.DifficultyLevel > 0 ? Model.DifficultyLevel.ToString() : "")
+                                .Placeholder("Select ...")
+                                .Columns(columns =>
+                                {
+                                    columns.Add().Field(ModelConstants.Id).Width("50px");
+                                    columns.Add().Field(ModelConstants.Name).Width("150px");
+                                })
+                                .DataSource(dataSource => dataSource
+                                    .Read(read => read.Action("GetDifficultyLevels", "Corno" ))
+                                ))
+                    </td>*@
+            </tr>
+            <tr>
+                @if (null != Model.QuestionInfo)
+                {
+                    <td> Type : </td>
+                    <td>
+                        @Html.DisplayFor(m => m.QuestionInfo.QuestionTypeName)
+                    </td>
+                }
+                @*<td> CO. No.  : </td>
+                    <td>
+                        @(Html.Kendo().NumericTextBoxFor(m => m.CoNo)
+                                 .Decimals(0)
+                                 .Min(0)
+                                 .Format("n0")
+                                 .Spinners(true)
+                                 .HtmlAttributes(new { @class = "text-right w-100" }))
+                    </td>*@
+            </tr>
+            <tr>
+                @if (null != Model.QuestionInfo)
+                {
+                    <td> Marks : </td>
+                    <td>
+                        @Html.DisplayFor(m => m.QuestionInfo.Marks)
+                    </td>
+                }
+            </tr>
+        </table>
+    </div>
+</div>
+@(Html.Kendo().Button()
+    .Name("btnEditQuestion")
+    .Content("Edit Question")
+    .Icon("edit") // You can change this to another icon if needed
+    .FillMode(ButtonFillMode.Outline)
+    .ThemeColor(ThemeColor.Info)
+    .HtmlAttributes(new
+    {
+        @class = "open-editor",
+        data_target = "DescriptionContent",
+        type = "button"
+    }))
+@(Html.Kendo().Button()
+    .Name("btnEditModelAnswer")
+    .Content("Edit Model Answer")
+    .Icon("edit") // Same icon used here; change if needed
+    .FillMode(ButtonFillMode.Outline)
+    .ThemeColor(ThemeColor.Info)
+    .HtmlAttributes(new
+    {
+        @class = "open-editor",
+        data_target = "ModelAnswerContent",
+        type = "button"
+    }))
+<!-- Telerik Window for CKEditor -->
+@(Html.Kendo().Window()
+    .Name("editorWindow")
+    .Title("Edit Content")
+    .Visible(false)
+    .Draggable(true)
+    .Modal(true)
+    .Width(1000)
+    .Content(@<text>
+                 <div class="row mb-3">
+                    <!-- Left Column: CKEditor -->
+                    <div class="col-sm-8">
+                        @*<label for="ckEditorArea" class="form-label">Question:</label>*@
+                        <textarea id="ckEditorArea" name="ckEditorArea"></textarea>
+                    </div>
+
+                    <!-- Right Column: Difficulty Level, CO No, Buttons -->
+                    <div class="col-sm-4">
+                        <table class="table w-100">
+                            <tr>
+                                <td colspan="2">
+                                    <div id="questionMetaInfo" class="mb-2 text-secondary fw-bold"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="white-space: nowrap;">
+                                    <label for="DifficultyLevel" class="control-label" id = "lblDifficultyLevel">
+                                        Difficulty Level <span class="text-danger">*</span> :
+                                    </label>
+                                </td>
+                                <td style="width: 100%;">
+                                    @(Html.Kendo().MultiColumnComboBoxFor(m => m.DifficultyLevel)
+                                        .DataTextField(ModelConstants.Name)
+                                        .DataValueField(ModelConstants.Id)
+                                        .HtmlAttributes(new { @class = "w-100" })
+                                        .Filter(FilterType.Contains)
+                                        .Value(Model.DifficultyLevel > 0 ? Model.DifficultyLevel.ToString() : "")
+                                        .Placeholder("Select ...")
+                                        .Columns(columns =>
+                                        {
+                                            columns.Add().Field(ModelConstants.Id).Width("50px");
+                                            columns.Add().Field(ModelConstants.Name).Width("150px");
+                                        })
+                                        .DataSource(dataSource => dataSource
+                                            .Read(read => read.Action("GetDifficultyLevels", "Corno"))
+                                        ))
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="auto-width" id = "lblLearningPriority">Learning Priority :</td>
+                                <td class="full-width">
+                                    @(Html.Kendo().MultiColumnComboBoxFor(m => m.LearningPriorityId)
+                                        .DataTextField(ModelConstants.Name)
+                                        .DataValueField(ModelConstants.Id)
+                                        .HtmlAttributes(new { @class = "w-100" })
+                                        .Filter("contains")
+                                        .Placeholder("Select ...")
+                                        .Columns(columns =>
+                                        {
+                                            columns.Add().Field(ModelConstants.Id).Width("100px");
+                                            columns.Add().Field(ModelConstants.Name).Width("600px");
+                                        })
+                                        .DataSource(dataSource => dataSource
+                                            .Read(read => read.Action("GetMiscMasters", "Corno", new { miscType = "LearningPriority" }))
+                                        ))
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="white-space: nowrap;">
+                                    @Html.LabelFor(m => m.CoNo, "CO. No. :", new {id = "lblCoNo", @class = "control-label" })
+                                </td>
+                                <td style="width: 100%;">
+                                    @(Html.Kendo().NumericTextBoxFor(m => m.CoNo)
+                                        .Decimals(0)
+                                        .Min(0)
+                                        .Format("n0")
+                                        .Spinners(true)
+                                        .HtmlAttributes(new { @class = "text-right w-100" }))
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="pt-4 text-end">
+                                    @(Html.Kendo().Button()
+                                        .Name("cancelEditorContent")
+                                        .Content("Cancel")
+                                        .Icon("cancel")
+                                        .FillMode(ButtonFillMode.Outline)
+                                        .ThemeColor(ThemeColor.Error)
+                                        .Events(e => e.Click("function() { $('#editorWindow').data('kendoWindow').close(); }"))
+                                        .HtmlAttributes(new { type = "button", style = "margin-right: 10px;" }))
+                                    &nbsp;
+                                    @(Html.Kendo().Button()
+                                        .Name("saveEditorContent")
+                                        .Content("Save")
+                                        .Icon("save")
+                                        .FillMode(ButtonFillMode.Outline)
+                                        .ThemeColor(ThemeColor.Success)
+                                        .HtmlAttributes(new { type = "button" }))
+                                </td>
+                            </tr>
+                        </table>
+                        @*<div class="mb-3">
+                            <div id="questionMetaInfo" class="mb-2 text-secondary fw-bold"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="DifficultyLevel" class="control-label">
+                                Difficulty Level <span class="text-danger">*</span> :
+                            </label>
+                            @(Html.Kendo().MultiColumnComboBoxFor(m => m.DifficultyLevel)
+                                .DataTextField(ModelConstants.Name)
+                                .DataValueField(ModelConstants.Id)
+                                .HtmlAttributes(new { @class = "w-100" })
+                                .Filter(FilterType.Contains)
+                                .Value(Model.DifficultyLevel > 0 ? Model.DifficultyLevel.ToString() : "")
+                                .Placeholder("Select ...")
+                                .Columns(columns =>
+                                {
+                                    columns.Add().Field(ModelConstants.Id).Width("50px");
+                                    columns.Add().Field(ModelConstants.Name).Width("150px");
+                                })
+                                .DataSource(dataSource => dataSource
+                                    .Read(read => read.Action("GetDifficultyLevels", "Corno"))
+                                ))
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.CoNo, "CO. No. :", new { @class = "control-label" })
+                            @(Html.Kendo().NumericTextBoxFor(m => m.CoNo)
+                                .Decimals(0)
+                                .Min(0)
+                                .Format("n0")
+                                .Spinners(true)
+                                .HtmlAttributes(new { @class = "text-right w-100" }))
+                        </div>
+
+                        <div class="mt-4">
+
+                            @(Html.Kendo().Button()
+                                .Name("saveEditorContent")
+                                .Content("Save")
+                                .Icon("save") // You can change this to another icon if needed
+                                .FillMode(ButtonFillMode.Outline)
+                                .ThemeColor(ThemeColor.Success)
+                                .HtmlAttributes(new
+                                {
+                                    type = "button"
+                                }))
+                            @(Html.Kendo().Button()
+                                .Name("cancelEditorContent")
+                                .Content("Cancel")
+                                .Icon("cancel") // You can change this to another icon if needed
+                                .FillMode(ButtonFillMode.Outline)
+                                .ThemeColor(ThemeColor.Error)
+                                .Events(e => e.Click("function() { $('#editorWindow').data('kendoWindow').close(); }"))
+                                .HtmlAttributes(new
+                                {
+                                    type = "button"
+                                }))
+
+                            $1$<button id="saveEditorContent" class="btn btn-primary">Save</button>#1#
+                            $1$<button type="button" class="btn btn-secondary" onclick="$('#editorWindow').data('kendoWindow').close();">Cancel</button>#1#
+                        </div>*@
+                    </div>
+                </div>
+              </text>)
+    )
+<!-- CKEditor Styling -->
+<style>
+    .ck-editor__editable {
+        font-family: 'Times New Roman', Times, serif !important;
+        font-size: 12pt !important;
+    }
+
+    .bootbox.modal {
+        z-index: 11000 !important; /* Higher than Kendo Window (default is 10000) */
+    }
+
+    .modal-backdrop.bootbox-backdrop {
+        z-index: 10990 !important;
+    }
+</style>
+
+<!-- Load CKEditor -->
+<link rel="stylesheet" href="~/Scripts/ckeditor/styles.css" />
+<script src="~/Scripts/ckeditor/ckeditor.js"></script>
+
+
+<!-- JavaScript Logic -->
+<script>
+    let currentTarget = "";
+    let editorInstance;
+
+    document.addEventListener("DOMContentLoaded", function () {
+        ClassicEditor
+            .create(document.querySelector('#ckEditorArea'), {
+                toolbar: {
+                    shouldNotGroupWhenFull: true
+                },
+                simpleUpload: {
+                    uploadUrl: '/Question%20Bank/MathTypePaper/UploadImage', // Your controller action
+                    headers: {
+                        'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                    }
+                }
+            })
+            .then(editor => {
+                editorInstance = editor;
+            })
+            .catch(error => {
+                console.error('Editor initialization error:', error);
+            });
+
+        function openEditor(columnName) {
+            currentColumn = columnName;
+            currentSerialNo = parseInt(document.getElementById("QuestionSerialNo").value);
+
+            if (isNaN(currentSerialNo)) {
+                bootbox.alert("Please enter a valid Serial No.");
+                return;
+            }
+
+            const grid = $("#grid").data("kendoGrid");
+            const dataItem = grid.dataSource.data().find(item => item.SerialNo === currentSerialNo);
+            if (!dataItem) {
+                bootbox.alert("Serial No not found in grid.");
+                return;
+            }
+
+            // Set CKEditor content
+            const content = columnName === "Description" ? dataItem.Description : dataItem.ModelAnswer;
+            const safeContent = content || ""; // fallback to empty string if null or undefined
+            editorInstance.setData(safeContent);
+
+            // Set Difficulty Level
+            const difficultyCombo = $("#DifficultyLevel").data("kendoMultiColumnComboBox");
+            if (difficultyCombo && dataItem.DifficultyLevel !== undefined) {
+                difficultyCombo.value(dataItem.DifficultyLevel);
+            }
+
+            // Set CO No.
+            const coNoInput = $("#CoNo").data("kendoNumericTextBox");
+            if (coNoInput && dataItem.CoNo !== undefined) {
+                coNoInput.value(dataItem.CoNo);
+            }
+
+            // Set Learning Priority
+            const learningPriorityCombo = $("#LearningPriorityId").data("kendoMultiColumnComboBox");
+            if (learningPriorityCombo && dataItem.LearningPriorityId !== undefined) {
+                learningPriorityCombo.value(dataItem.LearningPriorityId);
+            }
+
+            // Hide Difficulty level and CO No for Model answer
+            $("#lblDifficultyLevel").show();
+            difficultyCombo.wrapper.show();
+            $("#lblCoNo").show();
+            coNoInput.wrapper.show();
+            $("#lblLearningPriority").show();
+            learningPriorityCombo.wrapper.show();
+            if (columnName === "ModelAnswer") {
+                $("#lblDifficultyLevel").hide();
+                difficultyCombo.wrapper.hide();
+                $("#lblCoNo").hide();
+                coNoInput.wrapper.hide();
+                $("#lblLearningPriority").hide();
+                learningPriorityCombo.wrapper.hide();
+            }
+
+
+            // Set metadata info in div
+            const metaHtml = `
+                <table class="table table-bordered table-sm">
+                    <tbody>
+                        <tr>
+                            <th>Sr. No.</th><td>${dataItem.SerialNo}</td>
+                        </tr>
+                        <tr>
+                            <th>Section</th><td>${dataItem.SectionNo}</td>
+                        </tr>
+                        <tr>
+                            <th>Question No.</th><td>${dataItem.QuestionNo}</td>
+                        </tr>
+                        <tr>
+                            <th>Chapter</th><td>${dataItem.ChapterId}</td>
+                        </tr>
+                        <tr>
+                            <th>Type</th><td>${dataItem.QuestionTypeName}</td>
+                        </tr>
+                        <tr>
+                            <th>Marks</th><td>${dataItem.Marks}</td>
+                        </tr>
+                        <tr>
+                            <th>Taxonomy</th><td colspan="3">${dataItem.Taxonomy}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+
+            document.getElementById("questionMetaInfo").innerHTML = metaHtml;
+
+
+            $('#editorWindow').data('kendoWindow').center().open();
+        }
+
+        document.getElementById("btnEditQuestion").addEventListener("click", function () {
+            openEditor("Description");
+        });
+
+        document.getElementById("btnEditModelAnswer").addEventListener("click", function () {
+            openEditor("ModelAnswer");
+        });
+
+        // Save button of editor window click event handler
+        document.getElementById("saveEditorContent").addEventListener("click", function () {
+            const difficultyLevelCombo = $("#DifficultyLevel").data("kendoMultiColumnComboBox");
+            const learningPriorityCombo = $("#LearningPriorityId").data("kendoMultiColumnComboBox");
+            const coNoInput = $("#CoNo").data("kendoNumericTextBox");
+            const paperId = parseInt(document.getElementById("Id").value);
+
+            const selectedDifficulty = difficultyLevelCombo.value();
+            const selectedLearningPriority = learningPriorityCombo.value();
+            const selectedCoNo = coNoInput.value();
+            const updatedContent = editorInstance.getData();
+            
+            if (!selectedDifficulty || selectedDifficulty === "") {
+                bootbox.alert("Please select a Difficulty Level before saving.");
+                return;
+            }
+            
+            const grid = $("#grid").data("kendoGrid");
+            const dataItem = grid.dataSource.data().find(item => item.SerialNo === currentSerialNo);
+            if (!dataItem) {
+                bootbox.alert("Serial No not found in grid.");
+                return;
+            }
+
+            // Prepare payload
+            const payload = {
+                PaperId: paperId,
+                QuestionSerialNo: currentSerialNo,
+                DifficultyLevel: selectedDifficulty,
+                LearningPriorityId: selectedLearningPriority,
+                CoNo: selectedCoNo,
+                Content: updatedContent
+            };
+
+            // Determine endpoint based on column
+            const endpoint = currentColumn === "Description"
+                ? "/Question%20Bank/MathTypePaper/SaveDescription"
+                : "/Question%20Bank/MathTypePaper/SaveModelAnswer";
+
+            // Send data to controller
+            fetch(endpoint, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() // if using AntiForgery
+                },
+                body: JSON.stringify(payload)
+            })
+                .then(response => {
+                    console.error("response:", response);
+                    if (!response.ok) throw new Error("Server error");
+                    return response.json(); // assuming controller returns JSON
+                })
+                .then(result => {
+                    if (result.success) {
+                        // Update grid row
+                        dataItem.set("DifficultyLevel", selectedDifficulty);
+                        dataItem.set("LearningPriorityId", selectedLearningPriority);
+                        dataItem.set("CoNo", selectedCoNo);
+                        if (currentColumn === "Description") {
+                            dataItem.set("Description", updatedContent);
+                        } else {
+                            dataItem.set("ModelAnswer", updatedContent);
+                        }
+
+                        $('#editorWindow').data('kendoWindow').close();
+                    } else {
+                        bootbox.alert(result.message || "Failed to save.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Save failed:", error);
+                    bootbox.alert("An error occurred while saving.");
+                });
+        });
+        @*document.getElementById("saveEditorContent").addEventListener("click", function () {
+            const difficultyLevelCombo = $("#DifficultyLevel").data("kendoMultiColumnComboBox");
+            const coNoInput = $("#CoNo").data("kendoNumericTextBox");
+
+            const selectedDifficulty = difficultyLevelCombo.value();
+            const selectedCoNo = coNoInput.value();
+
+            if (!selectedDifficulty || selectedDifficulty === "") {
+                bootbox.alert("Please select a Difficulty Level before saving.");
+                return;
+            }
+
+            const updatedContent = editorInstance.getData();
+            const grid = $("#grid").data("kendoGrid");
+            const dataItem = grid.dataSource.data().find(item => item.SerialNo === currentSerialNo);
+
+            if (dataItem) {
+                // Update CKEditor content
+                if (currentColumn === "Description") {
+                    dataItem.set("Description", updatedContent);
+                } else {
+                    dataItem.set("ModelAnswer", updatedContent);
+                }
+
+                // Update Difficulty Level and CO No
+                dataItem.set("DifficultyLevel", selectedDifficulty);
+                dataItem.set("CoNo", selectedCoNo);
+            }
+
+            $('#editorWindow').data('kendoWindow').close();
+        });*@
+
+
+        @*document.getElementById("saveEditorContent").addEventListener("click", function () {
+            // Validate Difficulty Level
+            const difficultyLevel = $("#DifficultyLevel").data("kendoMultiColumnComboBox");
+            const selectedDifficulty = difficultyLevel.value();
+
+            if (!selectedDifficulty || selectedDifficulty === "") {
+                bootbox.alert("Please select a Difficulty Level before saving.");
+                return;
+            }
+
+            // Update editor content
+            const updatedContent = editorInstance.getData();
+            const grid = $("#grid").data("kendoGrid");
+            const dataItem = grid.dataSource.data().find(item => item.SerialNo === currentSerialNo);
+            if (dataItem) {
+                if (currentColumn === "Description") {
+                    dataItem.set("Description", updatedContent);
+                } else {
+                    dataItem.set("ModelAnswer", updatedContent);
+                }
+            }
+
+
+            $('#editorWindow').data('kendoWindow').close();
+        });*@
+    });
+
+    @*function MyCustomUploadAdapterPlugin(editor) {
+        editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+            return new MyUploadAdapter(loader);
+        };
+    }*@
+
+</script>

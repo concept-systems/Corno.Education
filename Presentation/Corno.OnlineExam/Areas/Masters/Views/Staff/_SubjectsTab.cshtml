@@ -1,0 +1,110 @@
+﻿@using Corno.Globals.Constants
+@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Masters.Staff
+
+<div class="row">
+    <div class="col-sm-12">
+        @(Html.Kendo().Grid(Model.StaffSubjectDetails)
+                 .Name("grid")
+                 .Filterable(f => f.Mode(GridFilterMode.Row))
+                 .Columns(columns =>
+                 {
+                     columns.Bound(s => s.Id)
+                         .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                         .ClientTemplate("<input type='hidden' name='StaffSubjectDetails[#= index(data)#].Id' value='#= Id #'   />")
+                         .Hidden();
+                     columns.Bound(s => s.SerialNo)
+                         .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                         .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                         .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center text-align-middle" })
+                         .Width(40);
+                     columns.Bound(s => s.CollegeId)
+                         .ClientTemplate("#= CollegeName #" + "<input type='hidden' name='StaffSubjectDetails[#= index(data)#].CollegeId' value='#= CollegeId #'   />")
+                         .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                         .HtmlAttributes(new { @class = "k-text-left !k-justify-content-left text-align-middle" })
+                         .Title("College")
+                         .Width(100);
+                     columns.Bound(s => s.CourseId)
+                         .ClientTemplate("#= CourseName #" + "<input type='hidden' name='StaffSubjectDetails[#= index(data)#].CourseId' value='#= CourseId #'   />")
+                         .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                         .HtmlAttributes(new { @class = "k-text-left !k-justify-content-left text-align-middle" })
+                         .Title("Course")
+                         .Width(100);
+                     columns.Bound(s => s.CoursePartId)
+                         .ClientTemplate("#= CoursePartName #" + "<input type='hidden' name='StaffSubjectDetails[#= index(data)#].CoursePartId' value='#= CoursePartId #'   />")
+                         .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                         .HtmlAttributes(new { @class = "k-text-left !k-justify-content-left text-align-middle" })
+                         .Title("CoursePart")
+                         .Width(100);
+                     columns.Bound(s => s.SubjectId)
+                         .ClientTemplate("#= SubjectName #" + "<input type='hidden' name='StaffSubjectDetails[#= index(data)#].SubjectId' value='#= SubjectId #'   />")
+                         .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                         .HtmlAttributes(new { @class = "k-text-left !k-justify-content-left text-align-middle" })
+                         .Title("Subject")
+                         .Hidden(true);
+                     columns.Bound(s => s.SubjectName)
+                         .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                         .HtmlAttributes(new { @class = "k-text-left !k-justify-content-left text-align-middle" })
+                         .Title("Subject")
+                         .Width(100);
+                     columns.Template(@<text></text>)
+                         .ClientTemplate("<input type='checkbox' #= IsBarred ? checked='checked':'' # class='chkIsBarred' name='StaffSubjectDetails[#= index(data)#].IsBarred' value='#= IsBarred #' />")
+                         .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                         .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center text-align-middle" })
+                         .Title("Barred")
+                         .Width(50);
+                     columns.Template(@<text></text>)
+                         .ClientTemplate("<input type='checkbox' #= IsInternal ? checked='checked':'' # class='chkIsInternal' name='StaffSubjectDetails[#= index(data)#].IsInternal' value='#= IsInternal #' />")
+                         .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                         .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center text-align-middle" })
+                         .Title("Is Internal")
+                         .Width(50);
+                     columns.Command(command =>
+                     {
+                         command.Edit();
+                         command.Destroy();
+                     }).Width(100);
+                 })
+                 .ToolBar(toolbar => toolbar.Create())
+                 .Editable(editable => editable.Mode(GridEditMode.PopUp)
+                     .TemplateName("/Popup Editors/_StaffSubjectsPopup"))
+                 //.Sortable()
+                 //.Pageable()
+                 .Scrollable()
+                 .DataSource(dataSource => dataSource
+                     .Ajax()
+                     //.PageSize(20)
+                     .Events(events => events.Error("error_handler"))
+                     .Model(model =>
+                     {
+                         model.Id(p => p.Id);
+                     })
+                     .ServerOperation(false)
+                     .Create(update => update.Action("Inline_Create_Update_Destroy", "Staff"))
+                     .Update(update => update.Action("Inline_Create_Update_Destroy", "Staff"))
+                     .Destroy(update => update.Action("Inline_Create_Update_Destroy", "Staff"))
+                     .Sort(s => s.Add(ModelConstants.SubjectId).Descending())
+                 )
+                 .Resizable(resize => resize.Columns(true))
+                 .Reorderable(reorder => reorder.Columns(true)))
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('#grid').on('click', '.chkIsBarred',
+            function () {
+                var checked = $(this).is(':checked');
+                var grid = $('#grid').data().kendoGrid;
+                var dataItem = grid.dataItem($(this).closest('tr'));
+                dataItem.set('IsBarred', checked);
+            });
+        $('#grid').on('click', '.chkIsInternal',
+            function () {
+                var checked = $(this).is(':checked');
+                var grid = $('#grid').data().kendoGrid;
+                var dataItem = grid.dataItem($(this).closest('tr'));
+                dataItem.set('IsInternal', checked);
+            });
+    });
+
+</script>

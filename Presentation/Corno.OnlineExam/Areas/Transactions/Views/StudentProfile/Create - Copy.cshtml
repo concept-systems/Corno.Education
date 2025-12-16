@@ -1,0 +1,187 @@
+﻿@model Corno.Data.Corno.StudentProfile
+@{
+    ViewBag.Title = "Student Profile";
+}
+
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Online Exam</a></li>
+            <li><a href="#">Student Profile Form</a></li>
+        </ol>
+    </div>
+</div>
+@Html.ValidationSummary(true)
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <div class="box ui-draggable ui-droppable">
+            <div class="box-header">
+                <div class="box-name">
+                    <i class="fa fa-info large"></i>
+                    <span>Student Profile Form.</span>
+                </div>
+                <div class="box-icons">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="expand-link">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+                <div class="no-move"></div>
+            </div>
+            <div class="box-content">
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form", enctype = "multipart/form-data" }))
+                {
+                    @Html.HiddenFor(m => m.Photo)
+                    @Html.AntiForgeryToken()
+                    <div class="form-horizontal">
+                        <div class="form-group  has-feedback">
+                            <label class="col-sm-2 control-label">PRN :</label>
+                            <div class="col-sm-3">
+                                @Html.TextBoxFor(m => m.Prn, new { id = "Prn", @class = "form-control", value = "@Model.Prn", placeholder = "Please Enter PRN ", data_toggle = "tooltip", data_placement = "bottom", title = "Prn" })
+                            </div>
+                            <div class="col-sm-1">
+                                <button type="submit" name="submitType" value="Search" class="btn btn-warning">
+                                    <span><i class="fa fa-search"></i></span>
+                                </button>
+                                <button type="submit" id="ReceiveChallan" name="submitType" value="ReceiveChallan" class="btn btn-warning invisible"></button>
+                            </div>
+                        </div>
+                        <div class="form-group  has-feedback">
+                            <div class="col-sm-8">
+                                <table class="table">
+                                    <tr>
+                                        <th class="text-left col-sm-2"><strong>Name :</strong></th>
+                                        <td class="text-left col-sm-6">
+                                            @Html.HiddenFor(m => m.StudentName, new { Value = Model.StudentName })
+                                            @Html.DisplayFor(m => m.StudentName)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-left col-sm-2"><strong>Address :</strong></th>
+                                        <td class="text-left col-sm-6">
+                                            @Html.HiddenFor(m => m.Address, new { Value = Model.Address })
+                                            @Html.DisplayFor(m => m.Address)
+                                        </td>
+                                    </tr>
+                                    @{
+                                        var studentProfileDetail = Model.StudentProfileDetails.FirstOrDefault();
+                                    }
+                                    @if (studentProfileDetail != null)
+                                    {
+                                    <tr>
+                                        <th class="text-left col-sm-2"><strong>Course :</strong></th>
+                                        <td id="tdCourse" class="text-left">
+                                            @studentProfileDetail.CourseName
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-left col-sm-2"><strong>Course Part :</strong></th>
+                                        <td class="text-left">
+                                            @studentProfileDetail.CoursePartName
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-left col-sm-2"><strong>College :</strong></th>
+                                        <td class="text-left">
+                                            @studentProfileDetail.CollegeName
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-left col-sm-2"><strong>Year Of Admission :</strong></th>
+                                        <td class="text-left">
+                                            @studentProfileDetail.Exam
+                                        </td>
+                                    </tr>
+                                    }
+                                </table>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="col-sm-2">
+                                    <strong>Photo:</strong>
+                                </div>
+                                <div class="col-sm-2">
+                                    <img src="@Model.Photo" width="150" height="180" />
+                                </div>
+                                @Html.HiddenFor(m => m.Photo, new { Value = Model.Photo })
+                            </div>
+                        </div>
+                        <table class="table table-bordered table-striped table-responsive table-hover table-heading" id="datatable-1">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Sr. No</th>
+                                    <th class="text-center">Exam</th>
+                                    <th class="text-center">Seat No</th>
+                                    <th class="text-center">Appear</th>
+                                    <th class="text-center">Result</th>
+                                    <th class="text-center">Branch</th>
+                                    <th class="text-center">Center</th>
+                                    <th class="text-center">SGPA</th>
+                                    <th class="text-center">CGPA</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    var index = 1;
+                                }
+                                @foreach (var item in Model.StudentProfileDetails)
+                                {
+                                <tr>
+                                    <td align="center">
+                                        @Html.Hidden("StudentProfileDetails[" + index + "].index", index)
+                                        @Html.DisplayFor(i => index)
+                                    </td>
+                                    <td class="text-center">
+                                        @Html.Hidden("StudentProfileDetails[" + index + "].Exam", item.Exam)
+                                        @Html.DisplayFor(i => item.Exam)
+                                    </td>
+                                    <td class="text-center">
+                                        @Html.Hidden("StudentProfileDetails[" + index + "].SeatNo", item.SeatNo)
+                                        @Html.DisplayFor(i => item.SeatNo)
+                                    </td>
+                                    <td class="text-center">
+                                        @Html.Hidden("StudentProfileDetails[" + index + "].AppearExam", item.CoursePartName)
+                                        @Html.DisplayFor(i => item.CoursePartName)
+                                    </td>
+                                    <td class="text-center">
+                                        @Html.Hidden("StudentProfileDetails[" + index + "].Result", item.Result)
+                                        @Html.DisplayFor(i => item.Result)
+                                    </td>
+                                    <td class="text-center">
+                                        @Html.Hidden("StudentProfileDetails[" + index + "].Branch", item.BranchName)
+                                        @Html.DisplayFor(i => item.BranchName)
+                                    </td>
+                                    <td class="text-center">
+                                        @Html.Hidden("StudentProfileDetails[" + index + "].Center", item.CentreName)
+                                        @Html.DisplayFor(i => item.CentreName)
+                                    </td>
+                                    <td class="text-center">
+                                        @Html.Hidden("StudentProfileDetails[" + index + "].Sgpa", item.Sgpa)
+                                        @Html.DisplayFor(i => item.Sgpa)
+                                    </td>
+                                    <td class="text-center">
+                                        @Html.Hidden("StudentProfileDetails[" + index + "].Cgpa", item.Cgpa)
+                                        @Html.DisplayFor(i => item.Cgpa)
+                                    </td>
+                                </tr>
+                                    index++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                 }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('#Prn').change(function () {
+        $('#form').append('<input type="text" name="submitType" value="Search" />');
+        $("form").submit();
+    });
+</script>

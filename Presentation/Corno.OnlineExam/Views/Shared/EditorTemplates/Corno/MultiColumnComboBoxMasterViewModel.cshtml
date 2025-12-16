@@ -1,0 +1,49 @@
+@using Corno.Data.Helpers
+@using Corno.Data.ViewModels
+@using Corno.Globals.Constants
+@model Corno.Data.ViewModels.MasterViewModel
+
+@{
+    var enabled = ViewData[ModelConstants.Enabled].ToBoolean();
+    var branches = ViewData[ModelConstants.DataSource] as List<MasterViewModel>;
+}
+
+@(Html.Kendo().MultiColumnComboBoxFor(m => m)
+    .DataTextField(ModelConstants.NameWithId)
+    .DataValueField(ModelConstants.Id)
+    //.Value(Model.Id.ToString())
+    .HtmlAttributes(new {@class = "w-100"})
+    .Filter("contains")
+    .Placeholder("Select ...")
+    .Enable(true)
+    .Columns(columns =>
+    {
+        columns.Add().Field(ModelConstants.Code).Title(ModelConstants.Code).Width("250px");
+        columns.Add().Field(ModelConstants.Name).Title(ModelConstants.Name).Width("300px");
+    })
+    .BindTo(branches));
+
+@*@using Corno.Data.Helpers
+@using Corno.Data.ViewModels
+@using Corno.Globals.Constants
+@model Corno.Data.ViewModels.MasterViewModel
+
+@{
+    var enabled = ViewData[ModelConstants.Enabled].ToBoolean();
+    var branches = ViewData[ModelConstants.DataSource] as List<MasterViewModel>;
+}
+
+@(Html.Kendo().MultiColumnComboBoxFor(m => m.Id)
+    //.Enable(Model.EnableHeader)
+    .DataTextField(ModelConstants.NameWithId)
+    .DataValueField(ModelConstants.Id)
+    .Value(Model.Id.ToString())
+    .HtmlAttributes(new { @class="w-100"})
+    .Filter("contains")
+    .Placeholder("Select ...")
+    .Columns(columns =>
+    {
+        columns.Add().Field(ModelConstants.Id).Title(ModelConstants.Id).Width("100px");
+        columns.Add().Field(ModelConstants.Name).Title(ModelConstants.Name).Width("600px");
+    })
+    .BindTo(branches));*@

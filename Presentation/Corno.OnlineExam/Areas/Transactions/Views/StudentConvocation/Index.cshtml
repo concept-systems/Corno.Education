@@ -1,0 +1,197 @@
+﻿@model IEnumerable<Corno.Data.Transactions.ConvocationIndex>
+@using Kendo.Mvc.UI
+@{
+    ViewBag.Title = "Convocation Form";
+}
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Online Exam</a></li>
+            <li><a href="#">Convocation Form</a></li>
+        </ol>
+    </div>
+</div>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <strong>Convocation Form List</strong>
+        <a href="@Url.Action("Create", "Convocation")" class="btn btn-small btn-success pull-right">
+            <span><i class="fa fa-plus fa-lg"></i></span> Add New
+        </a>
+    </div>
+    @*<div class="box-content no-padding table-responsive">*@
+    <div class="panel-body">
+        <table class="table table-bordered table-striped table-responsive table-hover table-heading table-datatable" id="datatable-1">
+            <thead>
+                <tr>
+                    <td colspan="10">
+                        @using (Html.BeginForm())
+                        {
+                            <div class="box-content">
+                                <label class="control-label col-sm-1">Collge:</label>
+                                <div class="col-sm-4">
+                                    @(Html.Kendo().ComboBox()
+                                            .Name("CollegeID")
+                                            .HtmlAttributes(new { style = "width:100%" })
+                                            .Placeholder("Select College...")
+                                            .SelectedIndex(0)
+                                            .Filter(FilterType.Contains)
+                                .BindTo(new SelectList(ViewBag.Colleges, "ID", "NameWithID"))
+                                    )
+                                </div>
+
+                                <label class="col-sm-1 control-label text-center">Course:</label>
+                                <div class="col-sm-4">
+                                    @(Html.Kendo().ComboBox()
+                                            .Name("CourseID")
+                                            .HtmlAttributes(new { style = "width:100%" })
+                                            .Placeholder("Select Course...")
+                                    .DataTextField("NameWithID")
+                                        .DataValueField("ID")
+                                            .Filter(FilterType.Contains)
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("GetCascadeCoursesByCollege", "Convocation")
+                                                        .Data("filterCourses");
+                                                })
+                                                .ServerFiltering(true);
+                                            })
+                                            .Enable(false)
+                                            .AutoBind(false)
+                                            .CascadeFrom("CollegeID")
+                                    )
+                                </div>
+                                <div class="col-sm-2 text-center">
+                                    @*<input type="submit" value="Search" class="btn btn-lg btn-primary" />*@
+                                    <button type="submit" class="btn btn-primary btn-label-left">
+                                        <span><i class="fa fa-search fa-lg"></i></span> Search
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <th class="text-center col-sm-1">ID</th>
+                    <th class="text-center col-sm-1">PRN</th>
+                    <th class="text-center col-sm-3">College</th>
+                    <th class="text-center col-sm-3">Course</th>
+                    <th class="text-center col-sm-1">Status</th>
+                    <th class="col-sm-2"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="text-center">@item.Id</td>
+                        <td class="text-center">@item.PrnNo</td>
+                        <td class="text-left">@item.CollegeName</td>
+                        <td class="text-center">@item.CourseName</td>
+                        <td class="text-center ">
+                            @SharedViewFunctions.GetStatus(item.Status)
+                        </td>
+                        <td class="text-left">
+                            <div class="btn-group">
+                                <a class="btn btn-info" href="#"><i class="fa fa-indent"></i> Action </a>
+                                <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#">
+                                    <span class="fa fa-caret-down"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    @*  @if (false == item.IsApproved)
+                                        {
+                                           <li>
+                                                <a href="@Url.Action("Edit", "Convocation", new { id = item.ID })">
+                                                    <span><i class="fa fa-edit large"></i></span> Edit
+                                                </a>
+                                            </li>
+                                        }*@
+
+                                    <li>
+                                        <a href="@Url.Action("Details", "Convocation", new { id = item.Id })">
+                                            <span><i class="fa fa-edit large"></i></span> View
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Delete", "Convocation", new { id = item.Id })">
+                                            <span><i class="fa fa-trash-o large"></i></span> Delete
+                                        </a>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function LoadDropDownLists() {
+        $('#s2_College').select2({ placeholder: "Select College" });
+        $('#s2_Course').select2({ placeholder: "Select Course" });
+
+    }
+    function filterCourses() {
+        return {
+            CollegeID: $("#CollegeID").val()
+        };
+    }
+
+    $(document).ready(function () {
+        // Load Datatables and run plugin on tables
+        LoadDataTablesScripts(AllTables);
+
+        //// Load Drop down lists
+        //LoadSelect2Script(DemoSelect2);
+
+        // Add Drag-n-Drop feature
+        WinMove();
+        $('#datatable-1').dataTable({
+            "order": [[4, "desc"]]
+        });
+    });
+    // Run Datables plugin and create 3 variants of settings
+    function AllTables() {
+        TestTable1();
+        TestTable2();
+        TestTable3();
+        LoadSelect2Script(MakeSelect2);
+    }
+
+    function MakeSelect2() {
+        $('select').select2();
+        $('.dataTables_filter').each(function () {
+            $(this).find('label input[type=text]').attr('placeholder', 'Search');
+        });
+    }
+</script>
+
+@*<script type="text/javascript">
+        $(document).ready(function () {
+            // Load Datatables and run plugin on tables
+            LoadDataTablesScripts(AllTables);
+            // Add Drag-n-Drop feature
+            WinMove();
+        });
+        // Run Datables plugin and create 3 variants of settings
+        function AllTables() {
+            TestTable1();
+            TestTable2();
+            TestTable3();
+            LoadSelect2Script(MakeSelect2);
+        }
+        function MakeSelect2() {
+            $('select').select2();
+            $('.dataTables_filter').each(function () {
+                $(this).find('label input[type=text]').attr('placeholder', 'Search');
+            });
+        }
+    </script>*@
+
+

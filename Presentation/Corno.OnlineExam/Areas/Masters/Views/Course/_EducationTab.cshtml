@@ -1,0 +1,100 @@
+﻿@using Corno.Data.Helpers
+@using Corno.Globals.Constants
+@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Masters.Course
+
+@{
+    var formEnabled = ViewData[ModelConstants.FormEnabled].ToBoolean();
+}
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="form-group col-sm-8">
+            @(Html.Kendo().MultiColumnComboBoxFor(m => m.FacultyId)
+                    //.Enable(Model.EnableHeader)
+                    .DataTextField(ModelConstants.NameWithId)
+                    .DataValueField(ModelConstants.Id)
+                    .HtmlAttributes(new { @class = "w-100" })
+                    .Filter("contains")
+                    .Placeholder("Select ...")
+                    .Label(label => label
+                        .Content("Faculty")
+                        .Floating(true))
+                    .Columns(columns =>
+                    {
+                        columns.Add().Field(ModelConstants.Id).Title(ModelConstants.Id).Width("100px");
+                        columns.Add().Field(ModelConstants.Name).Title(ModelConstants.Name).Width("600px");
+                    })
+                    .DataSource(dataSource => dataSource
+                        .Read(read => read.Action("GetFaculties", "Corno"))
+                    ))
+            @*@Html.ValidationMessageFor(m => m.FacultyId)*@
+        </div>
+
+        <div class="form-group col-sm-8">
+            @(Html.Kendo().MultiColumnComboBoxFor(m => m.CourseTypeId)
+                    //.Enable(Model.EnableHeader)
+                    .DataTextField(ModelConstants.NameWithId)
+                    .DataValueField(ModelConstants.Id)
+                    .HtmlAttributes(new { @class = "w-100" })
+                    .Filter("contains")
+                    .Placeholder("Select ...")
+                    .Label(label => label
+                        .Content("Course Type")
+                        .Floating(true))
+                    .Columns(columns =>
+                    {
+                        columns.Add().Field(ModelConstants.Id).Title(ModelConstants.Id).Width("100px");
+                        columns.Add().Field(ModelConstants.Name).Title(ModelConstants.Name).Width("600px");
+                    })
+                    .DataSource(dataSource => dataSource
+                        .Read(read => read.Action("GetCourseTypes", "Corno"))
+                    ))
+            @*@Html.ValidationMessageFor(m => m.FacultyId)*@
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group col-sm-offset-8 col-sm-4">
+            @(Html.Kendo().NumericTextBoxFor(m => m.StartYear)
+                    .Min(1900).Format("n0")
+                    .Enable(formEnabled)
+                    .Rounded(Rounded.Medium)
+                    .Label(label => label
+                        .Content("Start Year")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "Enter Start Year",
+                        @class = "required w-100"
+                    }))
+        </div>
+        <div class="form-group col-sm-offset-8 col-sm-4">
+            @(Html.Kendo().NumericTextBoxFor(m => m.CloseYear)
+                    .Min(1900).Format("n0")
+                    .Enable(formEnabled)
+                    .Rounded(Rounded.Medium)
+                    .Label(label => label
+                        .Content("Close Year")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "Enter Close Year",
+                        @class = "required w-100"
+                    }))
+        </div>
+        <div class="form-group col-sm-offset-8 col-sm-4">
+            @(Html.Kendo().NumericTextBoxFor(m => m.TotalSemesters)
+                    .Min(1).Format("n0")
+                    .Enable(formEnabled)
+                    .Rounded(Rounded.Medium)
+                    .Label(label => label
+                        .Content("Total Semesters")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "Enter Total Semesters",
+                        @class = "required w-100"
+                    }))
+        </div>
+    </div>
+</div>

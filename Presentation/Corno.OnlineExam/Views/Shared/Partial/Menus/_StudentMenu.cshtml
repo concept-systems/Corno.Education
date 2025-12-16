@@ -1,0 +1,69 @@
+﻿@using Corno.Globals
+@using Corno.Globals.Enums
+@using Corno.Services.Bootstrapper
+@using Corno.Services.Corno.Interfaces
+@{
+    var linkService = Bootstrapper.Get<ILinkService>();
+    var sessionData = (SessionData)Session[User.Identity.Name];
+}
+
+<li>
+    <a href="@Url.Action("Index", "Home")" data-toggle="tooltip" data-placement="bottom" title="Home">
+        <i class="fa fa-home"></i>
+        <span class="k-font-weight-normal">Home</span>
+    </a>
+</li>
+<li>
+    <a href="@Url.Action("ContactPersons", new {area = "Admin", controller = "Generic"})" data-toggle="tooltip" data-placement="bottom" title="Contact Us">
+        <i class="fa fa-phone"></i>
+        <span class="k-font-weight-normal">Contact Us</span>
+    </a>
+</li>
+
+@if (null != sessionData && linkService.IsLinkSent(sessionData.Prn, FormType.Exam))
+{
+    <li>
+        <a href="@Url.Action("Create", new { area = "Transactions", controller = "StudentExam" })" data-toggle="tooltip" data-placement="bottom" title="Exam Form">
+            <i class="fa fa-file-text"></i>
+            <span class="k-font-weight-normal">Exam Form</span>
+        </a>
+    </li>
+}
+
+@if (null != sessionData && linkService.IsAdmitCardOpen(sessionData.Prn))
+{
+    <li>
+        <a href="@Url.Action("AdmitCard", new { area = "Transactions", controller = "StudentExam" })" data-toggle="tooltip" data-placement="bottom" title="Exam Form">
+            <i class="fa fa-file-text"></i>
+            <span class="k-font-weight-normal">Admit Card</span>
+        </a>
+    </li>
+}
+
+<li>
+    <a href="@Url.Action("Index", new { area = "Transactions", controller = "StudentExam" })" data-toggle="tooltip" data-placement="bottom" title="Exam Form">
+        <i class="fa fa-file-text"></i>
+        <span class="k-font-weight-normal">My Exams</span>
+    </a>
+</li>
+
+@if (null != sessionData && linkService.IsLinkSent(sessionData.Prn, FormType.Environment))
+{
+    <li>
+        <a href="@Url.Action("Create", new { area = "Transactions", controller = "StudentEnvironment" })" data-toggle="tooltip" data-placement="bottom" title="Exam Form">
+            <i class="fa fa-file-text"></i>
+            <span class="k-font-weight-normal">Environment Form</span>
+        </a>
+    </li>
+}
+
+@if (null != sessionData && linkService.IsLinkSent(sessionData.Prn, FormType.Convocation))
+{
+    <li>
+        <a href="@Url.Action("Create", new { area = "Transactions", controller = "StudentConvocation" })" data-toggle="tooltip" data-placement="bottom" title="Exam Form">
+            <i class="fa fa-file-text"></i>
+            <span class="k-font-weight-normal">Convocation Form</span>
+        </a>
+    </li>
+}
+

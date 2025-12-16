@@ -1,0 +1,114 @@
+﻿@model Corno.Data.ViewModels.ExamDetailViewModel
+@using Kendo.Mvc.UI
+
+@{
+    ViewBag.Title = "Exam Details";
+
+    var serialNo = 1;
+}
+
+<div class="k-card ">
+    <div class="k-card-header k-card-info">
+        <h3>Check List</h3>
+    </div>
+    <div class="k-card-body">
+        <table class="table table-bordered">
+            <tr>
+                <td>Instance</td>
+                <td colspan="2">@Model.InstanceName</td>
+            </tr>
+            <tr>
+                <td>Programme</td>
+                <td colspan="2">@Model.CourseName</td>
+            </tr>
+            <tr>
+                <td>Part</td>
+                <td colspan="2">@Model.CoursePartName</td>
+            </tr>
+            <tr>
+                <td>Specialization</td>
+                <td colspan="2">@Model.BranchName</td>
+            </tr>
+            <tr>
+                <td>College</td>
+                <td colspan="2">@Model.CollegeName</td>
+            </tr>
+            <tr>
+                <td>Center</td>
+                <td colspan="2">@Model.CentreName</td>
+            </tr>
+            <tr class="bg-info">
+                <td colspan="3">@string.Empty</td>
+            </tr>
+            <tr>
+                <td>Prn</td>
+                <td colspan="2">@Model.Prn</td>
+            </tr>
+            <tr>
+                <td>Student Name</td>
+                <td colspan="2">@Model.StudentName</td>
+            </tr>
+            <tr>
+                <td>Record Id</td>
+                <td colspan="2">@Model.Id</td>
+            </tr>
+
+
+            <tr class="bg-info">
+                <td class="text-uppercase" colspan="3">Subjects</td>
+            </tr>
+
+
+            @foreach (var subject in Model.Subjects)
+            {
+                <tr>
+                    <td class="k-text-center">@serialNo</td>
+                    <td>@subject.Key</td>
+                    <td>@subject.Value</td>
+                </tr>
+
+                serialNo += 1;
+            }
+
+            <tr class="bg-info">
+                <td colspan="3">@string.Empty</td>
+            </tr>
+            <tr>
+                <td>Fee Paid</td>
+                <td colspan="2">@Model.Fee</td>
+            </tr>
+            <tr>
+                <td>Transaction Id</td>
+                <td colspan="2">@Model.TransactionId</td>
+            </tr>
+            @if (null != Model.FormDate)
+            {
+                <tr>
+                    <td>Dated</td>
+                    <td colspan="2">@Model.FormDate.Value.ToString("dd/MM/yyyy")</td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="k-card-footer">
+        <div class="k-card-actions k-card-actions-horizontal k-card-actions-end">
+            @(Html.Kendo().Button()
+                .Name("btnBackToList")
+                .Icon("hyperlink-open")
+                .SpriteCssClass("k-icon-64")
+                .FillMode(ButtonFillMode.Outline)
+                .ThemeColor(ThemeColor.Tertiary)
+                .Content("Back to list")
+                .HtmlAttributes(new { @class = "k-button" })
+                )
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#btnBackToList").click(function () {
+            window.location.href = '@Url.Action("Index", "StudentExam")';
+        });
+    });
+</script>

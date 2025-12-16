@@ -1,0 +1,183 @@
+﻿@model Corno.Data.Masters.ConvocationFeeViewModel
+@{
+    ViewBag.Title = "Create a New Convocation Fee";
+}
+<div class="row">
+    <div class="box-content ">
+        <div id="breadcrumb" class="col-md-12">
+            <ol class="breadcrumb">
+                <li><a href="#">OnlineExam</a></li>
+                <li><a href="#">Masters</a></li>
+                <li><a href="#">Convocation Fee</a></li>
+            </ol>
+        </div>
+    </div>
+</div>
+@Html.ValidationSummary()
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <div class="box ui-draggable ui-droppable" style="top: 0px; left: 0px; opacity: 1; z-index: 1999;">
+            <div class="box-header">
+                <div class="box-name">
+                    <i class="fa fa-plus-square large"></i>
+                    <span>Create a New Convocation Fee</span>
+                </div>
+                <div class="box-icons">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="expand-link">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+                <div class="no-move"></div>
+            </div>
+            <div class="box-content">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    <div class="form-horizontal">
+                        <div class="box-content">
+                            <div class="form-group">
+                                <div class="form-group">
+
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading"><strong>Fee Details</strong></div>
+                                        <div class="form-group has-feedback">
+                                            <label class="col-sm-3 control-label "> Undergraduate Diploma :</label>
+                                            <div class="col-sm-2">
+                                                @Html.TextBoxFor(m => m.UndergraduateDiplomaFee, new { @class = "form-control", value = "@Model.UndergraduateDiplomaFee", placeholder = " Fee Details", data_toggle = "tooltip", data_placement = "bottom", title = "Fee Details" })
+                                            </div>
+                                            @*</div>
+                                                <div class="form-group has-feedback">*@
+                                            <label class="col-sm-3 control-label "> Graduate Degree :</label>
+                                            <div class="col-sm-2">
+                                                @Html.TextBoxFor(m => m.GraduateDegreeFee, new { @class = "form-control", value = "@Model.GraduateDegreeFee", placeholder = " Fee Details", data_toggle = "tooltip", data_placement = "bottom", title = "Fee Details" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group has-feedback">
+                                            <label class="col-sm-3 control-label "> Post Graduate Diploma :</label>
+                                            <div class="col-sm-2">
+                                                @Html.TextBoxFor(m => m.PostGraduateDiplomaFee, new { @id = "PostGraduateDiplomaFee", @class = "form-control", value = "@Model.PostGraduateDiplomaFee", placeholder = " Fee Details", data_toggle = "tooltip", data_placement = "bottom", title = "Fee Details" })
+                                            </div>
+                                            @*</div>
+                                                <div class="form-group has-feedback">*@
+                                            <label class="col-sm-3 control-label "> Post Graduate Degree :</label>
+                                            <div class="col-sm-2">
+                                                @Html.TextBoxFor(m => m.PostGraduateDegreeFee, new { @id = "PostGraduateDegreeFee", @class = "form-control", value = "@Model.PostGraduateDegreeFee", placeholder = " Fee Details", data_toggle = "tooltip", data_placement = "bottom", title = "Fee Details" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group has-feedback">
+                                            <label class="col-sm-3 control-label "> M. Phil. :</label>
+                                            <div class="col-sm-2">
+                                                @Html.TextBoxFor(m => m.MPhilFee, new { @id = "MPhilFee", @class = "form-control", value = "@Model.MPhilFee", placeholder = " Fee Details", data_toggle = "tooltip", data_placement = "bottom", title = "Fee Details" })
+                                            </div>
+                                            @*</div>
+                                                <div class="form-group has-feedback">*@
+                                            <label class="col-sm-3 control-label">Ph. D. :</label>
+                                            <div class="col-sm-2">
+                                                @Html.TextBoxFor(m => m.PhDFee, new { @id = "PhDFee", @class = "form-control", value = "@Model.PhDFee", placeholder = " Fee Details", data_toggle = "tooltip", data_placement = "bottom", title = "Fee Details" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading"><strong> By Post Fee Details</strong></div>
+                                        <div class="form-group has-feedback">
+                                            <label class="col-sm-3 control-label ">For Students In India :</label>
+                                            <div class="col-sm-2">
+                                                @Html.TextBoxFor(m => m.ForStudentsInIndiaFee, new { @id = "ForStudentsInIndiaFee", @class = "form-control", value = "@Model.ForStudentsInIndiaFee", placeholder = " Fee Details", data_toggle = "tooltip", data_placement = "bottom", title = "Fee Details" })
+                                            </div>
+                                            @*</div>
+                                                <div class="form-group has-feedback">*@
+                                            <label class="col-sm-3 control-label "> For Students In Abroad :</label>
+                                            <div class="col-sm-2">
+                                                @Html.TextBoxFor(m => m.ForStudentsInAbroadFee, new { @id = "ForStudentsInAbroadFee", @class = "form-control", value = "@Model.ForStudentsInAbroadFee", placeholder = " Fee Details", data_toggle = "tooltip", data_placement = "bottom", title = "Fee Details" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <button type="button" value="Index" class="btn btn-primary btn-label-left pull-left" onclick="location.href = '@Url.Action("Index", "ConvocationFee")'">
+                                        <span><i class="fa fa-list-ul"></i></span>
+                                        Back to List
+                                    </button>
+
+                                </div>
+                                <div class=" col-sm-offset-2 col-sm-2">
+                                    <a href="@Url.Action("Edit", "ConvocationFee", new { id = Model.Id })">
+                                        <span><i class="fa fa-edit large button">Edit</i></span> 
+                                    </a>
+                                </div>
+                                <div class="col-sm-offset-0 col-sm-2">
+                                    <button type="submit" value="Create" title="Save" class="btn btn-primary btn-label-left pull-right">
+                                        <span><i class="fa fa-save"></i></span>
+                                        Create
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function filterCourses() {
+        return {
+            facultyID: $("#FacultyID").val(),
+            //courseFilter: $("#CourseID").data("kendoComboBox").input.val()
+        };
+    }
+
+    function filterCourseParts() {
+        return {
+            courseID: $("#CourseID").val(),
+            //coursePartFilter: $("#CoursePartID").data("kendoComboBox").input.val()
+        };
+    }
+
+
+    function DemoSelect2() {
+        $('#s2_centre').select2({ placeholder: "Select Centre" });
+        $('#s2_course').select2({ placeholder: "Select Course" });
+        $('#s2_college').select2({ placeholder: "Select College" });
+        $('#s2_coursepart').select2({ placeholder: "Select Course Part" });
+        $('#s2_coursetype').select2({ placeholder: "Select Course Type" });
+        $('#s2_branch').select2({ placeholder: "Select Branch" });
+        //$('#s2_ConvocationStartDate').select2({ placeholder: "Select Convocation StartDate " });
+        //$('#s2_FormLastDate').select2({ placeholder: "Select Form LastDate" });
+        //$('#s2_LateFormLastDate').select2({ placeholder: "Select Late Form LastDate" });
+
+    }
+    $(document).ready(function () {
+        // Create Wysiwig editor for textare
+        //TinyMCEStart('#wysiwig_simple', null);
+        //TinyMCEStart('#Description', 'extreme');
+        //// Add tooltip to form-controls
+        $('.form-control').tooltip();
+        $("#ConvocationStartDate").datepicker({
+            changeMonth: true, changeYear: true, yearRange: '1900:+0', dateFormat: 'dd-M-yy'
+        });
+        $("#FormLastDate").datepicker({
+            changeMonth: true, changeYear: true, yearRange: '1900:+0', dateFormat: 'dd-M-yy'
+        });
+        $("#LateFormLastDate").datepicker({
+            changeMonth: true, changeYear: true, yearRange: '1900:+0', dateFormat: 'dd-M-yy'
+        });
+        $("#ResultDate").datepicker({
+            changeMonth: true, changeYear: true, yearRange: '1900:+0', dateFormat: 'dd-M-yy'
+        });
+        LoadSelect2Script(DemoSelect2);
+
+        //// Load Convocationple of form validation
+        LoadBootstrapValidatorScript(DemoFormValidator);
+    });
+</script>

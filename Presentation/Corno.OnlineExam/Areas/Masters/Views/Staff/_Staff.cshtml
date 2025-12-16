@@ -1,0 +1,96 @@
+﻿@using Corno.Data.Helpers
+@using Corno.Globals.Constants
+@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Masters.Staff
+
+@{
+    var formEnabled = ViewData[ModelConstants.FormEnabled].ToBoolean();
+    var action = ViewBag.Action as string;
+}
+
+@Html.ValidationSummary(false)
+@using (Html.BeginForm(action, "Staff", FormMethod.Post, new { id = "form", enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(false)
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.Code)
+    @Html.HiddenFor(m => m.FirstName)
+    @Html.HiddenFor(m => m.MiddleName)
+    @Html.HiddenFor(m => m.LastName)
+    <div class="k-card">
+        <div class="k-card-header">
+            <div class="col-sm-10">
+                <h3>@ViewBag.Title</h3>
+            </div>
+            <div class="k-card-actions k-card-actions-horizontal k-card-actions-end col-sm-2">
+                @(Html.Kendo().Button()
+                .Name("back_to_list")
+                .Icon("arrow-left")
+                .SpriteCssClass("k-icon-64")
+                .FillMode(ButtonFillMode.Outline)
+                .ThemeColor(ThemeColor.Info)
+                .Content("Back To list")
+                .Events(e => e.Click("onBackToList"))
+                .HtmlAttributes(new { @class = "w-100" }))
+            </div>
+        </div>
+        <div class="k-card-separator"></div>
+        <div class="k-card-body">
+            @Html.Partial("Partial/Common/_MasterEdit", Model, new ViewDataDictionary { { ModelConstants.FormEnabled, formEnabled } })
+            <div class="row">
+                @(Html.Kendo().TabStrip()
+        .Name("tabStrip")
+        .Items(tabStrip =>
+        {
+            tabStrip.Add().Text("Education Details")
+                .Content(@<text> @Html.Partial("~/Areas/Masters/Views/Staff/_EducationTab.cshtml", Model,
+                                     new ViewDataDictionary { { ModelConstants.FormEnabled, formEnabled }})</text>);
+
+            tabStrip.Add().Text("College Address")
+                .Content(@<text>
+                             @Html.Partial("~/Areas/Masters/Views/Staff/_CollegeAddressTab.cshtml", Model,
+                                 new ViewDataDictionary { { ModelConstants.FormEnabled, formEnabled }})
+                          </text>);
+            tabStrip.Add().Text("Residential Address")
+                .Content(@<text>
+                                 @Html.Partial("~/Areas/Masters/Views/Staff/_ResidentialAddressTab.cshtml", Model)
+                          </text>);
+            tabStrip.Add().Text("Bank Details")
+                .Content(@<text>
+                     @Html.Partial("~/Areas/Masters/Views/Staff/_BankDetailsTab.cshtml", Model)
+              </text>);
+            tabStrip.Add().Text("Subjects")
+                .Content(@<text>
+                     @Html.Partial("~/Areas/Masters/Views/Staff/_SubjectsTab.cshtml", Model)
+              </text>);
+        }).SelectedIndex(0))
+            </div>
+        </div>
+        <div class="k-card-footer">
+            <div class="k-card-actions k-card-actions-horizontal k-card-actions-end">
+                @(Html.Kendo().Button()
+                    .Name("save")
+                    .Icon("save")
+                    .SpriteCssClass("k-icon-64")
+                    .FillMode(ButtonFillMode.Outline)
+                    .ThemeColor(ThemeColor.Success)
+                    .Content("Save")
+                    .HtmlAttributes(new
+                    {
+                        type = "submit",
+                        //name = "action:Create",
+                    }))
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+
+    function onBackToList() {
+        window.location.href = '/Masters/Staff/Index';
+    }
+
+</script>

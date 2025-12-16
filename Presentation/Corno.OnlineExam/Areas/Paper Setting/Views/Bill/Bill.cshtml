@@ -1,0 +1,462 @@
+﻿@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Paper_Setting.Models.Appointment
+
+@{
+    var ta = Model.AppointmentBillDetail.Ta;
+}
+
+@Html.HiddenFor(m => m.AppointmentBillDetail.RemunerationOthers)
+@Html.HiddenFor(d => d.AppointmentBillDetail.BillDate)
+
+<div class="form-group">
+    <div class="col-sm-2">
+        @(Html.Kendo().DatePickerFor(m => m.AppointmentBillDetail.DateOfJourney)
+                    .Rounded(Rounded.Medium)
+                    .Label(label => label
+                        .Content("Date of Journey")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "Enter Date of Journey",
+                        @class = "w-100"
+                    }))
+    </div>
+    <div class="col-sm-offset-3 col-sm-3">
+        @(Html.Kendo().NumericTextBoxFor(m => m.AppointmentBillDetail.SetsDrawn)
+                    .Decimals(0)
+                    .Min(0)
+                    .Format("n0")
+                    //.Value(Model.AppointmentBillDetail.SetsDrawn ?? 0)
+                    .Label(label => label
+                        .Content("Sets Drawn")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "Sets Drawn",
+                        @class = "text-right"
+                    }))
+    </div>
+    <div class="col-sm-offset-1 col-sm-3">
+        @(Html.Kendo().NumericTextBoxFor(m => m.AppointmentBillDetail.CourseFee)
+                    .Decimals(0)
+                    .Min(0)
+                    .Format("n2")
+                    .Events(e => e.Change("change").Spin("change"))
+                    .Label(label => label
+                        .Content("Course Fee")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "Course Fee",
+                        @class = "numeric-input text-right",
+                        @readonly = "readonly"
+                    }))
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-sm-4">
+        @(Html.Kendo().TextBoxFor(m => m.AppointmentBillDetail.FromPlace)
+                    .Rounded(Rounded.Medium)
+                    .Label(label => label
+                        .Content("From Place")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "Enter place from",
+                        @class = "w-100"
+                    }))
+    </div>
+    <div class="col-sm-offset-1 col-sm-3">
+        @(Html.Kendo().CheckBoxFor(m => m.AppointmentBillDetail.IsMarathi)
+            .Label("Marathi")
+            .Size(ComponentSize.Large)
+            .Events(e => e.Change("change"))
+            .HtmlAttributes(new
+            {
+                @class = "text-bottom"
+            }))
+    </div>
+    <div class="col-sm-offset-1 col-sm-3">
+        @(Html.Kendo().NumericTextBoxFor(m => m.AppointmentBillDetail.AllottedFee)
+                    .Decimals(0)
+                    .Min(0)
+                    .Format("n2")
+                    //.Value(Model.AppointmentBillDetail.AllottedFee ?? 0)
+                    .Events(e => e.Change("change").Spin("change"))
+                    .Label(label => label
+                        .Content("Allotted Fee")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "Allotted Fee",
+                        @class = " text-right"
+                    }))
+
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-sm-4">
+        @(Html.Kendo().TextBoxFor(m => m.AppointmentBillDetail.ToPlace)
+                    .Rounded(Rounded.Medium)
+                    .Label(label => label
+                        .Content("To Place")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "To Place",
+                        @class = "w-100"
+                    }))
+    </div>
+    <div class="col-sm-offset-1 col-sm-3">
+        @(Html.Kendo().CheckBoxFor(m => m.AppointmentBillDetail.IsHindi)
+            .Label("Hindi")
+            .Size(ComponentSize.Large)
+            .Events(e => e.Change("change"))
+            .HtmlAttributes(new
+            {
+                @class = "text-bottom"
+            }))
+        
+    </div>
+    <div class="col-sm-offset-1 col-sm-3">
+        @(Html.Kendo().NumericTextBoxFor(m => m.AppointmentBillDetail.Ta)
+                    .Decimals(0)
+                    .Min(0)
+                    .Format("n2")
+                    //.Value(Model.AppointmentBillDetail.Ta ?? 0)
+                    .Events(e => e.Change("change").Spin("change"))
+                    .Label(label => label
+                        .Content("TA")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "TA",
+                        @class = " text-right"
+                    }))
+
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-sm-4">
+        @(Html.Kendo().TextBoxFor(m => m.AppointmentBillDetail.TravelingMode)
+                    .Rounded(Rounded.Medium)
+                    .Label(label => label
+                        .Content("Traveling Mode")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "Traveling Mode",
+                        @class = "w-100"
+                    }))
+    </div>
+    <div class="col-sm-offset-1 col-sm-3">
+        @(Html.Kendo().CheckBoxFor(m => m.AppointmentBillDetail.IsSanskrit)
+                    .Label("Sanskrit")
+                    .Size(ComponentSize.Large)
+                    .Events(e => e.Change("change"))
+                    .HtmlAttributes(new
+                    {
+                        @class = "text-bottom"
+                    }))
+    </div>
+    <div class="col-sm-offset-1 col-sm-3">
+        @(Html.Kendo().NumericTextBoxFor(m => m.AppointmentBillDetail.Da)
+                    .Decimals(0)
+                    .Min(0)
+                    .Format("n2")
+                    //.Value(Model.AppointmentBillDetail.Da ?? 0)
+                    .Events(e => e.Change("change").Spin("change"))
+                    .Label(label => label
+                        .Content("DA")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "DA",
+                        @class = " text-right"
+                    }))
+
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-sm-4">
+        @(Html.Kendo().TextBoxFor(m => m.AppointmentBillDetail.TotalDistance)
+            .Rounded(Rounded.Medium)
+            .Label(label => label
+                .Content("Total Distance")
+                .Floating(true))
+            .HtmlAttributes(new
+            {
+                placeholder = "Total Distance",
+                @class = "w-100"
+            }))
+    </div>
+    <div class="col-sm-offset-1 col-sm-3">
+        @(Html.Kendo().CheckBoxFor(m => m.AppointmentBillDetail.IsSchemeOfMarking)
+            .Label("Scheme Of Marking")
+            .Size(ComponentSize.Large)
+            .Events(e => e.Change("change"))
+            .HtmlAttributes(new
+            {
+                @class = "text-bottom"
+            }))
+    </div>
+    <div class="col-sm-offset-1 col-sm-3">
+        @(Html.Kendo().NumericTextBoxFor(m => m.AppointmentBillDetail.ChairmanAllowance)
+                    .Decimals(0)
+                    .Min(0)
+                    .Format("n2")
+                    //.Value(Model.AppointmentBillDetail.ChairmanAllowance ?? 0)
+                    .Events(e => e.Change("change").Spin("change"))
+                    .Label(label => label
+                        .Content("Chairman Allowance")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = " Chairman Allowance",
+                        @class = "text-right"
+                    }))
+
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-sm-2">
+        @(Html.Kendo().TimePickerFor(m => m.AppointmentBillDetail.TimeIn)
+            .Rounded(Rounded.Medium)
+            .Label(label => label
+                .Content("In Time")
+                .Floating(true))
+            .HtmlAttributes(new
+            {
+                placeholder = "In Time",
+                @class = "w-100"
+            }))
+    </div>
+    <div class="col-sm-offset-3 col-sm-3">
+        @(Html.Kendo().CheckBoxFor(m => m.AppointmentBillDetail.IsModelAnswers)
+            .Label("Model Answers")
+            .Size(ComponentSize.Large)
+            .Events(e => e.Change("change"))
+            .HtmlAttributes(new
+            {
+                @class = "text-bottom"
+            }))
+    </div>
+    <div class="col-sm-offset-1 col-sm-3">
+        @(Html.Kendo().NumericTextBoxFor(m => m.AppointmentBillDetail.Travel)
+                    .Decimals(0)
+                    .Min(0)
+                    .Format("n2")
+                    //.Value(Model.AppointmentBillDetail.Travel ?? 0)
+                    .Events(e => e.Change("change").Spin("change"))
+                    .Label(label => label
+                        .Content("Local Conveyance Allowance")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "Local Conveyance Allowance",
+                        @class = " text-right w-100"
+                    }))
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-sm-2">
+        @(Html.Kendo().TimePickerFor(m => m.AppointmentBillDetail.TimeOut)
+            .Rounded(Rounded.Medium)
+            .Label(label => label
+                .Content("In Out")
+                .Floating(true))
+            .HtmlAttributes(new
+            {
+                placeholder = "In Out",
+                @class = "w-100"
+            }))
+    </div>
+    <div class="col-sm-offset-3 col-sm-3">
+        @(Html.Kendo().NumericTextBoxFor(m => m.AppointmentBillDetail.TranslationCharges)
+            .Decimals(0)
+            .Min(0)
+            .Format("n2")
+            .Events(e => e.Change("change").Spin("change"))
+            .Label(label => label
+                .Content("Transl. Charges")
+                .Floating(true))
+            .HtmlAttributes(new
+            {
+                placeholder = "Transl. Charges",
+                @class = "text-right"
+            }))
+    </div>
+    <div class="col-sm-offset-1 col-sm-3">
+        @(Html.Kendo().NumericTextBoxFor(m => m.AppointmentBillDetail.BasicPay)
+            .Decimals(0)
+            .Min(0)
+            .Format("n2")
+            //.Value(Model.AppointmentBillDetail.BasicPay ?? 0)
+            .Events(e => e.Change("change").Spin("change"))
+            .Label(label => label
+                .Content("Allowances As Per Basic Pay")
+                .Floating(true))
+            .HtmlAttributes(new
+            {
+                placeholder = "Allowances As Per Basic Pay",
+                @class = " text-right w-100"
+            }))
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-sm-2">
+        @(Html.Kendo().NumericTextBoxFor(m => m.AppointmentBillDetail.SchemeOfMarking)
+            .Decimals(0)
+            .Min(0)
+            .Format("n2")
+            .Enable(false)
+            //.Events(e => e.Change("change").Spin("change"))
+            .Label(label => label
+                .Content("Scheme Of Marking")
+                .Floating(true))
+            .HtmlAttributes(new
+            {
+                placeholder = "Scheme Of Marking",
+                @class = "text-right",
+                style = "display:none;" // Hides the control
+            }))
+    </div>
+    <div class="col-sm-offset-3 col-sm-3">
+        @(Html.Kendo().NumericTextBoxFor(m => m.AppointmentBillDetail.ModelAnswers)
+            .Decimals(0)
+            .Min(0)
+            .Format("n2")
+            .Enable(false)
+            //.Events(e => e.Change("change").Spin("change"))
+            .Label(label => label
+                .Content("Model Answers")
+                .Floating(true))
+            .HtmlAttributes(new
+            {
+                placeholder = "Model Answers",
+                @class = "text-right",
+                style = "display:none;" // Hides the control
+            }))
+    </div>
+    <div class="col-sm-offset-1 col-sm-3">
+        @(Html.Kendo().NumericTextBoxFor(m => m.AppointmentBillDetail.OtherAllowance)
+            .Decimals(0)
+            .Min(0)
+            .Format("n2")
+
+            .Events(e => e.Change("change").Spin("change"))
+            .Label(label => label
+                .Content("Other Allowance")
+                .Floating(true))
+            .HtmlAttributes(new
+            {
+                placeholder = "Other Allowance",
+                @class = " text-right w-100"
+            }))
+    </div>
+</div>
+<hr />
+<div class="form-group">
+    @Html.LabelFor(m => m.AppointmentBillDetail.TotalFee, "Total Fee :",
+        new { @class = "col-sm-offset-7 col-sm-2 control-label" })
+    <div class="col-sm-3">
+        @(Html.Kendo().NumericTextBoxFor(m => m.AppointmentBillDetail.TotalFee)
+                    .Decimals(0)
+                    .Min(0)
+                    .Format("n2")
+                    //.Value(Model.AppointmentBillDetail.TotalFee ?? 0)
+                    /*.Label(label => label
+                            .Content("Total Fee")
+                            .Floating(true))*/
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "Total Fee",
+                        @class = "text-right"
+                    }))
+    </div>
+</div>
+
+<script>
+    function change() {
+        console.log("In change");
+        var total = 0;
+        var courseFee = $("#AppointmentBillDetail_CourseFee").data("kendoNumericTextBox").value();
+        var alltedFee = $("#AppointmentBillDetail_AllottedFee").data("kendoNumericTextBox").value();
+        var ta = $("#AppointmentBillDetail_Ta").data("kendoNumericTextBox").value();
+        var da = $("#AppointmentBillDetail_Da").data("kendoNumericTextBox").value();
+        var translationCharges = $("#AppointmentBillDetail_TranslationCharges").data("kendoNumericTextBox").value();
+        var chairmanAllowance = $("#AppointmentBillDetail_ChairmanAllowance").data("kendoNumericTextBox").value();
+        var otherAllowance = $("#AppointmentBillDetail_OtherAllowance").data("kendoNumericTextBox").value();
+        var travel = $("#AppointmentBillDetail_Travel").data("kendoNumericTextBox").value();
+        var basicPay = $("#AppointmentBillDetail_BasicPay").data("kendoNumericTextBox").value();
+        var setsDrawn = $("#AppointmentBillDetail_SetsDrawn").data("kendoNumericTextBox").value();
+        var schemeOfMarking = $("#AppointmentBillDetail_SchemeOfMarking").data("kendoNumericTextBox").value();
+        var modelAnswers = $("#AppointmentBillDetail_ModelAnswers").data("kendoNumericTextBox").value();
+
+        translationCharges = 0;
+        var staffCount = '@Model.AppointmentDetails.Count(d => d.IsPaperSetter)';
+        var isHindi = $("#AppointmentBillDetail_IsHindi").is(":checked");
+        var isMarathi = $("#AppointmentBillDetail_IsMarathi").is(":checked");
+        var isSanskrit = $("#AppointmentBillDetail_IsSanskrit").is(":checked");
+        var isSchemeOfMarking = $("#AppointmentBillDetail_IsSchemeOfMarking").is(":checked");
+        var isModelAnswers = $("#AppointmentBillDetail_IsModelAnswers").is(":checked");
+        var versionChanges = ('@Model.AppointmentBillDetail.RemunerationOthers' * setsDrawn) / staffCount;
+        if (isHindi) {
+            translationCharges += versionChanges;
+        }
+        if (isMarathi) {
+            translationCharges += versionChanges;
+        }
+        if (isSanskrit) {
+            translationCharges += versionChanges;
+        }
+        $("#AppointmentBillDetail_TranslationCharges").data("kendoNumericTextBox").value(translationCharges);
+
+        total += (courseFee ? courseFee : 0) * (setsDrawn ? setsDrawn : 0);
+        total += ta ? ta : 0;
+        total += da ? da : 0;
+        total += translationCharges ? translationCharges : 0;
+        total += chairmanAllowance ? chairmanAllowance : 0;
+        total += otherAllowance ? otherAllowance : 0;
+        total += travel ? travel : 0;
+        total += basicPay ? basicPay : 0;
+
+        // Add Scheme of Marking & Model Answers
+        if (isSchemeOfMarking) {
+            total += (schemeOfMarking ? schemeOfMarking : 0) * (setsDrawn ? setsDrawn : 0);
+        }
+        if (isModelAnswers) {
+            total += (modelAnswers ? modelAnswers : 0) * (setsDrawn ? setsDrawn : 0);
+        }
+
+        total = Math.ceil(total);
+
+        $("#AppointmentBillDetail_TotalFee").data("kendoNumericTextBox").value(total);
+    }
+
+    $(document).ready(function () {
+        // Calculate total fee.
+        change();
+    });
+
+    function onSubjectChange() {
+        console.log("event: onSubjectChange In Bill");
+    }
+
+    function onStaffChange() {
+        console.log("event: onStaffChange In Bill");
+
+        submitForm('ShowBill', '')
+    }
+
+    function onBack() {
+        history.back();
+    }
+
+</script>

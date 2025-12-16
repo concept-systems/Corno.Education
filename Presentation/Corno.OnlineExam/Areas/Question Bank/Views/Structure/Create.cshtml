@@ -1,0 +1,266 @@
+﻿@using Corno.Globals.Constants
+@using Kendo.Mvc.UI
+@using NPOI.SS.Formula.Functions
+@model Corno.Data.Corno.Question_Bank.Models.Structure
+
+@{
+    ViewBag.Controller = "Structure";
+    ViewBag.Details = "StructureDetails";
+    ViewBag.DetailName = "StructureDetails";
+    ViewBag.GridCommonAction = "Inline_Create_Update_Destroy";
+}
+
+@if (TempData["Success"] != null)
+{
+    <script type="text/javascript">
+        bootbox.alert("@TempData["Success"]")
+    </script>
+}
+
+<div class="form-horizontal box-content">
+    @using (Html.BeginForm("Create", "Structure", FormMethod.Post, new { id = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.ValidationSummary(false)
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(m => m.Id)
+
+        <div class="k-card k-card-vertical">
+            <div class="k-card-header k-card-tertiary">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <h3>Structure</h3>
+                    </div>
+                    @*<div class="k-card-actions k-card-actions-horizontal k-card-actions-end col-sm-4">
+                        @(Html.Kendo().Button()
+                            .Name("btnCopyStructure")
+                            .Icon("copy")
+                            .SpriteCssClass("k-icon-64")
+                            .FillMode(ButtonFillMode.Outline)
+                            .ThemeColor(ThemeColor.Info)
+                            .Content("Copy Structure")
+                            .HtmlAttributes(new
+                            {
+                                type = "submit",
+                                name = "action:CopyStructure",
+                            }))
+                    </div>*@
+                </div>
+            </div>
+            <div class="k-card-body">
+                @{
+                    Html.RenderPartial("Partial/Selection/_QuestionBank", Model);
+                }
+                <hr />
+                <div class="form-group">
+                    @Html.LabelFor(m => m.NoOfSections, "No. Of Sections :",
+                        new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-2">
+                        @(Html.Kendo().NumericTextBoxFor(m => m.NoOfSections)
+                            .Decimals(0)
+                            .Min(1)
+                            .Format("n0")
+                            .Value(Model.NoOfSections ?? 1)
+                            .HtmlAttributes(new { @class = "text-right w-100" }))
+                    </div>
+                    @Html.LabelFor(m => m.NoOfChapters, "No. Of Chapters :",
+                        new { @class = "col-sm-offset-2 col-sm-2 control-label" })
+                    <div class="col-sm-2">
+                        @(Html.Kendo().NumericTextBoxFor(m => m.NoOfChapters)
+                            .Decimals(0)
+                            .Min(0)
+                            .Format("n0")
+                            .Value(Model.NoOfChapters ?? 0)
+                            //.Enable(false)
+                            .HtmlAttributes(new { @class = "text-right w-100", @readonly = "readonly" }))
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.NoOfQuestions, "No. Of Questions :",
+                        new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-2">
+                        @(Html.Kendo().NumericTextBoxFor(m => m.NoOfQuestions).Decimals(0)
+                            .Min(0).Format("n0")
+                            .Value(Model.NoOfQuestions ?? 0)
+                            .HtmlAttributes(new { @class = "text-right w-100" }))
+                    </div>
+                    @Html.LabelFor(m => m.MaxMarks, "Max Marks :",
+                        new { @class = "col-sm-offset-2 col-sm-2 control-label" })
+                    <div class="col-sm-2">
+                        @(Html.Kendo().NumericTextBoxFor(m => m.MaxMarks)
+                            .Decimals(0).Min(0).Format("n0")
+                            .Value(Model.MaxMarks ?? 0)
+                            //.Enable(false)
+                            .HtmlAttributes(new { @class = "text-right w-100", @readonly = "readonly" }))
+                    </div>
+                    <div class="col-sm-2 text-right">
+                        @(Html.Kendo().Button()
+                            .Name("get_chapters")
+                            .Icon("search")
+                            .SpriteCssClass("k-icon-64")
+                            .FillMode(ButtonFillMode.Outline)
+                            .ThemeColor(ThemeColor.Tertiary)
+                            .Content("Get Questions")
+                            .HtmlAttributes(new
+                            {
+                                type = "submit",
+                                name = "action:GetQuestions",
+                            }))
+                    </div>
+                </div>
+                <hr />
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered table-responsive table-hover table-heading table-datatable col-sm-12" id="datatable">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" style="width: 100px">Sr. No.</th>
+                                    <th class="text-center">Question No</th>
+                                    <th class="text-center">Section No</th>
+                                    <th class="text-center">Chapter Nos.</th>
+                                    <th class="text-center">Question Type</th>
+                                    <th class="text-center">No. Of Options</th>
+                                    <th class="text-center">Attempt Any</th>
+                                    <th class="text-center">Marks</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tBody">
+                            @{
+                                var index = 0;
+                            }
+                            @foreach (var item in Model.StructureDetails.OrderBy(d => d.SerialNo))
+                            {
+                                <tr>
+                                    <td class="text-center">
+                                        @(Html.Kendo().NumericTextBox()
+                                            .Name("StructureDetails[" + index + "].SerialNo")
+                                            .Value(item.SerialNo)
+                                            .Min(1)
+                                            .Format("n0")
+                                            .Spinners(false)
+                                            .HtmlAttributes(new { @class = "text-center w-100", @readonly = "readonly" }))
+                                    </td>
+                                    <td class="text-center">
+                                        @(Html.Kendo().NumericTextBox()
+                                            .Name("StructureDetails[" + index + "].QuestionNo")
+                                            .Value(item.QuestionNo)
+                                            .Min(1)
+                                            .Format("n0")
+                                            .Spinners(true)
+                                            .HtmlAttributes(new { @class = "text-center w-100" }))
+                                    </td>
+                                    <td class="text-center">
+                                        @(Html.Kendo().NumericTextBox()
+                                            .Name("StructureDetails[" + index + "].SectionNo")
+                                            .Value(item.SectionNo ?? 0)
+                                            .Min(1)
+                                            .Format("n0")
+                                            .HtmlAttributes(new { @class = "text-center w-100" }))
+                                    </td>
+                                    <td class="text-center">
+                                        @(Html.Kendo().TextBox()
+                                            .Name("StructureDetails[" + index + "].ChapterNos")
+                                            .Value(item.ChapterNos)
+                                            .HtmlAttributes(new { @class = "text-center w-100" }))
+                                    </td>
+                                    <td class="text-center">
+                                        @(Html.Kendo().MultiColumnComboBox()
+                                            .Name("StructureDetails[" + index + "].QuestionTypeId")
+                                            .Value(item.QuestionTypeId.ToString())
+                                            .DataTextField(ModelConstants.Name)
+                                            .DataValueField(ModelConstants.Id)
+                                            .HtmlAttributes(new { @class = "w-100" })
+                                            .Filter("contains")
+                                            .Placeholder("Select ...")
+                                            .Columns(columns =>
+                                            {
+                                                columns.Add().Field(ModelConstants.Id).Title(ModelConstants.Id).Width("100px");
+                                                columns.Add().Field(ModelConstants.Name).Title(ModelConstants.Name).Width("600px");
+                                            })
+                                            .DataSource(dataSource => dataSource
+                                                .Read(read => read.Action("GetAllQuestionTypes", "Corno"))
+                                            ))
+                                    </td>
+                                    <td class="text-center">
+                                        @(Html.Kendo().NumericTextBox()
+                                            .Name("StructureDetails[" + index + "].NofOptions")
+                                            .Value(item.NofOptions)
+                                            .Min(0)
+                                            .Format("n0")
+                                            .HtmlAttributes(new { @class = "text-center w-100" }))
+                                    </td>
+                                    <td class="text-center">
+                                        @(Html.Kendo().NumericTextBox()
+                                            .Name("StructureDetails[" + index + "].AttemptCount")
+                                            .Value(item.AttemptCount)
+                                            .Min(0)
+                                            .Format("n0")
+                                            .HtmlAttributes(new { @class = "text-center w-100" }))
+                                    </td>
+                                    <td class="text-center">
+                                        @(Html.Kendo().NumericTextBox()
+                                            .Name("StructureDetails[" + index + "].Marks")
+                                            .Value(item.Marks)
+                                            .Min(0)
+                                            .Max(Model.MaxMarks)
+                                            .HtmlAttributes(new { @class = "text-center w-100" }))
+                                    </td>
+                                </tr>
+                                index++;
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="k-card-footer">
+                <div class="row">
+                    <div class="col-sm-offset-11 col-sm-1 text-right">
+                        @(Html.Kendo().Button()
+                            .Name("save")
+                            .Icon("save")
+                            .SpriteCssClass("k-icon-64")
+                            .FillMode(ButtonFillMode.Outline)
+                            .ThemeColor(ThemeColor.Success)
+                            .Content("Save")
+                            .HtmlAttributes(new
+                            {
+                                type = "submit",
+                                name = "action:Save",
+                            }))
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    function onChange() {
+        console.log("event: change");
+
+        var multiColumnComboBox = $("#SubjectId").data("kendoMultiColumnComboBox");
+        var grid = $("#grid").data("kendoGrid");
+
+        var selectedValue = multiColumnComboBox.value();
+        if (!selectedValue && '@Model.StructureDetails.Count' > 0) {
+            submitForm("ClearControls")
+        }
+    }
+
+    function onBoundChange(){
+        console.log("event: bound change, Detail count : " + '@Model.StructureDetails.Count');
+    }
+
+    function submitForm(action) {
+        var form = document.getElementById("form");
+
+        // Action Name
+        var input = document.createElement("input");
+        input.type = "hidden";
+        input.name = "action:" + action;
+
+        form.appendChild(input);
+        form.submit();
+    }
+</script>

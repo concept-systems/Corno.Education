@@ -1,0 +1,121 @@
+﻿@using System.ComponentModel
+@using Corno.Data.Dtos.Online_Education
+@using Kendo.Mvc.UI
+
+@{
+    ViewBag.Title = "Import Students";
+    ViewBag.Controller = "Student";
+    ViewBag.ImportAction = "Import";
+}
+
+<div class="k-card">
+    <div class="k-card-title k-card-tertiary row">
+        <div class="col-sm-8">
+            <h3>@ViewBag.Title</h3>
+        </div>
+        <div class="k-card-actions k-card-actions-horizontal k-card-actions-end col-sm-4">
+            @(Html.Kendo().Button()
+                .Name("back_to_list")
+                .Icon("arrow-left")
+                .SpriteCssClass("k-icon-64")
+                .FillMode(ButtonFillMode.Outline)
+                .ThemeColor(ThemeColor.Info)
+                .Content("Back To list")
+                .Events(e => e.Click("onBackToList"))
+                .HtmlAttributes(new { @class = "w-100" }))
+        </div>
+    </div>
+    <div class="k-card-separator"></div>
+    <div class="k-card-body">
+        <div class="col-12">
+            @Html.Partial("Partial/_ProgressbarSignalR")
+        </div>
+        <div class="col-12">
+            @(Html.Kendo().Grid<OnlineStudentImportDto>()
+                .Name("importGrid")
+                .ToolBar(tools => tools.Excel())
+                .Scrollable()
+                .Sortable(s => s.InitialDirection(ListSortDirection.Descending))
+                .Resizable(resize => resize.Columns(true)) // Allow column resizing
+                .PersistSelection()
+                .Height(540)
+                .Columns(columns =>
+                {
+                    // Serial Number Column
+                    columns.Template(@<text>#: ++rowNumber #</text>)
+                        .Title("Serial</br> No")
+                        .HeaderHtmlAttributes(new { @class = "k-text-center" })
+                        .HtmlAttributes(new { style = "text-align: center" })
+                        .Width(15);
+                    columns.Bound(m => m.Prn)
+                        .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                        .HtmlAttributes(new { style = "text-align: center" })
+                        .Title("Warehouse Order")
+                        .Width(50);
+                    columns.Bound(m => m.RegularFee)
+                        .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                        .HtmlAttributes(new { style = "text-align: center" })
+                        .Width(30);
+                    columns.Bound(m => m.BacklogFee)
+                        .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                        .HtmlAttributes(new { style = "text-align: center" })
+                        .Width(40);
+                })
+                .Excel(excel => excel
+                    .FileName("Plans.xlsx")
+                    .ProxyURL(Url.Action("Excel_Export_Save", "University", new { area = "" }))
+                )
+                .Pdf(pdf => pdf
+                    .AllPages()
+                    .AvoidLinks()
+                    .PaperSize("A4")
+                    .Scale(0.8)
+                    .Margin("2cm", "1cm", "1cm", "1cm")
+                    .Landscape()
+                    .RepeatHeaders()
+                    .TemplateId("page-template")
+                    .FileName("Plans.pdf")
+                    .ProxyURL(Url.Action("Excel_Export_Save", "University", new { area = "" }))
+                )
+                .Navigatable()
+                .DataSource(dataSource => dataSource
+                    .Ajax()
+                    //.Read(read => read.Action("Excel_Export_Save", "Corno"))
+                    .ServerOperation(false)
+                )
+                .Events(events => events.DataBound("onDataBound")))
+        </div>
+    </div>
+</div>
+
+<script>
+    var rowNumber = 0;
+    function onDataBound(e) {
+        rowNumber = 0; // Reset the row number counter
+        var rows = this.items();
+        for (var i = 0; i < rows.length; i++) {
+            rowNumber++;
+            // Insert the serial number into the first cell
+            $(rows[i]).find("td:first").html(rowNumber);
+        }
+    }
+
+    function onCancelImport() {
+        $.ajax({
+            url: '@Url.Action("CancelImport")',
+            type: 'POST',
+            success: function () {
+                $('#progressBar').val(0);
+                clearInterval(interval);
+                alert('Import canceled');
+            },
+            error: function () {
+                alert('Failed to cancel import');
+            }
+        });
+    }
+
+    function onBackToList() {
+        window.location.href = '/Online Education/Student/Index';
+    }
+</script>

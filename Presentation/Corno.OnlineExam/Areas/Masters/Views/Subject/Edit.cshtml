@@ -1,0 +1,25 @@
+﻿@using Corno.Globals.Constants
+@model Corno.Data.Corno.Masters.Subject
+@{
+    var viewDataDictionary = new ViewDataDictionary
+    {
+        { ModelConstants.FormEnabled, true },
+        { "Title", "Edit Subject : " + Model.Code },
+        { "Action", "Edit"}
+    };
+
+    ViewBag.Action = "Edit";
+}
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">OnlineExam</a></li>
+            <li><a href="#">Masters</a></li>
+            <li><a href="#">Edit Subject</a></li>
+        </ol>
+    </div>
+</div>
+
+@Html.ValidationSummary(false)
+@Html.Partial("~/Areas/Masters/Views/Subject/_Subject.cshtml", Model, viewDataDictionary)
+

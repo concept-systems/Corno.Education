@@ -1,0 +1,229 @@
+﻿@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Question_Bank.Paper
+
+@{
+    ViewBag.Controller = "Question";
+}
+
+@if (TempData["Success"] != null)
+{
+    <script type="text/javascript">
+        bootbox.alert("@TempData["Success"]")
+    </script>
+}
+
+<div class="form-horizontal box-content">
+    @using (Html.BeginForm("Create", "ManualPaper", FormMethod.Post, new { id = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.ValidationSummary(false)
+        @Html.AntiForgeryToken()
+
+        //@Html.HiddenFor(m => m.InstanceId)
+        @Html.HiddenFor(m => m.Id)
+
+        <div class="k-card k-card-vertical">
+            <div class="k-card-header k-card-tertiary">
+                <div class="row">
+                    <div class="col-sm-11">
+                        <h3>Create Paper</h3>
+                    </div>
+                    @*<div class="col-sm-1 text-right">
+                            @(Html.Kendo().Button()
+                                .Name("back_to_list")
+                                .Icon("arrow-left")
+                                .SpriteCssClass("k-icon-64")
+                                .FillMode(ButtonFillMode.Outline)
+                                .ThemeColor(ThemeColor.Info)
+                                .Content("Back To list")
+                                .Events(e => e.Click("onBackToList"))
+                                .HtmlAttributes(new{@class = "w-100"}))
+                        </div>*@
+                </div>
+            </div>
+            <div class="k-card-body">
+                @{
+                    Html.RenderPartial("Partial/Selection/_QuestionBank", Model);
+                }
+                <hr />
+                <div class="form-group">
+                    @Html.LabelFor(m => m.NoOfSections, "No. Of Sections :",
+                        new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-2">
+                        @*@Model.NoOfSections*@
+                        @(Html.Kendo().NumericTextBoxFor(m => m.NoOfSections).Format("n0").HtmlAttributes(new { @class = "text-right w-100", @readonly = "readonly" }))
+                        @*@(Html.Kendo().NumericTextBoxFor(m => m.NoOfSections)
+                            .Decimals(0)
+                            .Min(0)
+                            .Format("n0")
+                            .Value(Model.NoOfSections ?? 0)
+                            .HtmlAttributes(new { @class = "text-right w-100", @readonly = "readonly" }))*@
+                    </div>
+                    @Html.LabelFor(m => m.NoOfChapters, "No. Of Chapters :",
+                        new { @class = "col-sm-offset-2 col-sm-2 control-label" })
+                    <div class="col-sm-2">
+                        @*@Model.NoOfChapters*@
+                        @(Html.Kendo().NumericTextBoxFor(m => m.NoOfChapters).Format("n0").HtmlAttributes(new { @class = "text-right w-100", @readonly = "readonly" }))
+                        @*@(Html.Kendo().NumericTextBoxFor(m => m.NoOfChapters)
+                            .Decimals(0)
+                            .Min(0)
+                            .Format("n0")
+                            .Value(Model.NoOfChapters ?? 0)
+                            .HtmlAttributes(new { @class = "text-right w-100", @readonly = "readonly" }))*@
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.NoOfQuestions, "No. Of Questions :",
+                        new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-2">
+                        @*@Model.NoOfQuestions*@
+                        @(Html.Kendo().NumericTextBoxFor(m => m.NoOfQuestions).Format("n0").HtmlAttributes(new { @class = "text-right w-100", @readonly = "readonly" }))
+                        @*@(Html.Kendo().NumericTextBoxFor(m => m.NoOfQuestions).Decimals(0)
+                            .Min(0).Format("n0")
+                            .Value(Model.NoOfQuestions ?? 0)
+                            .HtmlAttributes(new { @class = "text-right w-100", @readonly = "readonly" }))*@
+                    </div>
+                    @Html.LabelFor(m => m.MaxMarks, "Max Marks :",
+                        new { @class = "col-sm-offset-2 col-sm-2 control-label" })
+                    <div class="col-sm-2">
+                        @*@Model.MaxMarks*@
+                        @(Html.Kendo().NumericTextBoxFor(m => m.MaxMarks))
+                        @*@(Html.Kendo().NumericTextBoxFor(m => m.MaxMarks)
+                            .Decimals(0).Min(0).Format("n0")
+                            .Value(Model.MaxMarks ?? 0)
+                            .HtmlAttributes(new { @class = "text-right w-100", @readonly = "readonly" }))*@
+                    </div>
+                    <div class="col-sm-2 text-right">
+                        @*@(Html.Kendo().Button()
+                            .Name("get_questions")
+                            .Icon("search")
+                            .SpriteCssClass("k-icon-64")
+                            .FillMode(ButtonFillMode.Outline)
+                            .ThemeColor(ThemeColor.Tertiary)
+                            .Content("Get Questions")
+                            .HtmlAttributes(new
+                            {
+                                type = "submit",
+                                name = "action:GetQuestions",
+                            }))*@
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12 text-right">
+                        @(Html.Kendo().Grid(Model.QuestionPaperDetails)
+                            .Name("grid")
+                            .Pageable()
+                            .Sortable()
+                            .Filterable()
+                            .Resizable(resize => resize.Columns(true)) // Allow column resizing
+                            .PersistSelection()
+                            .HtmlAttributes(new { @class = "w-100" })
+                            //.Events(events => {events.Edit("onGridRowEdit"); })
+                            .Columns(columns =>
+                            {
+                                columns.Bound(m => m.SerialNo)
+                                    .Editable("False")
+                                    .Title("Sr. <br/> No.")
+                                    .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .Width(50);
+                                columns.Bound(m => m.QuestionNo)
+                                    .Editable("False")
+                                    .Title("Q. <br/> No.")
+                                    .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .Width(50);
+                                columns.Bound(m => m.ChapterId)
+                                    .Editable("False")
+                                    .Title("Chapter")
+                                    .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .Width(50);
+                                columns.Bound(m => m.QuestionTypeId)
+                                    .Editable("False")
+                                    .Title("Question <br/> Type")
+                                    .Width(50);
+                                columns.Bound(m => m.Marks)
+                                    .Editable("False")
+                                    .Title("Marks")
+                                    .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .Width(50);
+                                columns.Bound(m => m.DifficultyLevel)
+                                    .Title("Diff. <br/> Level").HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .Width(50);
+                                columns.Bound(m => m.Description);
+
+                                columns.Command(command => { command.Edit(); command.Destroy(); }).Width(80);
+                            })
+                            .DataSource(dataSource => dataSource
+                                .Ajax()
+                                .Model(model => model.Id(p => p.Id))
+                                .Create(update => update.Action("Inline_Create_Update_Destroy", "ManualPaper"))
+                                .Update(update => update.Action("Inline_Create_Update_Destroy", "ManualPaper"))
+                                .Destroy(update => update.Action("Inline_Create_Update_Destroy", "ManualPaper"))
+                            ))
+                    </div>
+                </div>
+            </div>
+            <div class="k-card-footer">
+                <div class="row">
+                    <div class="col-sm-offset-11 col-sm-1 text-right">
+                        @(Html.Kendo().Button()
+                            .Name("save")
+                            .Icon("save")
+                            .SpriteCssClass("k-icon-64")
+                            .FillMode(ButtonFillMode.Outline)
+                            .ThemeColor(ThemeColor.Success)
+                            .Content("Save")
+                            .HtmlAttributes(new
+                            {
+                                type = "submit",
+                                name = "action:Create",
+                            }))
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#form").kendoValidator().data("kendoValidator");
+    });
+
+    function onGridRowEdit(e) {
+        alert(e.model.isNew());
+        if (e.model.isNew()) {
+            // Modify the new row's model as needed
+            e.model.set("ChatperId", 4322);
+
+            // Modify other fields as needed
+            // Get the editor for the current row
+            var popupWindow = e.container.data("kendoWindow");
+            var inputs = e.container.find("input");
+
+            // Update the editor fields with the modified values
+            $(inputs).each(function () {
+                var input = $(this);
+                var field = input.attr("ChatperId");
+                var value = e.model.get("ChatperId");
+                //alert("Field : " + JSON.stringify(field) + ", Value : " + JSON.stringify(value))
+                input.val(value);
+            });
+        }
+    }
+
+    function addNew() {
+        var grid = $("#grid").data("kendoGrid");
+        //alert("Grid: " + grid);
+        grid.addRow(); // Open popup editor for new row
+        @*var grid = $("#grid").data("kendoGrid");
+        //var newRow = grid.addRow();
+
+        alert("Grid: " + grid);
+        //alert(newRow);
+
+        // Modify the newRow model as needed
+        //newRow.set("Id", /* New value for Id */);
+        //newRow.set("ChapterId", "567");
+        // Modify other fields as needed*@
+    }
+
+</script>

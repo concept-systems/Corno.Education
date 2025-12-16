@@ -1,0 +1,184 @@
+﻿@using System.Web.UI.WebControls
+@using Corno.Globals.Constants
+@using DevExpress.XtraRichEdit
+@using Kendo.Mvc.UI
+@using RichEditViewType = DevExpress.Web.ASPxRichEdit.RichEditViewType
+@model Corno.Data.Corno.Question_Bank.Paper
+
+<style>
+    .k-grid .k-grid-content tr td {
+        vertical-align: top;
+    }
+</style>
+
+<div class="row">
+    <div class="col-sm-8">
+        @Html.DevExpress().RichEdit(settings =>
+        {
+            settings.Name = ModelConstants.Description;
+            settings.Width = Unit.Percentage(100);
+            settings.Height = Unit.Pixel(400);
+            settings.RibbonMode = RichEditRibbonMode.Auto;
+            settings.Settings.Views.ViewType = RichEditViewType.Simple;
+            settings.Settings.SpellChecker.Enabled = true;
+            settings.Settings.Fonts.Assign(new ASPxRichEditFontSettings
+            {
+                AddDefaultFonts = true,
+                FontCollection = { new ASPxRichEditFont("Times New Roman", "Times New Roman") },
+                MappingSettings = { DefaultFontName = "Times New Roman" }
+            });
+
+            settings.Init = (s, e) =>
+            {
+                var richEdit = s as MVCxRichEdit;
+                if (null == richEdit) return;
+                //richEdit.Settings.Fonts.AddDefaultFonts = true;
+                richEdit.Settings.Fonts.MappingSettings.DefaultFontName = "Times New Roman";
+                richEdit.CreateDefaultRibbonTabs(true);
+                richEdit.RibbonTabs[0].Visible = false;
+                richEdit.RibbonTabs.Find(c => c.Text.Contains("Merge")).Visible = false;
+                //richEdit.Open(ModelConstants.Description, () => Model.DocumentContent);
+                //richEdit.DocumentId = ModelConstants.Description;
+            };
+
+            // Clear content on page load
+            settings.PreRender = (s, e) =>
+            {
+                var richEdit = (MVCxRichEdit)s;
+                if (null == richEdit) return;
+
+                richEdit.Settings.Fonts.MappingSettings.DefaultFontName = "Times New Roman";
+                if (null != Model && null == Model.DocumentContent)
+                    Model.DocumentContent = Array.Empty<byte>();
+                if (null == Model || Array.Empty<byte>() == Model.DocumentContent)
+                    richEdit.New();
+                else
+                    richEdit.Open(Guid.NewGuid().ToString(), DocumentFormat.Rtf, () => Model.DocumentContent);
+
+                /*// Set the unique document ID and open the document
+        var documentId = ModelConstants.Description; // Set your unique document ID here
+        Func<byte[]> contentAccessorByByte = () =>
+        {
+            // Retrieve your document content as byte array
+            return Model != null ? Model.DocumentContent : Array.Empty<byte>();
+        };*/
+                /*if (null == Model || Array.Empty<byte>() == Model.DocumentContent)
+            richEdit.New();
+        else
+            richEdit.Open(ModelConstants.Description, () => Model.DocumentContent);*/
+                //richEdit.Open(ModelConstants.Description, () => Model.DocumentContent);
+            };
+        }).GetHtml()
+    </div>
+    <div class="col-sm-4">
+        @if (null != Model.QuestionInfo)
+        {
+            <table class="table">
+                <tr>
+                    <td> Chapter : </td>
+                    <td>
+                        @Html.DisplayFor(m => m.QuestionInfo.ChapterId)
+                    </td>
+                </tr>
+                <tr>
+                    <td> Question : </td>
+                    <td>
+                        @Html.DisplayFor(m => m.QuestionInfo.QuestionNo)
+                    </td>
+                </tr>
+                <tr>
+                    <td> Type : </td>
+                    <td>
+                        @Html.DisplayFor(m => m.QuestionInfo.QuestionTypeName)
+                    </td>
+                </tr>
+                <tr>
+                    <td> Marks : </td>
+                    <td>
+                        @Html.DisplayFor(m => m.QuestionInfo.Marks)
+                    </td>
+                </tr>
+            </table>
+        }
+        
+        <div class="form-group">
+            @Html.LabelFor(m => m.QuestionSerialNo, "Sr. No. :",
+                new { @class = "control-label col-sm-6" })
+            <div class="col-sm-6">
+                @(Html.Kendo().NumericTextBoxFor(m => m.QuestionSerialNo)
+                    .Decimals(0)
+                    .Min(0)
+                    .Format("n0")
+                    .Spinners(true)
+                    .HtmlAttributes(new { @class = "text-right w-100" }))
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.DifficultyLevel, "Diff. Level :",
+                new { @class = "control-label col-sm-6" })
+            <div class="col-sm-6">
+                @(Html.Kendo().NumericTextBoxFor(m => m.DifficultyLevel)
+                    .Decimals(0)
+                    .Min(0)
+                    .Format("n0")
+                    .Spinners(true)
+                    .HtmlAttributes(new { @class = "text-right w-100" }))
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.CoNo, "CO. No. :",
+                new { @class = "control-label col-sm-6" })
+            <div class="col-sm-6">
+                @(Html.Kendo().NumericTextBoxFor(m => m.CoNo)
+                    .Decimals(0)
+                    .Min(0)
+                    .Format("n0")
+                    .Spinners(true)
+                    .HtmlAttributes(new { @class = "text-right w-100" }))
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="k-card-actions k-card-actions-horizontal k-card-actions-end">
+                @(Html.Kendo().Button()
+                    .Name("btnLoadDescription")
+                    .Icon("edit")
+                    .SpriteCssClass("k-icon-64")
+                    .FillMode(ButtonFillMode.Outline)
+                    .ThemeColor(ThemeColor.Tertiary)
+                    .Content("Load")
+                    .HtmlAttributes(new
+                    {
+                        type = "submit",
+                        name = "action:LoadDescription",
+                    }))
+                @(Html.Kendo().Button()
+                    .Name("btnUpdateDescription")
+                    .Icon("save")
+                    .SpriteCssClass("k-icon-64")
+                    .FillMode(ButtonFillMode.Outline)
+                    .ThemeColor(ThemeColor.Success)
+                    .Content("Save")
+                    .HtmlAttributes(new
+                    {
+                        type = "submit",
+                        name = "action:UpdateDescription",
+                    }))
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@*
+<div class="form-group">
+    <div class="k-card-actions k-card-actions-horizontal k-card-actions-start col-sm-9">
+        
+        
+        
+    </div>
+    
+</div>
+*@
+

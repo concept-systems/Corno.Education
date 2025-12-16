@@ -1,0 +1,244 @@
+﻿@using Corno.Globals.Constants
+@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Question_Bank.Models.Paper
+
+@{
+    ViewBag.Controller = "MathTypePaper";
+}
+
+@if (TempData["Success"] != null)
+{
+    <script type="text/javascript">
+        bootbox.alert("@TempData["Success"]")
+    </script>
+}
+
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+<div class="form-horizontal box-content">
+    @using (Html.BeginForm("Create", "MathTypePaper", FormMethod.Post, new { id = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.ValidationSummary(false)
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(m => m.Id)
+        <div class="k-card k-card-vertical">
+            <div class="k-card-header k-card-tertiary">
+                <div class="row">
+                    <div class="col-sm-10">
+                        <h3>Create</h3>
+                    </div>
+                    <div class="k-card-actions k-card-actions-horizontal k-card-actions-end col-sm-2">
+                        @(Html.Kendo().Button()
+                            .Name("back_to_list")
+                            .Icon("arrow-left")
+                            .SpriteCssClass("k-icon-64")
+                            .FillMode(ButtonFillMode.Outline)
+                            .ThemeColor(ThemeColor.Info)
+                            .Content("Back To list")
+                            .Events(e => e.Click("onBackToList"))
+                            .HtmlAttributes(new { @class = "w-100" }))
+                    </div>
+                </div>
+            </div>
+            <div class="k-card-body">
+                @{
+                    Html.RenderPartial("Partial/Selection/_QuestionBank", Model);
+                }
+                <hr />
+
+                @*Header - Below*@
+                @Html.Partial("~/Areas/Question Bank/Views/MathTypePaper/_Header.cshtml", Model,
+                    new ViewDataDictionary { { ModelConstants.FormEnabled, true }})
+
+                @Html.Partial("~/Areas/Question Bank/Views/MathTypePaper/_Detail.cshtml", Model)
+            </div>
+            <div class="k-card-footer">
+                <div class="k-card-actions k-card-actions-horizontal k-card-actions-end">
+                    @*<div class="col-sm-offset-8 col-sm-1 text-right">
+                        @(Html.Kendo().Button()
+                            .Name("draw_paper")
+                            .Icon("file-txt")
+                            .SpriteCssClass("k-icon-64")
+                            .FillMode(ButtonFillMode.Outline)
+                            .ThemeColor(ThemeColor.Tertiary)
+                            .Content("Draw")
+                            .HtmlAttributes(new
+                            {
+                                type = "submit",
+                                name = "action:Draw",
+                                @class= "w-100"
+                            }))
+                    </div>
+                    <div class="col-sm-2 text-right">
+                        @(Html.Kendo().Button()
+                            .Name("preview_paper")
+                            .Icon("display-inline-block")
+                            .SpriteCssClass("k-icon-64")
+                            .FillMode(ButtonFillMode.Outline)
+                            .ThemeColor(ThemeColor.Tertiary)
+                            .Content("Preview")
+                            .HtmlAttributes(new
+                            {
+                                type = "submit",
+                                name = "action:Preview",
+                                @class= "w-100"
+                            }))
+                    </div>*@
+                    @(Html.Kendo().Button()
+                        .Name("save_paper")
+                        .Icon("save")
+                        .SpriteCssClass("k-icon-64")
+                        .FillMode(ButtonFillMode.Outline)
+                        .ThemeColor(ThemeColor.Success)
+                        .Content("Save")
+                        .HtmlAttributes(new
+                        {
+                            type = "submit",
+                            name = "action:Create",
+                            @class = "w-100"
+                        }))
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div id="output"></div>
+
+<script>
+    $(document).ready(function () {
+        $("#form").kendoValidator().data("kendoValidator");
+    });
+
+    function adjustContainerWidth() {
+        // Find the container element by its class or any other identifier
+        var container = $(".k-edit-form-container");
+
+        // Set its width to 100% or any other desired value
+        container.css("width", "100%");
+    }
+
+    function onPopupOpen(e) {
+        adjustContainerWidth();
+    }
+</script>
+
+<script>
+    function onBackToList() {
+        window.location.href = '/Question Bank/MathTypePaper/Index';
+    }
+
+    function generateFormula() {
+        var txtFormula = $("#txtFormula").data("kendoTextArea");
+        var textAreaValue = txtFormula.value();
+        alert(textAreaValue);
+        convert(textAreaValue);
+    }
+
+    function generateFormula1() {
+        var txtFormula = $("#txtFormula").data("kendoTextArea");
+        var textAreaValue = txtFormula.value();
+        alert(textAreaValue);
+        convert(textAreaValue);
+    }
+
+    function convertToForumula(input) {
+        //  Reset the tex labels (and automatic equation numbers, though there aren't any here).
+        //  Get the conversion options (metrics and display settings)
+        //  Convert the input to CommonHTML output and use a promise to wait for it to be ready
+        //    (in case an extension needs to be loaded dynamically).
+        MathJax.texReset();
+        var options = MathJax.getMetricsFor(output);
+        options.display = true;
+        MathJax.tex2chtmlPromise(input, options).then(function (node) {
+            //  The promise returns the typeset node, which we add to the output
+            //  Then update the document to include the adjusted CSS for the
+            //    content of the new equation.
+
+            var editor = $("#Description").data("kendoEditor");
+            if (editor) {
+                // Convert node to HTML string
+                var htmlString = node.outerHTML;
+                var currentContent = editor.value();
+                var updatedContent = currentContent + htmlString;
+                editor.value(updatedContent);
+            } else {
+                console.error("Editor instance not found.");
+            }
+
+            MathJax.startup.document.clear();
+            MathJax.startup.document.updateDocument();
+        }).catch(function (err) {
+
+        }).then(function () {
+
+        });
+    }
+
+
+</script>
+
+
+@*<script>
+        function generateFormula() {
+            bootbox.prompt({
+                title: 'Enter LaTeX equation:',
+                inputType: 'textarea',
+                size: 'medium', // You can use 'small', 'large', or 'medium'
+                callback: function (result) {
+                    convertToFormula(result);
+                }
+            });
+        }
+
+        function convertToFormula(input) {
+            //  Reset the tex labels (and automatic equation numbers, though there aren't any here).
+            //  Get the conversion options (metrics and display settings)
+            //  Convert the input to CommonHTML output and use a promise to wait for it to be ready
+            //    (in case an extension needs to be loaded dynamically).
+            MathJax.texReset();
+            var options = MathJax.getMetricsFor(output);
+            options.display = true;
+            MathJax.tex2chtmlPromise(input, options).then(function (node) {
+                //  The promise returns the typeset node, which we add to the output
+                //  Then update the document to include the adjusted CSS for the
+                //    content of the new equation.
+
+                var editor = $("#Description").data("kendoEditor");
+                if (editor) {
+                    // Convert node to HTML string
+                    var htmlString = node.outerHTML;
+                    var currentContent = editor.value();
+                    var updatedContent = currentContent + htmlString;
+                    editor.value(updatedContent);
+                } else {
+                    console.error("Editor instance not found.");
+                }
+
+                MathJax.startup.document.clear();
+                MathJax.startup.document.updateDocument();
+            }).catch(function (err) {
+
+            }).then(function () {
+
+            });
+        }
+
+    </script>*@
+
+@*<script>
+        $(document).ready(function () {
+            $("#editor").data("kendoEditor").events.push({
+                name: "renderMathJax",
+                handler: function () {
+                    MathJax.typeset();
+                }
+            });
+
+            // Trigger MathJax rendering on a button click or some event
+            $("#render-mathjax-button").click(function () {
+                $("#editor").data("kendoEditor").trigger("renderMathJax");
+            });
+        });
+    </script>*@

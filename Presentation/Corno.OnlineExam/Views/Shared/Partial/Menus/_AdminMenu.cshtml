@@ -1,0 +1,520 @@
+﻿@using Corno.Globals.Constants
+@using Corno.Globals.Enums
+<li>
+    <a href="@Url.Action("Index", "Home")" data-toggle="tooltip" data-placement="bottom" title="Home">
+        <i class="fa fa-home"></i>
+        <span class="k-font-weight-bold">Home</span>
+    </a>
+</li>
+<li>
+    <a href="@Url.Action("ContactPersons", new {area = "Admin", controller = "Generic"})" data-toggle="tooltip" data-placement="bottom" title="Contact Us">
+        <i class="fa fa-phone"></i>
+        <span class="k-font-weight-bold">Contact Us</span>
+    </a>
+</li>
+
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" title="Circulars">
+        <i class="fa fa-credit-card"></i>
+        <span class="k-font-weight-bold">Circulars</span>
+        <i class="fa fa-angle-double-down pull-right hidden-xs"></i>
+        <span class="label label-success pull-right hidden-xs">1</span>
+    </a>
+    <ul class="dropdown-menu padding-15">
+        <li>
+            <a href="@Url.Action("ExamCircular", new {area = "Admin", controller = "Generic"})">
+                <i class="fa fa-angle-right"></i><span> Exam Circular</span>
+            </a>
+        </li>
+        <li>
+            <a href="@Url.Action("PaperSettingCircular", new {area = "Admin", controller = "Generic"})">
+                <i class="fa fa-angle-right"></i><span> Paper Setting Circular</span>
+            </a>
+        </li>
+    </ul>
+</li>
+<li>
+    <a href="@Url.Action("ExamRulesAndRegulations", new {area = "Admin", controller = "Generic"})" data-toggle="tooltip" data-placement="bottom" title="Exam Rules">
+        <i class="fa fa-hand-o-right"></i>
+        <span class="k-font-weight-bold">Exam Rules</span>
+        @*<i class="fa fa-angle-right pull-right hidden-xs"></i>*@
+    </a>
+</li>
+<li>
+    <a href="@Url.Action("ScheduleOfExamination", new {area = "Admin", controller = "Generic"})" data-toggle="tooltip" data-placement="bottom" title="BOE">
+        <i class="fa fa-tasks"></i>
+        <span class="k-font-weight-bold">Schedule of Exam.</span>
+    </a>
+</li>
+<li>
+    <a href="@Url.Action("Create", new {area = "Transactions", controller = "Registration"})" data-toggle="tooltip" data-placement="bottom" title="Registration">
+        <i class="fa fa-edit"></i>
+        <span class="k-font-weight-bold">Registration</span>
+    </a>
+</li>
+
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" title="Exam Form Enrollment">
+        <i class="fa fa-credit-card"></i>
+        <span class="k-font-weight-bold">Exam Form</span>
+        <i class="fa fa-angle-double-down pull-right hidden-xs"></i>
+        <span class="label label-success pull-right hidden-xs">3</span>
+    </a>
+    <ul class="dropdown-menu padding-15">
+        <li>
+            <a href="@Url.Action("Create", new {area = "Transactions", controller = "Exam"})" data-toggle="tooltip" data-placement="bottom" title="Exam Form">
+                <i class="fa fa-book"></i>
+                <span class="">Form</span>
+            </a>
+        </li>
+        <li>
+            <a href="@Url.Action("Create", new { area = "Transactions", controller = "Enrollment", formType = FormType.Exam})" data-toggle="tooltip" data-placement="bottom" title="Enrollment Entry">
+                <i class="fa fa-anchor"></i>
+                <span class="">Enrollment</span>
+            </a>
+        </li>
+        <li>
+            <a href="@Url.Action("Create", new { area = "Transactions", controller = "Link", formType = FormType.Exam})" data-toggle="tooltip" data-placement="bottom" title="Links Send">
+                <i class="fa fa-link"></i>
+                <span class="">Links</span>
+            </a>
+        </li>
+        <li>
+            <a href="@Url.Action("Index", new { area = "Online Education", controller = "Student"})" data-toggle="tooltip" data-placement="bottom" title="Links Send">
+                <i class="fa fa-link"></i>
+                <span class="">Online Students</span>
+            </a>
+        </li>
+    </ul>
+</li>
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" title="Exam Form Enrollment">
+        <i class="fa fa-credit-card"></i>
+        <span class="k-font-weight-bold">Environment Studies</span>
+        <i class="fa fa-angle-double-down pull-right hidden-xs"></i>
+        <span class="label label-success pull-right hidden-xs">3</span>
+    </a>
+    <ul class="dropdown-menu padding-15">
+        <li>
+            <a href="@Url.Action("Create", new {area = "Transactions", controller = "Environment"})" data-toggle="tooltip" data-placement="bottom" title="Environment Studies Form Entry">
+                <i class="fa fa-book"></i>
+                <span class="">Form</span>
+            </a>
+        </li>
+        <li>
+            <a href="@Url.Action("Create", new { area = "Transactions", controller = "Enrollment", formType = FormType.Environment})" data-toggle="tooltip" data-placement="bottom" title="Enrollment Entry">
+                <i class="fa fa-anchor"></i>
+                <span class="">Enrollment</span>
+            </a>
+        </li>
+        <li>
+            <a href="@Url.Action("Create", new { area = "Transactions", controller = "Link", formType = FormType.Environment})" data-toggle="tooltip" data-placement="bottom" title="Links Send">
+                <i class="fa fa-link"></i>
+                <span class="">Links</span>
+            </a>
+        </li>
+    </ul>
+</li>
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" title="Exam Form Enrollment">
+        <i class="fa fa-credit-card"></i>
+        <span class="k-font-weight-bold">Convocation</span>
+        <i class="fa fa-angle-double-down pull-right hidden-xs"></i>
+        <span class="label label-success pull-right hidden-xs">3</span>
+    </a>
+    <ul class="dropdown-menu padding-15">
+        <li>
+            <a href="@Url.Action("Create", new {area = "Transactions", controller = "Convocation"})" data-toggle="tooltip" data-placement="bottom" title="Convocation">
+                <i class="fa fa-user"></i>
+                <span class="k-font-weight-bold">Form</span>
+            </a>
+        </li>
+        <li>
+            <a href="@Url.Action("Create", new { area = "Transactions", controller = "Enrollment", formType = FormType.Convocation })" data-toggle="tooltip" data-placement="bottom" title="Enrollment Entry">
+                <i class="fa fa-anchor"></i>
+                <span class="">Enrollment</span>
+            </a>
+        </li>
+        <li>
+            <a href="@Url.Action("Create", new { area = "Transactions", controller = "Link", formType = FormType.Convocation })" data-toggle="tooltip" data-placement="bottom" title="Links Send">
+                <i class="fa fa-link"></i>
+                <span class="">Links</span>
+            </a>
+        </li>
+    </ul>
+</li>
+
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" title="Masters">
+        <i class="fa fa-credit-card"></i>
+        <span class="k-font-weight-bold">Time Table</span>
+        <i class="fa fa-angle-double-down pull-right hidden-xs"></i>
+        <span class="label label-success pull-right hidden-xs">3</span>
+    </a>
+    <ul class="dropdown-menu padding-15">
+        <li>
+            <a href="@Url.Action("Create", new {area = "Transactions", controller = "TimeTableTheory"})" data-toggle="tooltip" data-placement="bottom" title="Time Table">
+                <i class="fa fa-file-code-o"></i>
+                <span class="">Theory Time Table</span>
+            </a>
+        </li>
+        <li>
+            <a href="@Url.Action("Create", new {area = "Transactions", controller = "TimeTablePractical"})" data-toggle="tooltip" data-placement="bottom" title="Time Table">
+                <i class="fa fa-file-code-o"></i>
+                <span class="">Practical Time Table</span>
+            </a>
+        </li>
+        <li>
+            <a href="@Url.Action("Create", new {area = "Transactions", controller = "TimeTableCoursePart"})" data-toggle="tooltip" data-placement="bottom" title="Time Table">
+                <i class="fa fa-file-code-o"></i>
+                <span class="">Course Part Time Table</span>
+            </a>
+        </li>
+    </ul>
+</li>
+<li>
+    <a href="@Url.Action("Create", new {area = "Transactions", controller = "AnswerSheet"})" data-toggle="tooltip" data-placement="bottom" title="Answer sheet">
+        <i class="fa fa-file-code-o"></i>
+        <span class="k-font-weight-bold">Answer Sheet</span>
+    </a>
+</li>
+
+<li>
+    <a href="@Url.Action("Create", new {area = "Transactions", controller = "Revaluation"})" data-toggle="tooltip" data-placement="bottom" title="Revaluation">
+        <i class="fa fa-check"></i>
+        <span class="k-font-weight-bold">Revaluation</span>
+        @*<i class="fa fa-angle-right pull-right hidden-xs"></i>*@
+    </a>
+</li>
+<li>
+    <a href="@Url.Action("Create", new {area = "Transactions", controller = "MobileUpdate"})" data-toggle="tooltip" data-placement="bottom" title="Mobile Update">
+        <i class="fa fa-file-code-o"></i>
+        <span class="k-font-weight-bold">Mobile Update</span>
+    </a>
+</li>
+<li>
+    <a href="@Url.Action("Create", new {area = "Transactions", controller = "AdditionalCredits"})" data-toggle="tooltip" data-placement="bottom" title="Mobile Update">
+        <i class="fa fa-file-code-o"></i>
+        <span class="k-font-weight-bold">Additional Credits</span>
+    </a>
+</li>
+<li>
+    <a href="@Url.Action("Create", new {area = "Transactions", controller = "Abc"})" data-toggle="tooltip" data-placement="bottom" title="Result">
+        <i class="fa fa-file-zip-o"></i>
+        <span class="k-font-weight-bold">ABC</span>
+    </a>
+</li>
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" title="Exam Form Enrollment">
+        <i class="fa fa-credit-card"></i>
+        <span class="k-font-weight-bold">Marks Entry</span>
+        <i class="fa fa-angle-double-down pull-right hidden-xs"></i>
+        <span class="label label-success pull-right hidden-xs">2</span>
+    </a>
+    <ul class="dropdown-menu padding-15">
+        <li>
+            <a href="@Url.Action("Create", new {area = "Transactions", controller = "MarksEntry"})" data-toggle="tooltip" data-placement="bottom" title="Result">
+                <i class="fa fa-file-zip-o"></i>
+                <span class="k-font-weight-bold">Manual Entry</span>
+            </a>
+        </li>
+        <li>
+            <a href="@Url.Action("Create", new {area = "Transactions", controller = "MarksApi"})" data-toggle="tooltip" data-placement="bottom" title="Result">
+                <i class="fa fa-plug"></i>
+                <span class="k-font-weight-bold">API Integration</span>
+            </a>
+        </li>
+    </ul>
+</li>
+@*<li>
+    <a href="@Url.Action("Create", new {area = "Transactions", controller = "MarksEntry"})" data-toggle="tooltip" data-placement="bottom" title="Result">
+        <i class="fa fa-file-zip-o"></i>
+        <span class="k-font-weight-bold">Marks Entry</span>
+    </a>
+</li>*@
+
+<li>
+    <a href="@Url.Action("Create", new {area = "Transactions", controller = "StudentProfile"})" data-toggle="tooltip" data-placement="bottom" title="Student Profile">
+        <i class="fa fa-file-code-o"></i>
+        <span class="k-font-weight-bold">Student Profile</span>
+    </a>
+</li>
+<li>
+    <a href="@Url.Action("Create", new {area = "Transactions", controller = "Result"})" data-toggle="tooltip" data-placement="bottom" title="Result">
+        <i class="fa fa-file-zip-o"></i>
+        <span class="k-font-weight-bold">Result</span>
+    </a>
+</li>
+
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" title="Masters">
+        <i class="fa fa-credit-card"></i>
+        <span class="k-font-weight-bold">Masters</span>
+        <i class="fa fa-angle-double-down pull-right hidden-xs"></i>
+        <span class="label label-success pull-right hidden-xs">1</span>
+    </a>
+    <ul class="dropdown-menu padding-15">
+        <li>
+            <a href="@Url.Action("Index", new {area = "Masters", controller = "Instance"})">
+                <i class="fa fa-angle-right"></i><span> Instance</span>
+            </a>
+        </li>
+    </ul>
+</li>
+
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" title="Reports">
+        <i class="fa fa-file-text-o">&nbsp;</i>
+        <span class=" k-font-weight-bold">Reports</span>
+        <i class="fa fa-angle-double-down pull-right hidden-xs"></i>
+        <span class="label label-success pull-right hidden-xs">6</span>
+    </a>
+    <ul class="dropdown-menu">
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle active-parent active">
+                <i class="fa fa-file-text-o">&nbsp;</i>
+                <span class="badge progress-bar-info hidden-xs">Registration</span>
+                <i class="fa fa-angle-double-down pull-right hidden-xs"></i>
+                <span class="label label-success pull-right hidden-xs">2</span>
+            </a>
+            <ul class="dropdown-menu padding-10">
+                <li style="padding-left: 30px">
+                    <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = "CollegewiseRegistration", description = "Registration Name List - College wise"})">
+                        <span class="badge progress-bar-info hidden-xs"> College Wise Registration List</span>
+                    </a>
+                </li>
+                <li style="padding-left: 30px">
+                    <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = "CollegewiseStudent", description = "Registration Name List - College wise"})">
+                        <span class="badge progress-bar-info hidden-xs">  College Wise Students Registration List</span>
+                    </a>
+                </li>
+                <li style="padding-left: 30px">
+                    <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = ReportName.CategoryClassStudentsRpt, description = ""})">
+                        <span class="badge progress-bar-info hidden-xs">Category / Class Wise Students</span>
+                    </a>
+                </li>
+                <li style="padding-left: 30px">
+                    <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = ReportName.CategoryStudentsRpt, description = ""})">
+                        <span class="badge progress-bar-info hidden-xs">Category Wise Students</span>
+                    </a>
+                </li>
+                <li style="padding-left: 30px">
+                    <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = ReportName.CountryClassStudentsRpt, description = ""})">
+                        <span class="badge progress-bar-info hidden-xs">Country / Class Wise Students</span>
+                    </a>
+                </li>
+                <li style="padding-left: 30px">
+                    <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = ReportName.CountryStateClassStudentsRpt, description = ""})">
+                        <span class="badge progress-bar-info hidden-xs">Country / State Wise Students</span>
+                    </a>
+                </li>
+                <li style="padding-left: 30px">
+                    <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = ReportName.CountryStudentsRpt, description = ""})">
+                        <span class="badge progress-bar-info hidden-xs">Country Wise Students</span>
+                    </a>
+                </li>
+                <li style="padding-left: 30px">
+                    <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = ReportName.MinorityClassStudentsRpt, description = ""})">
+                        <span class="badge progress-bar-info hidden-xs">Minority / Class Wise Students</span>
+                    </a>
+                </li>
+                <li style="padding-left: 30px">
+                    <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = ReportName.MinorityStudentsRpt, description = ""})">
+                        <span class="badge progress-bar-info hidden-xs">Minority Wise Students</span>
+                    </a>
+                </li>
+                <li style="padding-left: 30px">
+                    <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = ReportName.OtherStateStudentsRpt, description = ""})">
+                        <span class="badge progress-bar-info hidden-xs">Other State Students</span>
+                    </a>
+                </li>
+                <li style="padding-left: 30px">
+                    <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = ReportName.StateClassStudentsRpt, description = ""})">
+                        <span class="badge progress-bar-info hidden-xs">State / Class Wise Students</span>
+                    </a>
+                </li>
+                <li style="padding-left: 30px">
+                    <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = ReportName.StudentRollListRpt, description = ""})">
+                        <span class="badge progress-bar-info hidden-xs">Roll List</span>
+                    </a>
+                </li>
+            </ul>
+
+            <a href="#" class="dropdown-toggle active-parent active">
+                <i class="fa fa-file-text-o">&nbsp;</i>
+                <span class="badge progress-bar-info hidden-xs">Convocation</span>
+                <i class="fa fa-angle-double-down pull-right hidden-xs"></i>
+                <span class="label label-success pull-right hidden-xs">1</span>
+            </a>
+            <ul class="dropdown-menu padding-10">
+                <li style="padding-left: 30px">
+                    <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = "ConvocationRpt"})">
+                        <span class="badge progress-bar-info hidden-xs">  Convocation Report</span>
+                    </a>
+                </li>
+                <li style="padding-left: 30px">
+                    <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = "ConvocationChallanRpt", description = "Convocation form Challan"})">
+                        <span class="badge progress-bar-info hidden-xs"> Challan</span>
+                    </a>
+                </li>
+                <li style="padding-left: 30px">
+                    <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = "ConvocationFeeSummaryRpt"})">
+                        <span class="badge progress-bar-info hidden-xs"> Fee List</span>
+                    </a>
+                </li>
+            </ul>
+            <a href="#" class="dropdown-toggle active-parent active">
+                <i class="fa fa-file-text-o">&nbsp;</i>
+                <span class="badge progress-bar-info hidden-xs">Revaluation</span>
+                <i class="fa fa-angle-double-down pull-right hidden-xs"></i>
+                <span class="label label-success pull-right hidden-xs">1</span>
+            </a>
+            <ul class="dropdown-menu padding-10">
+                <li style="padding-left: 30px">
+                    <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = "RevaluationRpt"})">
+                        <span class="badge progress-bar-info hidden-xs">  Revaluation Report</span>
+                    </a>
+                </li>
+                <li style="padding-left: 30px">
+                    <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = "RevaluationChallanRpt", description = "Revaluation form Challan"})">
+                        <span class="badge progress-bar-info hidden-xs"> Challan</span>
+                    </a>
+                </li>
+            </ul>
+            <a href="#" class="dropdown-toggle active-parent active">
+                <i class="fa fa-file-text-o">&nbsp;</i>
+                <span class="badge progress-bar-info hidden-xs">Exam</span>
+                <i class="fa fa-angle-double-down pull-right hidden-xs"></i>
+                <span class="label label-success pull-right hidden-xs">5</span>
+            </a>
+            <ul class="dropdown-menu padding-10">
+                <li style="padding-left: 30px">
+                    <a href="@Url.Action("ExamCheckList", new {area = "Reports", controller = "ExamCheckList", reportName = "ExamAppForm", description = "Exam Check List"})">
+                        <span class="badge progress-bar-info hidden-xs"> Exam Check List</span>
+                    </a>
+                </li>
+                <li style="padding-left: 30px">
+                    <a href="@Url.Action("HallTicket", new {area = "Reports", controller = "HallTicket", reportName = "HallTicket", description = "Hall Ticket"})">
+                        <span class="badge progress-bar-info hidden-xs"> Hall Ticket</span>
+                    </a>
+                </li>
+                <li style="padding-left: 30px">
+                    <a href="@Url.Action("CAPMarkSlip", new {area = "Reports", controller = "CapMarkSlip"})">
+                        <span class="badge progress-bar-info hidden-xs">CAP Mark Slip</span>
+                    </a>
+                </li>
+                <li style="padding-left: 30px">
+                    <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = "ExamNameListRpt", description = "Exam Name List"})">
+                        <span class="badge progress-bar-info hidden-xs"> Name List</span>
+                    </a>
+                </li>
+                <li style="padding-left: 30px">
+                    <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = "SubjectSummaryRpt", description = "Subject Summary"})">
+                        <span class="badge progress-bar-info hidden-xs"> Subjects Summary</span>
+                    </a>
+                </li>
+                <li style="padding-left: 30px">
+                    <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = "SubjectSummary1Rpt", description = "Subject Summary"})">
+                        <span class="badge progress-bar-info hidden-xs"> Subjects Summary 1</span>
+                    </a>
+                </li>
+                <li style="padding-left: 30px">
+                    <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = "ReportLibrary.ExamChallanRpt, ExamChallanRpt", description = "Exam form Challan"})">
+                        <span class="badge progress-bar-info hidden-xs"> Challan</span>
+                    </a>
+                </li>
+                <li style="padding-left: 30px">
+                    <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = "ExamFeeSummaryRpt"})">
+                        <span class="badge progress-bar-info hidden-xs"> Fee List</span>
+                    </a>
+                </li>
+            </ul>
+            <a href="#" class="dropdown-toggle active-parent active">
+                <i class="fa fa-file-text-o">&nbsp;</i>
+                <span class="badge progress-bar-info hidden-xs">Environment</span>
+                <i class="fa fa-angle-double-down pull-right hidden-xs"></i>
+                <span class="label label-success pull-right hidden-xs">2</span>
+            </a>
+            <ul class="dropdown-menu padding-10">
+                <li style="padding-left: 30px">
+                    <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = "EnvNameListRpt"})">
+                        <span class="badge progress-bar-info hidden-xs"> Name List</span>
+                    </a>
+                </li>
+                <li style="padding-left: 30px">
+                    <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = "EnvironmentCAPRpt"})">
+                        <span class="badge progress-bar-info hidden-xs"> CAP List</span>
+                    </a>
+                </li>
+                <li style="padding-left: 30px">
+                    <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = "EnvironmentChallanRpt", description = "Environment form Challan"})">
+                        <span class="badge progress-bar-info hidden-xs"> Challan</span>
+                    </a>
+                </li>
+                <li style="padding-left: 30px">
+                    <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = "EnvironmentFeeSummaryRpt"})">
+                        <span class="badge progress-bar-info hidden-xs"> Fee List</span>
+                    </a>
+                </li>
+            </ul>
+        <a href="#" class="dropdown-toggle active-parent active">
+            <i class="fa fa-file-text-o">&nbsp;</i>
+            <span class="badge progress-bar-info hidden-xs">Accounts</span>
+            <i class="fa fa-angle-double-down pull-right hidden-xs"></i>
+            <span class="label label-success pull-right hidden-xs">2</span>
+        </a>
+        <ul class="dropdown-menu padding-10">
+            <li style="padding-left: 30px">
+                <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = ReportName.PayoutSummaryRpt})">
+                    <span class="badge progress-bar-info hidden-xs"> Payout Summary</span>
+                </a>
+                <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = ReportName.PayoutExamRpt})">
+                    <span class="badge progress-bar-info hidden-xs"> Payout Exam </span>
+                </a>
+                <a href="@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = ReportName.PayoutMissingRpt})">
+                    <span class="badge progress-bar-info hidden-xs"> Payout Missing Students </span>
+                </a>
+            </li>
+        </ul>
+
+        </li>
+    </ul>
+</li>
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" title="Users">
+        <i class="fa fa-users"></i>
+        <span class="k-font-weight-bold">Administration</span>
+        <i class="fa fa-angle-double-down pull-right hidden-xs"></i>
+        <span class="label label-success pull-right hidden-xs">3</span>
+    </a>
+    <ul class="dropdown-menu padding-15">
+        <li>
+            <a href="@Url.Action("Register", new {area = "Admin", controller = "Account"})">
+                <i class="fa fa-angle-right"></i><span> Register</span>
+            </a>
+        </li>
+        <li>
+            <a href="@Url.Action("Index", new {area = "Admin", controller = "AspNetRole"})">
+                <i class="fa fa-angle-right"></i><span> Roles</span>
+            </a>
+        </li>
+        @if (HttpContext.Current.User.IsInRole("Admin"))
+        {
+            <li>
+                <a href="@Url.Action("Index", new {area = "Admin", controller = "Account"})">
+                    <i class="fa fa-angle-right"></i><span> Users</span>
+                </a>
+            </li>
+            <li>
+                <a href="@Url.Action("Index", new {area = "Admin", controller = "User"})">
+                    <i class="fa fa-angle-right"></i><span> New Users</span>
+                </a>
+            </li>
+            <li>
+                <a href="@Url.Action("Index", new {area = "Admin", controller = "Role"})">
+                    <i class="fa fa-angle-right"></i><span> New Role</span>
+                </a>
+            </li>
+        }
+    </ul>
+</li>

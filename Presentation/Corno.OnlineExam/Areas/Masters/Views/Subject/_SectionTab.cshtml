@@ -1,0 +1,67 @@
+﻿@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Masters.Subject
+
+<div class="row">
+    @(Html.Kendo().Grid(Model.SubjectSectionDetails)
+        .Name("gridSection")
+        .Columns(columns =>
+        {
+            columns.Bound(s => s.Id)
+                .ClientTemplate("<input type='hidden' name='SubjectSectionDetails[#= index(data, 'gridSection')#].Id' value='#= Id #'   />")
+                .Hidden();
+            columns.Bound(s => s.SerialNo)
+                .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center text-align-middle" })
+                .Title("Sr. No.")
+                .Width(30);
+            columns.Bound(s => s.PaperCategoryId)
+                .ClientTemplate("#= PaperCategoryName #" + "<input type='hidden' name='SubjectSectionDetails[#= index(data, 'gridSection')#].PaperCategoryId' value='#= PaperCategoryId #'   />")
+                .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                .HtmlAttributes(new { @class = "k-text-left !k-justify-content-left text-align-middle" })
+                .ClientFooterTemplate("Total")
+                .Title("Paper Category")
+                .Width(100);
+            columns.Bound(s => s.SectionNo)
+                .ClientTemplate("#= SectionNo #" + "<input type='hidden' name='SubjectSectionDetails[#= index(data, 'gridSection')#].SectionNo' value='#= SectionNo #'   />")
+                .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                .Title("Section No")
+                .Width(100);
+            columns.Bound(p => p.NoOfQuestions)
+                .ClientTemplate("#= NoOfQuestions #" + "<input type='hidden' name='SubjectSectionDetails[#= index(data, 'gridSection')#].NoOfQuestions' value='#= NoOfQuestions #'   />")
+                .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                .Title("No. Of Questions")
+                .Width(50);
+            columns.Bound(p => p.AttemptCount)
+                .ClientTemplate("#= AttemptCount #" + "<input type='hidden' name='SubjectSectionDetails[#= index(data, 'gridSection')#].AttemptCount' value='#= AttemptCount #'   />")
+                .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                .EditorTemplateName("Number")
+                .Title("Attempts")
+                .Width(50);
+            columns.Command(command =>
+            {
+                command.Edit();
+                command.Destroy();
+            }).Width(100);
+        })
+        .ToolBar(toolbar => toolbar.Create())
+        .Editable(editable => editable.Mode(GridEditMode.PopUp)
+            .TemplateName("/Popup Editors/_SubjectSectionPopup"))
+        .Sortable()
+        //.Pageable()
+        .Scrollable()
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            //.PageSize(20)
+            .Events(events => events.Error("error_handler"))
+            .Model(model =>
+            {
+                model.Id(p => p.Id);
+            })
+            .ServerOperation(false)
+            .Create(update => update.Action("Grid_Instruction_Sections", "Subject"))
+            .Update(update => update.Action("Grid_Instruction_Sections", "Subject"))
+            .Destroy(update => update.Action("Grid_Instruction_Sections", "Subject"))
+        )
+        .Resizable(resize => resize.Columns(true))
+        .Reorderable(reorder => reorder.Columns(true)))
+</div>

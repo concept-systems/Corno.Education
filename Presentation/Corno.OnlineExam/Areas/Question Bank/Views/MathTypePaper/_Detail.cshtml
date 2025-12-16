@@ -1,0 +1,96 @@
+﻿@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Question_Bank.Models.Paper
+
+<style>
+    .k-grid .k-grid-content tr td {
+        vertical-align: top;
+    }
+</style>
+
+<div class="form-group">
+    <div class="col-sm-12 text-right">
+        @(Html.Kendo().Grid(Model.PaperDetails)
+            .Name("grid")
+            .Columns(columns =>
+            {
+                columns.Bound(p => p.Id)
+                    .ClientTemplate("#= Id #" + "<input type='hidden' name='PaperDetails[#= index(data)#].Id' value='#= Id #'   />")
+                    .Hidden(true);
+                columns.Bound(p => p.SerialNo)
+                    .ClientTemplate("#= SerialNo #" + "<input type='hidden' name='PaperDetails[#= index(data)#].SerialNo' value='#= SerialNo #'   />")
+                    .Hidden(true);
+                columns.Bound(p => p.SectionNo)
+                    .ClientTemplate("#= SectionNo #" + "<input type='hidden' name='PaperDetails[#= index(data)#].SectionNo' value='#= SectionNo #'   />")
+                    .ClientGroupHeaderTemplate("<b>Section: #= value #</b>")
+                    .Hidden(true);
+                columns.Bound(p => p.QuestionNo)
+                    .ClientTemplate("#= QuestionNo #" + "<input type='hidden' name='PaperDetails[#= index(data)#].QuestionNo' value='#= QuestionNo #'   />")
+                    .Hidden(true);
+                columns.Bound(p => p.ChapterId)
+                    .ClientTemplate("#= ChapterId #" + "<input type='hidden' name='PaperDetails[#= index(data)#].ChapterId' value='#= ChapterId #'   />")
+                    .Hidden(true);
+                columns.Bound(p => p.QuestionTypeId)
+                    .ClientTemplate("#= QuestionTypeName #" + "<input type='hidden' name='PaperDetails[#= index(data)#].QuestionTypeId' value='#= QuestionTypeId #'   />")
+                    .Hidden(true);
+                columns.Bound(p => p.Marks)
+                    .ClientTemplate("#= Marks #" + "<input type='hidden' name='PaperDetails[#= index(data)#].Marks' value='#= Marks #'   />")
+                    .Hidden(true);
+                columns.Bound(p => p.DifficultyLevel)
+                    .ClientTemplate("#= DifficultyLevel #" + "<input type='hidden' name='PaperDetails[#= index(data)#].DifficultyLevel' value='#= DifficultyLevel #'   />")
+                    .Hidden(true);
+                columns.Bound(p => p.LearningPriorityId)
+                    .ClientTemplate("#= LearningPriorityId #" + "<input type='hidden' name='PaperDetails[#= index(data)#].LearningPriorityId' value='#= LearningPriorityId #'   />")
+                    .Hidden(true);
+                columns.Bound(p => p)
+                    .ClientTemplate("<strong>Sr. No. : #= SerialNo #</strong>, Section : #= SectionNo #, " +
+                                    "Question : #= QuestionNo #, Chapter : #= ChapterId #, " +
+                                    "Type : #= QuestionTypeName #<br/> Marks : #= Marks #, "  +
+                                    "Difficulty Level : #= DifficultyLevel # <br/> " +
+                                    "CO. No. : #= CoNo #, Taxonomy : #= Taxonomy #")
+                    .HtmlAttributes(new { @class = "k-text-left !k-justify-content-left" })
+                    .Width(30);
+                columns.Bound(p => p.Description)
+                    .ClientTemplate("#= Description #")
+                    .HtmlAttributes(new { @class = "k-text-left !k-justify-content-left" })
+                    .Width(70)
+                    .Hidden(false)
+                    .Encoded(false); // Prevent HTML encoding
+                columns.Bound(p => p.ModelAnswer)
+                    .ClientTemplate("#= ModelAnswer #")
+                    .HtmlAttributes(new { @class = "k-text-left !k-justify-content-left" })
+                    .Width(70)
+                    .Hidden(false)
+                    .Encoded(false); // Prevent HTML encoding
+                columns.Bound(p => p.DocumentContent)
+                    .ClientTemplate("#= kendo.toString(DocumentContent, 'base64') #")
+                    .Hidden(true);
+
+                //columns.Command(command => { command.Edit(); }).Width(80);
+            })
+            /*.Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("/Corno/_QuestionEditorTemplate")
+                .Window(w => w.Size("large").Events(events => events.Open("onPopupOpen"))))*/
+            //.Editable(editable => editable.Mode(GridEditMode.InLine))
+            .Pageable()
+            .Sortable()
+            .Scrollable()
+            //.Groupable()
+            .HtmlAttributes(new { @class = "w-100", style = "height:500px;" })
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(20)
+                .Events(events => events.Error("error_handler"))
+                //.Group(groups => groups.Add(p => p.SectionNo))
+                .Sort(sort =>
+                {
+                    sort.Add(p => p.Status).Ascending();
+                    sort.Add(p => p.SectionNo).Ascending();
+                    sort.Add(p => p.QuestionNo).Ascending();
+                })
+                .Model(model => model.Id(p => p.Id))
+                .ServerOperation(false)
+                .Create(update => update.Action("Inline_Create_Update_Destroy", "MathTypePaper"))
+                .Update(update => update.Action("Inline_Create_Update_Destroy", "MathTypePaper"))
+                .Destroy(update => update.Action("Inline_Create_Update_Destroy", "MathTypePaper"))
+            ))
+    </div>
+</div>

@@ -1,0 +1,324 @@
+﻿@model Corno.Data.Corno.RevalutionViewModel
+@{
+    ViewBag.Title = "Create New Revaluation Form";
+}
+
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Online Exam</a></li>
+            <li><a href="#">Revaluation Form</a></li>
+        </ol>
+    </div>
+</div>
+@if (ViewData["Error"] != null)
+{
+    <div class="red">
+        <p>Error: @ViewData["Error"].ToString()</p>
+    </div>
+    <script type="text/javascript">
+        bootbox.alert("@TempData["Error"]")
+    </script>
+}
+@if (TempData["Success"] != null)
+{
+    <div class="green">
+        <p>Success: @TempData["Success"].ToString()</p>
+    </div>
+    <script type="text/javascript">
+        bootbox.alert("@TempData["Success"]")
+    </script>
+}
+@Html.ValidationSummary()
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <div class="box ui-draggable ui-droppable">
+            <div class="box-header">
+                <div class="box-name">
+                    <i class="fa fa-plus-square large"></i>
+                    <span>Create a new Revaluation Form.</span>
+                </div>
+                <div class="box-icons">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="expand-link">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+                <div class="no-move"></div>
+            </div>
+            <div class="box-content">
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form", enctype = "multipart/form-data" }))
+                {
+                    @Html.HiddenFor(m => m.Photo)
+
+                    @Html.HiddenFor(m => m.StudentName)
+                    @Html.HiddenFor(m => m.CentreName)
+                    @Html.HiddenFor(m => m.CollegeName)
+                    @Html.HiddenFor(m => m.CourseName)
+                    @Html.HiddenFor(m => m.CoursePartName)
+                    @Html.HiddenFor(m => m.BranchName)
+
+                    @Html.AntiForgeryToken()
+                    <div class="form-horizontal">
+                        <div class="box-content">
+                            <div class="form-group">
+                                <div class="col-xs-6 col-sm-2 text-center">
+                                    <button type="button" value="Index" class="btn btn-primary btn-label-left" onclick="location.href='@Url.Action("Details", new { area = "Reports", controller = "Report", reportName = "RevaluationChallanRpt", description = "Revaluation form Challan" })' ">
+                                        <span><i class="fa fa-file-excel-o"></i></span>
+                                        Challan
+                                    </button>
+                                </div>
+                                <div class="col-sm-offset-8 col-sm-2">
+                                    <button type="submit" value="Create" title="Save" class="btn btn-primary btn-label-left pull-right">
+                                        <span><i class="fa fa-save"></i></span>
+                                        Submit
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="panel panel-info">
+                                <div class="panel-heading"><strong>Student Details</strong></div>
+                                <div class="panel-body">
+                                    <div class="form-group  has-feedback">
+                                        <label class="col-sm-2 control-label">Seat No :</label>
+                                        <div class="col-sm-3">
+                                            @Html.TextBoxFor(m => m.SeatNo, new { id = "SeatNo", @class = "form-control", value = "@Model.SeatNo", placeholder = "Please Enter Seat No", data_toggle = "tooltip", data_placement = "bottom", title = "Seat No" })
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <button type="submit" name="submitType" value="Search" class="btn btn-warning">
+                                                <span><i class="fa fa-search"></i></span>
+                                            </button>
+                                            <button type="submit" id="ReceiveChallan" name="submitType" value="ReceiveChallan" class="btn btn-warning invisible"></button>
+                                        </div>
+                                    </div>
+                                    <div class="form-group  has-feedback">
+                                        <div class="col-sm-8">
+                                            <table class="table table-bordered">
+                                                <tr>
+                                                    <th class="text-left col-sm-2"><strong>Name :</strong></th>
+                                                    <td id="tdName" class="text-left col-sm-6">@Html.DisplayFor(m => m.StudentName)</td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="text-left col-sm-2"><strong>Centre :</strong></th>
+                                                    <td id="tdCentre" class="text-left">
+                                                        @if (Model.CentreId > 0)
+                                                        {
+                                                            @Html.Display("(" + Model.CentreId + ")")
+                                                        }
+                                                        @Html.DisplayFor(m => m.CentreName)
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="text-left col-sm-2"><strong>College :</strong></th>
+                                                    <td id="tdCollege" class="text-left">(@Model.CollegeId) @Html.DisplayFor(m => m.CollegeName)</td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="text-left col-sm-2"><strong>Course :</strong></th>
+                                                    <td id="tdCourse" class="text-left">(@Model.CourseId) @Html.DisplayFor(m => m.CourseName)</td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="text-left col-sm-2"><strong>Course Part :</strong></th>
+                                                    <td id="tdCourseType" class="text-left">(@Model.CoursePartId) @Html.DisplayFor(m => m.CoursePartName)</td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="text-left col-sm-2"><strong>Branch :</strong></th>
+                                                    <td id="tdBranch" class="text-left">
+                                                        @if (Model.BranchId > 0)
+                                                        {
+                                                            @Html.Display("(" + Model.BranchId + ")")
+                                                        }
+                                                        @Html.DisplayFor(m => m.BranchName)
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="col-sm-2"><strong>Photo:</strong></div>
+                                            <div id="tdPhoto" class="col-sm-2"><img src="@Model.Photo" width="150" height="200" /></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group  has-feedback">
+                                        <table class="table table-bordered table-striped table-responsive table-hover table-heading table-datatable" id="datatable-1">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center col-sm-1">Category</th>
+                                                    <th class="text-center col-sm-1">Course Part Code</th>
+                                                    <th class="text-center col-sm-2">Course Part </th>
+                                                    <th class="text-center col-sm-1">Subject Code</th>
+                                                    <th class="text-center col-sm-5">Subject</th>
+                                                    <th class="text-center col-sm-1">Revaluation</th>
+                                                    <th class="text-center col-sm-1">Verification</th>
+                                                    <th class="text-center col-sm-1">Revaluation Fee</th>
+                                                    <th class="text-center col-sm-1">Verification Fee</th>
+                                                    <th class="text-center col-sm-1">Total Fee</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @{
+                                                    var index = 0;
+                                                    double? revalSum = 0;
+                                                    double? verificationSum = 0;
+                                                    double? totalSum = 0;
+                                                }
+                                                @foreach (var item in Model.RevalutionSubjectViewModels)
+                                                {
+                                                    <tr>
+                                                        <td class="text-center">
+                                                            @Html.Hidden("revalutionSubjectViewModels[" + index + "].SubjectCategory", item.SubjectCategory)
+                                                            @Html.DisplayFor(m => m.RevalutionSubjectViewModels.ToList()[index].SubjectCategory)
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @Html.Hidden("revalutionSubjectViewModels[" + index + "].CoursePartID", item.CoursePartId)
+                                                            @Html.DisplayFor(i => item.CoursePartId)
+                                                        </td>
+                                                        <td>
+                                                            @Html.Hidden("revalutionSubjectViewModels[" + index + "].CoursePartName", item.CoursePartName)
+                                                            @Html.DisplayFor(m => m.RevalutionSubjectViewModels.ToList()[index].CoursePartName)
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @Html.Hidden("revalutionSubjectViewModels[" + index + "].SubjectCode", item.SubjectCode)
+                                                            @Html.DisplayFor(m => m.RevalutionSubjectViewModels.ToList()[index].SubjectCode)
+                                                        </td>
+                                                        <td>
+                                                            @Html.Hidden("revalutionSubjectViewModels[" + index + "].SubjectName", item.SubjectName)
+                                                            @Html.DisplayFor(m => m.RevalutionSubjectViewModels.ToList()[index].SubjectName)
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @if (item.ShowRevaluation)
+                                                            {
+                                                                @Html.CheckBox("revalutionSubjectViewModels[" + index + "].IsRevaluation", item.IsRevaluation, new { @class = "checkbox" })
+                                                            }
+                                                            @Html.Hidden("revalutionSubjectViewModels[" + index + "].ShowRevaluation", item.ShowRevaluation)
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @if (item.ShowVerification)
+                                                            {
+                                                                @Html.CheckBox("revalutionSubjectViewModels[" + index + "].IsVerification", item.IsVerification, new { @class = "checkbox" })
+                                                            }
+                                                            @Html.Hidden("revalutionSubjectViewModels[" + index + "].ShowVerification", item.ShowVerification)
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @Html.Hidden("revalutionSubjectViewModels[" + index + "].RevaluationFee", item.RevaluationFee)
+                                                            @Html.DisplayFor(m => m.RevalutionSubjectViewModels.ToList()[index].RevaluationFee)
+                                                            @{ revalSum += item.RevaluationFee; }
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @Html.Hidden("revalutionSubjectViewModels[" + index + "].VerficationFee", item.VerficationFee)
+                                                            @Html.DisplayFor(m => m.RevalutionSubjectViewModels.ToList()[index].VerficationFee)
+                                                            @{ verificationSum += item.VerficationFee; }
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @Html.Hidden("revalutionSubjectViewModels[" + index + "].TotalFee", item.TotalFee)
+                                                            @Html.DisplayFor(m => m.RevalutionSubjectViewModels.ToList()[index].TotalFee)
+                                                            @{ totalSum += item.TotalFee; }
+                                                            @Html.Hidden("revalutionSubjectViewModels[" + index + "].CategoryCode", item.CategoryCode)
+                                                        </td>
+                                                    </tr>
+                                                    index++;
+                                                }
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th class="text-right" colspan="7">
+                                                        Total
+                                                    </th>
+                                                    <th class="text-center">
+                                                        @revalSum
+                                                    </th>
+                                                    <th class="text-center">
+                                                        @verificationSum
+                                                    </th>
+                                                    <th class="text-center">
+                                                        @totalSum
+                                                    </th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @*<div class="col-sm-2">
+                                <button type="button" value="Index" class="btn btn-primary btn-label-left pull-left" onclick="location.href = '@Url.Action("Index", "Revalution")'">
+                                    <span><i class="fa fa-list-ul"></i></span>
+                                    Back to List
+                                </button>
+                            </div>*@
+                            <div class="col-sm-offset-8 col-sm-2">
+                                <button type="submit" name="submitType" value="FeeCalculation" class="btn btn-warning">
+                                    <span><i class="fa fa-search"></i></span> Calculate Fee
+                                </button>
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="submit" value="Create" title="Save" class="btn btn-primary btn-label-left pull-right">
+                                    <span><i class="fa fa-save"></i></span>
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                                                                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function handleClick() {
+        //alert("Clicked, new value = " + cb.checked);
+        $('#form').append('<input type="text" name="submitType" value="FeeCalculation" />');
+        $("form").submit();
+    }
+
+    function filterCourses() {
+        return {
+            CollegeID: $("#CollegeID").val(),
+            CourseTypeID: $("#CourseTypeID").val()
+            //courseFilter: $("#CourseID").data("kendoComboBox").input.val()
+        };
+    }
+
+    function ClearForm() {
+        $('#Activity').val('');
+        $('input:checkbox').removeAttr('checked');
+        $('#ApprovalDate').val('');
+        $('#Remark').val('');
+
+        $("#CoursePartID").data("kendoComboBox").value(null);
+        $("#ExamSubjectViewModels").data("kendoGrid").dataSource.data([]);
+    }
+
+    $('#SeatNo').change(function () {
+        $('#form').append('<input type="text" name="submitType" value="Search" />');
+        $("form").submit();
+    });
+
+    //$(document).ready(function () {
+    //});
+
+    //var selectedCoursePartID = null;
+
+    //function onCoursePartChange(e) {
+    //    //var text = this.text();
+    //    var value = this.value();
+    //    selectedCoursePartID = value;
+    //}
+
+    //function onChange(arg) {
+    //    var selected = $.map(this.select(), function (item) {
+    //        return $(item).text();
+    //    });
+    //}
+
+    $(document).ready(function () {
+        // Add tooltip to form-controls
+        $('.form-control').tooltip();
+
+        LoadBootstrapValidatorScript(DemoFormValidator);
+    });
+</script>

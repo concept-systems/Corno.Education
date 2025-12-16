@@ -1,0 +1,79 @@
+﻿@using Corno.Data.Helpers
+@using Corno.Globals.Constants
+@using Kendo.Mvc.UI
+@model Corno.Data.ViewModels.Admin.RoleViewModel
+
+@{
+    var formEnabled = ViewData[ModelConstants.FormEnabled].ToBoolean();
+    var action = ViewBag.Action as string;
+}
+
+@Html.ValidationSummary(false)
+@using (Html.BeginForm(action, "Role", FormMethod.Post, new { id = "form", enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(false)
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(m => m.Id)
+    <div class="k-card">
+        <div class="k-card-header">
+            <div class="col-sm-10">
+                <h3>@ViewBag.Title</h3>
+            </div>
+            <div class="col-sm-2 text-right">
+                @(Html.Kendo().Button()
+                    .Name("back_to_list")
+                    .Icon("arrow-left")
+                    .SpriteCssClass("k-icon-64")
+                    .FillMode(ButtonFillMode.Outline)
+                    .ThemeColor(ThemeColor.Info)
+                    .Content("Back To list")
+                    .Events(e => e.Click("onBackToList"))
+                    .HtmlAttributes(new { @class = "w-100" }))
+            </div>
+        </div>
+        <div class="k-card-separator"></div>
+        <div class="k-card-body">
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(Html.Kendo().TextBoxFor(m => m.Name)
+                                 .Enable(action == ModelConstants.Create)
+                                 .Rounded(Rounded.Medium)
+                                 .Enable(formEnabled)
+                                 .Label(label => label
+                                     .Content("Role Name")
+                                     .Floating(true))
+                                 .HtmlAttributes(new
+                                 {
+                                     @class = "required w-100"
+                                 }))
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="k-card-footer">
+            <div class="col-sm-offset-11 col-sm-1 text-right">
+                @(Html.Kendo().Button()
+                        .Name("save")
+                        .Icon("save")
+                        .SpriteCssClass("k-icon-64")
+                        .FillMode(ButtonFillMode.Outline)
+                        .ThemeColor(ThemeColor.Success)
+                        .Content("Save")
+                        .HtmlAttributes(new
+                        {
+                            type = "submit",
+                            //name = "action:Create",
+                        }))
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    function onBackToList() {
+        window.location.href = '/Masters/Role/Index';
+    }
+
+</script>

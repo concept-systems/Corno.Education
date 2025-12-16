@@ -1,0 +1,23 @@
+## Ignore Visual Studio and build artifacts
+.vs/
+bin/
+obj/
+
+## Ignore NuGet packages
+packages/
+
+## Ignore Node.js dependencies and build outputs
+node_modules/
+dist/
+build/
+
+## Other common ignores
+*.user
+*.suo
+*.cache
+*.log
+*.tmp
+*.userprefs
+*.DS_Store
+
+

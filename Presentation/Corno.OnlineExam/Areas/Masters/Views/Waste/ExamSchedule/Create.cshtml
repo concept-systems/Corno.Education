@@ -1,0 +1,169 @@
+﻿@model Corno.Data.Masters.ExamScheduleViewModel
+@using Kendo.Mvc.UI
+@{
+    ViewBag.Title = "Exam Schedule";
+}
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Online Exam</a></li>
+            <li><a href="#">Exam Schedule</a></li>
+        </ol>
+    </div>
+</div>
+@Html.ValidationSummary()
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <div class="box ui-draggable ui-droppable">
+            <div class="box-header">
+                <div class="box-name">
+                    <i class="fa fa-plus-square large"></i>
+                    <span>Create a new Schedule Exam </span>
+                </div>
+                <div class="box-icons">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="expand-link">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+                <div class="no-move"></div>
+            </div>
+            <div class="box-content">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    <div class="form-horizontal">
+                        <div class="box-content">
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <button type="button" value="Index" class="btn btn-primary btn-label-left pull-left" onclick="location.href = '@Url.Action("Index", "ExamSchedule")'">
+                                        <span><i class="fa fa-list-ul"></i></span>
+                                        Back to List
+                                    </button>
+                                </div>
+                                <div class="col-sm-offset-8 col-sm-2">
+                                    <button type="submit" value="Create" title="Save" class="btn btn-primary btn-label-left pull-right">
+                                        <span><i class="fa fa-save"></i></span>
+                                        Submit
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="panel panel-info">
+                                <div class="panel-heading"><strong>Exam Schedule Details</strong></div>
+                                <div class="form-group  has-feedback">
+                                    @*<label class="col-sm-2 control-label">Centre:</label>
+                                        <div class="col-sm-4">
+                                            @Html.DropDownListFor(model => model.CentreID, new SelectList(Model.Centres, "ID", "Name"), "Select Centre", new { id = "S2_centre", @class = "populate placeholder" })
+                                        </div>*@
+                                    @*<label class="col-sm-2 control-label ">Course Part :</label>
+                                    <div class="col-sm-4">
+                                        @Html.DropDownListFor(model => model.CoursePartID, new SelectList(Model.CourseParts, "ID", "Name"), "Select Course Part", new { id = "S2_coursepart", @class = "populate placeholder" })
+                                    </div>*@
+                                    <label class="col-sm-2 control-label text-right">Exam Fee :</label>
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(m => m.ExamFee, new { @id = "ExamFee", @class = "form-control", value = "@Model.ExamFee", placeholder = "Enter Exam Fee", data_toggle = "tooltip", data_placement = "bottom", title = "Exam Fee" })
+                                    </div>
+                                </div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label ">Commencement Date :</label>
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(m => m.CommencementDate, "{0:dd-MMM-yyyy}", new { @id = "CommencementDate", @class = "form-control", value = "@Model.CommencementDate", placeholder = "Select Commencement Date", data_toggle = "tooltip", data_placement = "bottom", title = "Date" })
+                                        <span class="fa fa-calendar txt-danger form-control-feedback"></span>
+                                    </div>
+                                    <label class="col-sm-2 text-right">Last Date :</label>
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(m => m.LastDate, "{0:dd-MMM-yyyy}", new { @id = "LastDate", @class = "form-control", value = "@Model.LastDate", placeholder = "Last Date", data_toggle = "tooltip", data_placement = "bottom", title = "Last Date" })
+                                        <span class="fa fa-calendar txt-danger form-control-feedback"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label "> Last Date with Late Fee :</label>
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(m => m.LateFeeLastDate, "{0:dd-MMM-yyyy}", new { @id = "LateFeeLastDate", @class = "form-control", value = "@Model.LateFeeLastDate", placeholder = "Select Late Fee Last Date", data_toggle = "tooltip", data_placement = "bottom", title = "Date" })
+                                        <span class="fa fa-calendar txt-danger form-control-feedback"></span>
+                                    </div>
+                                    <label class="col-sm-2 control-label text-right">Result Date :</label>
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(m => m.ResultDate, "{0:dd-MMM-yyyy}", new { @id = "ResultDate", @class = "form-control", value = "@Model.ResultDate", placeholder = "Select Result Date", data_toggle = "tooltip", data_placement = "bottom", title = "Date" })
+                                        <span class="fa fa-calendar txt-danger form-control-feedback"></span>
+                                    </div>
+                                </div>
+                                @*<div class="form-group  has-feedback">
+                                        <label class="col-sm-2 control-label">Exam Fee :</label>
+                                        <div class="col-sm-10">
+                                            @Html.DropDownListFor(model => model.ExamFeeID, new SelectList(Model.ExamFees, "ID", "Name"), "Select Exam Fee", new { id = "S2_examfee", @class = "populate placeholder" })
+                                        </div>
+                                    </div>*@
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-2">
+                                <button type="button" value="Index" class="btn btn-primary btn-label-left pull-left" onclick="location.href = '@Url.Action("Index", "ExamSchedule")'">
+                                    <span><i class="fa fa-list-ul"></i></span>
+                                    Back to List
+                                </button>
+                            </div>
+                            <div class="col-sm-offset-8 col-sm-2">
+                                <button type="submit" value="Create" title="Save" class="btn btn-primary btn-label-left pull-right">
+                                    <span><i class="fa fa-save"></i></span>
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function error_handler(e) {
+        if (e.errors) {
+            var message = "Errors:\n";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () {
+                        message += this + "\n";
+                    });
+                }
+            });
+            alert(message);
+        }
+    }
+    function DemoSelect2() {
+        //$('#s2_course').select2({ placeholder: "Select Course" });
+        //$('#s2_college').select2({ placeholder: "Select Faculty" });
+        $('#S2_coursepart').select2({ placeholder: "Select Course Part" });
+        $('#S2_examfee').select2({ placeholder: "Select Exam Fee" });
+        $('#S2_centre').select2({ placeholder: "Select Centre" });
+        $('#s2_gender').select2({ placeholder: "Select Gender" });
+
+    }
+    $(document).ready(function () {
+        // Create Wysiwig editor for textare
+        //TinyMCEStart('#wysiwig_simple', null);
+        //TinyMCEStart('#Description', 'extreme');
+        //// Add tooltip to form-controls
+        $('.form-control').tooltip();
+        // Initialize datepicker
+        $('#CommencementDate').datepicker({ setDate: new Date(), dateFormat: 'dd-M-yy' });
+        LoadSelect2Script(DemoSelect2);
+
+        $('#LastDate').datepicker({ setDate: new Date(), dateFormat: 'dd-M-yy' });
+        $('#LateFeeLastDate').datepicker({ setDate: new Date(), dateFormat: 'dd-M-yy' });
+        $('#ResultDate').datepicker({ setDate: new Date(), dateFormat: 'dd-M-yy' });
+        LoadSelect2Script(DemoSelect2);
+
+        //// Load example of form validation
+        LoadBootstrapValidatorScript(DemoFormValidator);
+
+    });
+
+</script>

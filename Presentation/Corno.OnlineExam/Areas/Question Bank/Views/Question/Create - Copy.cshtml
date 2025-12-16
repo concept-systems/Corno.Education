@@ -1,0 +1,445 @@
+﻿@using Corno.Data.Corno.Question_Bank
+@using Corno.Globals.Constants
+@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Question_Bank.Question
+
+@{
+    ViewBag.Controller = "Question";
+}
+
+@if (TempData["Success"] != null)
+{
+    <script type="text/javascript">
+        bootbox.alert("@TempData["Success"]")
+    </script>
+}
+
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+<div class="form-horizontal box-content">
+    @using (Html.BeginForm("Create", "Question", FormMethod.Post, new { id = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.ValidationSummary(false)
+        @Html.AntiForgeryToken()
+
+        //@Html.HiddenFor(m => m.InstanceId)
+        @Html.HiddenFor(m => m.Id)
+
+        <div class="k-card k-card-vertical">
+            <div class="k-card-header k-card-tertiary">
+                <div class="row">
+                    <div class="col-sm-10">
+                        <h3>Add new question</h3>
+                    </div>
+                    <div class="k-card-actions k-card-actions-horizontal k-card-actions-end col-sm-1">
+                        @(Html.Kendo().Button()
+                    .Name("back_to_list")
+                    .Icon("arrow-left")
+                    .SpriteCssClass("k-icon-64")
+                    .FillMode(ButtonFillMode.Outline)
+                    .ThemeColor(ThemeColor.Info)
+                    .Content("Back To list")
+                    .Events(e => e.Click("onBackToList"))
+                    .HtmlAttributes(new{@class = "w-100"}))
+                    </div>
+                </div>
+            </div>
+            <div class="k-card-body">
+                @{
+                    Html.RenderPartial("Partial/Selection/_QuestionBank", Model);
+                }
+                <hr />
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ChapterId, "Chapter :",
+                        new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @(Html.Kendo().MultiColumnComboBoxFor(m => m.ChapterId)
+                    //.Enable(Model.EnableHeader)
+                    .DataTextField(ModelConstants.NameWithId)
+                    .DataValueField(ModelConstants.Id)
+                    .HtmlAttributes(new {@class = "w-100" })
+                    .Filter("contains")
+                    .Placeholder("Select ...")
+                    .Suggest(true)
+                    .Columns(columns =>
+                    {
+                        columns.Add().Field(ModelConstants.Id).Title(ModelConstants.Id).Width("100px");
+                        columns.Add().Field(ModelConstants.Name).Title(ModelConstants.Name).Width("600px");
+                    })
+                    .DataSource(dataSource =>
+                    {
+                        dataSource.Read(read => {read.Action("GetChapters", "Corno").Data("filterChapters");})
+                            .ServerFiltering(true);
+                    })
+                    .Enable(false)
+                    .AutoBind(false)
+                    .CascadeFrom(ModelConstants.SubjectId))
+                        <script>
+                            function filterChapters() {
+                                return {
+                                    SubjectId: $("#SubjectId").val(),
+                                };
+                            }
+                        </script>
+                    </div>
+                    @Html.LabelFor(m => m.DifficultyLevel, "Difficulty Level :",
+                        new { @class = "col-sm-offset-2 col-sm-2 control-label" })
+                    <div class="col-sm-2">
+                        @(Html.Kendo().MultiColumnComboBoxFor(m => m.DifficultyLevel)
+                    //.Enable(Model.EnableHeader)
+                    .DataTextField(ModelConstants.Name)
+                    .DataValueField(ModelConstants.Id)
+                    .HtmlAttributes(new {@class="w-100"})
+                    .Filter("contains")
+                    .Placeholder("Select ...")
+                    .Suggest(true)
+                    .Columns(columns =>
+                    {
+                        columns.Add().Field(ModelConstants.SerialNo).Title(ModelConstants.Id).Width("100px");
+                        columns.Add().Field(ModelConstants.Name).Title(ModelConstants.Name).Width("600px");
+                    })
+                    .DataSource(dataSource => dataSource
+                        .Read(read => read.Action("GetDifficultyLevels", "Corno"))
+                    ))
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.QuestionNo, "Question No :",
+                        new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-2">
+                        @(Html.Kendo().MultiColumnComboBoxFor(m => m.QuestionNo)
+                    //.Enable(Model.EnableHeader)
+                    .DataTextField(ModelConstants.Id)
+                    .DataValueField(ModelConstants.Id)
+                    .HtmlAttributes(new {@class = "w-100" })
+                    .Filter("contains")
+                    .Placeholder("Select ...")
+                    .Suggest(true)
+                    .Columns(columns =>
+                    {
+                        columns.Add().Field(ModelConstants.Id).Title(ModelConstants.Id).Width("100px");
+                        columns.Add().Field(ModelConstants.Name).Title(ModelConstants.Marks).Width("600px");
+                    })
+                    .DataSource(dataSource =>
+                    {
+                        dataSource.Read(read => {read.Action("GetQuestionNos", "Corno").Data("filterQuestions");})
+                            .ServerFiltering(true);
+                    })
+                    .Events(events => {events.Change("onQuestionNoChange"); })
+                    .Enable(false)
+                    .AutoBind(false)
+                    .CascadeFrom(ModelConstants.ChapterId))
+                        <script>
+                            function filterQuestions() {
+                                return {
+                                    SubjectId: $("#SubjectId").val(),
+                                    ChapterId: $("#ChapterId").val(),
+                                };
+                            }
+                        </script>
+                    </div>
+                    @Html.LabelFor(m => m.QuestionTypeId, "Question Type :",
+                        new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-2">
+                        @(Html.Kendo().MultiColumnComboBoxFor(m => m.QuestionTypeId)
+                    //.Enable(Model.EnableHeader)
+                    .DataTextField(ModelConstants.Name)
+                    .DataValueField(ModelConstants.Id)
+                    .HtmlAttributes(new { @class = "w-100" })
+                    .Filter("contains")
+                    .Placeholder("Select ...")
+                    .Suggest(true)
+                    .Columns(columns =>
+                    {
+                        columns.Add().Field(ModelConstants.Id).Title(ModelConstants.Id).Width("100px");
+                        columns.Add().Field(ModelConstants.Name).Title(ModelConstants.Name).Width("600px");
+                    })
+                    .DataSource(dataSource => dataSource
+                        .Read(read => read.Action("GetQuestionTypes", "Corno"))
+                    ))
+                    </div>
+                    @Html.LabelFor(m => m.Marks, "Marks :",
+                        new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-2">
+                        @(Html.Kendo().NumericTextBoxFor(m => m.Marks)
+                    .Decimals(0).Min(0).Format("n0")
+                    .Value(Model.Marks ?? 0)
+                    .HtmlAttributes(new { @class = "text-right w-100", @readonly = "readonly" }))
+                    </div>
+                </div>
+                <hr />
+                <div class="form-group">
+                    <div class="col-sm-2">
+                        @Html.LabelFor(m => m.Description,
+                            new
+                            {
+                                @id = "editor1",
+                                //@class = "col-sm-2 control-label"
+                            })
+
+                    </div>
+                </div>
+                <hr />
+
+
+
+                <div class="form-group">
+                    <div class="col-sm-2">
+                        @Html.LabelFor(m => m.Description,
+                    new
+                   {
+                    @id = "ckbox",
+                       })
+                    </div>
+                </div>
+                <hr />
+
+
+
+
+
+
+
+                <div class="form-group">
+                    <div class="col-sm-12 text-right">
+                        @(Html.Kendo().Grid<QuestionViewModel>()
+        .Name("grid")
+        .ToolBar(t => t.Search())
+        .Pageable()
+        .Sortable()
+        .Groupable()
+        .Filterable()
+        .Resizable(resize => resize.Columns(true)) // Allow column resizing
+        .PersistSelection()
+        .HtmlAttributes(new { @class = "w-100" })
+        .Columns(columns =>
+        {
+            columns.Bound(m => m.SerialNo)
+                .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                .Title("No.")
+                .Width(50);
+            columns.Bound(m => m.ChapterName)
+                .Title("Chapter")
+                .Width(100);
+            columns.Bound(m => m.QuestionTypeName)
+                .Title("Question Type")
+                .Width(100);
+            columns.Bound(m => m.DifficultyLevel)
+                .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                .Title("Diff. Level")
+                .Width(100);
+            columns.Bound(m => m.Description);
+            columns.Bound(m => m.Status)
+                .ClientTemplate(
+                    "<span class='badge' style='background-color: " +
+                    "# if (Status == \"Active\") { #" +
+                    "green" +
+                    "# } else if (Status == \"Accepted\") { #" +
+                    "blue" +
+                    "# } else if (Status == \"Rejected\") { #" +
+                    "red" +
+                    "# } else { #" +
+                    "transparent" +
+                    "# } #" +
+                    "; color: " +
+                    "# if (Status == \"Active\" || Status == \"Accepted\" || Status == \"Rejected\") { #" +
+                    "white" +
+                    "# } else { #" +
+                    "black" +
+                    "# } #" +
+                    "; text-align: center; display: inline-block; width: 100%;'>" +
+                    "#= Status #</span>"
+                ).Width(50);
+        })
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            .Read(read => read.Action("GetQuestions", "Question").Data("getFilterParams"))
+            .Update(update => update.Action("Inline_Create_Update_Destroy", "Question")) // Specify the update action
+            .Model(model => model.Id(ModelConstants.Id))
+
+            .GroupPaging(true)
+            .Group(x =>
+            {
+                x.Add(y => y.ChapterId);
+            })
+        ))
+                        <script>
+                            function getFilterParams() {
+                                return {
+                                    FacultyId: $("#FacultyId").data("kendoMultiColumnComboBox").value(),
+                                    CourseId: $("#CourseId").data("kendoMultiColumnComboBox").value(),
+                                    CoursePartId: $("#CoursePartId").data("kendoMultiColumnComboBox").value(),
+                                    SubjectId: $("#SubjectId").data("kendoMultiColumnComboBox").value(),
+                                };
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+
+            <div class="k-card-footer">
+                <div class="row">
+                    <div class="col-sm-offset-11 col-sm-1 text-right">
+                        @(Html.Kendo().Button()
+                    .Name("save")
+                    .Icon("save")
+                    .SpriteCssClass("k-icon-64")
+                    .FillMode(ButtonFillMode.Outline)
+                    .ThemeColor(ThemeColor.Success)
+                    .Content("Save")
+                    .HtmlAttributes(new
+                    {
+                        type = "submit",
+                        name = "action:Create",
+                    }))
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+
+<div id="output"></div>
+
+
+<script>
+    function onBackToList() {
+        window.location.href = '/Question Bank/Question/Index';
+    }
+
+    $(document).ready(function () {
+        $("#form").kendoValidator().data("kendoValidator");
+    });
+
+    funciton onChange(){
+
+    }
+
+    function onQuestionNoChange(e) {
+        var dataItem = this.dataItem();
+        // Set the value of the NumericTextBox
+        $("#Marks").data("kendoNumericTextBox").value(dataItem.SerialNo);
+        //$('#Marks').val(dataItem.SerialNo);
+    }
+
+    function generateFormula() {
+        bootbox.prompt({
+            title: 'Enter LaTeX equation:',
+            inputType: 'textarea',
+            size: 'medium', // You can use 'small', 'large', or 'medium'
+            callback: function (result) {
+                convertToForumula(result);
+            }
+        });
+    }
+
+    function generateFormula1() {
+        var txtFormula = $("#txtFormula").data("kendoTextArea");
+        var textAreaValue = txtFormula.value();
+        alert(textAreaValue);
+        convert(textAreaValue);
+    }
+
+    function convertToForumula(input) {
+        //  Reset the tex labels (and automatic equation numbers, though there aren't any here).
+        //  Get the conversion options (metrics and display settings)
+        //  Convert the input to CommonHTML output and use a promise to wait for it to be ready
+        //    (in case an extension needs to be loaded dynamically).
+        MathJax.texReset();
+        var options = MathJax.getMetricsFor(output);
+        options.display = true;
+        MathJax.tex2chtmlPromise(input, options).then(function (node) {
+            //  The promise returns the typeset node, which we add to the output
+            //  Then update the document to include the adjusted CSS for the
+            //    content of the new equation.
+
+            var editor = $("#Description").data("kendoEditor");
+            if (editor) {
+                // Convert node to HTML string
+                var htmlString = node.outerHTML;
+                var currentContent = editor.value();
+                var updatedContent = currentContent + htmlString;
+                editor.value(updatedContent);
+            } else {
+                console.error("Editor instance not found.");
+            }
+
+            MathJax.startup.document.clear();
+            MathJax.startup.document.updateDocument();
+        }).catch(function (err) {
+
+        }).then(function () {
+
+        });
+    }
+
+</script>
+
+<script src="~/Scripts/ckeditor/ckeditor.js"></script>
+
+<script>
+    // Add External Plugins for MathType, ChemType, and Font
+    CKEDITOR.plugins.addExternal('ckeditor_wiris', 'https://www.wiris.net/demo/plugins/ckeditor/', 'plugin.js');
+    CKEDITOR.plugins.addExternal('kekule', 'plugins/Kekule/src/_extras/CKEditorPlugins/kekule/', 'plugin.js');
+    CKEDITOR.plugins.addExternal('font', 'plugins/font/', 'plugin.js');
+
+    // Initialize CKEditor
+    CKEDITOR.replace('ckbox', {
+        width: '900px',
+        height: '200px',
+
+        filebrowserUploadUrl: '/Question/Upload',       // File upload URL
+        filebrowserUploadMethod: 'form',                // Upload method
+
+        extraPlugins: 'ckeditor_wiris,kekule,font',     // Load additional plugins
+    });
+
+    // Debugging: Ensure MathType-specific settings are applied
+    CKEDITOR.on('instanceReady', function (event) {
+        var editor = event.editor;
+        if (editor.plugins.ckeditor_wiris) {
+            editor.plugins.ckeditor_wiris.setParameters({
+                fontName: 'Times New Roman',
+                fontSize: '12px'
+            });
+        }
+    });
+</script>
+
+@*<script src="~/Scripts/ckeditor/ckeditor.js"></script>
+    <script>
+        // Add External Plugins for MathType, ChemType, and Font
+        CKEDITOR.plugins.addExternal('ckeditor_wiris', 'https://www.wiris.net/demo/plugins/ckeditor/', 'plugin.js');
+        CKEDITOR.plugins.addExternal('kekule', 'plugins/Kekule/src/_extras/CKEditorPlugins/kekule/', 'plugin.js');
+        CKEDITOR.plugins.addExternal('font', 'plugins/font/', 'plugin.js');
+
+        // Initialize CKEditor
+        CKEDITOR.replace('editor1', {
+            width: '900px',
+            height: '200px',
+            //plugins: [Image, /* ... */],
+            //toolbar: ['insertImage', /* ... */],
+            // MathType-specific parameters for default font and size
+            //mathTypeParameters: {
+            //    fontName: 'Times New Roman',
+            //    fontSize: '12px'
+            //},
+
+            filebrowserUploadUrl: '/Question/Upload',  // File upload URL
+            filebrowserUploadMethod: 'form',                         // Upload method
+
+            extraPlugins: 'ckeditor_wiris,kekule,font',              // Load additional plugins
+        });
+
+        // Debugging: Ensure MathType-specific settings are applied
+        CKEDITOR.on('instanceReady', function (event) {
+            var editor = event.editor;
+            if (editor.plugins.ckeditor_wiris) {
+                editor.plugins.ckeditor_wiris.setParameters({
+                    fontName: 'Times New Roman',
+                    fontSize: '12px'
+                });
+            }
+        });
+    </script>*@

@@ -1,0 +1,135 @@
+﻿@using Corno.Globals.Constants
+@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Masters.StaffSubjectDetail
+
+@Html.HiddenFor(model => model.Id)
+
+<div class="form-group">
+    <div class="col-sm-10">
+        @(Html.Kendo().MultiColumnComboBoxFor(m => m.CollegeId)
+            .DataTextField(ModelConstants.NameWithId)
+            .DataValueField(ModelConstants.Id)
+            .HtmlAttributes(new { @class = "w-100" })
+            .Filter("contains")
+            .Placeholder("Select ...")
+            .Label(label => label
+                .Content("College")
+                .Floating(true))
+            .Columns(columns =>
+            {
+                columns.Add().Field(ModelConstants.Id).Title(ModelConstants.Id).Width("100px");
+                columns.Add().Field(ModelConstants.Name).Title(ModelConstants.Name).Width("600px");
+            })
+            .DataSource(dataSource => dataSource
+                .Read(read => read.Action("GetColleges", "Corno"))
+            ))
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-sm-10">
+        @(Html.Kendo().MultiColumnComboBoxFor(m => m.CourseId)
+            //.Enable(Model.EnableHeader)
+            .DataTextField(ModelConstants.NameWithId)
+            .DataValueField(ModelConstants.Id)
+            .HtmlAttributes(new { @class = "w-100" })
+            .Filter("contains")
+            .Placeholder("Select ...")
+            .Label(label => label
+                .Content("Course")
+                .Floating(true))
+            .Columns(columns =>
+            {
+                columns.Add().Field(ModelConstants.Id).Title(ModelConstants.Id).Width("100px");
+                columns.Add().Field(ModelConstants.NameWithId).Title(ModelConstants.NameWithId).Width("600px");
+            })
+            .DataSource(dataSource =>
+            {
+                dataSource.Read(read =>
+                {
+                    read.Action("GetAllCoursesByCollege", "Corno").Data("filterCourses");
+                })
+                    .ServerFiltering(true);
+            })
+            .Enable(false)
+            .AutoBind(false)
+            .CascadeFrom(ModelConstants.CollegeId))
+        <script>
+            function filterCourses() {
+                return {
+                    collegeId: $("#CollegeId").val(),
+                };
+            }  
+        </script>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-sm-10">
+        @(Html.Kendo().MultiColumnComboBoxFor(m => m.CoursePartId)
+            .DataTextField(ModelConstants.NameWithId)
+            .DataValueField(ModelConstants.Id)
+            .HtmlAttributes(new { @class = "w-100" })
+            .Filter("contains")
+            .Placeholder("Select ...")
+            .Label(label => label
+                .Content("Course Part")
+                .Floating(true))
+            .Columns(columns =>
+            {
+                columns.Add().Field(ModelConstants.Id).Title(ModelConstants.Id).Width("100px");
+                columns.Add().Field(ModelConstants.NameWithId).Title(ModelConstants.NameWithId).Width("600px");
+            })
+            .DataSource(dataSource =>
+            {
+                dataSource.Read(read =>
+                {
+                    read.Action("GetCoursePartsByCourse", "Corno").Data("filterCourseParts");
+                })
+                    .ServerFiltering(true);
+            })
+            .Enable(false)
+            .AutoBind(false)
+            .CascadeFrom(ModelConstants.CourseId))
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-sm-10">
+        @(Html.Kendo().MultiColumnComboBoxFor(m => m.SubjectId)
+            //.Enable(Model.EnableHeader)
+            .DataTextField(ModelConstants.NameWithCode)
+            .DataValueField(ModelConstants.Id)
+            .HtmlAttributes(new { @class = "w-100" })
+            .Filter("contains")
+            .Placeholder("Select ...")
+            .Label(label => label
+                .Content("Subject")
+                .Floating(true))
+            .Columns(columns =>
+            {
+                /*columns.Add().Field(ModelConstants.Id).Title(ModelConstants.Id).Width("100px");*/
+                columns.Add().Field(ModelConstants.NameWithCode).Title(ModelConstants.NameWithCode).Width("600px");
+            })
+            .DataSource(dataSource =>
+            {
+                dataSource.Read(read =>
+                {
+                    read.Action("GetSubjectsByCoursePart", "Corno").Data("filterSubjects");
+                })
+                    .ServerFiltering(true);
+            })
+            .Enable(false)
+            .AutoBind(false)
+            .CascadeFrom(ModelConstants.CoursePartId))
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-sm-10">
+        @(Html.Kendo().CheckBoxFor(m => m.IsInternal)
+            .HtmlAttributes(new { @class = "w-100" })
+            .Label("Is Internal"))
+    </div>
+</div>
+

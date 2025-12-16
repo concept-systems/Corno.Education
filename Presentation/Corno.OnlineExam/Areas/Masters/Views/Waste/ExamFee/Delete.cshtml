@@ -1,0 +1,243 @@
+﻿@model Corno.Data.Masters.ExamFeeViewModel
+@using Kendo.Mvc.UI
+    @{
+        ViewBag.Title = "Delete" + Model.Id;
+    }
+<div class="row">
+    <div class="box-content ">
+        <div id="breadcrumb" class="col-md-12">
+            <ol class="breadcrumb">
+                <li><a href="#">OnlineExam</a></li>
+                <li><a href="#">Masters</a></li>
+                <li><a href="#">Delete ExamFee</a></li>
+            </ol>
+        </div>
+    </div>
+</div>
+  @Html.ValidationSummary()
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <div class="box ui-draggable ui-droppable">
+            <div class="box-header">
+                <div class="box-name">
+                    <i class="fa fa-trash-o large"></i>
+                    <span>Delete ExamFee :  @Model.Id</span>
+                </div>
+                <div class="box-icons">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="expand-link">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+                <div class="no-move"></div>
+            </div>
+            <div class="box-content">
+                @using (Html.BeginForm("Delete", "ExamFee", FormMethod.Post, new { @id = "dd" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    <div class="form-horizontal">
+                        <div class="box-content">
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Faculty Name :</label>
+                                <div class="col-sm-4">
+                                    @(Html.Kendo().ComboBox()
+                                        .Name("FacultyID")
+                                        .HtmlAttributes(new { style = "width:100%" })
+                                        .Placeholder("Select Faculty...")
+                                        .Filter(FilterType.Contains)
+                                        .BindTo(new SelectList(Model.Facultys, "ID", "Name"))
+                                    )
+                                    @*@Html.DropDownListFor(model => model.FacultyID, new SelectList(Model.Facultys, "ID", "Name"), "Select Faculty", new { id = "s2_facultys", @class = "populate placeholder" })*@
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Center Name :</label>
+                                <div class="col-sm-4">
+                                    @(Html.Kendo().ComboBox()
+                                        .Name("CollegeID")
+                                        .HtmlAttributes(new { style = "width:100%" })
+                                        .Placeholder("Select College...")
+                                        .Filter(FilterType.Contains)
+                                        .BindTo(new SelectList(Model.Colleges, "ID", "Name"))
+                                    )
+                                    @*@Html.DropDownListFor(model => model.FacultyID, new SelectList(Model.Facultys, "ID", "Name"), "Select Faculty", new { id = "s2_facultys", @class = "populate placeholder" })*@
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Course Name :</label>
+                                <div class="col-sm-4">
+                                    @(Html.Kendo().ComboBox()
+                                        .Name("CourseID")
+                                        .HtmlAttributes(new { style = "width:100%" })
+                                        .Placeholder("Select Course...")
+                                        .DataTextField("Name")
+                                        .DataValueField("ID")
+                                        .Filter(FilterType.Contains)
+                        //.BindTo(new SelectList(Model.Courses, "ID", "Name"))
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GetCascadeCourses", "ExamFee")
+                                                    .Data("filterCourses");
+                                            })
+                                            .ServerFiltering(true);
+                                        })
+                                        .Enable(false)
+                                        .AutoBind(false)
+                                        .CascadeFrom("FacultyID")
+                                    )
+                                    @*@Html.DropDownListFor(model => model.CourseID, new SelectList(Model.Courses, "ID", "Name"), "Select Course ", new { id = "s2_courses", @class = "populate placeholder" })*@
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Course Part Name :</label>
+                                <div class="col-sm-4">
+                                    @(Html.Kendo().ComboBox()
+                                        .Name("CoursePartID")
+                                        .HtmlAttributes(new { style = "width:100%" })
+                                        .Placeholder("Select Course Part...")
+                                        .DataTextField("Name")
+                                        .DataValueField("ID")
+                                        .Filter(FilterType.Contains)
+                        //.BindTo(new SelectList(Model.Courses, "ID", "Name"))
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GetCascadeCourseParts", "ExamFee")
+                                                    .Data("filterCourseParts");
+                                            })
+                                            .ServerFiltering(true);
+                                        })
+                                        .Enable(false)
+                                        .AutoBind(false)
+                                        .CascadeFrom("CourseID")
+                                    )
+
+                                </div>
+                            </div>
+
+                            <div class="form-group has-feedback ">
+                                <label class="col-sm-2 control-label">Form Start Date :</label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(m => m.FormStartDate, "{0:dd-MMM-yyyy}", new { @id = "ExamStartDate", @class = "form-control", value = "@Model.FormStartDate", data_toggle = "tooltip", placeholder = "Select Date", data_placement = "bottom", title = "Form Start Date" })
+                                    <span class="fa fa-calendar txt-danger form-control-feedback"></span>
+                                </div>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <label class="col-sm-2 control-label">Form Last Date :</label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(m => m.FormLastDate, "{0:dd-MMM-yyyy}", new { @id = "FormLastDate", @class = "form-control", value = "@Model.FormLastDate", data_toggle = "tooltip", placeholder = "Select Date", data_placement = "bottom", title = "Form Last Date " })
+                                    <span class="fa fa-calendar txt-danger form-control-feedback"></span>
+                                </div>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <label class="col-sm-2 control-label">Late Fee Last Date :</label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(m => m.LateFeeLastDate, "{0:dd-MMM-yyyy}", new { @id = "LateFormLastDate", @class = "form-control", value = "@Model.LateFeeLastDate", data_toggle = "tooltip", placeholder = "Select Date", data_placement = "bottom", title = "Late Fee Last Date " })
+                                    <span class="fa fa-calendar txt-danger form-control-feedback"></span>
+                                </div>
+                                <label class="col-sm-2 control-label">Result Date :</label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(m => m.ProbableResultDate, "{0:dd-MMM-yyyy}", new { @id = "ResultDate", @class = "form-control", value = "@Model.ProbableResultDate", data_toggle = "tooltip", placeholder = "Select Date", data_placement = "bottom", title = "Probable Result Date " })
+                                    <span class="fa fa-calendar txt-danger form-control-feedback"></span>
+                                </div>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <label class="col-sm-2 control-label"> Fee :</label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(m => m.Fee, new { @id = "Fee", @class = "form-control", value = "@Model.Fee", placeholder = "Enter Fee", data_toggle = "tooltip", data_placement = "bottom", title = "Fee" })
+                                </div>
+                                <label class="col-sm-2 control-label"> Late Fee :</label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(m => m.LateFee, new { @id = "LateFee", @class = "form-control", value = "@Model.LateFee", placeholder = "Enter Late Fee", data_toggle = "tooltip", data_placement = "bottom", title = "Late Fee" })
+                                </div>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <label class="col-sm-2 control-label">Super Late Fee :</label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(m => m.SuperLateFee, new { @id = "SuperLateFee", @class = "form-control", value = "@Model.SuperLateFee", placeholder = "Enter Super Late Fee", data_toggle = "tooltip", data_placement = "bottom", title = "Super Late Fee" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <button type="button" value="Index" class="btn btn-primary btn-label-left pull-left" onclick="location.href = '@Url.Action("Index", "ExamFee")'">
+                                        <span><i class="fa fa-list-ul"></i></span>
+                                        Back to List
+                                    </button>
+                                </div>
+                                <div class="col-sm-offset-8 col-sm-2">
+                                    <button type="submit" value="Delete" onclick="return confirm('Are you sure you wish to delete this ExamFee?')" title=" save" class="btn btn-danger btn-label-left pull-right">
+                                        <span><i class="fa fa-trash-o"></i></span>
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function filterCourses() {
+        return {
+            facultyID: $("#FacultyID").val(),
+            //courseFilter: $("#CourseID").data("kendoComboBox").input.val()
+        };
+    }
+
+    function filterCourseParts() {
+        return {
+            courseID: $("#CourseID").val(),
+            //coursePartFilter: $("#CoursePartID").data("kendoComboBox").input.val()
+        };
+    }
+
+    function DemoSelect2() {
+        $('#s2_facultys').select2({ placeholder: "Select Faculty" });
+        $('#s2_courses').select2({ placeholder: "Select Course" });
+        $('#s2_courseparts').select2({ placeholder: "Select CoursePart" });
+        $('#s2_colleges').select2({ placeholder: "Select Center" });
+        //$('#s2_ExamStartDate').select2({ placeholder: "Select Exam StartDate " });
+        //$('#s2_FormLastDate').select2({ placeholder: "Select Form LastDate" });
+        //$('#s2_LateFormLastDate').select2({ placeholder: "Select Late Form LastDate" });
+
+    }
+    $(document).ready(function () {
+        // Create Wysiwig editor for textare
+        //TinyMCEStart('#wysiwig_simple', null);
+        //TinyMCEStart('#Description', 'extreme');
+        //// Add tooltip to form-controls
+        $('.form-control').tooltip();
+        $("#ExamStartDate").datepicker({
+            changeMonth: true, changeYear: true, yearRange: '1900:+0', dateFormat: 'dd-M-yy'
+        });
+        $("#FormLastDate").datepicker({
+            changeMonth: true, changeYear: true, yearRange: '1900:+0', dateFormat: 'dd-M-yy'
+        });
+        $("#LateFormLastDate").datepicker({
+            changeMonth: true, changeYear: true, yearRange: '1900:+0', dateFormat: 'dd-M-yy'
+        });
+        $("#ResultDate").datepicker({
+            changeMonth: true, changeYear: true, yearRange: '1900:+0', dateFormat: 'dd-M-yy'
+        });
+        LoadSelect2Script(DemoSelect2);
+
+        //// Load example of form validation
+        LoadBootstrapValidatorScript(DemoFormValidator);
+    });
+</script>
+

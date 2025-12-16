@@ -1,0 +1,29 @@
+﻿@using System.Web.UI.WebControls
+@using Corno.Globals.Constants
+
+@model Corno.Data.Corno.Question_Bank.Models.Paper
+
+@*@Html.DevExpress().RichEdit(settings =>
+    {
+        settings.Name = "RichEdit";
+        settings.CallbackRouteValues = new { Controller = "ManualPaper", Action = "RichEditPartial" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.Height = 500;
+        settings.ReadOnly = false;
+            settings.RibbonMode = RichEditRibbonMode.Ribbon;
+    }).GetHtml()*@
+
+@Html.DevExpress().RichEdit(settings =>
+{
+    settings.Name = ModelConstants.Description;
+    settings.CallbackRouteValues = new { Controller = "ManualPaper", Action = "RichEditPartial" };
+    settings.Width = Unit.Percentage(100);
+    settings.Height = Unit.Pixel(400);
+    //settings.AutoSaveMode = AutoSaveMode.On; // Change AutoSaveMode
+    settings.Saving = (s, e) =>
+    {
+        var docBytes = RichEditExtension.SaveCopy(ModelConstants.Description,
+            DevExpress.XtraRichEdit.DocumentFormat.Rtf);
+        e.Handled = true; // Prevents the default save operation
+    };
+}).GetHtml()

@@ -1,0 +1,481 @@
+﻿@model Corno.Data.Transactions.ExamViewModel
+@using Kendo.Mvc.UI
+@{
+    ViewBag.Title = "Delete Exam Form No : " + Model.Id;
+}
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Online Exam</a></li>
+            <li><a href="#">Delete Exam Form</a></li>
+        </ol>
+    </div>
+</div>
+@Html.ValidationSummary()
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <div class="box ui-draggable ui-droppable">
+            <div class="box-header">
+                <div class="box-name">
+                    <i class="fa fa-trash-o large"></i>
+                    <span>Delete Exam Form No :  @Model.Id</span>
+                </div>
+                <div class="box-icons">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="expand-link">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+                <div class="no-move"></div>
+            </div>
+            <div class="box-content">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(m => m.ID)
+                    <div class="form-horizontal">
+                        <div class="box-content">
+                                <div class="form-group">
+                                <div class="col-sm-2">
+                                    <button type="button" value="Index" class="btn btn-primary btn-label-left pull-left" onclick="location.href = '@Url.Action("Index", "Exam")'">
+                                        <span><i class="fa fa-list-ul"></i></span>
+                                        Back to List
+                                    </button>
+                                </div>
+                                <div class="col-sm-offset-8 col-sm-2">
+                                    <button type="submit" value="Delete" onclick="return confirm('Are you sure you wish to delete this Exam form?')" title=" Delete" class="btn btn-danger btn-label-left pull-right">
+                                        <span><i class="fa fa-trash-o large"></i></span>
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="panel panel-info">
+                                <div class="panel-heading"><strong>PRN Details</strong></div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label">PRN :</label>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(m => m.PrnNo, new { @id = "PRNNo", @class = "form-control", placeholder = "Enter PRN No", data_toggle = "tooltip", data_placement = "bottom", title = "PRN No" })
+                                    </div>
+                                    <label class="col-sm-2 control-label text-right">Student Name :</label>
+                                    <div class="col-sm-6 control-label" id="tdStudentName">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-info">
+                                <div class="panel-heading"><strong>Exam Form Details</strong></div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label">Form No <code>*</code>:</label>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(m => m.FormNo, new { @id = "FormNo", @class = "form-control", value = "@Model.FormNo", placeholder = "Enter Form No", data_toggle = "tooltip", data_placement = "bottom", title = "Form No" })
+                                        @Html.ValidationMessageFor(x => x.FormNo)
+                                    </div>
+                                    <label class="col-sm-offset-2 col-sm-2 control-label text-right">Date <code>*</code>:</label>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(m => m.Date, "{0:dd-MMM-yyyy}", new { @id = "Date", @class = "form-control", value = "@Model.Date", placeholder = "Select Date", data_toggle = "tooltip", data_placement = "bottom", title = "Date" })
+                                        <span class="fa fa-calendar txt-danger form-control-feedback"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label">Activity :</label>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(m => m.Activity, new { @id = "Activity", @class = "form-control", value = "@Model.Activity", placeholder = "Enter Activity", data_toggle = "tooltip", data_placement = "bottom", title = "Activity" })
+                                    </div>
+                                    <label class="col-sm-offset-2  col-sm-2 control-label"></label>
+                                    <div class="col-sm-3">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" id="ApplyForImprovement" name="ApplyForImprovement" value="true" @(Model.ApplyForImprovement ? "checked=\"checked\"" : "")> Apply For Improvement ?
+                                                <i class="fa fa-square-o small"></i>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-info">
+                                <div class="panel-heading"><strong>Course Info</strong></div>
+                                <table class="table">
+                                    <tr>
+                                        <td class="text-left col-sm-2"><strong>College :</strong></td>
+                                        <td id="tdCollege" class="text-left"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left col-sm-2"><strong>Centre :</strong></td>
+                                        <td id="tdCentre" class="text-left col-sm-8"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left col-sm-2"><strong>Course Type :</strong></td>
+                                        <td id="tdCourseType" class="text-left"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left col-sm-2"><strong>Course :</strong></td>
+                                        <td id="tdCourse" class="text-left"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left col-sm-2"><strong>Course Part :</strong></td>
+                                        <td id="tdCoursePart" class="text-left"></td>
+                                    </tr>
+                                    @*<tr>
+                                            <td class="text-left col-sm-2"><strong>Exam Fee :</strong></td>
+                                            <td id="tdExamFee" class="text-left">
+                                            </td>
+                                        </tr>*@
+
+                                    <tr>
+                                        @*<td class="text-left col-sm-2"><strong>Branch :</strong></td>
+                                            <td id="tdBranch" class="text-left"></td>*@
+                                        <td class="form-group"><strong> Branch :</strong> </td>
+                                        <td id="tdBranch" class="text-left">
+                                            @(Html.Kendo().ComboBox()
+                                                .Name("cmbBranch")
+                                                .HtmlAttributes(new { style = "width:100%" })
+                                                .Placeholder("Select Branch...")
+                                                .SelectedIndex(0)
+                                                .Filter(FilterType.Contains)
+                        //.BindTo(new SelectList(Model.branches, "ID", "Name"))
+                                            )
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="panel panel-info">
+                                @(Html.Kendo().Grid(Model.ExamSubjectViewModels)
+                                        .Name("ExamSubjectViewModels")
+                                        .Columns(columns =>
+                                        {
+                                            columns.Bound(p => p.CoursePartId).Title("Course Part Code").Width(130);
+                                            columns.Bound(p => p.SubjectCode).Title("Subject Code").Width(110);
+                                            columns.Bound(p => p.SubjectName).Title("Subject Name");
+                                            columns.Bound(p => p.SubjectType).Title("Type").Width(100);
+                                        })
+                                        .Pageable()
+                                        .Sortable()
+                                        .Groupable()// settings => settings.Groups(groups => groups.Add(o => o.SubjectType)).Visible(false))
+                                        .Scrollable()
+                                        .HtmlAttributes(new { style = "height:300px;" })
+                                        .DataSource(dataSource => dataSource
+                                            .Ajax()
+                                            .PageSize(10)
+                                            .Group(group => group.Add(p => p.SubjectType))
+                                            .Model(model =>
+                                            {
+                                                // Following line is important. Don't Delete. Model's id field needs to be assigned to value field.
+                                                // Otherwise, Row will be deleted after cancel action of edit command.
+                                                model.Id(p => p.SubjectCode);
+                                                model.Field(p => p.SubjectName).Editable(false);
+                                                model.Field(p => p.CoursePartId).Editable(false);
+                                            })
+                                            .Read(read => read.Action("ReadExamSubjects", "Exam").Data("filterSubjects"))
+                                        )
+                                        .Events(events => events.DataBound("dataBound"))
+                                )
+                                <script>
+                                    function filterSubjects() {
+                                        return {
+                                            prnNo: $("#PRNNo").val()
+                                        };
+                                    }
+                                </script>
+                                @*<script id="subjectIDCategories" type="text/kendo-tmpl">
+                                        @(Html.Kendo().Grid(Model.Tbl_STUDENT_CAT_MARKS_ViewModels)
+                                                .Name("Tbl_STUDENT_CAT_MARKS_ViewModels")
+                                                .Columns(columns =>
+                                                {
+                                                    columns.Bound(o => o.Num_FK_CAT_CD).Title("Category").Width(100);
+                                                    columns.Bound(o => o.Num_ST_PH_MRK).Title("Marks").Width(100);
+                                                    columns.Bound(o => o.Var_ST_PH_RES).Title("Result").Width(100);
+                                                })
+                                                .DataSource(dataSource => dataSource
+                                                    .Ajax()
+                                                    .PageSize(10)
+                                                    .Read(read => read.Action("ReadSubjectCategories", "Exam", new { coursePartID = "#= Num_FK_COPRT_NO#", subjectID = "#=Num_PK_SUB_CD#" }).Data("filterCategories"))
+                                                   )
+                                                .Pageable()
+                                                .Sortable()
+                                                .ToClientTemplate()
+                                        )
+
+                                    </script>
+                                    <script>
+                                        function filterCategories() {
+                                            return {
+                                                prnNo: $("#PRNNo").val()
+                                            };
+                                        }
+                                    </script>*@
+                            </div>
+                     x
+
+                            <div class="panel panel-info">
+                                <div class="panel-heading"><strong>Approval Details</strong></div>
+                                <div class="form-group  has-feedback">
+                                    <label class=" col-sm-2 control-label"></label>
+                                    <div class="col-sm-3">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" id="AttendanceFullfilled" name="AttendanceFullfilled" value="true" @(Model.AttendanceFullfilled ? "checked=\"checked\"" : "")> Attendance Fullfilled ?
+                                                <i class="fa fa-square-o small"></i>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label">Approval Date:</label>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(m => m.ApprovalDate, "{0:dd-MMM-yyyy}", new { @id = "ApprovalDate", @class = "form-control", value = "@Model.ApprovalDate", placeholder = "Approval Date", data_toggle = "tooltip", data_placement = "bottom", title = "Approval Date" })
+                                        <span class="fa fa-calendar txt-danger form-control-feedback"></span>
+                                    </div>
+                                    <label class="col-sm-offset-2 col-sm-2 control-label text-right">Remark :</label>
+                                    <div class="col-sm-3">
+                                        @Html.TextAreaFor(m => m.Remark, new { @id = "Remark", @class = "form-control", placeholder = "Enter Remark", data_toggle = "tooltip", data_placement = "bottom", title = "Remark" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-info">
+                                <div class="panel-heading"><strong>Fee Details</strong></div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label">Exam Fee :</label>
+                                    <div class="col-sm-2">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-inr"></i></span>
+                                            @Html.TextBoxFor(m => m.ExamFee, new { @id = "tdExamFee", @class = "form-control text-right", @onChange = "onChange();", value = "@Model.ExamFee", data_toggle = "tooltip", data_placement = "bottom", title = "Exam Fee" })
+                                        </div>
+                                    </div>
+                                    <label class="col-sm-offset-2 col-sm-3 control-label text-right">Backlog Fee :</label>
+                                    <div class="col-sm-2">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-inr"></i></span>
+                                            @Html.TextBoxFor(m => m.BacklogFee, new { @id = "BacklogFee", @class = "form-control text-right", @onChange = "onChange();", value = "@Model.BacklogFee", data_toggle = "tooltip", data_placement = "bottom", title = "Backlog Fee" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label">Statement Marks Fee:</label>
+                                    <div class="col-sm-2">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-inr"></i></span>
+                                            @Html.TextBoxFor(m => m.StatementOfMarksFee, new { @id = "StatementOfMarksFee", @class = "form-control text-right", @onChange = "onChange();", value = "@Model.StatementMarksFee", data_toggle = "tooltip", data_placement = "bottom", title = "StatementMarks Fee" })
+                                        </div>
+                                    </div>
+
+                                    <label class="col-sm-offset-2 col-sm-3 control-label text-right">Passing Certificate Fee :</label>
+                                    <div class="col-sm-2">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-inr"></i></span>
+                                            @Html.TextBoxFor(m => m.CertificateOfPassingFee, new { @id = "CertificateOfPassingFee", @class = "form-control text-right", @onChange = "onChange();", value = "@Model.PassingCertificateFee", data_toggle = "tooltip", data_placement = "bottom", title = "PassingCertificate Fee" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label">CAP Fee :</label>
+                                    <div class="col-sm-2">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-inr"></i></span>
+                                            @Html.TextBoxFor(m => m.CapFee, new { @id = "CAPFee", @class = "form-control text-right", @onChange = "onChange();", value = "@Model.CAPFee", data_toggle = "tooltip", data_placement = "bottom", title = "CAP Fee" })
+                                        </div>
+                                    </div>
+
+                                    <label class="col-sm-offset-2 col-sm-3 control-label text-right">Late Fee :</label>
+                                    <div class="col-sm-2">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-inr"></i></span>
+                                            @Html.TextBoxFor(m => m.LateFee, new { @id = "LateFee", @class = "form-control text-right", @onChange = "onChange();", value = "@Model.LateFee", data_toggle = "tooltip", data_placement = "bottom", title = "Late Fee" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label">Super Late Fee :</label>
+                                    <div class="col-sm-2">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-inr"></i></span>
+                                            @Html.TextBoxFor(m => m.SuperLateFee, new { @id = "SuperLateFee", @class = "form-control text-right", @onChange = "onChange();", value = "@Model.SuperLateFee", data_toggle = "tooltip", data_placement = "bottom", title = "SuperLate Fee" })
+                                        </div>
+                                    </div>
+
+                                    <label class="col-sm-offset-2 col-sm-3 control-label text-right">Environmental Studies Fee :</label>
+                                    <div class="col-sm-2">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-inr"></i></span>
+                                            @Html.TextBoxFor(m => m.EnvironmentalExaminationFee, new { @id = "EnvironmentalExaminationFee", @class = "form-control text-right", @onChange = "onChange();", value = "@Model.EnvironmentalStudiesFee", data_toggle = "tooltip", data_placement = "bottom", title = "EnvironmentalStudies Fees" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="form-group  has-feedback">
+                                    <div class="col-sm-10">
+                                        <label class="col-sm-3 control-label ">Backlog Summary :-</label>
+                                        <span id="BacklogSummary"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group  has-feedback">
+                                    <div class="col-sm-10">
+                                        <label class="col-sm-3 control-label ">Amount In Word :-</label><span class="pull-left" id="FeeInWord"></span>
+                                    </div>
+                                    <label class="col-sm-1 control-label text-right">Total :</label>
+                                    <div class="col-sm-1 text-right" id="divTotal">
+                                        @Html.DisplayFor(m => m.Total)
+                                    </div>
+                                </div>
+                                @*<div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label">Total :</label>
+                                    <div class="col-sm-2">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-inr"></i></span>
+                                            @Html.TextBoxFor(m => m.Total, new { @id = "Total", @class = "form-control text-right", @onChange = "onChange();", value = "@Model.Total", data_toggle = "tooltip", data_placement = "bottom", title = "Total" })
+                                        </div>
+                                    </div>
+                                </div>*@
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <button type="button" value="Index" class="btn btn-primary btn-label-left pull-left" onclick="location.href = '@Url.Action("Index", "Exam")'">
+                                        <span><i class="fa fa-list-ul"></i></span>
+                                        Back to List
+                                    </button>
+                                </div>
+                                <div class="col-sm-offset-8 col-sm-2">
+                                    <button type="submit" value="Delete" onclick="return confirm('Are you sure you wish to delete this Exam form?')" title=" Delete" class="btn btn-danger btn-label-left pull-right">
+                                        <span><i class="fa fa-trash-o large"></i></span>
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function dataBound() {
+        this.expandRow(this.tbody.find("tr.k-master-row").first());
+    }
+
+    function error_handler(e) {
+        if (e.errors) {
+            var message = "Errors:\n";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () {
+                        message += this + "\n";
+                    });
+                }
+            });
+            //alert(message);
+        }
+    }
+
+    function ClearForm() {
+        $('#tdStudentName').html('')
+        $('#tdCentre').html('');
+        $('#tdCollege').html('');
+        $('#tdCourseType').html('');
+        $('#tdCourse').html('');
+        $('#tdCoursePart').html('');
+        $('#tdExamFee').html('');
+        $('#tdBranch').html('');
+        $('#FormNo').val('');
+        $('#Date').val('');
+        $('#Activity').val('');
+        $('input:checkbox').removeAttr('checked');
+        $('#ApprovalDate').val('');
+        $('#Remark').val('');
+    }
+
+    $('#PRNNo').change(function onChange(arg) {
+        // Clear or reset the form
+        var prnNo = $('#PRNNo').val();
+        if (null == prnNo || "" == prnNo) {
+            alert("Invalid PRN No");
+            return;
+        }
+        $.ajax({
+            url: '@Url.Action("OnPRNChange", "Exam")',
+            type: 'post',
+            data: {
+                prnNo: $('#PRNNo').val()
+            },
+            success: function (_result) {
+                ClearForm();
+                $('#tdStudentName').html(_result.StudentName);
+                $('#tdCentre').html(_result.Centre);
+                $('#tdCollege').html(_result.College);
+                $('#tdCourseType').html(_result.CourseType);
+                $('#tdCourse').html(_result.Course);
+                $('#tdCoursePart').html(_result.CoursePart);
+                $('#tdBranch').html(_result.Branch);
+
+                $('#tdExamFee').val(_result.ExamFee);
+                $('#LateFee').val(_result.LateFee);
+                $('#SuperLateFee').val(_result.SuperLateFee);
+                $('#StatementMarksFee').val(_result.StatementMarksFee);
+                $('#PassingCertificateFee').val(_result.PassingCertificateFee);
+                $('#EnvironmentalStudiesFee').val(_result.EnvironmentalStudiesFee);
+                $('#CAPFee').val(_result.CAPFee);
+                $('#BacklogFee').val(_result.BacklogFee);
+
+                var examfee = $("#tdExamFee").val() || 0;
+                //alert(examfee);
+                var backlogfee = $("#BacklogFee").val() || 0;
+                //alert(backlogfee);
+                var statemarksfee = $("#StatementMarksFee").val() || 0;
+                var capfee = $("#CAPFee").val() || 0;
+                var passingfee = $("#PassingCertificateFee").val() || 0;
+                var latefee = $("#LateFee").val() || 0;
+                var superlatefee = $("#SuperLateFee").val() || 0;
+                var environment = $("#EnvironmentalStudiesFee").val() || 0;
+                var total = 0;
+                total = parseInt(examfee) + parseInt(backlogfee) + parseInt(statemarksfee) + parseInt(capfee) + parseInt(passingfee) + parseInt(latefee) + parseInt(superlatefee) + parseInt(environment);
+                alert(total);
+                $("#Total").val(total.toFixed(2));
+                //alert(_result.ShowBranchCombo);
+                if (_result.ShowBranchCombo == false) {
+                    $('#tdBranch').val(_result.BranchID)
+                    $('#cmbBranch').hide();
+                }
+
+                $("#ExamSubjectViewModels").data("kendoGrid").dataSource.read();
+                //$("#Tbl_STUDENT_CAT_MARKS_ViewModels").data("kendoGrid").dataSource.read();
+            }
+
+        });
+    });
+    function DemoSelect2() {
+
+        //$('#s2_ExamFee').select2({ placeholder: "Enter ExamFee " });
+        $('#s2_BacklogFee').select2({ placeholder: "Enter BacklogFee" });
+        $('#s2_StatementMarksFee').select2({ placeholder: "Enter StatementMarksFee" });
+        $('#s2_CAPFee').select2({ placeholder: "Enter CAPFee" });
+        $('#s2_PassingCertificateFee').select2({ placeholder: "Enter PassingCertificate Fee" });
+        $('#s2_LateFee').select2({ placeholder: "Enter LateFee" });
+        $('#s2_SuperLateFee').select2({ placeholder: "Enter SuperLateFee" });
+        $('#s2_EnvironmentalStudiesFee').select2({ placeholder: "Enter EnvironmentalStudies Fee" });
+
+
+    }
+
+    $(document).ready(function () {
+        // Add tooltip to form-controls
+        $('.form-control').tooltip();
+        // Initialize datepicker
+        $('#Date').datepicker({ setDate: new Date(), dateFormat: 'dd-M-yy' });
+
+        $('#ApprovalDate').datepicker({ setDate: new Date(), dateFormat: 'dd-M-yy' });
+
+        // Load example of form validation
+        LoadBootstrapValidatorScript(DemoFormValidator);
+    });
+
+</script>

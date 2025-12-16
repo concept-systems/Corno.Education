@@ -1,0 +1,190 @@
+﻿@model OnlineExam.Models.Subject
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Subject</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CompanyID)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CompanyID)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.SerialNo)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SerialNo)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Code)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Code)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.SubjectName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SubjectName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Description)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Description)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Faculty.Code)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Faculty.Code)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Course.Code)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Course.Code)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CoursePart.Code)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CoursePart.Code)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.ShortName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ShortName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.SubjectType)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SubjectType)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CommonSubjectID)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CommonSubjectID)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Marks)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Marks)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.PassingMarks)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PassingMarks)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.ExemptionMarks)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ExemptionMarks)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.MinimumSets)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.MinimumSets)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.StockSets)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.StockSets)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.MinGrade)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.MinGrade)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Narration1)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Narration1)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Narration2)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Narration2)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CreatedBy)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CreatedBy)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CreatedDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CreatedDate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.ModifiedBy)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ModifiedBy)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.ModifiedDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ModifiedDate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.DeletedBy)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DeletedBy)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.DeletedDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DeletedDate)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

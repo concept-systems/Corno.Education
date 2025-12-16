@@ -1,0 +1,131 @@
+﻿@model Corno.Data.Masters.ConvocationFeeViewModel
+@{
+        ViewBag.Title = "Delete" + Model.Id;
+    }
+<div class="row">
+    <div class="box-content ">
+        <div id="breadcrumb" class="col-md-12">
+            <ol class="breadcrumb">
+                <li><a href="#">OnlineExam</a></li>
+                <li><a href="#">Masters</a></li>
+                <li><a href="#">Delete Convocation Fee</a></li>
+            </ol>
+        </div>
+    </div>
+</div>
+  @Html.ValidationSummary()
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <div class="box ui-draggable ui-droppable">
+            <div class="box-header">
+                <div class="box-name">
+                    <i class="fa fa-trash-o large"></i>
+                    <span>Delete Convocation Fee :  @Model.Id</span>
+                </div>
+                <div class="box-icons">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="expand-link">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+                <div class="no-move"></div>
+            </div>
+            <div class="box-content">
+                @using (Html.BeginForm("Delete", "ConvocationFee", FormMethod.Post, new { @id = "dd" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                     <div class="form-horizontal">
+                            <div class="box-content">
+                                @*<div class="form-group">
+                                    <div class="form-group has-feedback">
+                                        <label class="col-sm-2 control-label text-right"> Fee Details :</label>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(m => m.FeeDetails, new { @id = "FeeDetails", @class = "form-control", value = "@Model.FeeDetails", placeholder = "Enter Fee Details", data_toggle = "tooltip", data_placement = "bottom", title = "Fee Details" })
+                                        </div>
+                                        <label class="col-sm-2 control-label text-right"> Amount :</label>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(m => m.Fee, new { @id = "Fee", @class = "form-control", value = "@Model.Fee", placeholder = "Enter Fee", data_toggle = "tooltip", data_placement = "bottom", title = "Fee" })
+                                        </div>
+                                    </div>
+                                </div>*@
+
+
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <button type="button" value="Index" class="btn btn-primary btn-label-left pull-left" onclick="location.href = '@Url.Action("Index", "ConvocationFee")'">
+                                            <span><i class="fa fa-list-ul"></i></span>
+                                            Back to List
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-offset-8 col-sm-2">
+                                        <button type="submit" value="Create" title="Save" class="btn btn-primary btn-label-left pull-right">
+                                            <span><i class="fa fa-save"></i></span>
+                                         Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                   
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function filterCourses() {
+        return {
+            facultyID: $("#FacultyID").val(),
+            //courseFilter: $("#CourseID").data("kendoComboBox").input.val()
+        };
+    }
+
+    function filterCourseParts() {
+        return {
+            courseID: $("#CourseID").val(),
+            //coursePartFilter: $("#CoursePartID").data("kendoComboBox").input.val()
+        };
+    }
+
+    function DemoSelect2() {
+        $('#s2_facultys').select2({ placeholder: "Select Faculty" });
+        $('#s2_courses').select2({ placeholder: "Select Course" });
+        $('#s2_courseparts').select2({ placeholder: "Select CoursePart" });
+        $('#s2_colleges').select2({ placeholder: "Select Center" });
+        //$('#s2_ExamStartDate').select2({ placeholder: "Select Exam StartDate " });
+        //$('#s2_FormLastDate').select2({ placeholder: "Select Form LastDate" });
+        //$('#s2_LateFormLastDate').select2({ placeholder: "Select Late Form LastDate" });
+
+    }
+    $(document).ready(function () {
+        // Create Wysiwig editor for textare
+        //TinyMCEStart('#wysiwig_simple', null);
+        //TinyMCEStart('#Description', 'extreme');
+        //// Add tooltip to form-controls
+        $('.form-control').tooltip();
+        $("#ExamStartDate").datepicker({
+            changeMonth: true, changeYear: true, yearRange: '1900:+0', dateFormat: 'dd-M-yy'
+        });
+        $("#FormLastDate").datepicker({
+            changeMonth: true, changeYear: true, yearRange: '1900:+0', dateFormat: 'dd-M-yy'
+        });
+        $("#LateFormLastDate").datepicker({
+            changeMonth: true, changeYear: true, yearRange: '1900:+0', dateFormat: 'dd-M-yy'
+        });
+        $("#ResultDate").datepicker({
+            changeMonth: true, changeYear: true, yearRange: '1900:+0', dateFormat: 'dd-M-yy'
+        });
+        LoadSelect2Script(DemoSelect2);
+
+        //// Load example of form validation
+        LoadBootstrapValidatorScript(DemoFormValidator);
+    });
+</script>
+

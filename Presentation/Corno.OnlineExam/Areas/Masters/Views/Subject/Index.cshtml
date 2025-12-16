@@ -1,0 +1,147 @@
+﻿@using Corno.Data.Corno.Masters
+@using Corno.Globals.Constants
+@using Kendo.Mvc.UI
+@model IEnumerable<Corno.Data.ViewModels.SubjectIndexViewModel>
+
+@{
+    ViewBag.Title = "Subject";
+}
+
+<div class="row">
+    <div class="box-content">
+        <div id="breadcrumb" class="col-md-12">
+            <ol class="breadcrumb">
+                <li><a href="#">OnlineExam</a></li>
+                <li><a href="#">Masters</a></li>
+                <li><a href="#">Subject</a></li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+<div class="k-card k-card-vertical">
+    <div class="k-card-header k-card-tertiary">
+        <div class="row">
+            <div class="col-sm-10">
+                <h3>Subjects</h3>
+            </div>
+            <div class="k-card-actions k-card-actions-horizontal k-card-actions-end col-sm-2">
+                @(Html.Kendo().Button()
+                    .Name("New")
+                    .Icon("plus")
+                    .SpriteCssClass("k-icon-64")
+                    .FillMode(ButtonFillMode.Outline)
+                    .ThemeColor(ThemeColor.Info)
+                    .Content("Add New")
+                    .Events(e => e.Click("onCreate"))
+                    .HtmlAttributes(new{@class = "w-100"}))
+            </div>
+        </div>
+    </div>
+    <div class="k-card-body">
+        <div class="">
+            @(Html.Kendo().Grid<Subject>() /*(Model)*/
+                .Name("grid")
+                .ToolBar(t => t.Search())
+                .ToolBar(t => t.Excel())
+                .Pageable()
+                .Sortable()
+                .Filterable(f => f.Mode(GridFilterMode.Row))
+                .Resizable(resize => resize.Columns(true)) // Allow column resizing
+                .PersistSelection()
+                .HtmlAttributes(new { @class = "w-100" })
+                .Excel(excel => excel
+                    .FileName("Subject.xlsx")
+                    .Filterable(true)
+                    .ForceProxy(true)
+                    .ProxyURL(Url.Action("Excel_Export_Subject", "Subject"))
+                )
+                .Columns(columns =>
+                {
+                    columns.Bound(m => m.Code)
+                        .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                        .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" });
+                    columns.Bound(m => m.Id)
+                        .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                        .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" });
+                    columns.Bound(m => m.Name)
+                        .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                        .HtmlAttributes(new { @class = "k-text-left !k-justify-content-left text-align-middle" });
+                    columns.Bound(m => m.SubjectType).Title("Type")
+                        .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" });
+                    columns.Bound(m => m.Status)
+                        .ClientTemplate(
+                            "<span class='badge' style='background-color: " +
+                            "# if (Status == \"Active\") { #" +
+                            "green" +
+                            "# } else if (Status == \"Accepted\") { #" +
+                            "blue" +
+                            "# } else if (Status == \"Closed\") { #" +
+                            "red" +
+                            "# } else { #" +
+                            "transparent" +
+                            "# } #" +
+                            "; color: " +
+                            "# if (Status == \"Active\" || Status == \"Accepted\" || Status == \"Closed\") { #" +
+                            "white" +
+                            "# } else { #" +
+                            "black" +
+                            "# } #" +
+                            "; text-align: center; display: inline-block;'>" +
+                            "#= Status #</span>"
+                        )
+                        .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                        .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                        .Width(30);
+                    columns.Command(command =>
+                    {
+                        command.Custom("Edit").Text("Edit").IconClass("k-icon k-i-pencil")
+                            .HtmlAttributes(new { @class = "k-grid-edit" })
+                            //.Action("Edit", "Subject"/*, new {id = "@item.Id"}*/ ) // Specify the edit action directly
+                            //.DataRouteValues(route => route.Add(r => r.Id))
+                            .Visible("function(dataItem) { return dataItem.Status === 'Active'; }"); // Show only if Status is "Active";
+                    })
+                        .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                        .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                        .Width(80)
+                        .Title("Actions"); // Add a class to identify the command column;
+
+                })
+                .Events(events => events.DataBound("onDataBound"))
+                .DataSource(dataSource => dataSource
+                    .Ajax()
+                    .Read(read => read.Action("GetIndexSubjects", "Subject"))
+                    /*.Update(update => update.Action("Inline_Create_Update_Destroy", "Subject")) // Specify the update action*/
+                    //.Sort(sort => sort.Add(ModelConstants.Id).Descending()) // Initial sort by Id in ascending order
+                    .Model(model => model.Id(ModelConstants.Id))
+                ))
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function onCreate() {
+        window.location.href = '/Subject/Create';
+    }
+
+    function onDataBound(e) {
+        var grid = $("#grid").data("kendoGrid");
+        // Auto-fit each column
+        grid.columns.forEach(function (column, index) {
+            grid.autoFitColumn(index);
+        });
+
+        $(".k-grid-edit").on("click", function () {
+            var grid = $("#grid").data("kendoGrid");
+            var row = $(this).closest("tr");
+            var dataItem = grid.dataItem(row);
+
+            if (dataItem) {
+                var id = dataItem.Id; // Assuming Id is the unique identifier of the item
+                window.location.href = '/Subject/Edit/' + id; // Replace with your edit page URL
+            }
+        });
+    }
+
+</script>

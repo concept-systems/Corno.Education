@@ -1,0 +1,28 @@
+@using Corno.Data.Helpers
+@using Corno.Globals.Constants
+@*@model Corno.Data.ViewModels.MasterViewModel*@
+@model object
+
+@{
+    var enabled = ViewData[ModelConstants.Enabled].ToBoolean();
+    //var branches = ViewData[ModelConstants.DataSource] as List<MasterViewModel>;
+}
+
+@(Html.Kendo().MultiColumnComboBoxFor(m => m)
+      .DataTextField(ModelConstants.Name)
+      .DataValueField(ModelConstants.Id)
+      //.Value(Model.Id.ToString())
+      .HtmlAttributes(new {@class = "w-100"})
+      .Filter("contains")
+      .Placeholder("Select ...")
+      .Suggest(true)
+      .Enable(true)
+      .Columns(columns =>
+      {
+          columns.Add().Field(ModelConstants.Id).Title(ModelConstants.Code).Width("250px");
+          columns.Add().Field(ModelConstants.Name).Title(ModelConstants.Name).Width("300px");
+      })
+    .DataSource(dataSource => dataSource
+        .Read(read => read.Action("GetAllCategories", "Corno"))
+    ))
+      @*.BindTo(branches));*@

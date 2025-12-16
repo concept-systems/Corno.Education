@@ -1,0 +1,155 @@
+﻿@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Question_Bank.Models.PaperDetail
+
+@Html.HiddenFor(model => model.Id)
+
+@*<div class="form-group">
+        <div class="col-sm-8">
+            @(Html.Kendo().TextArea()
+            .Name("txtFormula")
+            .Rows(4)
+            .HtmlAttributes(new { style = "width: 100%;" })
+            )
+        </div>
+        <div class="col-sm-2">
+            @(Html.Kendo().Button()
+                .Name("btnGenerateFormula")
+                .HtmlAttributes(new { style = "width: 100%;" })
+                .Events(e => e.Click("generateFormula1")))
+        </div>
+    </div>*@
+
+@*<div class="form-group">
+        @Html.LabelFor(m => m.ChapterId, "Chapter :",
+            new { @class = "col-sm-2 control-label" })
+        <div class="col-sm-2">
+            @(Html.Kendo().TextBoxFor(m => m.ChapterId)
+                .Value(Model.ChapterId.ToString())
+                .Readonly(true)
+                .HtmlAttributes(new { @class = "text-right", style = "width: 100%;" }))
+        </div>
+    </div>*@
+
+@{
+    var documentId = string.Format("{0},{1}", Model.PaperId, Model.QuestionNo);
+}
+
+@*
+@Html.DevExpress().RichEdit(settings =>
+{
+    settings.Name = documentId;
+    settings.Width = Unit.Percentage(100);
+    settings.Height = Unit.Pixel(400);
+    //settings.AutoSaveMode = AutoSaveMode.On; // Change AutoSaveMode
+    settings.Saving = (s, e) =>
+    {
+        byte[] docBytes = RichEditExtension.SaveCopy("PaperType",
+            DevExpress.XtraRichEdit.DocumentFormat.Rtf);
+        e.Handled = true; // Prevents the default save operation
+    };
+}).Open(documentId, DevExpress.XtraRichEdit.DocumentFormat.Rtf, () =>
+    Model.DocumentContent ?? Array.Empty<byte>()).GetHtml()
+    *@
+
+<div class="form-group">
+    @Html.LabelFor(m => m.DifficultyLevel, "Difficulty Level :",
+        new { @class = "col-sm-2" })
+    <div class="col-sm-2">
+        @(Html.Kendo().NumericTextBoxFor(m => m.DifficultyLevel)
+            .Format("n0")
+            .Min(1)
+            .Max(3)
+            .Value(Model.DifficultyLevel)
+            .HtmlAttributes(new { @class = "text-right w-100" }))
+    </div>
+    @Html.LabelFor(m => m.CoNo, "CO No. :",
+        new { @class = "col-sm-offset-1 col-sm-1" })
+    <div class="col-sm-2">
+        @(Html.Kendo().NumericTextBoxFor(m => m.CoNo)
+            .Format("n0")
+            .Min(1)
+            .Max(3)
+            .Value(Model.CoNo)
+            .HtmlAttributes(new { @class = "text-right w-100" }))
+    </div>
+</div>
+
+
+@*@using (Html.BeginForm())
+    {
+        @Html.Action("RichEditPartial", "ManualPaper")
+    }  *@
+
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Description, "Description :",
+        new { @class = "control-label" })
+</div>
+<div class="form-group">
+    @(Html.Kendo().EditorFor(m => m.Description)
+             .Tools(tools => tools.CustomButton(cb => cb.Name("customButton")
+                 .ToolTip("Insert mathematical expression").Exec(@<text>
+                                                                     function(e) {
+                                                                     generateFormula()
+                                                                     }
+                                                                  </text>)))
+             .ImageBrowser(i => i
+                 //.Image("~/Content/Question/images")
+                 .Image("~/Content/UserFiles/Images/{0}")
+                 .Read("Read", "ImageBrowser")
+                 .Create("Create", "ImageBrowser")
+                 .Destroy("Destroy", "ImageBrowser")
+                 .Upload("Upload", "ImageBrowser")
+                 .Thumbnail("Thumbnail", "ImageBrowser")
+             )
+             .HtmlAttributes(new { @class = "w-100" })
+             /*.Events(events => events.Change("function(e) { onEditorChange(e); }"))*/
+             .Value(Model.Description)
+             .Resizable(true)
+             .Encode(false))
+</div>
+
+
+@*<script>
+        function generateFormula() {
+            var txtFormula = $("#txtFormula").data("kendoTextArea");
+            var textAreaValue = txtFormula.value();
+            alert(textAreaValue);
+            convert(textAreaValue);
+        }
+
+        function convertToForumula(input) {
+            //  Reset the tex labels (and automatic equation numbers, though there aren't any here).
+            //  Get the conversion options (metrics and display settings)
+            //  Convert the input to CommonHTML output and use a promise to wait for it to be ready
+            //    (in case an extension needs to be loaded dynamically).
+            MathJax.texReset();
+            var options = MathJax.getMetricsFor(output);
+            options.display = true;
+            MathJax.tex2chtmlPromise(input, options).then(function (node) {
+                //  The promise returns the typeset node, which we add to the output
+                //  Then update the document to include the adjusted CSS for the
+                //    content of the new equation.
+
+                var editor = $("#Description").data("kendoEditor");
+                if (editor) {
+                    // Convert node to HTML string
+                    var htmlString = node.outerHTML;
+                    var currentContent = editor.value();
+                    var updatedContent = currentContent + htmlString;
+                    editor.value(updatedContent);
+                } else {
+                    console.error("Editor instance not found.");
+                }
+
+                MathJax.startup.document.clear();
+                MathJax.startup.document.updateDocument();
+            }).catch(function (err) {
+
+            }).then(function () {
+
+            });
+        }
+
+    </script>*@
+

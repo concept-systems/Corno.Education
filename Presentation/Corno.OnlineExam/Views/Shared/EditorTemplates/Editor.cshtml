@@ -1,0 +1,19 @@
+@model string
+
+@(Html.Kendo().EditorFor(model => model)
+    .ImageBrowser(i => i
+        //.Image("~/Content/Question/images")
+        .Image("~/Content/UserFiles/Images/{0}")
+        .Read("Read", "ImageBrowser")
+        .Create("Create", "ImageBrowser")
+        .Destroy("Destroy", "ImageBrowser")
+        .Upload("Upload", "ImageBrowser")
+        .Thumbnail("Thumbnail", "ImageBrowser")
+    )
+    //.HtmlAttributes(new { @class = "w-100 " })
+    .Events(events => events
+        .Change("function(e) { onEditorChange(e); }")
+    )
+    .Value(Model)
+    .Resizable(true)
+    .Encode(false))

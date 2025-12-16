@@ -1,0 +1,17 @@
+﻿@model Corno.Data.Corno.Question_Bank.Models.Question
+
+@{
+    ViewBag.Action = "Edit";
+}
+
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">OnlineExam</a></li>
+            <li><a href="#">Question</a></li>
+            <li><a href="#">Edit Question</a></li>
+        </ol>
+    </div>
+</div>
+
+@Html.Partial("~/Areas/Question Bank/Views/Question/_Question.cshtml", Model)

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="Ds_ExamForm" targetNamespace="http://tempuri.org/Ds_ExamForm.xsd" xmlns:mstns="http://tempuri.org/Ds_ExamForm.xsd" xmlns="http://tempuri.org/Ds_ExamForm.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+        </Connections>
+        <Tables>
+        </Tables>
+        <Sources>
+        </Sources>
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="Ds_ExamForm" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:Generator_UserDSName="Ds_ExamForm" msprop:Generator_DataSetName="Ds_ExamForm">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="ExamForm" msprop:Generator_UserTableName="ExamForm" msprop:Generator_RowDeletedName="ExamFormRowDeleted" msprop:Generator_TableClassName="ExamFormDataTable" msprop:Generator_RowChangedName="ExamFormRowChanged" msprop:Generator_RowClassName="ExamFormRow" msprop:Generator_RowChangingName="ExamFormRowChanging" msprop:Generator_RowEvArgName="ExamFormRowChangeEvent" msprop:Generator_RowEvHandlerName="ExamFormRowChangeEventHandler" msprop:Generator_TablePropName="ExamForm" msprop:Generator_TableVarName="tableExamForm" msprop:Generator_RowDeletingName="ExamFormRowDeleting">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Num_PK_ENTRY_ID" msprop:Generator_UserColumnName="Num_PK_ENTRY_ID" msprop:Generator_ColumnPropNameInRow="Num_PK_ENTRY_ID" msprop:Generator_ColumnVarNameInTable="columnNum_PK_ENTRY_ID" msprop:Generator_ColumnPropNameInTable="Num_PK_ENTRY_IDColumn" type="xs:int" minOccurs="0" />
+              <xs:element name="Chr_APP_PRN_NO" msprop:Generator_UserColumnName="Chr_APP_PRN_NO" msprop:Generator_ColumnPropNameInRow="Chr_APP_PRN_NO" msprop:Generator_ColumnVarNameInTable="columnChr_APP_PRN_NO" msprop:Generator_ColumnPropNameInTable="Chr_APP_PRN_NOColumn" type="xs:string" minOccurs="0" />
+              <xs:element name="Chr_ST_SEX_CD" msprop:Generator_UserColumnName="Chr_ST_SEX_CD" msprop:Generator_ColumnPropNameInRow="Chr_ST_SEX_CD" msprop:Generator_ColumnVarNameInTable="columnChr_ST_SEX_CD" msprop:Generator_ColumnPropNameInTable="Chr_ST_SEX_CDColumn" type="xs:string" minOccurs="0" />
+              <xs:element name="Var_ST_NM" msprop:Generator_UserColumnName="Var_ST_NM" msprop:Generator_ColumnPropNameInRow="Var_ST_NM" msprop:Generator_ColumnVarNameInTable="columnVar_ST_NM" msprop:Generator_ColumnPropNameInTable="Var_ST_NMColumn" type="xs:string" minOccurs="0" />
+              <xs:element name="Num_FK_BR_CD" msprop:Generator_UserColumnName="Num_FK_BR_CD" msprop:Generator_ColumnPropNameInRow="Num_FK_BR_CD" msprop:Generator_ColumnVarNameInTable="columnNum_FK_BR_CD" msprop:Generator_ColumnPropNameInTable="Num_FK_BR_CDColumn" type="xs:int" minOccurs="0" />
+              <xs:element name="Var_BR_NM" msprop:Generator_UserColumnName="Var_BR_NM" msprop:Generator_ColumnPropNameInRow="Var_BR_NM" msprop:Generator_ColumnVarNameInTable="columnVar_BR_NM" msprop:Generator_ColumnPropNameInTable="Var_BR_NMColumn" type="xs:string" minOccurs="0" />
+              <xs:element name="Num_FK_COLLEGE_CD" msprop:Generator_UserColumnName="Num_FK_COLLEGE_CD" msprop:Generator_ColumnPropNameInRow="Num_FK_COLLEGE_CD" msprop:Generator_ColumnVarNameInTable="columnNum_FK_COLLEGE_CD" msprop:Generator_ColumnPropNameInTable="Num_FK_COLLEGE_CDColumn" type="xs:int" minOccurs="0" />
+              <xs:element name="Var_CL_SHRT_NM" msprop:Generator_UserColumnName="Var_CL_SHRT_NM" msprop:Generator_ColumnPropNameInRow="Var_CL_SHRT_NM" msprop:Generator_ColumnVarNameInTable="columnVar_CL_SHRT_NM" msprop:Generator_ColumnPropNameInTable="Var_CL_SHRT_NMColumn" type="xs:string" minOccurs="0" />
+              <xs:element name="Var_CL_COLLEGE_NM1" msprop:Generator_UserColumnName="Var_CL_COLLEGE_NM1" msprop:Generator_ColumnPropNameInRow="Var_CL_COLLEGE_NM1" msprop:Generator_ColumnVarNameInTable="columnVar_CL_COLLEGE_NM1" msprop:Generator_ColumnPropNameInTable="Var_CL_COLLEGE_NM1Column" type="xs:string" minOccurs="0" />
+              <xs:element name="Num_FK_SUB_CD" msprop:Generator_UserColumnName="Num_FK_SUB_CD" msprop:Generator_ColumnPropNameInRow="Num_FK_SUB_CD" msprop:Generator_ColumnVarNameInTable="columnNum_FK_SUB_CD" msprop:Generator_ColumnPropNameInTable="Num_FK_SUB_CDColumn" type="xs:int" minOccurs="0" />
+              <xs:element name="Var_SUBJECT_NM" msprop:Generator_UserColumnName="Var_SUBJECT_NM" msprop:Generator_ColumnPropNameInRow="Var_SUBJECT_NM" msprop:Generator_ColumnVarNameInTable="columnVar_SUBJECT_NM" msprop:Generator_ColumnPropNameInTable="Var_SUBJECT_NMColumn" type="xs:string" minOccurs="0" />
+              <xs:element name="DIST_CENT_NAME" msprop:Generator_UserColumnName="DIST_CENT_NAME" msprop:Generator_ColumnPropNameInRow="DIST_CENT_NAME" msprop:Generator_ColumnVarNameInTable="columnDIST_CENT_NAME" msprop:Generator_ColumnPropNameInTable="DIST_CENT_NAMEColumn" type="xs:string" minOccurs="0" />
+              <xs:element name="Num_FK_DistCenter_ID" msprop:Generator_UserColumnName="Num_FK_DistCenter_ID" msprop:Generator_ColumnPropNameInRow="Num_FK_DistCenter_ID" msprop:Generator_ColumnVarNameInTable="columnNum_FK_DistCenter_ID" msprop:Generator_ColumnPropNameInTable="Num_FK_DistCenter_IDColumn" type="xs:string" minOccurs="0" />
+              <xs:element name="Num_FK_COPRT_NO" msprop:Generator_UserColumnName="Num_FK_COPRT_NO" msprop:Generator_ColumnPropNameInRow="Num_FK_COPRT_NO" msprop:Generator_ColumnVarNameInTable="columnNum_FK_COPRT_NO" msprop:Generator_ColumnPropNameInTable="Num_FK_COPRT_NOColumn" type="xs:string" minOccurs="0" />
+              <xs:element name="Var_COPRT_SHRT_NM" msprop:Generator_UserColumnName="Var_COPRT_SHRT_NM" msprop:Generator_ColumnPropNameInRow="Var_COPRT_SHRT_NM" msprop:Generator_ColumnVarNameInTable="columnVar_COPRT_SHRT_NM" msprop:Generator_ColumnPropNameInTable="Var_COPRT_SHRT_NMColumn" type="xs:string" minOccurs="0" />
+              <xs:element name="Appear" msprop:Generator_UserColumnName="Appear" msprop:Generator_ColumnPropNameInRow="Appear" msprop:Generator_ColumnVarNameInTable="columnAppear" msprop:Generator_ColumnPropNameInTable="AppearColumn" type="xs:string" minOccurs="0" />
+              <xs:element name="PageNo" msprop:Generator_UserColumnName="PageNo" msprop:Generator_ColumnPropNameInRow="PageNo" msprop:Generator_ColumnVarNameInTable="columnPageNo" msprop:Generator_ColumnPropNameInTable="PageNoColumn" type="xs:int" minOccurs="0" />
+              <xs:element name="Chr_IMPROVEMENT_FLG" msprop:Generator_UserColumnName="Chr_IMPROVEMENT_FLG" msprop:Generator_ColumnPropNameInRow="Chr_IMPROVEMENT_FLG" msprop:Generator_ColumnVarNameInTable="columnChr_IMPROVEMENT_FLG" msprop:Generator_ColumnPropNameInTable="Chr_IMPROVEMENT_FLGColumn" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

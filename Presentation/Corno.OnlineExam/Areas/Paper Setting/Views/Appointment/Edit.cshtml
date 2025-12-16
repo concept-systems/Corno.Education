@@ -1,0 +1,361 @@
+﻿@using System.ComponentModel
+@using Corno.Globals.Constants
+@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Paper_Setting.Models.Appointment
+
+@{
+    ViewBag.Title = "Appointment";
+    ViewBag.Controller = "Appointment";
+    ViewBag.Details = "AppointmentDetails";
+    ViewBag.DetailName = "AppointmentDetails";
+    ViewBag.GridCommonAction = "Inline_Create_Update_Destroy";
+}
+
+@if (TempData["Success"] != null)
+{
+    <script type="text/javascript">
+        bootbox.alert("@TempData["Success"]")
+    </script>
+}
+
+<style>
+    .k-grouping-header {
+        display: none;
+    }
+</style>
+
+<div class="form-horizontal box-content">
+    @using (Html.BeginForm("Edit", "Appointment", FormMethod.Post, new { id = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.ValidationSummary(false)
+        @Html.AntiForgeryToken()
+
+        <!-- Hidden field to store the report type -->
+        <input type="hidden" id="type" name="type" />
+
+        @Html.HiddenFor(m => m.InstanceId)
+        @Html.HiddenFor(m => m.Id)
+
+        <div class="k-card k-card-vertical">
+        <div class="k-card-header">
+            <div class="col-sm-8">
+                <h3>@ViewBag.Title</h3>
+            </div>
+            <div class="k-card-actions k-card-actions-horizontal k-card-actions-end col-sm-4">
+                @(Html.Kendo().Button()
+                    .Name("back_to_list")
+                    .Icon("arrow-left")
+                    .SpriteCssClass("k-icon-64")
+                    .FillMode(ButtonFillMode.Outline)
+                    .ThemeColor(ThemeColor.Info)
+                    .Content("Back To list")
+                    .Events(e => e.Click("onBackToList"))
+                    .HtmlAttributes(new { @class = "w-100" }))
+            </div>
+        </div>
+            <div class="k-card-body">
+                @{
+                    Html.RenderPartial("Partial/Selection/_Appointment", Model);
+                }
+                <div class="k-card-actions k-card-actions-horizontal k-card-actions-end">
+                    @(Html.Kendo().DropDownButton()
+                        .Name("btnEmailSms")
+                        .Text("Email / SMS")
+                        .Icon("envelop")
+                        .SpriteCssClass("k-icon-64")
+                        .FillMode(FillMode.Outline)
+                        .ThemeColor(ThemeColor.Tertiary)
+                        .Items(items=>
+                        {
+                            items.Add().Id("email").Text("Send Email").Icon("envelop-box")
+                                .HtmlAttributes(new{onclick = "submitForm('Send','Email')" });
+                            items.Add().Id("sms").Text("Send SMS").Icon("envelop")
+                                .HtmlAttributes(new{onclick = "submitForm('Send','SMS')" });
+                        }))
+                    @(Html.Kendo().DropDownButton()
+                        .Name("btnReports")
+                        .Text("Reports")
+                        .Icon("subreport")
+                        .SpriteCssClass("k-icon-64")
+                        .FillMode(FillMode.Outline)
+                        .ThemeColor(ThemeColor.Tertiary)
+                        .Items(items =>
+                        {
+                            items.Add().Id("theoryLetter").Text("Theory Letter").Icon("file-report")
+                                .HtmlAttributes(new { onclick = "submitForm('ShowReport','TheoryLetter')" });
+                            items.Add().Id("practicalLetter").Text("Practical Letter").Icon("file-report")
+                                .HtmlAttributes(new { onclick = "submitForm('ShowReport','PracticalLetter')" });
+                            items.Add().Id("manuscriptLetter").Text("Manuscript Letter").Icon("file-report")
+                                .HtmlAttributes(new { onclick = "submitForm('ShowReport','ManuscriptLetter')" });
+                            items.Add().Id("moderatorLetter").Text("Moderator Letter").Icon("file-report")
+                                .HtmlAttributes(new { onclick = "submitForm('ShowReport','ModeratorLetter')" });
+                            items.Add().Id("alternativeLetter").Text("Alternative Examiner Letter").Icon("file-report")
+                                .HtmlAttributes(new { onclick = "submitForm('ShowReport','AlternativeLetter')" });
+
+                            items.Add();
+
+                            items.Add().Id("appointedExaminers").Text("Appointed Examiners").Icon("file-report")
+                                .HtmlAttributes(new { onclick = "submitForm('ShowReport','AppointedExaminers')" });
+                            items.Add().Id("manuscriptExaminers").Text("Manuscript Examiners").Icon("file-report")
+                                .HtmlAttributes(new { onclick = "submitForm('ShowReport','ManuscriptExaminers')" });
+
+                            items.Add();
+
+                            items.Add().Id("taDa").Text("TA / DA").Icon("file-report")
+                                .HtmlAttributes(new { onclick = "submitForm('ShowReport','TaDa')" });
+                            items.Add().Id("remuneration").Text("Remuneration").Icon("file-report")
+                                .HtmlAttributes(new { onclick = "submitForm('ShowReport','Remuneration')" });
+                            items.Add().Id("certificate").Text("Certificate").Icon("file-report")
+                                .HtmlAttributes(new { onclick = "submitForm('ShowReport','Certificate')" });
+                            items.Add().Id("neftForm").Text("NEFT Form").Icon("file-report")
+                                .HtmlAttributes(new { onclick = "submitForm('ShowReport','NeftForm')" });
+                        }))
+                    @(Html.Kendo().Button()
+                        .Name("bill")
+                        .Icon("file-report")
+                        .SpriteCssClass("k-icon-64")
+                        .FillMode(ButtonFillMode.Outline)
+                        .ThemeColor(ThemeColor.Tertiary)
+                        .Content("Bill")
+                        .HtmlAttributes(new
+                        {
+                            type = "submit",
+                            name = "action:ShowBill",
+                        }))
+                    @(Html.Kendo().Button()
+                        .Name("get_all_staffs")
+                        .Icon("search")
+                        .SpriteCssClass("k-icon-64")
+                        .FillMode(ButtonFillMode.Outline)
+                        .ThemeColor(ThemeColor.Tertiary)
+                        .Content("Get All Staffs")
+                        .HtmlAttributes(new
+                        {
+                            type = "submit",
+                            name = "action:GetStaffs",
+                        }))
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(Html.Kendo().Grid(Model.AppointmentDetails)
+                            .Name("grid")
+                            .ToolBar(t => t.Search())
+                            .ToolBar(t => t.Excel())
+                            .Columns(columns =>
+                            {
+                                columns.Bound(p => p.StaffId)
+                                    .ClientTemplate("#= StaffId #" + "<input type='hidden' name='AppointmentDetails[#= index(data)#].StaffId' value='#= StaffId #'   />")
+                                    .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .Title("Staff")
+                                    .Width(50);
+                                columns.Bound(p => p.StaffName)
+                                    .ClientTemplate("#= StaffName #" + "<input type='hidden' name='AppointmentDetails[#= index(data)#].StaffName' value='#= StaffName #'   />")
+                                    .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    //.HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .Title("Name")
+                                    .Width(150);
+                                columns.Bound(p => p.EmailId)
+                                    .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .Title("Email Id")
+                                    .Width(150);
+                                columns.Bound(p => p.MobileNo)
+                                    .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .Title("Mobile No")
+                                    .Width(80);
+                                columns.Template(@<text></text>)
+                                    .ClientTemplate("<input type='checkbox' #= IsInternal ? checked='checked':'' # class='chkIsInternal' name='AppointmentDetails[#= index(data)#].IsInternal' value='#= IsInternal #' />")
+                                    .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center text-align-middle" })
+                                    .Title("Internal")
+                                    .Hidden();
+                                columns.Template(@<text></text>)
+                                    //.Template(@<input type="checkbox" />)
+                                    .ClientTemplate("<input type='checkbox' #= IsChairman ? checked='checked':'' # class='chkIsChairman' name='AppointmentDetails[#= index(data)#].IsChairman' value='#= IsChairman #' />")
+                                    .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center text-align-middle" })
+                                    .Title("Chairman")
+                                    .Width(50);
+                                columns.Template(@<text></text>)
+                                    .ClientTemplate("<input type='checkbox' #= IsPaperSetter ? checked='checked':'' # class='chkIsPaperSetter' name='AppointmentDetails[#= index(data)#].IsPaperSetter' value='#= IsPaperSetter #' />")
+                                    .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center text-align-middle" })
+                                    .Title("Paper</br>Setter")
+                                    .Width(50);
+                                columns.Template(@<text></text>)
+                                    .ClientTemplate("<input type='checkbox' #= IsModerator ? checked='checked':'' # class='chkIsModerator' name='AppointmentDetails[#= index(data)#].IsModerator' value='#= IsModerator #' />")
+                                    .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center text-align-middle" })
+                                    .Title("Moderator")
+                                    .Width(50);
+                                columns.Template(@<text></text>)
+                                    .ClientTemplate("<input type='checkbox' #= IsManuscript ? checked='checked':'' # class='chkIsManuscript' name='AppointmentDetails[#= index(data)#].IsManuscript' value='#= IsManuscript #' />")
+                                    .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center text-align-middle" })
+                                    .Title("Manuscript")
+                                    .Width(50);
+                                columns.Bound(p => p.NoOfAttempts)
+                                    .ClientTemplate("#= NoOfAttempts #" + "<input type='hidden' name='AppointmentDetails[#= index(data)#].NoOfAttempts' value='#= NoOfAttempts #'   />")
+                                    .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .Title("Attempts")
+                                    .Width(50);
+                            })
+                            .Editable(editable => editable.Mode(GridEditMode.InCell))
+                            .Scrollable(s => s.Enabled(true).Height("auto").Virtual(true))
+                            .Sortable()
+                            //.Pageable()
+                            .Groupable()
+                            .PersistSelection()
+                            //.Events(events => events.Edit("onEdit").DataBound("onGridDataBound"))
+                            .Height(500)
+                            //.Width(1200)
+                            .Excel(excel => excel
+                                .FileName("Links.xlsx")
+                                .Filterable(true)
+                                .ProxyURL(Url.Action("Excel_Export_Save", "Enrollment"))
+                            )
+                            .DataSource(dataSource => dataSource
+                                .Ajax()
+                                //.PageSize(10)
+                                //.Events(events => events.Error("error_handler"))
+                                .Model(model =>
+                                {
+                                    model.Id(p => p.Id);
+                                    model.Field(p => p.StaffId).Editable(false);
+                                    model.Field(p => p.StaffName).Editable(false);
+                                    model.Field(p => p.EmailId).Editable(false);
+                                    model.Field(p => p.MobileNo).Editable(false);
+                                    model.Field(p => p.IsInternal).Editable(false);
+                                })
+                                .Aggregates(aggregates =>
+                                {
+                                })
+                                .ServerOperation(false)
+                                .Create(update => update.Action(ViewBag.GridCommonAction, ViewBag.Controller))
+                                .Update(update => update.Action(ViewBag.GridCommonAction, ViewBag.Controller))
+                                .Destroy(update => update.Action(ViewBag.GridCommonAction, ViewBag.Controller))
+                                .Group(groups =>
+                                    groups.Add("Group", typeof(bool?), ListSortDirection.Descending))
+                            )
+                            .Resizable(resize => resize.Columns(true))
+                            .Reorderable(reorder => reorder.Columns(true)))
+
+                    </div>
+                </div>
+                <div class="k-card-actions k-card-actions-horizontal k-card-actions-end">
+                    @(Html.Kendo().Button()
+                        .Name("save")
+                        .Icon("save")
+                        .SpriteCssClass("k-icon-64")
+                        .FillMode(ButtonFillMode.Outline)
+                        .ThemeColor(ThemeColor.Success)
+                        .Content("Save")
+                        .HtmlAttributes(new
+                        {
+                            type = "submit",
+                            name = "action:Save",
+                        }))
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script type="text/javascript">
+    // Check the condition in your model
+    $(document).ready(function () {
+        @*$("#FacultyId").data("kendoMultiColumnComboBox").enable(false);
+        $("#CollegeId").data("kendoMultiColumnComboBox").enable(false);*@
+    });
+
+    $(function () {
+        $('#grid').on('click', '.chkIsChairman',
+            function () {
+                var checked = $(this).is(':checked');
+                var grid = $('#grid').data().kendoGrid;
+                var dataItem = grid.dataItem($(this).closest('tr'));
+                dataItem.set('IsChairman', checked);
+            });
+        $('#grid').on('click', '.chkIsPaperSetter',
+            function () {
+                var checked = $(this).is(':checked');
+                var grid = $('#grid').data().kendoGrid;
+                var dataItem = grid.dataItem($(this).closest('tr'));
+                dataItem.set('IsPaperSetter', checked);
+            });
+        $('#grid').on('click', '.chkIsModerator',
+            function () {
+                var checked = $(this).is(':checked');
+                var grid = $('#grid').data().kendoGrid;
+                var dataItem = grid.dataItem($(this).closest('tr'));
+                dataItem.set('IsModerator', checked);
+            });
+        $('#grid').on('click', '.chkIsManuscript',
+            function () {
+                var checked = $(this).is(':checked');
+                var grid = $('#grid').data().kendoGrid;
+                var dataItem = grid.dataItem($(this).closest('tr'));
+                dataItem.set('IsManuscript', checked);
+            });
+    });
+
+    function submitForm(action, type) {
+        var form = document.getElementById("form");
+
+        // Send report type
+        document.getElementById("type").value = type;
+
+        // Action Name
+        var input = document.createElement("input");
+        input.type = "hidden";
+        input.name = "action:" + action;
+
+        form.appendChild(input);
+        form.submit();
+    }
+
+    function onCategoryChange() {
+        console.log('In category change');
+        $("#appointed").data("kendoListBox").dataSource.read();
+        //$("#CategoryId").data("kendoMultiColumnComboBox").dataSource.read();
+    }
+
+    function onSubjectChange() {
+        console.log("event: onSubjectChange");
+
+        var grid = $("#grid").data("kendoGrid");
+        if (grid) {
+            grid.dataSource.data([]); // Clears the grid data
+        }
+    }
+
+    function onListBoxChange(e) {
+        // Get the ListBox widget instance
+        var listBox = e.sender;
+
+        // Get the selected item
+        var selectedItem = listBox.select();
+
+        // Get the data item associated with the selected item
+        var dataItem = listBox.dataItem(selectedItem);
+
+        if (dataItem) {
+            // Access the selected value
+            var selectedValue = dataItem.Id;
+            console.log("Selected Value: " + selectedValue);
+
+            // Set the value to the MultiColumnComboBox (example)
+            var comboBox = $("#SubjectId").data("kendoMultiColumnComboBox");
+            comboBox.value(selectedValue);
+
+            // Programmatically trigger the button click
+            $("#get_all_staffs").click();
+        }
+    }
+
+    function onBackToList() {
+        window.location.href = '/Appointment/Index';
+    }
+</script>

@@ -1,0 +1,69 @@
+﻿@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Masters.Branch
+
+<div class="row">
+    @(Html.Kendo().Grid(Model.BranchSubjectDetails)
+        .Name("gridCategory")
+        .Columns(columns =>
+        {
+            columns.Bound(s => s.Id)
+                .ClientTemplate("<input type='hidden' name='BranchSubjectDetails[#= index(data, 'gridCategory')#].Id' value='#= Id #'   />")
+                .Hidden();
+            columns.Bound(s => s.SerialNo)
+                .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center text-align-middle" })
+                .Width(30);
+            columns.Bound(s => s.BranchId)
+                .ClientTemplate("<input type='hidden' name='BranchSubjectDetails[#= index(data, 'gridCategory')#].BranchId' value='#= BranchId #'   />")
+                .Hidden();
+            columns.Bound(s => s.CoursePartId)
+                .ClientTemplate("#= CoursePartName #" + "<input type='hidden' name='BranchSubjectDetails[#= index(data, 'gridCategory')#].CoursePartId' value='#= CoursePartId #'   />")
+                .HtmlAttributes(new { @class = "k-text-left !k-justify-content-left text-align-middle" })
+                .EditorTemplateName(@"/Subject/_CategoryComboBox")
+                .ClientFooterTemplate("Total")
+                .Title("Course Part")
+                .Width(80);
+            columns.Bound(s => s.SubjectId)
+                .ClientTemplate("#= SubjectName #" + "<input type='hidden' name='BranchSubjectDetails[#= index(data, 'gridCategory')#].SubjectId' value='#= SubjectId #'   />")
+                .HtmlAttributes(new { @class = "k-text-left !k-justify-content-left text-align-middle" })
+                .EditorTemplateName(@"/Subject/_CategoryComboBox")
+                .ClientFooterTemplate("Total")
+                .Title("Subject")
+                .Width(180);
+
+            columns.Command(command =>
+            {
+                command.Edit();
+                command.Destroy();
+            }).Width(60);
+        })
+        .ToolBar(toolbar => toolbar.Create())
+        //.Editable(editable => editable.Mode(GridEditMode.InLine))
+        .Editable(editable => editable.Mode(GridEditMode.PopUp)
+            .TemplateName("/Popup Editors/_BranchSubjectsPopup"))
+        .Sortable()
+        //.Pageable()
+        .Scrollable()
+        //.Events(events => events.Edit("onEdit"))
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            //.PageSize(20)
+            .Events(events => events.Error("error_handler"))
+            .Model(model =>
+            {
+                model.Id(p => p.Id);
+                /*model.Field(p => p.CategoryViewModel).DefaultValue(new MasterViewModel())
+                    .Editable();*/
+            })
+            .ServerOperation(false)
+            .Create(update => update.Action("Inline_Create_Update_Destroy", "Branch"))
+            .Update(update => update.Action("Inline_Create_Update_Destroy", "Branch"))
+            .Destroy(update => update.Action("Inline_Create_Update_Destroy", "Branch"))
+        )
+        .Resizable(resize => resize.Columns(true))
+        .Reorderable(reorder => reorder.Columns(true)))
+</div>
+
+
+@* Include the Editor Template Partial View *@
+@*@Html.Partial("_CategoryTabPopup", Model)*@

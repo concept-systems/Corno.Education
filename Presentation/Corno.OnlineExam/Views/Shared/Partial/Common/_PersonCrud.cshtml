@@ -1,0 +1,67 @@
+﻿@using Corno.Data.Helpers
+@using Corno.Globals.Constants
+@using Kendo.Mvc.Extensions
+@model Corno.Data.Common.PersonModel
+
+@{
+    var formEnabled = ViewData[ModelConstants.FormEnabled].ToBoolean();
+}
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="form-group">
+            @(Html.Kendo().TextBoxFor(m => m.LastName)
+                .Enable(formEnabled)
+                .Rounded(Rounded.Medium)
+                .Label(label => label
+                    .Content(ModelConstants.LastName.SplitPascalCase())
+                    .Floating(true))
+                .HtmlAttributes(new
+                {
+                    placeholder = "Enter last name",
+                    required = "required",
+                    @class = "required w-100"
+                }))
+            @(Html.Kendo().TextBoxFor(m => m.FirstName)
+                .Enable(formEnabled)
+                .Rounded(Rounded.Medium)
+                .Label(label => label
+                    .Content(ModelConstants.FirstName.SplitPascalCase())
+                    .Floating(true))
+                .HtmlAttributes(new
+                {
+                    placeholder = "Enter first name",
+                    @class = "required w-100"
+                }))
+            @(Html.Kendo().TextBoxFor(m => m.MiddleName)
+                .Enable(formEnabled)
+                .Rounded(Rounded.Medium)
+                .Label(label => label
+                    .Content(ModelConstants.MiddleName.SplitPascalCase())
+                    .Floating(true))
+                .HtmlAttributes(new
+                {
+                    placeholder = "Enter middle name",
+                    required = "required",
+                    @class = "required w-100"
+                }))
+
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group">
+            @(Html.Kendo().TextAreaFor(m => m.Description)
+                  .Rows(4)
+                  .Enable(formEnabled)
+                .Rounded(Rounded.Medium)
+                  .Label(label => label
+                      .Content("Comments")
+                      .Floating(true))
+                  .HtmlAttributes(new
+                  {
+                      placeholder = "Enter Comments",
+                      @class = "required w-100"
+                  }))
+        </div>
+    </div>
+</div>

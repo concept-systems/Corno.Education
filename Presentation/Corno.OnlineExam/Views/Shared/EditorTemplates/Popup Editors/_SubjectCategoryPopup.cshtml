@@ -1,0 +1,75 @@
+﻿@using Corno.Globals.Constants
+@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Masters.SubjectCategoryDetail
+
+@Html.HiddenFor(model => model.Id)
+@Html.HiddenFor(model => model.CategoryName)
+
+<div class="form-group">
+    <div class="col-sm-6">
+        @(Html.Kendo().MultiColumnComboBoxFor(m => m.CategoryId)
+            .DataTextField(ModelConstants.Name)
+            .DataValueField(ModelConstants.Id)
+            //.HtmlAttributes(new { @class="w-100"})
+            .HtmlAttributes(new { @class = "w-100" })
+            .Filter("contains")
+            .Placeholder("Select ...")
+            .Label(label => label
+                .Content("Category")
+                .Floating(true))
+            .Columns(columns =>
+            {
+                columns.Add().Field(ModelConstants.Id).Title(ModelConstants.Id).Width("100px");
+                columns.Add().Field(ModelConstants.Name).Title(ModelConstants.Name).Width("600px");
+            })
+            .DataSource(dataSource => dataSource
+                .Read(read => read.Action("GetAllCategories", "Corno"))
+            ))
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-sm-6">
+        @(Html.Kendo().MultiColumnComboBoxFor(m => m.PaperCategoryId)
+            .DataTextField(ModelConstants.Name)
+            .DataValueField(ModelConstants.Id)
+            //.HtmlAttributes(new { @class="w-100"})
+            .HtmlAttributes(new { @class = "w-100" })
+            .Filter("contains")
+            .Placeholder("Select ...")
+            .Label(label => label
+                .Content("Paper Category")
+                .Floating(true))
+            .Columns(columns =>
+            {
+                columns.Add().Field(ModelConstants.Id).Width("100px");
+                columns.Add().Field(ModelConstants.Name).Width("600px");
+            })
+            .DataSource(dataSource => dataSource
+                .Read(read => read.Action("GetMiscMasters", "Corno", new { miscType = "PaperCategory" }))
+            ))
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-sm-4">
+        @(Html.Kendo().NumericTextBoxFor(m => m.MaxMarks)
+            .Format("n0")
+            .Label(label => label
+                .Content("Max Marks")
+                .Floating(true))
+            .Value(Model.MaxMarks)
+            .HtmlAttributes(new { @class = "text-right w-100" }))
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-sm-4">
+        @(Html.Kendo().NumericTextBoxFor(m => m.PassingMarks)
+            .Format("n0")
+            .Label(label => label
+                .Content("Passing Marks")
+                .Floating(true))
+            .Value(Model.PassingMarks)
+            .HtmlAttributes(new { @class = "text-right w-100" }))
+    </div>
+</div>

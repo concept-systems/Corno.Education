@@ -1,0 +1,244 @@
+﻿@using System.ComponentModel
+@using Corno.Data.Helpers
+@using Corno.Globals.Constants
+@using Corno.OnlineExam.Helpers
+@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Question_Bank.Dtos.QuestionAppointmentDto
+
+@{
+    var test = Model;
+}
+@if (TempData["Success"] != null)
+{
+    <script type="text/javascript">
+        bootbox.alert("@TempData["Success"]")
+    </script>
+}
+
+<style>
+    .k-grouping-header {
+        display: none;
+    }
+</style>
+
+<div class="form-horizontal box-content">
+    @using (Html.BeginForm("Create", "QuestionAppointment", FormMethod.Post, new { id = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.ValidationSummary(false)
+        @Html.AntiForgeryToken()
+
+        <!-- Hidden field to store the report type -->
+        <input type="hidden" id="type" name="type" />
+
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.InstanceId)
+
+        <div class="k-card k-card-vertical">
+            <div class="k-card-header k-card-tertiary"><h3>Appointment</h3></div>
+            <div class="k-card-body">
+                @{
+                    Html.RenderPartial("Partial/Selection/_QuestionAppointment", Model);
+                }
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.SetsToBeDrawn, "Sets to be Drawn :",
+                        new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-2">
+                        @(Html.Kendo().NumericTextBoxFor(m => m.SetsToBeDrawn)
+                            .Decimals(0)
+                            .Min(1)
+                            .Format("n0")
+                            .HtmlAttributes(new { @class = "text-right w-100", @id = "SetsToBeDrawn" }))
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="k-card-actions k-card-actions-horizontal k-card-actions-end">
+                            @(Html.Kendo().DropDownButton()
+                                .Name("btnEmailSms")
+                                .Text("Email / SMS")
+                                .Icon("envelop")
+                                .SpriteCssClass("k-icon-64")
+                                .FillMode(FillMode.Outline)
+                                .ThemeColor(ThemeColor.Tertiary)
+                                .Items(items=>
+                                {
+                                    items.Add().Id("email").Text("Send Email").Icon("envelop-box")
+                                        .HtmlAttributes(new{onclick = "submitForm('Send','Email')" });
+                                    items.Add().Id("sms").Text("Send SMS").Icon("envelop")
+                                        .HtmlAttributes(new{onclick = "submitForm('Send','SMS')" });
+                                }))
+                            @(Html.Kendo().Button()
+                                .Name("get_all_staffs")
+                                .Icon("search")
+                                .SpriteCssClass("k-icon-64")
+                                .FillMode(ButtonFillMode.Outline)
+                                .ThemeColor(ThemeColor.Tertiary)
+                                .Content("Get All Staffs")
+                                .HtmlAttributes(new
+                                {
+                                    type = "submit",
+                                    name = "action:GetStaffs",
+                                }))
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(Html.Kendo().Grid(Model.QuestionAppointmentDetailDtos)
+                            .Name("grid")
+                            .ToolBar(t => t.Search())
+                            .ToolBar(t => t.Excel())
+                            .Columns(columns =>
+                            {
+                                columns.Bound(p => p.Id)
+                                    .ClientTemplate("#= Id #" + "<input type='hidden' name='QuestionAppointmentDetailDtos[#= index(data)#].Id' value='#= Id #'   />")
+                                    .Hidden();
+                                columns.Bound(p => p.StaffId)
+                                    .ClientTemplate("#= StaffId #" + "<input type='hidden' name='QuestionAppointmentDetailDtos[#= index(data)#].StaffId' value='#= StaffId #'   />")
+                                    .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .Title("Staff")
+                                    .Align(TextAlign.Left)
+                                    .Width(60);
+                                columns.Bound(p => p.StaffName)
+                                    .ClientTemplate("#= StaffName #" + "<input type='hidden' name='QuestionAppointmentDetailDtos[#= index(data)#].StaffName' value='#= StaffName #'   />")
+                                    .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    //.HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .Title("Name")
+                                    .Align(TextAlign.Left)
+                                    .Width(200);
+                                columns.Bound(p => p.EmailId)
+                                    .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .Title("Email Id")
+                                    .Align(TextAlign.Left)
+                                    .Width(150);
+                                columns.Bound(p => p.MobileNo)
+                                    .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .Title("Mobile No")
+                                    .Width(100);
+                                columns.Template(@<text></text>)
+                                    .ClientTemplate("<input type='checkbox' #= IsSetter ? checked='checked':'' # class='chkIsSetter' name='QuestionAppointmentDetailDtos[#= index(data)#].IsSetter' value='#= IsSetter #' />")
+                                    .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center text-align-middle" })
+                                    .Title("Setter")
+                                    .Width(50);
+                                columns.Template(@<text></text>)
+                                    .ClientTemplate("<input type='checkbox' #= IsChecker ? checked='checked':'' # class='chkIsChecker' name='QuestionAppointmentDetailDtos[#= index(data)#].IsChecker' value='#= IsChecker #' />")
+                                    .HeaderHtmlAttributes(new { @class = "k-text-center !k-justify-content-center" })
+                                    .HtmlAttributes(new { @class = "k-text-center !k-justify-content-center text-align-middle" })
+                                    .Title("Checker")
+                                    .Width(50);
+                            })
+                            .Editable(editable => editable.Mode(GridEditMode.InCell))
+                            .Scrollable()
+                            .Sortable()
+                            .Groupable()
+                            .PersistSelection()
+                            .Height(500)
+                            .Excel(excel => excel
+                                .FileName("Links.xlsx")
+                                .Filterable(true)
+                                .ProxyURL(Url.Action("Excel_Export_Save", "Enrollment"))
+                            )
+                            .DataSource(dataSource => dataSource
+                                .Ajax()
+                                .Model(model =>
+                                {
+                                    model.Id(p => p.Id);
+                                    model.Field(p => p.StaffId).Editable(false);
+                                    model.Field(p => p.StaffName).Editable(false);
+                                    model.Field(p => p.EmailId).Editable(false);
+                                    model.Field(p => p.MobileNo).Editable(false);
+                                })
+                                .Aggregates(aggregates =>
+                                {
+                                })
+                                .ServerOperation(false)
+                                .Create(update => update.Action(ViewBag.GridCommonAction, ViewBag.Controller))
+                                .Update(update => update.Action(ViewBag.GridCommonAction, ViewBag.Controller))
+                                .Destroy(update => update.Action(ViewBag.GridCommonAction, ViewBag.Controller))
+                                .Sort(s => s.Add(ModelConstants.StaffId)
+                                    .Descending())
+                            )
+                            .Resizable(resize => resize.Columns(true))
+                            .Reorderable(reorder => reorder.Columns(true)))
+
+                    </div>
+                </div>
+                <div class="k-card-actions k-card-actions-horizontal k-card-actions-end">
+                    @(Html.Kendo().Button()
+                        .Name("save")
+                        .Icon("save")
+                        .SpriteCssClass("k-icon-64")
+                        .FillMode(ButtonFillMode.Outline)
+                        .ThemeColor(ThemeColor.Success)
+                        .Content("Save")
+                        .HtmlAttributes(new
+                        {
+                            type = "submit",
+                            name = "action:Save",
+                        }))
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        // Initialize SetsToBeDrawn NumericTextBox with model value
+        var setsToBeDrawnValue = @(Model.SetsToBeDrawn);
+        
+        // Function to set the NumericTextBox value
+        function setNumericTextBoxValue() {
+            // Find the NumericTextBox widget - Kendo creates it with the property name as ID
+            var $input = $('#SetsToBeDrawn');
+            var numericTextBox = $input.data('kendoNumericTextBox');
+            
+            if (numericTextBox) {
+                // Set the value if it exists and is greater than 0
+                if (setsToBeDrawnValue > 0) {
+                    numericTextBox.value(setsToBeDrawnValue);
+                }
+            } else {
+                // If widget not found yet, try again after a short delay
+                setTimeout(setNumericTextBoxValue, 100);
+            }
+        }
+        
+        // Wait a bit for Kendo widgets to initialize, then set the value
+        setTimeout(setNumericTextBoxValue, 150);
+
+        $('#grid').on('click', '.chkIsSetter',
+            function () {
+                var checked = $(this).is(':checked');
+                var grid = $('#grid').data().kendoGrid;
+                var dataItem = grid.dataItem($(this).closest('tr'));
+                dataItem.set('IsSetter', checked);
+            });
+
+        $('#grid').on('click', '.chkIsChecker',
+            function () {
+                var checked = $(this).is(':checked');
+                var grid = $('#grid').data().kendoGrid;
+                var dataItem = grid.dataItem($(this).closest('tr'));
+                dataItem.set('IsChecker', checked);
+            });
+    });
+
+    function submitForm(action, type) {
+        var form = document.getElementById("form");
+
+        // Send report type
+        document.getElementById("type").value = type;
+
+        // Action Name
+        var input = document.createElement("input");
+        input.type = "hidden";
+        input.name = "action:" + action;
+
+        form.appendChild(input);
+        form.submit();
+    }
+
+</script>

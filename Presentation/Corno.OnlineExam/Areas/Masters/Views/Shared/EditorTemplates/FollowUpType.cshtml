@@ -1,0 +1,24 @@
+﻿@model object 
+
+@(Html.Kendo().ComboBoxFor(model => model)
+          //.Name("#=FollowUpType#")
+          .Filter("contains")
+          .Placeholder("Select Follow Up Type...")
+          .DataTextField("Text")
+          .DataValueField("Value")
+          .BindTo(new List<SelectListItem>() {
+              new SelectListItem() {
+                Text = "Visit", Value = "Visit"
+              },
+              new SelectListItem() {
+                Text = "Phone", Value = "Phone"
+              },
+              new SelectListItem() {
+                Text = "Email", Value = "Email"
+              },
+              new SelectListItem() {
+                Text = "SMS", Value = "SMS"
+              }
+          })
+          .Suggest(true)
+)

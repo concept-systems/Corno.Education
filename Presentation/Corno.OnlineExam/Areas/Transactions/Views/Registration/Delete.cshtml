@@ -1,0 +1,679 @@
+﻿@model Corno.Data.Corno.RegistrationViewModel
+@{
+    var photoImageSource = "data:image;base64, ";
+    if (null != Model.Photo)
+    {
+        photoImageSource = photoImageSource + Convert.ToBase64String(Model.Photo);
+    }
+
+    var signatureImageSource = "data:image;base64, ";
+    if (null != Model.Signature)
+    {
+        signatureImageSource = signatureImageSource + Convert.ToBase64String(Model.Signature);
+    }
+
+    var document1ImageSource = "data:image;base64, ";
+    if (null != Model.Document1)
+    {
+        document1ImageSource = document1ImageSource + Convert.ToBase64String(Model.Document1);
+    }
+
+    var document2ImageSource = "data:image;base64, ";
+    if (null != Model.Document2)
+    {
+        document2ImageSource = document2ImageSource + Convert.ToBase64String(Model.Document2);
+    }
+    var document3ImageSource = "data:image;base64, ";
+    if (null != Model.Document3)
+    {
+        document3ImageSource = document3ImageSource + Convert.ToBase64String(Model.Document3);
+    }
+    var document4ImageSource = "data:image;base64, ";
+    if (null != Model.Document4)
+    {
+        document4ImageSource = document4ImageSource + Convert.ToBase64String(Model.Document4);
+    }
+    var document5ImageSource = "data:image;base64, ";
+    if (null != Model.Document5)
+    {
+        document5ImageSource = document5ImageSource + Convert.ToBase64String(Model.Document5);
+    }
+}
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Online Exam</a></li>
+            <li><a href="#">Student Form</a></li>
+        </ol>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <div class="box ui-draggable ui-droppable">
+            <div class="box-header">
+                <div class="box-name">
+                    <i class="fa fa-edit large"></i>
+                    <span>Student Record Id:  @Model.Id</span>
+                </div>
+            </div>
+            <div class="box-content">
+                <div class="form-horizontal">
+                    <div class="box-content">
+                        <div class="form-group">
+                            <div class="col-sm-2">
+                                <button type="button" value="Index" class="btn btn-primary btn-label-left pull-left" onclick="location.href = '@Url.Action("Index", "Registration")'">
+                                    <span><i class="fa fa-list-ul"></i></span>
+                                    Back to List
+                                </button>
+                            </div>
+                            <div class="col-sm-offset-8 col-sm-2">
+                                <button type="submit" value="Edit" title="Save" onclick="PrintForm()" class="btn btn-primary btn-label-left pull-right">
+                                    <span><i class="fa fa-print"></i></span>
+                                    Print
+                                </button>
+                            </div>
+                        </div>
+                        <div id="printDiv">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <strong>Registration Details For PRN - @Model.PrnNo</strong>
+                                </div>
+                                <div class="panel-body">
+                                    <div id="collapse1" class="panel-body panel-collapse">
+                                        <ul class="nav nav-tabs " role="tablist">
+                                            <li role="presentation" class="active">
+                                                <a href="#RegistrationInfo" aria-controls="RegistrationInfo"
+                                                   role="tab" data-toggle="tab">Registration Info</a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a href="#PersonalInfo" aria-controls="PersonalInfo"
+                                                   role="tab" data-toggle="tab">Personal Info</a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a href="#ContactInfo" aria-controls="ContactInfo"
+                                                   role="tab" data-toggle="tab">Contact Info</a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a href="#AdditionalInfo" aria-controls="AdditionalInfo"
+                                                   role="tab" data-toggle="tab">University Info</a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a href="#EducationalInfo" aria-controls="EducationalInfo"
+                                                   role="tab" data-toggle="tab">Educational Info</a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a href="#Others" aria-controls="Others"
+                                                   role="tab" data-toggle="tab">Others</a>
+                                            </li>
+                                        </ul>
+                                        <div class="tab-content">
+                                        <div role="tabpanel" class="tab-pane active" id="RegistrationInfo">
+                                            <div class="form-group  has-feedback">
+                                                <label class="col-sm-2 control-label">Year of Admission :</label>
+                                                <div class="col-sm-2 control-label">
+                                                    @Html.DisplayFor(m => m.Year)
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Centre :</label>
+                                                <div class="col-sm-10 control-label">
+                                                    @Html.DisplayFor(m => m.CentreName)
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">College :</label>
+                                                <div class="col-sm-10 control-label">
+                                                    (@Html.DisplayFor(m => m.CollegeId))  @Html.DisplayFor(m => m.CollegeName)
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Centre :</label>
+                                                <div class="col-sm-10 control-label">
+                                                    (@Html.DisplayFor(m => m.CentreId))  @Html.DisplayFor(m => m.CentreName)
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Course Type :</label>
+                                                <div class="col-sm-10 control-label">
+                                                    (@Html.DisplayFor(m => m.CourseTypeId))  @Html.DisplayFor(m => m.CourseTypeName)
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Course :</label>
+                                                <div class="col-sm-10 control-label">
+                                                    (@Html.DisplayFor(m => m.CourseId))  @Html.DisplayFor(m => m.CourseName)
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Course Part Name :</label>
+                                                <div class="col-sm-10 control-label">
+                                                    (@Html.DisplayFor(m => m.CoursePartId))  @Html.DisplayFor(m => m.CoursePartName)
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Branch :</label>
+                                                <div class="col-sm-10 control-label">
+                                                    (@Html.DisplayFor(m => m.BranchId))  @Html.DisplayFor(m => m.BranchName)
+                                                </div>
+                                            </div>
+                                            <div class="form-group  has-feedback">
+                                                <label class="col-sm-2 control-label">Student Name :</label>
+                                                <div class="col-sm-4 control-label">
+                                                    @Html.DisplayFor(m => m.StudentName)
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Gender :</label>
+                                                <div class="col-sm-4">
+                                                    @Html.DisplayFor(m => m.Gender)
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div role="tabpanel" class="tab-pane" id="PersonalInfo">
+                                            <div class="form-group has-feedback">
+                                                <label class="col-sm-2 control-label">Local Address :</label>
+                                                <div class="col-sm-4 control-label">
+                                                    @Html.DisplayFor(m => m.LocalAddress)
+                                                </div>
+                                                <label class="col-sm-2 control-label ">DOB :</label>
+                                                <div class="col-sm-4 control-label">
+                                                    @String.Format("{0:dd-MMM-yyyy}", Model.Dob)
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label ">Mobile :</label>
+                                                <div class="col-sm-4 control-label">
+                                                    @Html.DisplayFor(m => m.Mobile1)
+                                                </div>
+                                                <label class="col-sm-2 control-label ">Student Email :</label>
+                                                <div class="col-sm-4 control-label">
+                                                    @Html.DisplayFor(m => m.StudentEmail)
+                                                </div>
+                                            </div>
+                                            <div class="form-group  has-feedback">
+                                                <label class="col-sm-2 control-label">Birth Place :</label>
+                                                <div class="col-sm-4 control-label">
+                                                    @Html.DisplayFor(m => m.BirthPlace)
+                                                </div>
+                                                <label class="col-sm-2 ">Birth District :</label>
+                                                <div class="col-sm-4 control-label">
+                                                    @Html.DisplayFor(m => m.BirthPlaceDistrictName)
+                                                </div>
+                                            </div>
+                                            <div class="form-group  has-feedback">
+                                                <label class="col-sm-2 control-label">Birth State:</label>
+                                                <div class="col-sm-4 control-label">
+                                                    @Html.DisplayFor(m => m.BirthPlaceStateName)
+                                                </div>
+                                                <label class="col-sm-2 control-label ">Birth Country :</label>
+                                                <div class="col-sm-4 control-label">
+                                                    @Html.DisplayFor(m => m.BirthPlaceCountryName)
+                                                </div>
+                                            </div>
+                                            <div class="form-group  has-feedback">
+                                                <label class="col-sm-2 control-label">If Backward :</label>
+                                                <div class="col-sm-4 control-label">
+                                                    @Html.DisplayFor(m => m.IfBackward)
+                                                </div>
+                                                <label class="col-sm-2 control-label ">Minority :</label>
+                                                <div class="col-sm-4 control-label">
+                                                    @Html.DisplayFor(model => model.Minority)
+                                                </div>
+                                            </div>
+                                            <div class="form-group  has-feedback">
+                                                <label class="col-sm-2 control-label">Religion :</label>
+                                                <div class="col-sm-4 control-label">
+                                                    @Html.DisplayFor(m => m.Religion)
+                                                </div>
+                                                <label class="col-sm-2 control-label ">Caste :</label>
+                                                <div class="col-sm-4 control-label">
+                                                    @Html.DisplayFor(m => m.Caste)
+                                                </div>
+                                            </div>
+                                            <div class="form-group  has-feedback">
+                                                <label class="col-sm-2 control-label"> Nationality:</label>
+                                                <div class="col-sm-4 control-label">
+                                                    @Html.DisplayFor(m => m.Nationality)
+                                                </div>
+                                                <label class="col-sm-2 control-label ">Native Place:</label>
+                                                <div class="col-sm-4 control-label">
+                                                    @Html.DisplayFor(m => m.NativePlace)
+                                                </div>
+                                            </div>
+                                            <div class="form-group  has-feedback">
+                                                <label class="col-sm-2 control-label ">Domocile District:</label>
+                                                <div class="col-sm-4 control-label">
+                                                    @Html.DisplayFor(m => m.DomicileDistrictName)
+                                                </div>
+                                                <label class="col-sm-2 control-label ">Domocile State:</label>
+                                                <div class="col-sm-4 control-label">
+                                                    @Html.DisplayFor(m => m.DomicileStateName)
+                                                </div>
+                                            </div>
+                                            <div class="form-group  has-feedback">
+                                                <label class="col-sm-2 control-label">Area :</label>
+                                                <div class="col-sm-4 control-label">
+                                                    @Html.DisplayFor(m => m.Area)
+                                                </div>
+                                                <label class="col-sm-2 control-label ">Blood Group:</label>
+                                                <div class="col-sm-4 control-label">
+                                                    @Html.DisplayFor(m => m.BloodGroup)
+                                                </div>
+                                            </div>
+                                            <div class="form-group  has-feedback">
+                                                <label class="col-sm-2 control-label">NAD Id :</label>
+                                                <div class="col-sm-4 control-label">
+                                                    @Html.DisplayFor(m => m.FormNo)
+                                                </div>
+                                            </div>
+                                            <div class="form-group  has-feedback">
+                                                <label class="col-sm-2 control-label">Photo :</label>
+                                                <div class="col-sm-4 control-label">
+                                                    <img src="@photoImageSource" width=200px height=200px />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div role="tabpanel" class="tab-pane" id="ContactInfo">
+                                                <div class="form-group  has-feedback">
+                                                    <label class="col-sm-2 control-label">Father Name :</label>
+                                                    <div class="col-sm-4 control-label">
+                                                        @Html.DisplayFor(m => m.FatherName)
+                                                    </div>
+                                                    <label class="col-sm-2 control-label ">Mother Name :</label>
+                                                    <div class="col-sm-4 control-label">
+                                                        @Html.DisplayFor(m => m.MotherName)
+                                                    </div>
+                                                </div>
+                                                <div class="form-group  has-feedback">
+                                                    <label class="col-sm-2 control-label">Permanent Add. :</label>
+                                                    <div class="col-sm-4 control-label">
+                                                        <address>
+                                                            @Model.PermanentAddress
+                                                        </address>
+                                                    </div>
+                                                    <label class="col-sm-2 control-label ">City :</label>
+                                                    <div class="col-sm-4 control-label">
+                                                        @Html.DisplayFor(model => model.CityName)
+                                                    </div>
+                                                </div>
+                                                <div class="form-group  has-feedback">
+                                                    <label class="col-sm-2 control-label ">State :</label>
+                                                    <div class="col-sm-4 control-label">
+                                                        @Html.DisplayFor(model => model.StateName)
+                                                    </div>
+                                                    <label class="col-sm-2 control-label ">Country :</label>
+                                                    <div class="col-sm-4 control-label">
+                                                        @Html.DisplayFor(model => model.CountryName)
+                                                    </div>
+                                                </div>
+                                                <div class="form-group  has-feedback">
+                                                    <label class="col-sm-2 col-sm-offset-6">Pin Code :</label>
+                                                    <div class="col-sm-4 control-label">
+                                                        @Html.DisplayFor(model => model.Pincode)
+                                                    </div>
+                                                </div>
+                                                <div class="form-group  has-feedback">
+                                                    <label class="col-sm-2 ">Email :</label>
+                                                    <div class="col-sm-4 control-label">
+                                                        @Html.DisplayFor(model => model.ParentEmail)
+                                                    </div>
+                                                    <label class="col-sm-2 control-label ">Residence Phone :</label>
+                                                    <div class="col-sm-4 control-label">
+                                                        @Html.DisplayFor(m => m.ParentTelephone)
+                                                    </div>
+                                                </div>
+                                                <div class="form-group  has-feedback">
+                                                    <label class="col-sm-2 control-label">Parent Qualification :</label>
+                                                    <div class="col-sm-4">
+                                                        @Html.DisplayFor(model => model.ParentQualification)
+                                                    </div>
+                                                    <label class="col-sm-2 control-label ">Parent Mobile No : </label>
+                                                    <div class="col-sm-4 control-label">
+                                                        @Html.DisplayFor(model => model.ParentMobileNo)
+                                                    </div>
+                                                </div>
+                                                <div class="form-group  has-feedback">
+                                                    <label class="col-sm-2 control-label">Parent Occupation :</label>
+                                                    <div class="col-sm-4">
+                                                        @Html.DisplayFor(model => model.ParentOccupation)
+                                                    </div>
+                                                    <label class="col-sm-2 control-label ">Office Name : </label>
+                                                    <div class="col-sm-4 control-label">
+                                                        @Html.DisplayFor(model => model.ParentOfficeName)
+                                                    </div>
+                                                </div>
+                                                <div class="form-group  has-feedback">
+                                                    <label class="col-sm-2 control-label">Office Phone :</label>
+                                                    <div class="col-sm-4">
+                                                        @Html.DisplayFor(model => model.ParentOfficeTelephone)
+                                                    </div>
+                                                    <label class="col-sm-2 control-label ">Office Mobile : </label>
+                                                    <div class="col-sm-4 control-label">
+                                                        @Html.DisplayFor(model => model.ParentOfficeMobile)
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <div class="form-group  has-feedback">
+                                                    <label class="col-sm-2 control-label">Guardian Name : </label>
+                                                    <div class="col-sm-4 control-label">
+                                                        @Html.DisplayFor(model => model.GuardianName)
+                                                    </div>
+                                                    <label class="col-sm-2 control-label ">Guardian Address : </label>
+                                                    <div class="col-sm-4 control-label">
+                                                        <address>
+                                                            @Model.LocalGuardianAddress
+                                                        </address>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group  has-feedback">
+                                                    <label class="col-sm-2 control-label ">City :</label>
+                                                    <div class="col-sm-4 control-label">
+                                                        @Html.DisplayFor(model => model.CityName1)
+                                                    </div>
+                                                    <label class="col-sm-2 control-label ">State :</label>
+                                                    <div class="col-sm-4 control-label">
+                                                        @Html.DisplayFor(model => model.StateName1)
+                                                    </div>
+                                                </div>
+                                                <div class="form-group  has-feedback">
+                                                    <label class="col-sm-2 control-label ">Country :</label>
+                                                    <div class="col-sm-4 control-label">
+                                                        @Html.DisplayFor(model => model.CountryName)
+                                                    </div>
+                                                    <label class="col-sm-2 control-label  ">Pin Code :</label>
+                                                    <div class="col-sm-4 control-label ">
+                                                        @Html.DisplayFor(model => model.Pincode)
+                                                    </div>
+                                                </div>
+                                                <div class="form-group  has-feedback">
+                                                    <label class="col-sm-2 control-label ">Mobile No :</label>
+                                                    <div class="col-sm-4 control-label">
+                                                        @Html.DisplayFor(m => m.GuardianMobileNo)
+                                                    </div>
+                                                    <label class="col-sm-2 control-label">Email :</label>
+                                                    <div class="col-sm-4 control-label">
+                                                        @Html.DisplayFor(m => m.GuardianEmail)
+                                                    </div>
+                                                </div>
+                                                <div class="form-group  has-feedback">
+                                                    <label class="col-sm-4 control-label ">Relationship With Student :</label>
+                                                    <div class="col-sm-6 control-label">
+                                                        @Html.DisplayFor(model => model.RelationshipWithCandidate)
+                                                    </div>
+                                                </div>
+                                                <div class="form-group  has-feedback">
+                                                    <label class="col-sm-2 control-label">Annual Income :</label>
+                                                    <div class="col-sm-4 control-label ">
+                                                        @Html.DisplayFor(model => model.AnnualIncome)
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <div role="tabpanel" class="tab-pane" id="AdditionalInfo">
+                                                <div class="form-group  has-feedback">
+                                                    <label class="col-sm-2 control-label">General Register No :</label>
+                                                    <div class="col-sm-3">
+                                                        @Html.DisplayFor(model => model.RegisterNo)
+                                                    </div>
+                                                    <label class="col-sm-3 control-label col-sm-offset-1">Enrollment No : </label>
+                                                    <div class="col-sm-3 control-label">
+                                                        @Html.DisplayFor(model => model.EnrollmentNo)
+                                                    </div>
+                                                </div>
+                                                <div class="form-group  has-feedback">
+                                                    <label class="col-sm-2 control-label">PAN :</label>
+                                                    <div class="col-sm-3">
+                                                        @Html.DisplayFor(model => model.Pan)
+                                                    </div>
+                                                    <label class="col-sm-3 col-sm-offset-1 control-label ">Aadhaar No : </label>
+                                                    <div class="col-sm-3 control-label">
+                                                        @Html.DisplayFor(model => model.AdhaarNo)
+                                                    </div>
+                                                </div>
+                                                <div class="form-group  has-feedback">
+                                                    <label class="col-sm-2 control-label">Date Of Admission :</label>
+                                                    <div class="col-sm-3 control-label">
+                                                        @String.Format("{0:dd-MMM-yyyy}", Model.AdmissionDate)
+                                                    </div>
+                                                    <label class="col-sm-3 col-sm-offset-1 control-label ">Date Of Leaving : </label>
+                                                    <div class="col-sm-3 control-label">
+                                                        @String.Format("{0:dd-MMM-yyyy}", Model.LeavingDate)
+                                                    </div>
+                                                </div>
+                                                <div class="form-group  has-feedback">
+                                                    <label class="col-sm-2 control-label">Passport No :</label>
+                                                    <div class="col-sm-3">
+                                                        @Html.DisplayFor(model => model.PassportNo)
+                                                    </div>
+                                                    <label class="col-sm-3 col-sm-offset-1 control-label ">Passport Issued On : </label>
+                                                    <div class="col-sm-3 control-label">
+                                                        @String.Format("{0:dd-MMM-yyyy}", Model.PassportIssuedOn)
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group  has-feedback">
+                                                    <label class="col-sm-2 control-label">Renewed Passport No:</label>
+                                                    <div class="col-sm-3 control-label">
+                                                        @Html.DisplayFor(model => model.RenewedPassportNo)
+                                                    </div>
+                                                    <label class="col-sm-3 col-sm-offset-1 control-label ">Renewed Passport Issued On : </label>
+                                                    <div class="col-sm-3 control-label">
+                                                        @String.Format("{0:dd-MMM-yyyy}", Model.RenewedPassportIssuedOn)
+                                                    </div>
+                                                </div>
+                                                <div class="form-group  has-feedback">
+                                                    <label class="col-sm-2 control-label">Visa No :</label>
+                                                    <div class="col-sm-3">
+                                                        @Html.DisplayFor(model => model.VisaNo)
+                                                    </div>
+                                                    <label class="col-sm-3 col-sm-offset-1 control-label ">Visa Issued On : </label>
+                                                    <div class="col-sm-3 control-label">
+                                                        @String.Format("{0:dd-MMM-yyyy}", Model.VisaIssuedOn)
+                                                    </div>
+                                                </div>
+                                                <div class="form-group  has-feedback">
+                                                    <label class="col-sm-2 control-label">Admission Cancelled :</label>
+                                                    <div class="col-sm-3">
+                                                        @Html.DisplayFor(model => model.IsAdmissionCancelled)
+                                                    </div>
+                                                    <label class="col-sm-3 col-sm-offset-1 control-label ">Admission Cancelled Date : </label>
+                                                    <div class="col-sm-3 control-label">
+                                                        @String.Format("{0:dd-MMM-yyyy}", Model.AdmissionCancelledDate)
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 col-sm-offset-6 control-label">Eligibility No :</label>
+                                                    <div class="col-sm-3">
+                                                        @Html.DisplayFor(model => model.EligibilityNo)
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <div role="tabpanel" class="tab-pane" id="EducationalInfo">
+                                                <div class="panel-heading">
+                                                    <strong>Previous Exam Details ( For the admission above mention Course )</strong>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2 control-label">Exam Name :</label>
+                                                        <div class="col-sm-3 control-label">
+                                                            @Html.DisplayFor(m => m.ExamName)
+                                                        </div>
+                                                        <label class="col-sm-3 col-sm-offset-1 control-label ">Qualifying Examinations:</label>
+                                                        <div class="col-sm-3 control-label">
+                                                            @Model.QualifyingExaminations
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group has-feedback">
+                                                        <label class="col-sm-2 control-label ">Subject List :</label>
+                                                        <div class="col-sm-3 control-label">
+                                                                @Model.ExamSubjectList
+                                                        </div>
+                                                        <label class="col-sm-3 col-sm-offset-1 control-label ">Qualifying Subjects :</label>
+                                                        <div class="col-sm-3 control-label">
+                                                            @Model.QualifyingSubjects
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2 control-label">Exam Attempts :</label>
+                                                        <div class="col-sm-3 control-label">
+                                                            @Html.DisplayFor(m => m.QualifyingExamAttempts)
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2 control-label ">Total Marks :</label>
+                                                        <div class="col-sm-3 control-label">
+                                                            @Html.DisplayFor(m => m.QualifyingExamTotalMarks)
+                                                        </div>
+                                                        <label class="col-sm-3 col-sm-offset-1 control-label ">Marks Out Of:</label>
+                                                        <div class="col-sm-3 control-label">
+                                                            @Html.DisplayFor(m => m.QualifyingExamOutOfMarks)
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2 control-label ">SSC Total Marks :</label>
+                                                        <div class="col-sm-3 control-label">
+                                                            @Html.DisplayFor(m => m.SscTotalMarks)
+                                                        </div>
+                                                        <label class="col-sm-3 col-sm-offset-1 control-label ">SSc Marks Out Of:</label>
+                                                        <div class="col-sm-3 control-label">
+                                                            @Html.DisplayFor(m => m.SscMarksOutOf)
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2 control-label ">HSC Total Marks :</label>
+                                                        <div class="col-sm-3 control-label">
+                                                            @Html.DisplayFor(m => m.HscTotalMarks)
+                                                        </div>
+                                                        <label class="col-sm-3 col-sm-offset-1 control-label ">HSc Marks Out Of:</label>
+                                                        <div class="col-sm-3 control-label">
+                                                            @Html.DisplayFor(m => m.HscMarksOutOf)
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group  has-feedback">
+                                                        <label class="col-sm-2 control-label">UG Total Marks :</label>
+                                                        <div class="col-sm-3 control-label">
+                                                            @Html.DisplayFor(m => m.UgTotalMarks)
+                                                        </div>
+                                                        <label class="col-sm-3 col-sm-offset-1 control-label">UG Marks Out Of :</label>
+                                                        <div class="col-sm-3 control-label">
+                                                            @Html.DisplayFor(m => m.UgMarksOutOf)
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <div role="tabpanel" class="tab-pane" id="Others">
+                                                <div class="form-group  has-feedback">
+                                                    <label class="col-sm-2 control-label">Extra Activities :</label>
+                                                    <div class="col-sm-4 control-label">
+                                                        <address>
+                                                            @Model.ExtraCurricularActivities
+                                                        </address>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group  has-feedback">
+                                                    <label class="col-sm-2 control-label">Relatives Details :</label>
+                                                    <div class="col-sm-4 control-label">
+                                                        <address>
+                                                            @Model.CloseRelativeDetails
+                                                        </address>
+                                                    </div>
+                                                </div>
+                                                <div class="alert alert-warning col-sm-12">
+                                                    <strong>Note : </strong> Qualifying Examination Images Upload.
+                                                </div>
+                                                <div class="form-group  has-feedback">
+                                                    <label class="col-sm-2 control-label">Upload Jpeg Image - 1:</label>
+                                                    <div class="col-sm-4 control-label">
+                                                        <img src="@document1ImageSource" width="200px" height="200px" />
+
+                                                    </div>
+                                                    <label class="col-sm-2 control-label">Upload Jpeg Image - 2:</label>
+                                                    <div class="col-sm-4 control-label">
+                                                        <img src="@document2ImageSource" width="200px" height="200px" />
+                                                    </div>
+                                                </div><hr />
+                                                <div class="form-group  has-feedback">
+                                                    <label class="col-sm-2 control-label ">Upload Jpeg Image - 3:</label>
+                                                    <div class="col-sm-4 control-label">
+                                                        <img src="@document3ImageSource" width="200px" height="200px" />
+                                                    </div>
+                                                    <label class="col-sm-2 control-label">Upload Jpeg Image - 4:</label>
+                                                    <div class="col-sm-4 control-label">
+                                                        <img src="@document4ImageSource" width="200px" height="200px" />
+                                                    </div>
+                                                </div><hr />
+                                                <div class="form-group  has-feedback">
+                                                    <label class="col-sm-2 control-label">Upload Jpeg Image - 5:</label>
+                                                    <div class="col-sm-4 control-label">
+                                                        <img src="@document5ImageSource" width="200px" height="200px" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <button type="button" value="Index" class="btn btn-primary btn-label-left pull-left" onclick="location.href = '@Url.Action("Index", "Registration")'">
+                                            <span><i class="fa fa-list-ul"></i></span>
+                                            Back to List
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            function PrintForm() {
+                alert("In Print");
+                $("#printDiv").printThis();
+            }
+
+            function DemoGallery() {
+                $('.fancybox').fancybox({
+                    openEffect: 'none',
+                    closeEffect: 'none'
+                });
+            }
+            $(document).ready(function () {
+
+                //// Add tooltip to form-controls
+                $('.form-control').tooltip();
+
+                //// Add tooltip to form-controls
+                $('.form-control').tooltip();
+
+                LoadSelect2Script(DemoSelect2);
+
+                //// Load example of form validation
+                LoadBootstrapValidatorScript(DemoFormValidator);
+                LoadFancyboxScript(DemoGallery);
+                //onSelectedIndexChanged();
+            });
+
+            function DemoSelect2() {
+                $('#s2_course').select2({ placeholder: "Select Course" });
+                $('#s2_college').select2({ placeholder: "Select Faculty" });
+                $('#s2_coursepart').select2({ placeholder: "Select Course Part" });
+                $('#s2_coursetype').select2({ placeholder: "Select Course type" });
+                $('#s2_branch').select2({ placeholder: "Select Branch" });
+                $('#s2_IfBackward').select2({ placeholder: "Select Backward" });
+                $('#s2_state').select2({ placeholder: "Select State" });
+                $('#s2_city').select2({ placeholder: "Select City" });
+                $('#s2_state1').select2({ placeholder: "Select State" });
+                $('#s2_city1').select2({ placeholder: "Select City" });
+            }
+
+        </script>
+    </div>
+</div>
+
+
+
+

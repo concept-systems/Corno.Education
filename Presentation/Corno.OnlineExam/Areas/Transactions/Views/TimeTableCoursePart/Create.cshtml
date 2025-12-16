@@ -1,0 +1,174 @@
+﻿@model Corno.Data.Corno.TimeTable
+@using Kendo.Mvc.UI;
+@{
+    ViewBag.Title = "Course Part Time Table";
+}
+
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Online Exam</a></li>
+            <li><a href="#">Time Table</a></li>
+        </ol>
+    </div>
+</div>
+@Html.ValidationSummary(false)
+@if (TempData["Success"] != null)
+{
+    <script type="text/javascript">
+        bootbox.alert("@TempData["Success"]")
+    </script>
+}
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <div class="box ui-draggable ui-droppable">
+            <div class="box-header">
+                <div class="box-name">
+                    <i class="fa fa-plus-square large"></i>
+                    <span>Course Part Time Table </span>
+                </div>
+                <div class="box-icons">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="expand-link">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+                <div class="no-move"></div>
+            </div>
+            <div class="box-content">
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form", enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    @Html.HiddenFor(m => m.Id)
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-sm-2 text-center">
+                                <button type="button" value="Index" class="btn btn-primary btn-label-left" onclick="location.href = '@Url.Action("Details", new {area = "Reports", controller = "Report", reportName = "TimeTableCoursePartRpt", description = "Circular No. 101"})' ">
+                                    <span><i class="fa fa-file-excel-o"></i></span>
+                                    Report
+                                </button>
+                            </div>
+                            <div class="col-sm-offset-8 col-sm-2">
+                                <button type="submit" value="Create" title="Save" class="btn btn-primary btn-label-left pull-right">
+                                    <span><i class="fa fa-save"></i></span>
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <strong>Time Table [<font color="red">Please Press TAB After Every Entry</font>] </strong>
+                            </div>
+                            <div class="panel-body">
+                                <div class="tab-content">
+                                    @{Html.RenderPartial("Partial/_StudentInfoEdit_Upto_Course");}
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-10 col-sm-2 text-right">
+                                        <button type="submit" id="submit" name="submitType" value="Search" class="btn btn-warning" onclick="getTimeTableInfo">
+                                            <span><i class="fa fa-search"></i> Find Subjects</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="form-group  has-feedback">
+                                    <table class="table table-bordered table-responsive table-hover table-heading table-datatable" id="datatable">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center col-sm-3">Course Part</th>
+                                                <th class="text-center col-sm-1">Group</th>
+                                                <th class="text-center col-sm-2">Start Date</th>
+                                                <th class="text-center col-sm-2">End Date</th>
+                                                <th class="text-center col-sm-1">Start Time</th>
+                                                <th class="text-center col-sm-1">End Time</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tBody">
+                                        @{
+                                            var index = 0;
+                                            var subjectType = string.Empty;
+                                            Model.TimeTableCoursePartDetails = Model.TimeTableCoursePartDetails.OrderBy(t => t.CoursePartId)
+                                                .ToList();
+                                        }
+                                        @foreach (var item in Model.TimeTableCoursePartDetails)
+                                        {
+                                           <tr>
+                                                <td>
+                                                    @Html.Hidden("TimeTableCoursePartDetails[" + index + "].CoursePartName", item.CoursePartName)
+                                                    @Html.Hidden("TimeTableCoursePartDetails[" + index + "].CoursePartId", item.CoursePartId)
+
+                                                    @Html.DisplayFor(m => m.TimeTableCoursePartDetails.ToList()[index].CoursePartName)
+                                                    (@Html.DisplayFor(m => m.TimeTableCoursePartDetails.ToList()[index].CoursePartId))
+                                                </td>
+                                                <td class="text-center" style="width: 50px;">
+                                                    @Html.TextBox("TimeTableCoursePartDetails[" + index + "].SubjectGroup", item.SubjectGroup, new {style = "width: 50px;", @class = "form-control"})
+                                                    @Html.Hidden("TimeTableCoursePartDetails[" + index + "].SubjectGroup", item.SubjectGroup)
+                                                </td>
+                                                <td class="text-center">
+                                                    @(Html.Kendo().DatePicker()
+                                                          .Name("TimeTableCoursePartDetails[" + index + "].StartDate")
+                                                          .Format("dd-MMM-yyyy dddd")
+                                                          .Value(item.StartDate)
+                                                          .HtmlAttributes(new {style = "width: 100%"})
+                                                          )
+                                                </td>
+                                                <td class="text-center">
+                                                    @(Html.Kendo().DatePicker()
+                                                          .Name("TimeTableCoursePartDetails[" + index + "].EndDate")
+                                                          .Format("dd-MMM-yyyy dddd")
+                                                          .Value(item.EndDate)
+                                                          .HtmlAttributes(new {style = "width: 100%"})
+                                                          )
+                                                </td>
+
+                                                <td class="text-center">
+                                                    @(Html.Kendo().TimePicker()
+                                                          .Name("TimeTableCoursePartDetails[" + index + "].StartTime")
+                                                          .Format("hh:mm tt")
+                                                          .Value(item.StartTime)
+                                                          .HtmlAttributes(new {style = "width: 100%"})
+                                                          )
+                                                </td>
+                                                <td class="text-center">
+                                                    @(Html.Kendo().TimePicker()
+                                                          .Name("TimeTableCoursePartDetails[" + index + "].EndTime")
+                                                          .Format("hh:mm tt")
+                                                          .Value(item.EndTime)
+                                                          .HtmlAttributes(new {style = "width: 100%"})
+                                                          )
+                                                </td>
+                                            </tr>
+                                            index++;
+                                        }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-10 col-sm-2">
+                                <button type="submit" value="Create" title="Save" class="btn btn-primary btn-label-left pull-right">
+                                    <span><i class="fa fa-save"></i></span>
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('#submit').change(function () {
+        $('#form').append('<input type="text" name="submitType" value="Search" />');
+        $("form").submit();
+    });
+</script>

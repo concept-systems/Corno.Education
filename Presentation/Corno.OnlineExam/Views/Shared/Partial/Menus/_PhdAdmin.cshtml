@@ -1,0 +1,50 @@
+﻿<li>
+    <a href="@Url.Action("Index", "Home")" data-toggle="tooltip" data-placement="bottom" title="Home">
+        <i class="fa fa-home"></i>
+        <span class="hidden-xs">Home</span>
+    </a>
+</li>
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" title="Data Entry">
+        <i class="fa fa-credit-card"></i>
+        <span class="k-font-weight-bold">Data Entry</span>
+        <i class="fa fa-angle-double-down pull-right hidden-xs"></i>
+        @*<span class="label label-success pull-right hidden-xs">8</span>*@
+    </a>
+    <ul class="dropdown-menu padding-15">
+        <li>
+            <a href="@Url.Action("Index", "PhDFaculty", new { area = "PhD" })" data-toggle="tooltip" data-placement="bottom">
+                <i class="fa fa-book"></i>
+                <span class="hidden-xs">Faculty</span>
+            </a>
+            <a href="@Url.Action("Index", "PhDSubject", new { area = "PhD" })" data-toggle="tooltip" data-placement="bottom">
+                <i class="fa fa-book"></i>
+                <span class="hidden-xs">Subject</span>
+            </a>
+            <a href="@Url.Action("Index", new { area = "PhD", controller = "ResearchCenter" })" data-toggle="tooltip" data-placement="bottom">
+                <i class="fa fa-book"></i>
+                <span class="hidden-xs">Research Center</span>
+            </a>
+            <a href="@Url.Action("Index", new { area = "PhD", controller = "Guide" })" data-toggle="tooltip" data-placement="bottom">
+                <i class="fa fa-book"></i>
+                <span class="hidden-xs">Guide</span>
+            </a>
+            <a href="@Url.Action("Index", new { area = "PhD", controller = "CoGuide" })" data-toggle="tooltip" data-placement="bottom">
+                <i class="fa fa-book"></i>
+                <span class="hidden-xs">Co-Guide</span>
+            </a>
+            <a href="@Url.Action("Index", new { area = "PhD", controller = "Referee" })" data-toggle="tooltip" data-placement="bottom">
+                <i class="fa fa-book"></i>
+                <span class="hidden-xs">Referee</span>
+            </a>
+            <a href="@Url.Action("Index", new { area = "PhD", controller = "Student" })" data-toggle="tooltip" data-placement="bottom">
+                <i class="fa fa-book"></i>
+                <span class="hidden-xs">Scholar</span>
+            </a>
+            <a href="@Url.Action("Index", new { area = "PhD", controller = "Fee" })" data-toggle="tooltip" data-placement="bottom">
+                <i class="fa fa-book"></i>
+                <span class="hidden-xs">Fees</span>
+            </a>
+        </li>
+    </ul>
+</li>

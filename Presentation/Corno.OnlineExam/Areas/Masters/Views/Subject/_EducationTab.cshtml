@@ -1,0 +1,134 @@
+﻿@using Corno.Data.Helpers
+@using Corno.Globals.Constants
+@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Masters.Subject
+
+@{
+    var formEnabled = ViewData[ModelConstants.FormEnabled].ToBoolean();
+}
+
+<div class="">
+    <div class="col-sm-6">
+        <div class="form-group row">
+            @Html.LabelFor(m => m.FacultyId, "Faculty :",
+                new { @class = "col-sm-3 control-label" })
+            <div class="col-sm-8">
+                @(Html.Kendo().MultiColumnComboBoxFor(m => m.FacultyId)
+                    //.Enable(Model.EnableHeader)
+                    .DataTextField(ModelConstants.NameWithId)
+                    .DataValueField(ModelConstants.Id)
+                    .HtmlAttributes(new { @class = "w-100" })
+                    .Filter("contains")
+                    .Placeholder("Select ...")
+                    .Columns(columns =>
+                    {
+                        columns.Add().Field(ModelConstants.Id).Title(ModelConstants.Id).Width("100px");
+                        columns.Add().Field(ModelConstants.Name).Title(ModelConstants.Name).Width("600px");
+                    })
+                    .DataSource(dataSource => dataSource
+                        .Read(read => read.Action("GetFaculties", "Corno"))
+                    ))
+                @*@Html.ValidationMessageFor(m => m.FacultyId)*@
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(m => m.CourseId, "Course :",
+                new { @class = "col-sm-3 control-label" })
+            <div class="col-sm-8">
+                @(Html.Kendo().MultiColumnComboBoxFor(m => m.CourseId)
+                    //.Enable(Model.EnableHeader)
+                    .DataTextField(ModelConstants.NameWithId)
+                    .DataValueField(ModelConstants.Id)
+                    .HtmlAttributes(new { @class = "w-100" })
+                    .Filter("contains")
+                    .Placeholder("Select ...")
+                    .Columns(columns =>
+                    {
+                        columns.Add().Field(ModelConstants.Id).Title(ModelConstants.Id).Width("100px");
+                        columns.Add().Field(ModelConstants.Name).Title(ModelConstants.Name).Width("600px");
+                    })
+                    .DataSource(dataSource =>
+                    {
+                        dataSource.Read(read => { read.Action("GetCoursesByFaculty", "Corno").Data("filterCourses"); })
+                            .ServerFiltering(true);
+                    })
+                    .Enable(false)
+                    .AutoBind(false)
+                    .CascadeFrom(ModelConstants.FacultyId))
+                <script>
+                    function filterCourses() {
+                        return {
+                            FacultyId: $("#FacultyId").val(),
+                        }
+                    }
+                </script>
+                @*@Html.ValidationMessageFor(m => m.CourseId)*@
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(m => m.CoursePartId, "Course Part :",
+                new { @class = "col-sm-3 control-label" })
+            <div class="col-sm-8">
+                @(Html.Kendo().MultiColumnComboBoxFor(m => m.CoursePartId)
+                    //.Enable(Model.EnableHeader)
+                    .DataTextField(ModelConstants.NameWithId)
+                    .DataValueField(ModelConstants.Id)
+                    .HtmlAttributes(new { @class = "w-100" })
+                    .Filter("contains")
+                    .Placeholder("Select ...")
+                    .Columns(columns =>
+                    {
+                        columns.Add().Field(ModelConstants.Id).Title(ModelConstants.Id).Width("100px");
+                        columns.Add().Field(ModelConstants.Name).Title(ModelConstants.Name).Width("600px");
+                    })
+                    //.BindTo(miscMasterService.GetViewModelList(m => m.MiscType == ModelConstants.PackingType)))
+                    .DataSource(dataSource =>
+                    {
+                        dataSource.Read(read =>
+                        {
+                            read.Action("GetCoursePartsByCourse", "Corno").Data("filterCourseParts");
+                        })
+                            .ServerFiltering(true);
+                    })
+                    .Enable(false)
+                    .AutoBind(false)
+                    .CascadeFrom(ModelConstants.CourseId))
+                <script>
+                    function filterCourseParts() {
+                        return {
+                            courseId: $("#CourseId").val(),
+                        }
+                    }
+                </script>
+                @*@Html.ValidationMessageFor(m => m.CoursePartId)*@
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group row">
+            <div class="col-sm-offset-3 col-sm-8">
+                @(Html.Kendo().CheckBoxFor(m => m.PaperCategoryApplicable)
+                    .HtmlAttributes(new { @class = "w-100" })
+                    .Label("Is Paper Category Applicable"))
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(m => m.SubjectType, "Subject Type :",
+                new { @class = "col-sm-3" })
+            <div class="col-sm-8">
+                @(Html.Kendo().MultiColumnComboBoxFor(m => m.SubjectType)
+                    .DataTextField(ModelConstants.Name)
+                    .DataValueField(ModelConstants.Id)
+                    .HtmlAttributes(new { @class = "w-100" })
+                    .Filter("contains")
+                    .Placeholder("Select ...")
+                    .Enable(formEnabled)
+                    .Columns(columns =>
+                    {
+                        columns.Add().Field(ModelConstants.Code).Title(ModelConstants.Code).Width("250px");
+                        columns.Add().Field(ModelConstants.Name).Title(ModelConstants.Name).Width("300px");
+                    }))
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,157 @@
+﻿@using Corno.Data.Helpers
+@using Corno.Globals.Constants
+@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Masters.Course
+
+@{
+    var formEnabled = ViewData[ModelConstants.FormEnabled].ToBoolean();
+    var action = ViewBag.Action as string;
+}
+
+@using (Html.BeginForm(action, "Course", FormMethod.Post, new { id = "form", enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(false)
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(m => m.Id)
+    <div class="k-card">
+        <div class="k-card-header">
+            <div class="col-sm-10">
+                <h3>@ViewBag.Title</h3>
+            </div>
+            <div class="k-card-actions k-card-actions-horizontal k-card-actions-end col-sm-2">
+                @(Html.Kendo().Button()
+                .Name("back_to_list")
+                .Icon("arrow-left")
+                .SpriteCssClass("k-icon-64")
+                .FillMode(ButtonFillMode.Outline)
+                .ThemeColor(ThemeColor.Info)
+                .Content("Back To list")
+                .Events(e => e.Click("onBackToList"))
+                .HtmlAttributes(new { @class = "w-100" }))
+            </div>
+        </div>
+        <div class="k-card-separator"></div>
+        <div class="k-card-body">
+            @Html.Partial("Partial/Common/_MasterEdit", Model, new ViewDataDictionary { { ModelConstants.FormEnabled, formEnabled } })
+            <div class="row">
+                @(Html.Kendo().TabStrip()
+        .Name("tabStrip")
+        .Items(tabStrip =>
+        {
+            tabStrip.Add().Text("Education Details")
+                .Content(@<text> @Html.Partial("~/Areas/Masters/Views/Course/_EducationTab.cshtml", Model,
+                                     new ViewDataDictionary { { ModelConstants.FormEnabled, formEnabled }})</text>);
+
+            tabStrip.Add().Text("Categories")
+                .Content(@<text>
+                                 @Html.Partial("~/Areas/Masters/Views/Course/_CategoryTab.cshtml", Model)
+                          </text>);
+        }).SelectedIndex(0))
+            </div>
+        </div>
+        <div class="k-card-footer">
+            <div class="row">
+                <div class="col-sm-offset-11 col-sm-1 text-right">
+                    @(Html.Kendo().Button()
+                    .Name("save")
+                    .Icon("save")
+                    .SpriteCssClass("k-icon-64")
+                    .FillMode(ButtonFillMode.Outline)
+                    .ThemeColor(ThemeColor.Success)
+                    .Content("Save")
+                    .HtmlAttributes(new
+                    {
+                        type = "submit",
+                        //name = "action:Create",
+                    }))
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    var categories = [];
+
+    // Function to fetch categories data from server
+    function fetchCategories() {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("GetAllCategories", "Corno")",
+            success: function(data) {
+                categories = data;
+                // Call any functions dependent on categories data here
+                // For example:
+                // populateDropdown(); // If you have a function to populate dropdowns
+            },
+            error: function() {
+                console.log("Failed to fetch categories.");
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        //$("#form").kendoValidator().data("kendoValidator");
+
+        fetchCategories();
+    });
+
+    @*
+    // Fetch categories data from server
+    $.ajax({
+        type: "GET",
+        url: "@Url.Action("GetAllCategories", "Corno")",
+        success: function(data) {
+            categories = data;
+        }
+    });
+    *@
+
+    function getCategoryName(categoryId) {
+        var category = categories.find(c => c.Id === categoryId);
+        return category ? category.Name : "";
+    }
+
+    function adjustContainerWidth() {
+        // Find the container element by its class or any other identifier
+        var container = $(".k-edit-form-container");
+
+        // Set its width to 100% or any other desired value
+        container.css("width", "100%");
+    }
+
+    function onPopupOpen(e) {
+        adjustContainerWidth();
+    }
+
+
+
+    @*function onSelect(e) {
+        if (e.item) {
+            var dataItem = this.dataItem(e.item.index());
+            var categoryName = dataItem.Text;
+            alert(categoryName);
+            $('input[name="CategoryName"]').val(categoryName);
+            kendoConsole.log("event :: select (" + dataItem.Text + " : " + dataItem.Value + ")");
+        } else {
+            kendoConsole.log("event :: select");
+        }
+    }
+
+    function onCategoryChange(e) {
+        var combobox = e.sender;
+        alert("Hi 1");
+        var selectedDataItem = combobox.dataItem(combobox.select());
+        if (selectedDataItem) {
+            var categoryName = selectedDataItem.Name;
+            alert(categoryName + " 1");
+            $('input[name="CategoryName"]').val(categoryName);
+        }
+    }*@
+
+    function onBackToList() {
+        window.location.href = '/Masters/Course/Index';
+    }
+
+</script>

@@ -1,0 +1,43 @@
+﻿@using Corno.Globals.Constants
+@model Corno.Data.Corno.Masters.Staff
+@{
+    var viewDataDictionary = new ViewDataDictionary
+{
+        { ModelConstants.FormEnabled, true },
+        { "Title", "Create New Staff" },
+        { "Action", "Create"}
+    };
+}
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">OnlineExam</a></li>
+            <li><a href="#">Masters</a></li>
+            <li><a href="#">Create Staff</a></li>
+        </ol>
+    </div>
+</div>
+
+@Html.ValidationSummary(false)
+@Html.Partial("~/Areas/Masters/Views/Staff/_Staff.cshtml", Model, viewDataDictionary)
+
+<script>
+    function filterCourses() {
+        return {
+            collegeId: $("#CollegeId").val(),
+        };
+    }
+
+    function filterCourseParts() {
+        return {
+            courseId: $("#CourseId").val(),
+        };
+    }
+
+    function filterSubjects() {
+        return {
+            coursePartId: $("#CoursePartId").val(),
+        };
+    }
+
+</script>

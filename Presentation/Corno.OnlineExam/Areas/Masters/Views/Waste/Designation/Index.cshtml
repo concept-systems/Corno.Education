@@ -1,0 +1,96 @@
+﻿@model IEnumerable<Corno.Data.Masters.DesignationViewModel>
+
+@{
+    ViewBag.Title = "Designation Details";
+}
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">OnlineExam</a></li>
+            <li><a href="#">Billing</a></li>
+            <li><a href="#">Designation</a></li>
+        </ol>
+    </div>
+</div>
+
+<div class="panel panel-primary" >
+    <div class="panel-heading"><strong>Designation Lists</strong>
+        <a href="@Url.Action("Create","Designation")" class="btn btn-small btn-success pull-right">
+            <span><i class="fa fa-plus fa-lg"></i></span> Add New
+        </a>
+            </div>
+
+            <div class="box-content no-padding table-responsive">
+                <table class="table table-bordered table-striped table-responsive table-hover table-heading table-datatable" id="datatable-1">
+                    <thead>
+                        <tr>
+                            <th class="text-center col-sm-1">ID</th>
+                            <th class="text-center col-sm-7">Name</th>
+                            <th class="text-center col-sm-1">Status</th>
+                            <th class="col-sm-2"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="text-center">@item.Id</td>
+                                <td class="text-left">@item.Name</td>
+                               
+                                <td class="text-center">
+                                    @SharedViewFunctions.GetStatus(item.Status)
+                                </td>
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <a class="btn btn-info" href="#"><i class="fa fa-indent"></i> Action </a>
+                                        <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#">
+                                            <span class="fa fa-caret-down"></span>
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li>
+                                                <a href="@Url.Action("Edit", "Designation", new { id = item.Id })" >
+                                                    <span><i class="fa fa-edit large"></i></span> Edit
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="@Url.Action("Delete", "Designation", new { id = item.Id })">
+                                                    <span><i class="fa fa-trash-o large"></i></span> Delete
+                                                </a>
+                                            </li>
+                                        </ul>
+
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Load Datatables and run plugin on tables
+        LoadDataTablesScripts(AllTables);
+        // Add Drag-n-Drop feature
+        WinMove();
+    });
+    // Run Datables plugin and create 3 variants of settings
+    function AllTables() {
+        TestTable1();
+        TestTable2();
+        TestTable3();
+        LoadSelect2Script(MakeSelect2);
+    }
+    function MakeSelect2() {
+        $('select').select2();
+        $('.dataTables_filter').each(function () {
+            $(this).find('label input[type=text]').attr('placeholder', 'Search');
+        });
+    }
+</script>
+
+ 

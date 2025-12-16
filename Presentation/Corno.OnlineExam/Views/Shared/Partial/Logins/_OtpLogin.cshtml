@@ -1,0 +1,93 @@
+﻿@model Corno.Data.Admin.LoginViewModel
+
+@if (TempData["Success"] != null)
+{
+    <div class="text-success">
+        <p>Success: @TempData["Success"].ToString()</p>
+    </div>
+    <script type="text/javascript">
+        bootbox.alert("@TempData["Success"]")
+    </script>
+}
+
+@Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+<div class="k-card">
+    <div class="k-card-body">
+        <div class="form-group row">
+            <label class="col-sm-2 control-label">PRN :</label>
+            <div class="col-sm-6">
+                @(Html.Kendo().TextBoxFor(m => m.Prn)
+                    .Value("1300004696")
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "Enter PRN",
+                        //required = "required",
+                        @class = "w-100"
+                    }))
+            </div>
+            <div class="col-sm-4 k-text-right">
+                @*@(Html.Kendo().Button()
+                    .Name("send_otp")
+                    .Icon("hyperlink-open")
+                    .SpriteCssClass("k-icon-64")
+                    .HtmlAttributes(new
+                    {
+                        type = "submit",
+                        name = "action:SendOtp",
+                        //value = "SendOtp",
+                        @class = "rounded-lg bg-success text-white w-90 col-3"
+                    })
+                    .Content("Send OTP"))*@
+                <button class="w-100 k-button k-button-md k-button-outline k-button-outline-info k-rounded-lg"
+                        id="send_otp" name="action:SendOtp" type="submit" data-role="button" role="button"
+                        aria-disabled="false" tabindex="0">
+                    <span class="k-icon k-i-hyperlink-open k-button-icon">
+                    </span><span class="k-button-text">Send OTP</span>
+                </button>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 control-label">OTP :</label>
+            <div class="col-sm-6">
+                @(Html.Kendo().TextBoxFor(m => m.Otp)
+                        .Value("716269")
+                        .HtmlAttributes(new
+                        {
+                            type = "Otp",
+                            placeholder = "Enter OTP",
+                            //required = "required",
+                            @class = "w-100"
+                        }))
+            </div>
+        </div>
+    </div>
+    <div class="k-card-footer k-card-actions-end">
+        @*@(Html.Kendo().Button()
+            .Name("otp_login")
+            .Icon("login")
+            .SpriteCssClass("k-icon-64")
+            .ThemeColor(ThemeColor.Secondary)
+            .FillMode(ButtonFillMode.Outline)
+            .Rounded(Rounded.Large)
+            .Size(ComponentSize.Large)
+            //.Events(e => e.Click("onOtpButtonClick"))
+            .HtmlAttributes(new
+            {
+                type = "submit",
+                name = "action:OtpLogin",
+                //value = "OtpLogin",
+                @class = "w-100",
+                //style = "height:50px"
+            })
+            .Content("Log in"))*@
+        <div class="form-group row k-text-right">
+            <button class="w-100 k-button k-button-md k-rounded-lg k-button-solid-info"
+                    id="otp_login" name="action:OtpLogin" type="submit" data-role="button" role="button"
+                    aria-disabled="false" tabindex="0">
+                <span class="k-icon k-i-login k-button-icon">
+                </span><span class="k-button-text">Log in</span>
+            </button>
+        </div>
+    </div>
+</div>

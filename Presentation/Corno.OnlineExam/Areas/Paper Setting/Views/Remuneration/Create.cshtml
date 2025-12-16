@@ -1,0 +1,139 @@
+﻿@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Paper_Setting.Models.Remuneration
+
+@{
+    ViewBag.Controller = "Remuneration";
+    ViewBag.Details = "RemunerationDetails";
+    ViewBag.DetailName = "RemunerationDetails";
+    ViewBag.GridCommonAction = "Inline_Create_Update_Destroy";
+}
+
+@if (TempData["Success"] != null)
+{
+    <script type="text/javascript">
+        bootbox.alert("@TempData["Success"]")
+    </script>
+}
+
+<div class="form-horizontal box-content">
+    @using (Html.BeginForm("Create", "Remuneration", FormMethod.Post, new { id = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.ValidationSummary(false)
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(m => m.InstanceId)
+        @Html.HiddenFor(m => m.Id)
+
+        <div class="k-card k-card-vertical">
+            <div class="k-card-header k-card-tertiary"><h3>Remuneration</h3></div>
+            <div class="k-card-body">
+                @{
+                    Html.RenderPartial("Partial/Selection/_Remuneration", Model);
+                }
+                <div class="k-card-actions k-card-actions-horizontal k-card-actions-end">
+                    @(Html.Kendo().Button()
+                        .Name("get_course_parts")
+                        .Icon("search")
+                        .SpriteCssClass("k-icon-64")
+                        .FillMode(ButtonFillMode.Outline)
+                        .ThemeColor(ThemeColor.Tertiary)
+                        .Content("Get Course Parts")
+                        .HtmlAttributes(new
+                        {
+                            type = "submit",
+                            name = "action:GetAllCourseParts",
+                        }))
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered table-responsive table-hover table-heading table-datatable col-sm-12" id="datatable">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" style="width: 50px">Sr. No.</th>
+                                    <th class="text-center">Course Part</th>
+                                    <th class="text-center" style="width: 160px">Fee</th>
+                                    <th class="text-center" style="width: 160px">Version</th>
+                                    <th class="text-center" style="width: 160px">Scheme Of Marking</th>
+                                    <th class="text-center" style="width: 160px">Model Answers</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tBody">
+                                @{
+                                    var index = 0;
+                                }
+                                @foreach (var item in Model.RemunerationDetails)
+                                {
+                                    <tr>
+                                        <td class="text-center">
+                                            @(index + 1)
+                                        </td>
+                                        <td class="text-left">
+                                            @Html.Hidden("RemunerationDetails[" + index + "].CoursePartId", item.CoursePartId)
+                                            @Html.Hidden("RemunerationDetails[" + index + "].CoursePartName", item.CoursePartName)
+                                            @item.CoursePartName
+                                        </td>
+                                        <td class="text-center">
+                                            @(Html.Kendo().NumericTextBox()
+                                                .Name("RemunerationDetails[" + index + "].Fee")
+                                                .Value(item.Fee)
+                                                .Format("n0")
+                                                .Min(0)
+                                                .HtmlAttributes(new { @class= "text-right w-100" }))
+                                        </td>
+                                        <td class="text-center">
+                                            @(Html.Kendo().NumericTextBox()
+                                                .Name("RemunerationDetails[" + index + "].Others")
+                                                .Value(item.Others)
+                                                .Format("n0")
+                                                .Min(0)
+                                                .HtmlAttributes(new { @class= "text-right w-100" }))
+                                        </td>
+                                        <td class="text-center">
+                                            @(Html.Kendo().NumericTextBox()
+                                                .Name("RemunerationDetails[" + index + "].SchemeOfMarking")
+                                                .Value(item.SchemeOfMarking)
+                                                .Format("n0")
+                                                .Min(0)
+                                                .HtmlAttributes(new { @class= "text-right w-100" }))
+                                        </td>
+                                        <td class="text-center">
+                                            @(Html.Kendo().NumericTextBox()
+                                                .Name("RemunerationDetails[" + index + "].ModelAnswers")
+                                                .Value(item.ModelAnswers)
+                                                .Format("n0")
+                                                .Min(0)
+                                                .HtmlAttributes(new { @class= "text-right w-100" }))
+                                        </td>
+                                    </tr>
+                                    index++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="k-card-actions k-card-actions-horizontal k-card-actions-end">
+                    @(Html.Kendo().Button()
+                        .Name("save")
+                        .Icon("save")
+                        .SpriteCssClass("k-icon-64")
+                        .FillMode(ButtonFillMode.Outline)
+                        .ThemeColor(ThemeColor.Success)
+                        .Content("Save")
+                        .HtmlAttributes(new
+                        {
+                            type = "submit",
+                            name = "action:Save",
+                        }))
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script type="text/javascript">
+    // Check the condition in your model
+    $(document).ready(function () {
+        
+    });
+</script>

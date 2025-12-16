@@ -1,0 +1,228 @@
+﻿@model Corno.Data.Transactions.VerificationViewModel
+@{
+    ViewBag.Title = "Create New Verification";
+}
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Online Exam</a></li>
+            <li><a href="#">Create Verification Form</a></li>
+        </ol>
+    </div>
+</div>
+@Html.ValidationSummary()
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <div class="box ui-draggable ui-droppable">
+            <div class="box-header">
+                <div class="box-name">
+                    <i class="fa fa-plus-square large"></i>
+                    <span>Create Verification Form.</span>
+                </div>
+                <div class="box-icons">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="expand-link">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+                <div class="no-move"></div>
+            </div>
+            <div class="box-content">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    <div class="form-horizontal">
+                        <div class="box-content">
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <button type="button" value="Index" class="btn btn-primary btn-label-left pull-left" onclick="location.href = '@Url.Action("Index", "Verification")'">
+                                        <span><i class="fa fa-list-ul"></i></span>
+                                        Back to List
+                                    </button>
+                                </div>
+                                <div class="col-sm-offset-8 col-sm-2">
+                                    <button type="submit" value="Create" title="Save" class="btn btn-primary btn-label-left pull-right">
+                                        <span><i class="fa fa-save"></i></span>
+                                        Submit
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-info">
+                                <div class="panel-heading"><strong>Education Details</strong></div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label">Name :</label>
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(m => m.Name, new { @id = "Name", @class = "form-control", value = "@Model.Name", placeholder = "Enter Name", data_toggle = "tooltip", data_placement = "bottom", title = "Name" })
+                                    </div>
+                                </div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label">Course : </label>
+                                    <div class="col-sm-8">
+                                        @Html.DropDownListFor(model => model.CourseID, new SelectList(Model.Courses, "ID", "Name"), "Select Course", new { id = "s2_course", @class = "populate placeholder" })
+                                    </div>
+                                </div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label">Course Part :</label>
+                                    <div class="col-sm-8">
+                                        @Html.DropDownListFor(model => model.CoursePartID, new SelectList(Model.CourseParts, "ID", "Name"), "Select Course Part", new { id = "s2_coursepart", @class = "populate placeholder" })
+                                    </div>
+                                </div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label">Branch :</label>
+                                    <div class="col-sm-8">
+                                        @Html.DropDownListFor(model => model.BranchID, new SelectList(Model.Branchs, "ID", "Name"), "Select Branch", new { id = "s2_branch", @class = "populate placeholder" })
+                                    </div>
+                                </div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label">Subject  :</label>
+                                    <div class="col-sm-8">
+                                        @Html.DropDownListFor(model => model.SubjectID, new SelectList(Model.Subjects, "ID", "Name"), "Select Subject ", new { id = "s2_sub", @class = "populate placeholder" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-info">
+                                <div class="panel-heading"><strong>Personal Details</strong></div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label">Local Address :</label>
+                                    <div class="col-sm-4">
+                                        <textarea cols="20" rows="4" id="LocalAddress" name="LocalAddress" class="form-control " placeholder="Enter Local Address" data-toggle="tooltip" data-placement="bottom" title="Local Address"></textarea>
+                                    </div>
+                                    <label class="col-sm-2 control-label">Country :</label>
+                                    <div class="col-sm-4">
+                                        @Html.DropDownListFor(model => model.CountryID, new SelectList(Model.Countrys, "ID", "Name"), "Select Country", new { id = "s2_country", @class = "populate placeholder" })
+                                    </div>
+                                    <label class=" control-label"></label>
+                                    <div class="">
+                                    </div>
+                                    <label class="col-sm-2 control-label">State :</label>
+                                    <div class="col-sm-4">
+                                        @Html.DropDownListFor(model => model.StateID, new SelectList(Model.States, "ID", "Name"), "Select State ", new { id = "s2_states", @class = "populate placeholder" })
+                                    </div>
+                                </div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label">District Name :</label>
+                                    <div class="col-sm-4">
+                                        @Html.DropDownListFor(model => model.DistrictID, new SelectList(Model.Districts, "ID", "Name"), "Select District ", new { id = "s2_dist", @class = "populate placeholder" })
+                                    </div>
+                                    <label class="col-sm-2 control-label">City Name :</label>
+                                    <div class="col-sm-4">
+                                        @Html.DropDownListFor(model => model.CityID, new SelectList(Model.Citys, "ID", "Name"), "Select City ", new { id = "s2_city", @class = "populate placeholder" })
+                                    </div>
+                                </div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label">Tehsil Name :</label>
+                                    <div class="col-sm-4">
+                                        @Html.DropDownListFor(model => model.TehsilID, new SelectList(Model.Tehsils, "ID", "Name"), "Select Tehsil ", new { id = "s2_tehsil", @class = "populate placeholder" })
+                                    </div>
+                                    <label class="col-sm-2 control-label">Pincode</label>
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(m => m.Pincode, new { @id = "Pincode", @class = "form-control", value = "@Model.Pincode", placeholder = "Enter Pincode", data_toggle = "tooltip", data_placement = "bottom", title = "Pincode" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label for form-styles">Permanent Address :</label>
+                                    <div class="col-sm-4">
+                                        @Html.TextAreaFor(m => m.Address2, new { cols = 20, @rows = 4, @id = "Address2", @class = "form-control", value = "@Model.Address2", placeholder = "Enter Permanent Address", data_toggle = "tooltip", data_placement = "bottom", title = "PErmanent Address" })
+                                    </div>
+                                    <label class="col-sm-2 control-label for form-styles">Foreign Address :</label>
+                                    <div class="col-sm-4">
+                                        @Html.TextAreaFor(m => m.Address3, new { cols = 20, @rows = 4, @id = "Address3", @class = "form-control", value = "@Model.Address3", placeholder = "Enter Foreign Address", data_toggle = "tooltip", data_placement = "bottom", title = "Foreign Address" })
+                                    </div>
+                                </div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label">Email</label>
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(m => m.Email, new { @id = "Email", @class = "form-control", value = "@Model.Email", placeholder = "Enter Email", data_toggle = "tooltip", data_placement = "bottom", title = "Email" })
+                                    </div>
+                                    <label class=" control-label"></label>
+                                    <label class="col-sm-2 control-label">Mobile :</label>
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(m => m.MobileNo, new { @id = "MobileNo", @class = "form-control", value = "@Model.MobileNo", placeholder = "Enter Mobile", data_toggle = "tooltip", data_placement = "bottom", title = "Mobile" })
+                                    </div>
+                                </div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label">PRN No :</label>
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(m => m.PRNNo, new { @id = "PRNNo", @class = "form-control", value = "@Model.PRNNo", placeholder = "Enter PRN No", data_toggle = "tooltip", data_placement = "bottom", title = "PRN No" })
+                                    </div>
+                                </div>
+                                <div class="form-group  has-feedback">
+                                    <label class="col-sm-2 control-label">Fee :</label>
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(m => m.Fee, new { @id = "Fee", @class = "form-control", value = "@Model.Fee", placeholder = "Enter Fee", data_toggle = "tooltip", data_placement = "bottom", title = "Fee" })
+                                    </div>
+                                    <label class="col-sm-2 control-label">Application No :</label>
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(m => m.ApplicationNo, new { @id = "ApplicationNo", @class = "form-control", value = "@Model.ApplicationNo", placeholder = "Enter Application No", data_toggle = "tooltip", data_placement = "bottom", title = "Application No" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <button type="button" value="Index" class="btn btn-primary btn-label-left pull-left" onclick="location.href = '@Url.Action("Index", "Verification")'">
+                                        <span><i class="fa fa-list-ul"></i></span>
+                                        Back to List
+                                    </button>
+                                </div>
+                                <div class="col-sm-offset-8 col-sm-2">
+                                    <button type="submit" value="Create" title="Save" class="btn btn-primary btn-label-left pull-right">
+                                        <span><i class="fa fa-save"></i></span>
+                                        Submit
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function DemoSelect2() {
+        $('#s2_course').select2({ placeholder: "Select Course" });
+        $('#s2_college').select2({ placeholder: "Select Faculty" });
+        $('#s2_coursepart').select2({ placeholder: "Select Course Part" });
+        $('#s2_branch').select2({ placeholder: "Select Branch" });
+        $('#s2_country').select2({ placeholder: "Select Country" });
+        $('#s2_states').select2({ placeholder: "Select State" });
+        $('#s2_dist').select2({ placeholder: "Select District" });
+        $('#s2_city').select2({ placeholder: "Select City" });
+        $('#s2_tehsil').select2({ placeholder: "Select Tehsil" });
+        $('#s2_sub').select2({ placeholder: "Select Subject" });
+
+    }
+    $(document).ready(function () {
+        // For file input
+        $("#Photo").fileinput({ 'showUpload': true, 'previewFileType': 'any' });
+
+        // Create Wysiwig editor for textare
+        //TinyMCEStart('#wysiwig_simple', null);
+        //TinyMCEStart('#Description', 'extreme');
+        //// Add tooltip to form-controls
+        $('.form-control').tooltip();
+        // Initialize datepicker
+
+        $("#DateOfBirth").datepicker({
+            changeMonth: true, changeYear: true, yearRange: '1900:+0', dateFormat: 'dd-M-yy'
+        });
+
+        LoadSelect2Script(DemoSelect2);
+
+        //// Load example of form validation
+        LoadBootstrapValidatorScript(DemoFormValidator);
+
+
+    });
+
+</script>

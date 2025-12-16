@@ -1,0 +1,231 @@
+﻿@using Corno.Globals.Constants
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewBag.Title - Online Exam</title>
+
+    <link rel="icon" type="image/png" href="~/Content/img/Concept logo.png" />
+
+    <link href="~/Content/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+    <link href="~/Content/plugins/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/Content/plugins/fancybox/jquery.fancybox.css" rel="stylesheet">
+    <link href="~/Content/plugins/select2/select2.css" rel="stylesheet">
+    <link href="~/Content/css/style.css" rel="stylesheet">
+    <link href="~/Content/css/build.css" rel="stylesheet" />
+    <link href="~/Content/css/awesome-bootstrap-checkbox.css" rel="stylesheet" />
+    <link href="~/Content/plugins/printArea/PrintArea.css" rel="stylesheet">
+    <link href="~/Content/plugins/fileinput/fileinput.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/Content/plugins/jquery/jquery-2.1.0.min.js"></script>
+    <link href="@Url.Content("~/Content/kendo/2023.1.117/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2023.1.117/kendo.default-v2.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/css/grid.css")" rel="stylesheet" type="text/css" />
+
+    <script src="@Url.Content("~/Scripts/kendo/2023.1.117/jszip.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2023.1.117/kendo.all.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2023.1.117/kendo.aspnetmvc.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2023.1.117/kendo.pdf.min.js")"></script>
+    <script src="~/Content/plugins/jquery-ui/jquery-ui.js"></script>
+    <script src="~/Content/plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="~/Content/plugins/justified-gallery/jquery.justifiedgallery.min.js"></script>
+    <script src="~/Scripts/js/devoops.js"></script>
+    <script src="~/Content/plugins/fileinput/fileinput.min.js" type="text/javascript"></script>
+    <script src="~/Content/plugins/bootbox/bootbox.min.js"></script>
+    <script src="~/Content/plugins/printArea/jquery.PrintArea.js"></script>
+    <script src="~/Scripts/Corno/corno.js"></script>
+    <script src="~/Scripts/Corno/errorhandlers.js"></script>
+
+    <script src="~/Scripts/js/Helpers.js"></script>
+
+    <script src="https://ebz-static.s3.ap-south-1.amazonaws.com/easecheckout/easebuzz-checkout.js"></script>
+
+    <link href="@Url.Content("~/Content/plugins/pace-1.0.2/themes/blue/pace-theme-flash.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Content/plugins/pace-1.0.2/pace.min.js")" data-pace-options='{ "ajax": true, "document": true, "eventLag": true, "restartOnPushState": true, restartOnRequestAfter: true }'></script>
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionSuite = ExtensionSuite.RichEdit }
+        )
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionSuite = ExtensionSuite.RichEdit }
+        )
+
+</head>
+<body>
+    @if (Request.IsAuthenticated)
+    {
+        <div id="screensaver">
+            <canvas id="canvas"></canvas>
+            <i class="fa fa-lock" id="screen_unlock"></i>
+        </div>
+        <div id="modalbox">
+            <div class="devoops-modal">
+                <div class="devoops-modal-header">
+                    <div class="modal-header-name">
+                        <span>Basic table</span>
+                    </div>
+                    <div class="box-icons">
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="devoops-modal-inner">
+                </div>
+                <div class="devoops-modal-bottom">
+                </div>
+            </div>
+        </div>
+        <header class="navbar navbar-fixed-top">
+            <div class="container-fluid expanded-panel">
+                <div class="row">
+                    <div id="logo" class="col-xs-12 col-sm-2">
+                        <a href="@Url.Action("Index", "Home")">
+                            <img src="~/Content/img/Concept logo.png" />
+                            Online Exam
+                        </a>
+                    </div>
+                    <div id="top-panel" class="col-xs-12 col-sm-10">
+                        <div class="row">
+                            <div class="col-xs-1 col-sm-1">
+                                <a href="#" class="show-sidebar">
+                                    <i class="fa fa-bars"></i>
+                                </a>
+                            </div>
+                            <div class="col-xs-8 col-sm-8 text-center">
+                                <strong>
+                                    @{
+                                        if (null != HttpContext.Current.Session)
+                                        {
+                                            if (null != HttpContext.Current.Session[ModelConstants.CollegeId])
+                                            {
+                                                //var collegeId = HttpContext.Current.Session[ModelConstants.CollegeId].ToInt();
+                                                <span class="text-body-tertiary">@HttpContext.Current.Session[ModelConstants.InstanceName]</span>
+                                                <span class="k-text-success !k-text-tertiary"> {@HttpContext.Current.Session[ModelConstants.CollegeName]} </span>
+                                            }
+                                            else
+                                            {
+                                                <span>@HttpContext.Current.Session[ModelConstants.InstanceName] (@HttpContext.Current.Session[ModelConstants.InstanceId])</span>
+                                            }
+                                        }
+                                    }
+
+                                </strong>
+                            </div>
+                            <div class="col-xs-3 col-sm-3 top-panel-right">
+                                <ul class="nav navbar-nav pull-right panel-menu">
+                                    <li class="dropdown color0">
+                                        <a href="#" class="dropdown-toggle account" data-toggle="dropdown">
+                                            <div class="avatar">
+                                                <img src="~/Content/img/avatar.jpg" class="img-rounded" alt="avatar" />
+                                            </div>
+                                            <i class="fa fa-angle-down pull-right"></i>
+                                            <div class="user-mini pull-right">
+                                                @if (Request.IsAuthenticated)
+                                                {
+                                                    <span class="welcome">Welcome,</span>
+                                                    <span>@User.Identity.Name</span>
+                                                }
+                                            </div>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <a href="@Url.Action("UserProfile", new {area = "Admin", controller = "Account"})">
+                                                    <i class="fa fa-user"></i>
+                                                    <span class="hidden-sm">Profile</span>
+                                                </a>
+                                            </li>
+                                            @if (User.IsInRole("Admin"))
+                                            {
+                                                <li>
+                                                    <a href="@Url.Action("ResetPassword", new {area = "Admin", controller = "Account"})">
+                                                        <i class="fa fa-cog"></i>
+                                                        <span class="hidden-sm">Reset Password</span>
+                                                    </a>
+                                                </li>
+                                            }
+                                            <li>
+                                                <a href="@Url.Action("LogOff", new {area = "Admin", controller = "Account"})">
+                                                    <i class="fa fa-power-off"></i>
+                                                    <span class="hidden-sm">Logout</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div id="main" class="container-fluid">
+            <div class="row">
+                <div id="sidebar-left" class="col-xs-2 col-sm-2">
+                    <ul class="nav main-menu">
+                        @if (User.IsInRole(RoleConstants.Admin))
+                        {
+                            Html.RenderPartial("Partial/Menus/_AdminMenu");
+                        }
+                        else if (User.IsInRole(RoleConstants.College))
+                        {
+                            Html.RenderPartial("Partial/Menus/_CollegeMenu");
+                        }
+                        else if (User.IsInRole(RoleConstants.Student))
+                        {
+                            Html.RenderPartial("Partial/Menus/_StudentMenu");
+                        }
+                        else if (User.IsInRole(RoleConstants.ExamStaff))
+                        {
+                            Html.RenderPartial("Partial/Menus/_ExamStaff");
+                        }
+                        else if (User.IsInRole(RoleConstants.MarksEntryStaff))
+                        {
+                            Html.RenderPartial("Partial/Menus/_MarksEntryStaff");
+                        }
+                        else if (User.IsInRole(RoleConstants.QuestionBank))
+                        {
+                            Html.RenderPartial("Partial/Menus/_QuestionBank");
+                        }
+                        else if (User.IsInRole(RoleConstants.QuestionSetter))
+                        {
+                            Html.RenderPartial("Partial/Menus/_QuestionSetter");
+                        }
+                        else if (User.IsInRole(RoleConstants.QuestionChecker))
+                        {
+                            Html.RenderPartial("Partial/Menus/_QuestionChecker");
+                        }
+                        else if (User.IsInRole(RoleConstants.PaperSettingAdmin))
+                        {
+                            Html.RenderPartial("Partial/Menus/_PaperSettingAdmin");
+                        }
+                        else if (User.IsInRole(RoleConstants.PaperSetter))
+                        {
+                            Html.RenderPartial("Partial/Menus/_PaperSetter");
+                        }
+                    </ul>
+                </div>
+                <!--Start Content-->
+                <div id="content" class="col-xs-12 col-sm-10 mt-lg-5" style="margin-top: 50px">
+                    <div id="ajax-content">
+                        @*<img src="~/Content/img/devoops_getdata.gif" class="devoops-getdata" alt="preloader" />*@
+                        @RenderBody()
+                        <script src="@Url.Content("~/Scripts/js/grid.js")"></script>
+                        <hr />
+                        <footer>
+                            <p>
+                                &copy; @DateTime.Now.Year - <a href="http://www.concsystems.com">Concept Systems </a>
+                            </p>
+                        </footer>
+                    </div>
+                </div>
+                <!--End Content-->
+            </div>
+        </div>
+    }
+    <hr />
+</body>
+</html>

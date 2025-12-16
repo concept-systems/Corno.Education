@@ -1,0 +1,61 @@
+﻿@using Corno.Data.Helpers
+@using Corno.Globals.Constants
+@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Masters.Faculty
+
+@{
+    var formEnabled = ViewData[ModelConstants.FormEnabled].ToBoolean();
+}
+
+<div class="form-group">
+    <div class="col-sm-6">
+        @(Html.Kendo().MultiColumnComboBoxFor(m => m.StaffId)
+            .DataTextField(ModelConstants.Name)
+            .DataValueField(ModelConstants.Id)
+            .HtmlAttributes(new { @class = "w-100" })
+            .Filter("contains")
+            .Placeholder("Select ...")
+            .Label(label => label
+                .Content("Dean")
+                .Floating(true))
+            .Columns(columns =>
+            {
+                columns.Add().Field(ModelConstants.Id).Title(ModelConstants.Id).Width("100px");
+                columns.Add().Field(ModelConstants.Name).Title(ModelConstants.Name).Width("600px");
+            })
+            .DataSource(dataSource => dataSource
+                .Read(read => read.Action("GetDeans", "Corno"))
+            ))
+    </div>
+    @*<div class="col-sm-6">
+        @(Html.Kendo().DatePickerFor(m => m.RecognitionDate)
+        .Enable(formEnabled)
+        .Rounded(Rounded.Medium)
+            .Format("dd/MM/yyyy")
+        .Label(label => label
+            .Content("Recognition Date")
+            .Floating(true))
+        .HtmlAttributes(new
+        {
+            placeholder = "Enter Date",
+            @class = "required w-100"
+        }))
+    </div>*@
+</div>
+<div class="form-group ">
+    @(Html.Kendo().TextAreaFor(m => m.Address)
+                .Rows(8)
+                .Enable(formEnabled)
+                .Rounded(Rounded.Medium)
+                .Label(label => label
+                    .Content("Address")
+                    .Floating(true))
+                .HtmlAttributes(new
+                {
+                    placeholder = "Enter Address",
+                    @class = "required w-100"
+                }))
+</div>
+<div class="form-group row">
+
+</div>

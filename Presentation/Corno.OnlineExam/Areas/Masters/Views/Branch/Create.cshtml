@@ -1,0 +1,30 @@
+﻿@using Corno.Globals.Constants
+@model Corno.Data.Corno.Masters.Branch
+@{
+    var viewDataDictionary = new ViewDataDictionary
+{
+        { ModelConstants.FormEnabled, true },
+        { "Title", "Create New Branch" },
+        { "Action", "Create"}
+    };
+}
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">OnlineExam</a></li>
+            <li><a href="#">Masters</a></li>
+            <li><a href="#">Create Branch</a></li>
+        </ol>
+    </div>
+</div>
+
+@Html.ValidationSummary(false)
+@Html.Partial("~/Areas/Masters/Views/Branch/_Branch.cshtml", Model, viewDataDictionary)
+
+<script>
+    function filterSubjects() {
+        return {
+            coursePartId: $("#CoursePartId").val(),
+        };
+    }
+</script>

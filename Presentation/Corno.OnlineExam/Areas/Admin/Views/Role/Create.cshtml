@@ -1,0 +1,21 @@
+﻿@using Corno.Globals.Constants
+@model Corno.Data.ViewModels.Admin.RoleViewModel
+@{
+    var viewDataDictionary = new ViewDataDictionary
+{
+        { ModelConstants.FormEnabled, true },
+        { ModelConstants.Title, "Create New Role" },
+        { ModelConstants.Action, "Create"}
+    };
+}
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">OnlineExam</a></li>
+            <li><a href="#">Masters</a></li>
+            <li><a href="#">Create Role</a></li>
+        </ol>
+    </div>
+</div>
+
+@Html.Partial("~/Areas/Admin/Views/Role/_Role.cshtml", Model, viewDataDictionary)

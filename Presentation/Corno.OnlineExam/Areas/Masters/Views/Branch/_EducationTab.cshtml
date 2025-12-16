@@ -1,0 +1,40 @@
+﻿@using Corno.Data.Helpers
+@using Corno.Globals.Constants
+@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Masters.Branch
+
+@{
+    var formEnabled = ViewData[ModelConstants.FormEnabled].ToBoolean();
+}
+
+<div class="">
+    <div class="col-sm-4">
+        <div class="form-group row">
+            @(Html.Kendo().TextBoxFor(m => m.ShortName)
+                    .Enable(formEnabled)
+                    .Rounded(Rounded.Medium)
+                    .Label(label => label
+                        .Content("Short Name")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "Enter Short Name",
+                        @class = "required w-100"
+                    }))
+        </div>
+        <div class="form-group row">
+            @(Html.Kendo().NumericTextBoxFor(m => m.SequenceNo)
+                    .Min(1900).Format("n0")
+                    .Enable(formEnabled)
+                    .Rounded(Rounded.Medium)
+                    .Label(label => label
+                        .Content("Sequence No")
+                        .Floating(true))
+                    .HtmlAttributes(new
+                    {
+                        placeholder = "Enter Sequence No",
+                        @class = "required w-100"
+                    }))
+        </div>
+    </div>
+</div>

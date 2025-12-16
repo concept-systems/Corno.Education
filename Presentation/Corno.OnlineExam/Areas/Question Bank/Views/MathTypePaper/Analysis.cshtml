@@ -1,0 +1,228 @@
+﻿@using Kendo.Mvc.UI
+@model Corno.OnlineExam.Areas.Question_Bank.Dtos.AnalysisDto
+
+@{
+    ViewBag.Controller = "MathTypePaper";
+}
+
+<style>
+    .k-grid-header th {
+        text-align: center !important; /* Center-align header text */
+    }
+</style>
+
+<div class="form-horizontal box-content">
+    <div class="k-card k-card-vertical">
+        <div class="k-card-header k-card-tertiary">
+            <div class="row">
+                <div class="col-sm-11">
+                    <h3>Analysis</h3>
+                </div>
+                <div class="col-sm-1 text-right">
+                    @(Html.Kendo().Button()
+                        .Name("btnBack")
+                        .Icon("arrow-left")
+                        .SpriteCssClass("k-icon-64")
+                        .FillMode(ButtonFillMode.Outline)
+                        .ThemeColor(ThemeColor.Info)
+                        .Content("Back")
+                        .HtmlAttributes(new { @class = "w-100", onclick = "window.history.back();" }))
+                </div>
+            </div>
+        </div>
+        <div class="k-card-body">
+            <table class="table">
+                <tr><td colspan="2"><h4>Difficulty Levels</h4></td></tr>
+                <tr>
+                    <td style="width: 40%; height: 50%;">
+                        @(Html.Kendo().Grid(Model.DifficultyDtos)
+                            .Name("gridDifficulty")
+                            .Columns(columns =>
+                            {
+                                columns.Bound(p => p.DifficultyLevelId)
+                                    .HtmlAttributes(new { @class = "k-text-center k-justify-content-center" }) 
+                                    .Title("Level");
+                                columns.Bound(p => p.DifficultyLevelName)
+                                    .Title("Type");
+                                columns.Bound(p => p.Count)
+                                    .HtmlAttributes(new { @class = "k-text-center k-justify-content-center" })
+                                    .FooterHtmlAttributes(new { @class = "k-text-center k-justify-content-center" })
+                                    .ClientFooterTemplate("#= kendo.format('{0:N0}', sum) #");
+                                columns.Bound(p => p.Percentage)
+                                    .HtmlAttributes(new { @class = "k-text-center k-justify-content-center" })
+                                    .FooterHtmlAttributes(new { @class = "k-text-center k-justify-content-center" })
+                                    .ClientFooterTemplate("#= kendo.format('{0:N0}', sum) #")
+                                    .Format("{0:N2}");
+                            })
+                            .DataSource(dataSource => dataSource
+                                .Ajax()
+                                .ServerOperation(false)
+                                .Aggregates(aggregates =>
+                                {
+                                    aggregates.Add(p => p.Count).Sum();
+                                    aggregates.Add(p => p.Percentage).Sum();
+                                })
+                                .Sort(s => s.Add("DifficultyLevelId").Ascending()))
+                            )
+                    </td>
+                    <td style="width: 60%; height: 50%; text-align: right;">
+                        <div style="float: right;">
+                            <!-- Pie Chart -->
+                            @(Html.Kendo().Chart(Model.DifficultyDtos)
+                                .Name("pieChartDifficulty")
+                                .Legend(legend => legend
+                                    .Position(ChartLegendPosition.Top))
+                                .ChartArea(area => area
+                                    .Width(500)
+                                    .Height(250))
+                                .Series(series =>
+                                {
+                                    series.Pie(
+                                        model => model.Percentage,
+                                        model => model.DifficultyLevelName,
+                                        model => model.DifficultyLevelId.ToString())
+                                        .Name("Percentage")
+                                        .Labels(labels => labels
+                                            .Visible(true)
+                                            .Template("#= kendo.format('{0:0.00}%', value) #"));
+                                })
+                                .CategoryAxis(axis => axis
+                                    .Categories(p => p.DifficultyLevelName))
+                                .Tooltip(tooltip => tooltip
+                                    .Visible(true)
+                                    .Template("Level: #= dataItem.DifficultyLevelId #, Count: #= dataItem.Count #")))
+                        </div>
+                    </td>
+                </tr>
+                <tr><td colspan="2"><h4>Blooms Taxonomy</h4></td></tr>
+                <tr>
+                    <td style="width: 40%; height: 50%;">
+                        @(Html.Kendo().Grid(Model.TaxonomyDtos)
+                            .Name("gridTaxonomy")
+                            .Columns(columns =>
+                            {
+                                columns.Bound(p => p.SerialNo)
+                                    .HtmlAttributes(new { @class = "k-text-center k-justify-content-center" })
+                                    .Title("Sr. No.");
+                                columns.Bound(p => p.TaxonomyName)
+                                    .Title("Blooms Taxonomy");
+                                columns.Bound(p => p.Count)
+                                    .HtmlAttributes(new { @class = "k-text-center k-justify-content-center" })
+                                    .FooterHtmlAttributes(new { @class = "k-text-center k-justify-content-center" })
+                                    .ClientFooterTemplate("#= kendo.format('{0:N0}', sum) #")
+                                    @*.ClientFooterTemplate(@<text>Average: @item.Count</text>)*@
+                                    .Title("Count");
+                                columns.Bound(p => p.Percentage)
+                                    .HtmlAttributes(new { @class = "k-text-center k-justify-content-center" })
+                                    .FooterHtmlAttributes(new { @class = "k-text-center k-justify-content-center" })
+                                    //.ClientFooterTemplate("Sum : #=sum#")
+                                    .ClientFooterTemplate("#= kendo.format('{0:N2}', sum) #")
+                                    .Format("{0:N2}")
+                                    .Title("Percentage");
+                            })
+                            .DataSource(dataSource => dataSource
+                                .Ajax()
+                                .ServerOperation(false)
+                                .Aggregates(aggregates =>
+                                {
+                                    aggregates.Add(p => p.Count).Sum();
+                                    aggregates.Add(p => p.Percentage).Sum();
+                                })
+                                .Sort(s => s.Add("SerialNo").Ascending())))
+                    </td>
+                    <td style="width: 40%; height: 60%;">
+                        <div style="float: right;">
+                            @(Html.Kendo().Chart(Model.TaxonomyDtos)
+                                .Name("barChartTaxonomy")
+                                .Legend(legend => legend
+                                    .Position(ChartLegendPosition.Top))
+                                .ChartArea(area => area
+                                    .Width(500)
+                                    .Height(300))
+                                .Series(series =>
+                                {
+                                    series.Column(model => model.Percentage)
+                                        .Name("Percentage")
+                                        .Labels(labels => labels
+                                            .Visible(true)
+                                            .Template("#= kendo.format('{0:0.00}%', value) #"));
+                                })
+                                .CategoryAxis(axis => axis
+                                    .Categories(model => model.TaxonomyName)
+                                    .Title("Taxonomy"))
+                                .ValueAxis(axis => axis
+                                    .Numeric()
+                                    .Title("Percentage"))
+                                .Tooltip(tooltip => tooltip
+                                    .Visible(true)
+                                    .Template("Taxonomy: #= dataItem.TaxonomyName #, Count: #= dataItem.Count #")))
+                        </div>
+                    </td>
+                </tr>
+                <tr><td colspan="2"><h4>Units / Chapters</h4></td></tr>
+                <tr>
+                    <td style="width: 40%; height: 50%;">
+                        @(Html.Kendo().Grid(Model.ChapterDtos)
+                            .Name("gridChapter")
+                            .Columns(columns =>
+                            {
+                                columns.Bound(p => p.SerialNo)
+                                    .HtmlAttributes(new { @class = "k-text-center k-justify-content-center" })
+                                    .Title("Sr. No.");
+                                columns.Bound(p => p.ChapterName)
+                                    .Title("Chapter");
+                                columns.Bound(p => p.Count)
+                                    .HtmlAttributes(new { @class = "k-text-center k-justify-content-center" })
+                                    .FooterHtmlAttributes(new { @class = "k-text-center k-justify-content-center" })
+                                    .ClientFooterTemplate("#= kendo.format('{0:N0}', sum) #");
+                                columns.Bound(p => p.Percentage)
+                                    .HtmlAttributes(new { @class = "k-text-center k-justify-content-center" })
+                                    .FooterHtmlAttributes(new { @class = "k-text-center k-justify-content-center" })
+                                    .ClientFooterTemplate("#= kendo.format('{0:N0}', sum) #")
+                                    .Format("{0:N2}");
+                            })
+                            .DataSource(dataSource => dataSource
+                                .Ajax()
+                                .ServerOperation(false)
+                                .Aggregates(aggregates =>
+                                {
+                                    aggregates.Add(p => p.Count).Sum();
+                                    aggregates.Add(p => p.Percentage).Sum();
+                                })
+                                .Sort(s => s.Add("SerialNo").Ascending()))
+                            )
+                    </td>
+                    <td style="width: 40%; height: 60%;">
+                        <div style="float: right;">
+                            @(Html.Kendo().Chart(Model.ChapterDtos)
+                                .Name("barChartChapter")
+                                .Legend(legend => legend
+                                    .Position(ChartLegendPosition.Top))
+                                .ChartArea(area => area
+                                    .Width(500)
+                                    .Height(300))
+                                .Series(series =>
+                                {
+                                    series.Bar(model => model.Percentage)
+                                        .Name("Percentage")
+                                        .Gap(0.2)
+                                        .Labels(labels => labels
+                                            .Visible(true)
+                                            .Template("#= kendo.format('{0:0.00}%', value) #"));
+                                })
+                                .CategoryAxis(axis => axis
+                                    .Categories(model => model.ChapterName)
+                                    .Title("Chapter"))
+                                .ValueAxis(axis => axis
+                                    .Numeric()
+                                    .Title("Percentage"))
+                                .Tooltip(tooltip => tooltip
+                                    .Visible(true)
+                                    .Template("Unit : #= dataItem.ChapterName #, Count : #= dataItem.Count #")))
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

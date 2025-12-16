@@ -1,0 +1,312 @@
+﻿@model Corno.Data.Transactions.ConvocationViewModel
+@using Kendo.Mvc.UI
+@using System
+@{
+    ViewBag.Title = "Show Convocation Form No : " + Model.Id;
+
+    var photoImageSource = "data:image/jpeg;base64, ";
+    if (null != Model.Photo)
+    {
+        photoImageSource = photoImageSource + Model.Photo;
+    }
+}
+
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Online Exam</a></li>
+            <li><a href="#">Show Convocation Form</a></li>
+        </ol>
+    </div>
+</div>
+@Html.ValidationSummary()
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <div class="box ui-draggable ui-droppable">
+            <div class="box-header">
+                <div class="box-name">
+                    <i class="fa fa-edit large"></i>
+                    <span>Show Convocation Form No :  @Model.Id</span>
+                </div>
+                <div class="box-icons">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="expand-link">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+                <div class="no-move"></div>
+            </div>
+            <div class="box-content">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(m => m.ID)
+                    <div class="form-horizontal">
+                        <div class="box-content">
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <button type="button" value="Index" class="btn btn-primary btn-label-left pull-left" onclick="location.href = '@Url.Action("Index", "Convocation")'">
+                                        <span><i class="fa fa-list-ul"></i></span>
+                                        Back to List
+                                    </button>
+                                </div>
+                                <div class="col-sm-offset-8 col-sm-2">
+                                    <button type="submit" value="Edit" title="Save" onclick="PrintForm()" class="btn btn-primary btn-label-left pull-right">
+                                        <span><i class="fa fa-print"></i></span>
+                                        Print
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="printDiv">
+                                <div class="panel panel-info">
+                                    <div class="panel-heading"><strong>PRN Details</strong></div>
+                                    <div class="panel-body">
+                                        <div class="form-group  has-feedback">
+                                            <label class="col-sm-2 control-label">PRN :</label>
+                                            <div class="col-sm-3">
+                                                @Html.DisplayFor(m => m.PrnNo)
+                                            </div>
+                                            <label class=" col-sm-4 control-label"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-info">
+                                    <div class="panel-heading"><strong>Personal Details</strong></div>
+                                    <div class="panel-body">
+                                        <div class="form-group  has-feedback">
+                                            <label class="col-sm-2 control-label">Address :</label>
+                                            <div class="col-sm-4">
+                                                @Html.DisplayFor(m => m.Address, new { rows = 5, columns = 60 })
+                                            </div>
+                                        </div>
+                                        <div class="form-group  has-feedback">
+                                            <label class="col-sm-2 control-label">Pincode :</label>
+                                            <div class="col-sm-4">
+                                                @Html.DisplayFor(m => m.Pincode)
+                                            </div>
+                                        </div>
+                                        <div class="form-group  has-feedback">
+                                            <label class="col-sm-2 control-label">Mobile :</label>
+                                            <div class="col-sm-4 text-left">
+                                                @Html.DisplayFor(m => m.Phone)
+                                            </div>
+                                        </div>
+                                        <div class="form-group  has-feedback">
+                                            <label class="col-sm-2 control-label">Email :</label>
+                                            <div class="col-sm-4">
+                                                @Html.DisplayFor(m => m.Email)
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-info">
+                                    <div class="panel-heading"><strong>Exam Details</strong></div>
+                                    <div class="panel-body">
+                                        <table class="table">
+                                            <tr>
+                                                <th class="text-left col-sm-2"><strong>Name :</strong></th>
+                                                <td id="tdName" class="text-left ">@Html.DisplayFor(m => m.StudentName)</td>
+                                                <th class="text-left col-sm-2"><strong>Photo :</strong></th>
+                                                <td id="" class="text-left col-sm-2" rowspan="7"><img src="@Model.Photo" width=150px height=200px /></td>
+
+                                            </tr>
+                                            <tr>
+                                                <th class="text-left col-sm-2"><strong>Gender :</strong></th>
+                                                <td id="tdGender" class="text-left">@Html.DisplayFor(m => m.Gender)</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-left col-sm-2"><strong>Centre :</strong></th>
+                                                <td id="tdCentre" class="text-left">@Html.DisplayFor(m => m.CentreName)</td>
+                                            </tr>
+                                            <tr>
+
+                                                <th class="text-left col-sm-2"><strong>College :</strong></th>
+                                                <td id="tdCollege" class="text-left">@Html.DisplayFor(m => m.CollegeName)</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-left col-sm-2"><strong>Course Type :</strong></th>
+                                                <td id="tdCourseType" class="text-left">@Html.DisplayFor(m => m.CourseTypeName)</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-left col-sm-2"><strong>Course :</strong></th>
+
+                                                <td id="tdCourse" class="text-left">@Html.DisplayFor(m => m.CourseName)</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-left col-sm-2"><strong>Branch :</strong></th>
+                                                <td id="tdBranch" class="text-left">@Html.DisplayFor(m => m.BranchName)</td>
+                                            </tr>
+                                            <tr>
+
+                                                <th class="text-left col-sm-2"><strong>Passing Month :</strong></th>
+                                                <td id="tdLastPassingMonth" class="text-left">@Html.DisplayFor(m => m.MonthName)</td>
+                                                <th class="text-left col-sm-2"><strong>Passing Year :</strong></th>
+                                                <td id="tdLastPassingYear" class="text-left">@Html.DisplayFor(m => m.PassingYear)</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-left col-sm-2"><strong>Seat No :</strong></th>
+                                                <td id="tdLastSeatNo" class="text-left">@Html.DisplayFor(m => m.SeatNo)</td>
+                                                <td class="text-left col-sm-2"><strong>Class / Grade :</strong></td>
+                                                <td id="tdClass" class="text-left">@Html.DisplayFor(m => m.Class)  @Html.DisplayFor(m => m.Grade)</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-left col-sm-2"><strong>CGPA :</strong></th>
+                                                <td id="tdCGPA" class="text-left">@Html.DisplayFor(m => m.Cgpa)</td>
+                                                <td class="text-left col-sm-2"><strong></strong></td>
+                                                <td id="" class="text-left"></td>
+                                            </tr>
+
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="panel panel-info">
+                                    <div class="panel-heading"><strong>Fee Details</strong></div>
+                                    <div class="panel-body">
+                                        <div class="form-group  has-feedback">
+                                            <label class="col-sm-2 control-label">Total Fee :</label>
+                                            <div class="col-sm-2">
+                                                @Html.DisplayFor(m => m.ConvocationFee)
+                                                @*<span id="toralFee"></span>*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <button type="button" value="Index" class="btn btn-primary btn-label-left pull-left" onclick="location.href =
+    '@Url.Action("Index", "Convocation" )'">
+                                        <span><i class="fa fa-list-ul"></i></span>
+                                        Back to List
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function PrintForm() {
+        alert("In Print");
+        $("#printDiv").printThis();
+    }
+
+    $('InIndia').checked = false;
+    $('Abroad').checked = false;
+    $('#postalChargeInIndia').hide();
+    $('#postalChargeAbroad').hide()
+    var Convocationfee = $('#convocationfee').text();
+    $('#toralFee').html(Convocationfee)
+
+    function FeeForInPerson() {
+        $('#postalChargeInIndia').hide();
+        $('#postalChargeAbroad').hide();
+        var Convocationfee = $('#convocationfee').text();
+        $('#toralFee').html(Convocationfee)
+    }
+    function FeeForIndia() {
+
+        $('#postalChargeInIndia').show();
+        $('#postalChargeAbroad').hide()
+        var PostalFee = $('#postalChargeInIndia').text();
+        var Convocationfee = $('#convocationfee').text();
+        var Total = parseInt(Convocationfee) + parseInt(PostalFee);
+        $('#Abroad').attr('checked', false);
+        $('#toralFee').html('');
+        $('#toralFee').html(Total);
+
+    }
+    function FeeForAbroad() {
+        $('#postalChargeInIndia').hide();
+        $('#postalChargeAbroad').show()
+        var PostalFee = $('#postalChargeAbroad').text();
+        var Convocationfee = $('#convocationfee').text();
+        var Total = parseInt(Convocationfee) + parseInt(PostalFee);
+        $('#InIndia').attr('checked', false);
+        $('#toralFee').html('');
+        $('#toralFee').html(Total);
+    }
+</script>
+
+<script type="text/javascript">
+    $('#PRNNo').change(function () {
+        //alert('hi');
+        $.ajax({
+            url: '@Url.Action("PRNChange", "Convocation")',
+            type: 'post',
+            data: {
+                prnNo: $('#PRNNo').val()
+            },
+            success: function (_result) {
+                //$('#tdCentre').html(_result.Centre);
+                //$('#tdCollege').html(_result.College);
+                //$('#tdCourseType').html(_result.CourseType);
+                //$('#tdCourse').html(_result.Course);
+                //$('#tdCoursePart').html(_result.CoursePart);
+                //$('#tdBranch').html(_result.Branch);
+                //$('#tdName').html(_result.StudentName);
+                //$('#tdAddress').html(_result.PermanentAddress);
+                //$('#tdGender').html(_result.Gender);
+                //$('#tdPhone').html(_result.Phone);
+                //$('#tdPincode').html(_result.Pincode);
+                //$('#tdLastPassingYear').html(_result.LastPassingYear);
+                //$('#tdLastPercentage').html(_result.LastPercentage);
+                //$('#tdLastSeatNo').html(_result.LastSeatNo);
+                //$('#tdClass').html(_result.Class);
+                $('#tdCentre').html(_result.Centre);
+                $('#tdCollege').html(_result.College);
+                $('#tdCourseType').html(_result.CourseType);
+                $('#tdCourse').html(_result.Course);
+                $('#tdCoursePart').html(_result.CoursePart);
+                $('#tdName').html(_result.StudentName);
+                $('#tdAddress').html(_result.PermanentAddress);
+                $('#tdGender').html(_result.Gender);
+                $('#tdPhone').html(_result.Phone);
+                $('#tdPincode').html(_result.Pincode);
+                $('#tdEmail').html(_result.Email);
+                $('#tdLastPassingYear').html(_result.LastPassingYear);
+                $('#tdLastPercentage').html(_result.LastPercentage);
+                $('#tdLastSeatNo').html(_result.LastSeatNo);
+                $('#tdClass').html(_result.Class);
+                $('#tdPhoto').html('<img src="' + _result.Photo + '" />');
+                $('#StudentID').val(_result.StudentID)
+                $('#tdPassingMonth').html(_result.PassingMonth);
+                $('#tdCGPA').html(_result.CGPA);
+                $('#tdGrade').html(_result.Grade);
+                $('#tdBranch').html(_result.Branch);
+            }
+        });
+    });
+
+
+    $(document).ready(function () {
+
+        //$('#id1').click(function () {
+        //    $('#div2').show();
+        //    $('#div1').hide();
+        //});
+        //$('#id2').click(function () {
+        //    $('#div1').show();
+        //    $('#div2').hide();
+        //});
+        // Add tooltip to form-controls
+        $('.form-control').tooltip();
+        // Initialize datepicker
+        $('#Date').datepicker({ setDate: new Date(), dateFormat: 'dd-M-yy' });
+        $('#ApprovalDate').datepicker({ setDate: new Date(), dateFormat: 'dd-M-yy' });
+
+        //// Load example of form validation
+        LoadBootstrapValidatorScript(DemoFormValidator);
+
+        $("#PRNNo").change();
+    });
+</script>

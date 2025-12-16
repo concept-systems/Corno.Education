@@ -1,0 +1,206 @@
+﻿@model IEnumerable<Corno.Data.Transactions.ExamViewModel>
+@using Kendo.Mvc.UI
+
+
+@{
+    ViewBag.Title = "Exam Form";
+}
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Online Exam</a></li>
+            <li><a href="#">Exam Form</a></li>
+        </ol>
+    </div>
+</div>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <strong>Exam Form List</strong>
+        <a href="@Url.Action("Create", "Exam")" class="btn btn-small btn-success pull-right">
+            <span><i class="fa fa-plus fa-lg"></i></span> Add New
+        </a>
+    </div>
+    @*<div class="box-content no-padding table-responsive">*@
+    <div class="panel-body">
+        <table class="table table-bordered table-striped table-responsive table-hover table-heading table-datatable" id="datatable-1">
+            <thead>
+                <tr>
+                    <td colspan="10">
+                        @using (Html.BeginForm())
+                        {
+                        <div class="box-content">
+                            <label class="control-label col-sm-1">College:</label>
+                            <div class="col-sm-4">
+                                @(Html.Kendo().ComboBox()
+                                            .Name("CollegeId")
+                                            .HtmlAttributes(new { style = "width:100%" })
+                                            .Placeholder("Select College...")
+                                            .SelectedIndex(0)
+                                            .Filter(FilterType.Contains)
+                                        .BindTo(new SelectList(ViewBag.Colleges, "Id", "NameWithId"))
+                                )
+                            </div>
+
+                            <label class="col-sm-1 control-label text-center">Course:</label>
+                            <div class="col-sm-4">
+                                @(Html.Kendo().ComboBox()
+                                            .Name("CourseId")
+                                            .HtmlAttributes(new { style = "width:100%" })
+                                            .Placeholder("Select Course...")
+                                        .DataTextField("NameWithId")
+                                        .DataValueField("Id")
+                                            .Filter(FilterType.Contains)
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("GetCascadeCoursesByCollege", "Exam")
+                                                        .Data("filterCourses");
+                                                })
+                                                .ServerFiltering(true);
+                                            })
+                                            .Enable(false)
+                                            .AutoBind(false)
+                                            .CascadeFrom("CollegeId")
+                                )
+                            </div>
+                            <div class="col-sm-2 text-center">
+                                @*<input type="submit" value="Search" class="btn btn-lg btn-primary" />*@
+                                <button type="submit" class="btn btn-primary btn-label-left">
+                                    <span><i class="fa fa-search fa-lg"></i></span> Search
+                                </button>
+                            </div>
+                        </div>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <th class="text-center col-sm-1">Id</th>
+                    <th class="text-center col-sm-1">PRN</th>
+                    <th class="text-center col-sm-3">Course</th>
+                    <th class="text-center col-sm-1">Course Part</th>
+                    <th class="text-center col-sm-1">Date</th>
+                    <th class="col-sm-1"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td class="text-center">@item.Id</td>
+                    <td class="text-center">@item.PrnNo</td>
+                    <td class="text-center">(@item.CourseId) @item.CourseName</td>
+                    <td class="text-center">(@item.CoursePartId) @item.CoursePartName</td>
+                    <td class="text-center">@string.Format("{0:dd-MMM-yyyy}", item.Date)</td>
+                    <td class="text-left">
+                        <div class="btn-group">
+                            <a class="btn btn-info" href="#"><i class="fa fa-indent"></i> Action </a>
+                            <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#">
+                                <span class="fa fa-caret-down"></span>
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                @if (false == item.IsApproved)
+                                    {
+                                    <li>
+                                        <a href="@Url.Action("Edit", "Exam", new { id = item.Id })">
+                                            <span><i class="fa fa-edit large"></i></span> Edit
+                                        </a>
+                                    </li>
+                                    }
+
+                                <li>
+                                    <a href="@Url.Action("Details", "Exam", new { id = item.Id })">
+                                        <span><i class="fa fa-edit large"></i></span> View
+                                    </a>
+                                </li>
+                                @*<li>
+                                        <a href="@Url.Action("Delete", "Exam", new { id = item.ID })">
+                                            <span><i class="fa fa-trash-o large"></i></span> Delete
+                                        </a>
+                                    </li>*@
+                            </ul>
+
+                        </div>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="form-group">
+            <div class="col-sm-2">
+                <button type="button" value="Index" class="btn btn-primary btn-label-left pull-left" onclick="location.href='@Url.Action("ExamCheckList", new { area = "Reports", controller = "ExamCheckList", reportName = "ExamAppForm" })'">
+                    <span><i class="fa fa-file-excel-o"></i></span>
+                    Show Check List
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function LoadDropDownLists() {
+        $('#s2_College').select2({ placeholder: "Select College" });
+        $('#s2_Course').select2({ placeholder: "Select Course" });
+
+    }
+    function filterCourses() {
+        return {
+            CollegeId: $("#CollegeId").val(),
+        };
+    }
+
+    $(document).ready(function () {
+        // Load Datatables and run plugin on tables
+        LoadDataTablesScripts(AllTables);
+
+        // Load Drop down lists
+        LoadSelect2Script(DemoSelect2);
+
+        // Add Drag-n-Drop feature
+        WinMove();
+        $('#datatable-1').dataTable({
+            "order": [[4, "desc"]]
+        });
+    });
+    // Run Datables plugin and create 3 variants of settings
+    function AllTables() {
+        TestTable1();
+        TestTable2();
+        TestTable3();
+        LoadSelect2Script(MakeSelect2);
+    }
+
+    function MakeSelect2() {
+        $('select').select2();
+        $('.dataTables_filter').each(function () {
+            $(this).find('label input[type=text]').attr('placeholder', 'Search');
+        });
+    }
+</script>
+
+@*<script type="text/javascript">
+        $(document).ready(function () {
+            // Load Datatables and run plugin on tables
+            LoadDataTablesScripts(AllTables);
+            // Add Drag-n-Drop feature
+            WinMove();
+        });
+        // Run Datables plugin and create 3 variants of settings
+        function AllTables() {
+            TestTable1();
+            TestTable2();
+            TestTable3();
+            LoadSelect2Script(MakeSelect2);
+        }
+        function MakeSelect2() {
+            $('select').select2();
+            $('.dataTables_filter').each(function () {
+                $(this).find('label input[type=text]').attr('placeholder', 'Search');
+            });
+        }
+    </script>*@
+
+
