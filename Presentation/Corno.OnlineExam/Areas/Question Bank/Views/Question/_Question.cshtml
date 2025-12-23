@@ -175,8 +175,8 @@
                             @(Html.Kendo().NumericTextBoxFor(m => m.Marks)
                                 .Decimals(0).Min(0).Format("n0")
                                 .Value(Model.Marks ?? 0)
-                                .Enable(false)
-                                .HtmlAttributes(new { @class = "text-right w-100" }))
+                                // Make the control readonly instead of disabled so the value is visible and posted
+                                .HtmlAttributes(new { @class = "text-right w-100", @readonly = "readonly" }))
                         </td>
                     </tr>
                     <tr>
