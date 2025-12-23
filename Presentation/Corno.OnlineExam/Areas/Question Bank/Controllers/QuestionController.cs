@@ -271,24 +271,6 @@ public class QuestionController : CornoController
         return View(_editPath, question);
     }
 
-    /*public ActionResult GetQuestions([DataSourceRequest] DataSourceRequest request, QuestionBankViewModel bankViewModel)
-    {
-        try
-        {
-            var questions = _questionService.GetQuestions(bankViewModel);
-            questions.ForEach(q => q.QuestionTypeName = q.QuestionTypeName.SplitPascalCase());
-
-            // Get all Structure subjects
-            return Json(questions.ToDataSourceResult(request));
-        }
-        catch (Exception exception)
-        {
-            HandleControllerException(exception);
-        }
-
-        return Json(null);
-    }*/
-
     public ActionResult GetQuestionTypeDtos([DataSourceRequest] DataSourceRequest request,
         int? subjectId, int paperCategoryId)
     {
@@ -427,13 +409,10 @@ public class QuestionController : CornoController
             if (HttpContext.Session[User.Identity.Name] is not SessionData sessionData)
                 throw new Exception("Invalid session data");
             var staffId = GetStaffId();
-            var appointments = _questionAppointmentService.Get(p => p.InstanceId == sessionData.InstanceId &&
-                                                                               p.QuestionAppointmentDetails.Any(d =>
-                                                                                  d.StaffId == staffId),
+            var appointments = _questionAppointmentService.Get(p => 
+                    p.InstanceId == sessionData.InstanceId && p.QuestionAppointmentDetails.Any(d => d.StaffId == staffId) && 
+                    p.QuestionAppointmentTypeDetails.Any(d => (d.QuestionCount ?? 0) > (d.CompletedCount ?? 0)),
                 p => p).AsEnumerable();
-            /*var appointments = _questionAppointmentService.GetQuery()
-                .Where(p => p.InstanceId == sessionData.InstanceId)
-                .AsEnumerable();*/
             var structures = Bootstrapper.Get<IStructureService>();
 
             var query = from appointment in appointments

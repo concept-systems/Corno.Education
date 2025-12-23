@@ -150,8 +150,9 @@ public class PaperService : MainService<Paper>, IPaperService
                 !string.IsNullOrWhiteSpace(p.Name) &&
                 p.Name.Trim().Equals(current, StringComparison.OrdinalIgnoreCase));
 
-            if (result?.SerialNo is > 0 serialNo && serialNo > maxLevel)
-                maxLevel = serialNo;
+            // Use classic null and value checks instead of pattern matching for wider C# compatibility
+            if (result is { SerialNo: not null } && result.SerialNo.Value > maxLevel)
+                maxLevel = result.SerialNo.Value;
         }
 
         // If multiple action verbs are present, this returns the highest taxonomy level among them
