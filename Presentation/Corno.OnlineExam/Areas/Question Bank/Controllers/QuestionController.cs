@@ -378,6 +378,7 @@ public class QuestionController : CornoController
                             DifficultyLevelName = ((DifficultyLevel)(question.DifficultyLevel ?? 0)).ToString(),
                             PaperCategoryName = paperCategory.Name,
                             CoNo = question.CoNo,
+                            TaxonomySerialNo = question.TaxonomySerialNo,
                             Status = question.Status,
                             SubjectName = subject.Name,
                             ChapterName = subject.SubjectChapterDetails.Where(d => d.Id == question.ChapterId).Select(d => d.Name).FirstOrDefault()

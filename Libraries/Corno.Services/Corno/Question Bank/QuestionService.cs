@@ -58,6 +58,11 @@ public class QuestionService : MainService<Question>, IQuestionService
         // Validate header
         ValidateHeader(question);
 
+        if(string.IsNullOrEmpty(question.Description))
+            throw new Exception("Question cannot be empty.");
+        if(string.IsNullOrEmpty(question.ModelAnswer))
+            throw new Exception("Model Answer cannot be empty.");
+
         if ((question.ChapterId ?? 0) <= 0)
             throw new Exception("Invalid Chapter.");
         if ((question.DifficultyLevel ?? 0) <= 0)

@@ -175,6 +175,7 @@
                             @(Html.Kendo().NumericTextBoxFor(m => m.Marks)
                                 .Decimals(0).Min(0).Format("n0")
                                 .Value(Model.Marks ?? 0)
+                                .Enable(false)
                                 .HtmlAttributes(new { @class = "text-right w-100" }))
                         </td>
                     </tr>
@@ -184,7 +185,7 @@
                                 @(Html.Kendo().Grid<QuestionAppointmentTypeDetailDto>()
                                     .Name("gridQuestionTypes")
                                     //.ApplyCommonSettings(height:200) // 👈 Apply shared settings
-                                    .HtmlAttributes(new { style = "width: auto;" })
+                                    .HtmlAttributes(new { style = "width: auto; background-color:#fffbe6;" })
                                     .Events(events => events.ApplyCommonEvents())
                                     .Columns(columns =>
                                     {
@@ -197,10 +198,12 @@
                                             .Title("Question Type");
                                         columns.Bound(m => m.QuestionCount)
                                             .HeaderHtmlAttributes(new { style = "text-align:center; font-weight:bold" })
-                                            .Align(TextAlign.Right);
+                                            .Title("Required Question Count")
+                                            .Align(TextAlign.Center);
                                         columns.Bound(m => m.CompletedCount)
                                             .HeaderHtmlAttributes(new { style = "text-align:center; font-weight:bold" })
-                                            .Align(TextAlign.Right);
+                                            .Title("Completed Count")
+                                            .Align(TextAlign.Center);
                                     })
                                     .DataSource(dataSource => dataSource
                                         //.ApplyCommonDataSourceSettings("GetQuestionTypeDtos", "Question", "Question Bank")
@@ -248,19 +251,27 @@
                 </table>
                 <div class="form-group row">
                     <div class="col-sm-6">
-                        <label for="Description" class="form-label"><strong>Description</strong></label>
+                        <label for="Description" class="form-label"><strong>Enter Question</strong> <span class="required-star">*</span> :</label>
                         @Html.TextAreaFor(m => m.Description, new { id = "Description", @class = "form-control" })
                     </div>
                     <div class="col-sm-6">
-                        <label for="ModelAnswer" class="form-label"><strong>Model Answer</strong></label>
+                        <label for="ModelAnswer" class="form-label"><strong>Enter Model Answer <span class="required-star">*</span>:</strong></label>
                         @Html.TextAreaFor(m => m.ModelAnswer, new { id = "ModelAnswer", @class = "form-control" })
                     </div>
                 </div>
                 <div style="overflow-x: auto;">
                     @(Html.Kendo().Grid<QuestionListDto>()
                              .Name("gridQuestion")
-                             .ApplyCommonSettings() // 👈 Apply shared settings
+                             .ToolBar(toolbar => toolbar.Search())
                              .Events(events => events.ApplyCommonEvents())
+                             .Search(s =>
+                             {
+                                 s.Field(f => f.Description);
+                                 s.Field(f => f.ModelAnswer);
+                                 s.Field(f => f.QuestionTypeName);
+                                 s.Field(f => f.ChapterName);
+                                 s.Field(f => f.PaperCategoryName);
+                             })
                              .Columns(columns =>
                              {
                                  columns.Bound(m => m.Id);
@@ -275,6 +286,9 @@
                                  columns.Bound(m => m.QuestionTypeName)
                                      .Align(TextAlign.Left)
                                      .Title("Question Type");
+                                 columns.Bound(m => m.TaxonomySerialNo)
+                                     .Title("Taxonomy")
+                                     .Align(TextAlign.Center);
                                  columns.Bound(m => m.Marks);
                                  columns.Bound(m => m.ChapterName)
                                      .Align(TextAlign.Left)

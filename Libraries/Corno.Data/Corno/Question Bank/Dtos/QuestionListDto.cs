@@ -19,6 +19,7 @@ public class QuestionListDto : QuestionBankViewModel
     public string PaperCategoryName { get; set; }
     public double? Marks { get; set; }
     public int? CoNo { get; set; }
+    public int? TaxonomySerialNo { get; set; }
     public string Status { get; set; }
 
     #endregion

@@ -17,6 +17,8 @@ using Corno.Services.Helper;
 using Telerik.Reporting;
 using Telerik.Reporting.Processing;
 using Report = Telerik.Reporting.Report;
+// Needed for EnvironmentStudy model
+using Corno.Data.Corno;
 
 namespace Corno.Reports.Accounts;
 
@@ -41,7 +43,7 @@ public partial class PayoutSummaryRpt : Report
     #region -- Private Methods --
     // This function is duplicate of AddExamInExamServer in ExamController.
     // Make it common in future.
-    private void AddExamInAppTemp(Data.Corno.Exam model)
+    private void AddInAppTemp(Data.Corno.Exam model)
     {
         // Get from TBL_STUDENT_YR_CHNG
         if (model.CoursePartId == null)
@@ -209,25 +211,82 @@ public partial class PayoutSummaryRpt : Report
         coreService.Save();
     }
 
-    private void AssignTableData(DateTime fromDate, DateTime toDate/*, FormType formType*/)
+    // Copied addition logic from EnvironmentController.AddInCoreDatabase
+    private void AddInStudentEnvo(EnvironmentStudy model)
     {
-        var coreService = Bootstrapper.Get<ICoreService>();
-        if (null == coreService) return;
+        var instanceId = model.InstanceId ?? 0;
 
-        var payoutEntries = coreService.PayoutRepository.Get(p =>
+        var coreService = Bootstrapper.Get<ICoreService>();
+        // Avoid duplicate insert if already present for PRN + TransactionId
+        var existing = coreService.TBl_STUDENT_ENV_STUDIES_Repository.Get(e =>
+            e.Chr_FK_PRN_NO == model.PrnNo && e.Chr_Transaction_Id == model.TransactionId).FirstOrDefault();
+        if (existing != null)
+            return;
+
+        // Get Environment Month & Year from Online DB (same as controller)
+        var cornoService = Bootstrapper.Get<ICornoService>();
+        var environmentSetting = cornoService.EnvironmentSettingRepository
+            .Get(i => i.InstanceId == instanceId).FirstOrDefault();
+        if (environmentSetting == null)
+            throw new Exception("Instance No. " + instanceId + " is not created in EnvironmentSetting Table.");
+
+        var environmentStudies = new TBl_STUDENT_ENV_STUDIES
+        {
+            Chr_FK_PRN_NO = model.PrnNo,
+
+            Num_FK_CO_CD = null == model.CourseId ? (short)0 : (short)model.CourseId,
+            Num_FK_COL_CD = (short?)model.CollegeId,
+            Num_FK_DistCenter_ID = (short)(model.CenterId ?? 0),
+            Num_FK_COPRT_NO = null == model.CoursePartId ? 0 : (short?)model.CoursePartId,
+            Chr_ST_SUB_STS = "A",
+            Num_FK_INST_NO = (short)instanceId,
+            Num_YEAR = environmentSetting.Year.ToString(),
+            Num_MONTH_NO = (short)(environmentSetting.Month ?? 0),
+            Chr_ST_SUB_RES = null,
+            Num_ST_SUB_MRK = 0,
+            Num_EnviFee = model.EnvironmentFee,
+            Num_EnviLateFee = model.LateFee,
+            Num_EnviSuperLateFee = model.SuperLateFee,
+            Num_EnviOtherFee = model.OtherFee,
+            Num_EnviTotalFee = model.TotalFee,
+            Var_USR_NM = HttpContext.Current?.User?.Identity?.Name ?? ModelConstants.Online,
+            Dtm_DTE_CR = model.CreatedDate,
+            Dtm_DTE_UP = model.ModifiedDate,
+            Chr_Transaction_Id = model.TransactionId,
+            PaidAmount = model.PaidAmount,
+            PaymentDate = model.PaymentDate,
+            SettlementDate = model.SettlementDate
+        };
+
+        coreService.TBl_STUDENT_ENV_STUDIES_Repository.Add(environmentStudies);
+        coreService.Save();
+    }
+
+    private IList<Payout> GetPayouts(ICoreService coreService, DateTime fromDate, DateTime toDate)
+    {
+        return coreService.PayoutRepository.Get(p =>
                 DbFunctions.TruncateTime(p.SettlementDate) >= DbFunctions.TruncateTime(fromDate) &&
                 DbFunctions.TruncateTime(p.SettlementDate) <= DbFunctions.TruncateTime(toDate))
             .ToList();
+    }
 
-        if (payoutEntries.Count <= 0) return;
+    private IList<Tbl_COLLEGE_MSTR> GetColleges(ICoreService coreService, IEnumerable<int?> collegeIds)
+    {
+        var ids = collegeIds.Distinct();
+        return coreService.TBL_COLLEGE_MSTRRepository.Get(c => ids.Contains(c.Num_PK_COLLEGE_CD)).ToList();
+    }
 
-        var collegeIds = payoutEntries.Select(p => p.CollegeId).Distinct();
-        var colleges = coreService.TBL_COLLEGE_MSTRRepository.Get(c => collegeIds.Contains(c.Num_PK_COLLEGE_CD))
-            .ToList();
-        //LogHandler.LogInfo($"College Ids : {string.Join(",", collegeIds)}");
+    private class ExamResult
+    {
+        public List<Tbl_APP_TEMP> AppTemps { get; set; }
+        public List<Payout> ProblemPayouts { get; set; }
+    }
 
+    private ExamResult ProcessExamPayouts(ICoreService coreService, ICornoService cornoService, IList<Payout> payoutEntries)
+    {
         var examPayouts = payoutEntries.Where(s => s.FormType == nameof(FormType.Exam)).ToList();
         var appTemps = new List<Tbl_APP_TEMP>();
+
         if (examPayouts.Count > 0)
         {
             appTemps = (from settlementEntry in examPayouts
@@ -238,48 +297,61 @@ public partial class PayoutSummaryRpt : Report
                             settlementEntry.Prn,
                             settlementEntry.TransactionId
                         }
-                            equals new
-                            {
-                                InstanceId = (int)(appTemp.Num_FK_INST_NO ?? 0),
-                                CollegeId = (int)appTemp.Num_FK_COLLEGE_CD,
-                                Prn = appTemp.Chr_APP_PRN_NO,
-                                TransactionId = appTemp.Num_Transaction_Id
-                            }
+                        equals new
+                        {
+                            InstanceId = (int)(appTemp.Num_FK_INST_NO ?? 0),
+                            CollegeId = (int)appTemp.Num_FK_COLLEGE_CD,
+                            Prn = appTemp.Chr_APP_PRN_NO,
+                            TransactionId = appTemp.Num_Transaction_Id
+                        }
                         select appTemp).ToList();
         }
 
         var problemExamPayouts = new List<Payout>();
-        var cornoService = Bootstrapper.Get<ICornoService>();
+
         foreach (var payout in examPayouts)
         {
-            var appTemp = appTemps.Where(p => p.Chr_APP_PRN_NO == payout.Prn).ToList();
-            switch (appTemp.Count)
+            var appTempByPrn = appTemps.Where(p => p.Chr_APP_PRN_NO == payout.Prn).ToList();
+            switch (appTempByPrn.Count)
             {
-                // Means not available in appTemp;
                 case <= 0:
                     {
                         problemExamPayouts.Add(payout);
                         var exam = cornoService.ExamRepository.Get(e => e.InstanceId == payout.InstanceId &&
                                                                         e.PrnNo == payout.Prn &&
-                                                                        e.TransactionId == payout.TransactionId
-                                                                        /*&& e.Status == StatusConstants.Paid*/)
+                                                                        e.TransactionId == payout.TransactionId)
                             .FirstOrDefault();
                         if (null != exam)
-                            AddExamInAppTemp(exam);
+                            AddInAppTemp(exam);
                         continue;
                     }
-                // Means available in appTemp multiple times
                 case > 1:
                     problemExamPayouts.Add(payout);
                     continue;
             }
 
-            if (!payout.SettlementAmount.Equals(appTemp.Sum(p => p.Num_TotalFee)))
+            if (!payout.SettlementAmount.Equals(appTempByPrn.Sum(p => p.Num_TotalFee)))
                 problemExamPayouts.Add(payout);
         }
 
+        return new ExamResult
+        {
+            AppTemps = appTemps,
+            ProblemPayouts = problemExamPayouts
+        };
+    }
+
+    private class EnvironmentResult
+    {
+        public List<TBl_STUDENT_ENV_STUDIES> EnvStudies { get; set; }
+        public List<Payout> ProblemPayouts { get; set; }
+    }
+
+    private EnvironmentResult ProcessEnvironmentPayouts(ICoreService coreService, IList<Payout> payoutEntries)
+    {
         var environmentPayouts = payoutEntries.Where(s => s.FormType == FormType.Environment.ToString()).ToList();
         var environmentStudies = new List<TBl_STUDENT_ENV_STUDIES>();
+
         if (environmentPayouts.Count > 0)
         {
             environmentStudies = (from settlementEntry in environmentPayouts
@@ -295,80 +367,124 @@ public partial class PayoutSummaryRpt : Report
         }
 
         var problemEnvironmentPayouts = new List<Payout>();
+        var cornoService = Bootstrapper.Get<ICornoService>();
+
         foreach (var payout in environmentPayouts)
         {
-            var envStudy = environmentStudies.Where(p => p.Chr_FK_PRN_NO == payout.Prn).ToList();
-            switch (envStudy.Count)
+            var envStudyByPrn = environmentStudies.Where(p => p.Chr_FK_PRN_NO == payout.Prn).ToList();
+            switch (envStudyByPrn.Count)
             {
-                // Means not available in appTemp;
                 case <= 0:
                     {
                         problemEnvironmentPayouts.Add(payout);
+                        // Try to add missing Environment record from Online DB, like Exam/Convocation
+                        var environmentToAdd = cornoService.EnvironmentStudyRepository.Get(e =>
+                            e.PrnNo == payout.Prn && e.TransactionId == payout.TransactionId).FirstOrDefault();
+                        if (environmentToAdd != null)
+                            AddInStudentEnvo(environmentToAdd);
                         continue;
                     }
-                // Means available in appTemp multiple times
                 case > 1:
                     problemEnvironmentPayouts.Add(payout);
                     continue;
             }
 
-            if (!payout.SettlementAmount.Equals(envStudy.Sum(p => p.Num_EnviTotalFee)))
+            if (!payout.SettlementAmount.Equals(envStudyByPrn.Sum(p => p.Num_EnviTotalFee)))
                 problemEnvironmentPayouts.Add(payout);
         }
 
+        return new EnvironmentResult
+        {
+            EnvStudies = environmentStudies,
+            ProblemPayouts = problemEnvironmentPayouts
+        };
+    }
+
+    private class ConvocationResult
+    {
+        public List<Tbl_STUDENT_CONVO> Convocations { get; set; }
+        public List<Payout> ProblemPayouts { get; set; }
+    }
+
+    private ConvocationResult ProcessConvocationPayouts(ICoreService coreService, ICornoService cornoService, IList<Payout> payoutEntries)
+    {
         var convocationPayouts = payoutEntries.Where(s => s.FormType == FormType.Convocation.ToString()).ToList();
         var convocations = new List<Tbl_STUDENT_CONVO>();
+
         if (convocationPayouts.Count > 0)
         {
             convocations = (from settlementEntry in convocationPayouts
-                            join convocation in coreService.Tbl_STUDENT_CONVO_Repository.Get() on new { /*CollegeId = settlementEntry.CollegeId ?? 0, */settlementEntry.Prn, settlementEntry.TransactionId }
-                                equals new { /*CollegeId = convocation.Num_FK_COLLEGE_CD ?? 0,*/ Prn = convocation.Chr_FK_PRN_NO, TransactionId = convocation.Chr_Transaction_Id }
+                            join convocation in coreService.Tbl_STUDENT_CONVO_Repository.Get() on new { settlementEntry.Prn, settlementEntry.TransactionId }
+                                equals new { Prn = convocation.Chr_FK_PRN_NO, TransactionId = convocation.Chr_Transaction_Id }
                             select convocation).ToList();
         }
 
         var problemConvocationPayouts = new List<Payout>();
+
         foreach (var payout in convocationPayouts)
         {
-            var convocation = convocations.Where(p => p.Chr_FK_PRN_NO == payout.Prn).ToList();
-            switch (convocation.Count)
+            var convocationByPrn = convocations.Where(p => p.Chr_FK_PRN_NO == payout.Prn).ToList();
+            switch (convocationByPrn.Count)
             {
-                // Means not available in appTemp;
                 case <= 0:
-                    problemConvocationPayouts.Add(payout);
-                    var convocationToAdd = cornoService.ConvocationRepository.Get(e =>
-                            e.PrnNo == payout.Prn &&
-                            e.TransactionId == payout.TransactionId
-                            /*&& e.Status == StatusConstants.Paid*/)
-                        .FirstOrDefault();
-                    if (null != convocationToAdd)
-                        AddInStudentConvo(convocationToAdd);
-                    continue;
-                // Means available in appTemp multiple times
+                    {
+                        problemConvocationPayouts.Add(payout);
+                        var convocationToAdd = cornoService.ConvocationRepository.Get(e =>
+                                e.PrnNo == payout.Prn &&
+                                e.TransactionId == payout.TransactionId)
+                            .FirstOrDefault();
+                        if (null != convocationToAdd)
+                            AddInStudentConvo(convocationToAdd);
+                        continue;
+                    }
                 case > 1:
                     problemConvocationPayouts.Add(payout);
                     continue;
             }
 
-            if (!payout.SettlementAmount.Equals(convocation.Sum(p => p.Con_ST_FEES_AMT.ToDouble())))
+            if (!payout.SettlementAmount.Equals(convocationByPrn.Sum(p => p.Con_ST_FEES_AMT.ToDouble())))
                 problemConvocationPayouts.Add(payout);
         }
 
-        var dataSource = payoutEntries.GroupBy(g => g.CollegeId)
+        return new ConvocationResult
+        {
+            Convocations = convocations,
+            ProblemPayouts = problemConvocationPayouts
+        };
+    }
+
+    private void AssignTableData(DateTime fromDate, DateTime toDate/*, FormType formType*/)
+    {
+        var coreService = Bootstrapper.Get<ICoreService>();
+        if (null == coreService) return;
+
+        var payoutEntries = GetPayouts(coreService, fromDate, toDate);
+        if (payoutEntries.Count <= 0) return;
+
+        var colleges = GetColleges(coreService, payoutEntries.Select(p => p.CollegeId));
+
+        var cornoService = Bootstrapper.Get<ICornoService>();
+        var examResult = ProcessExamPayouts(coreService, cornoService, payoutEntries);
+        var envResult = ProcessEnvironmentPayouts(coreService, payoutEntries);
+        var convoResult = ProcessConvocationPayouts(coreService, cornoService, payoutEntries);
+
+        var dataSource = payoutEntries
+            .GroupBy(g => g.CollegeId)
             .Select(g =>
             {
                 var college = colleges.FirstOrDefault(c => c.Num_PK_COLLEGE_CD == g.Key);
 
-                var groupedAppTemps = appTemps.Where(a => a.Num_FK_COLLEGE_CD == (g.Key ?? 0)).ToList();
-                var groupedEnvironments = environmentStudies.Where(a => (a.Num_FK_COL_CD ?? 0) == (g.Key ?? 0)).ToList();
-                var groupedConvocations = convocations.Where(a => (a.Num_FK_COLLEGE_CD ?? 0) == (g.Key ?? 0)).ToList();
-                //var duplicateAppTemps = appTemps.GroupBy(x => x.Chr_APP_PRN_NO).Where(x => x.Count() > 1)
-                //    .Select(x => x.Key).ToList();
-                var groupedProblemExamPayouts = problemExamPayouts.Where(a => (a.CollegeId ?? 0) == (g.Key ?? 0))
+                var groupedAppTemps = examResult.AppTemps.Where(a => a.Num_FK_COLLEGE_CD == (g.Key ?? 0)).ToList();
+                var groupedEnvironments = envResult.EnvStudies.Where(a => (a.Num_FK_COL_CD ?? 0) == (g.Key ?? 0)).ToList();
+                var groupedConvocations = convoResult.Convocations.Where(a => (a.Num_FK_COLLEGE_CD ?? 0) == (g.Key ?? 0)).ToList();
+
+                var groupedProblemExamPayouts = examResult.ProblemPayouts.Where(a => (a.CollegeId ?? 0) == (g.Key ?? 0))
                     .Select(x => x.Prn).ToList();
-                var groupedProblemEnvironmentPayouts = problemEnvironmentPayouts.Where(a => (a.CollegeId ?? 0) == (g.Key ?? 0))
+                var groupedProblemEnvironmentPayouts = envResult.ProblemPayouts.Where(a => (a.CollegeId ?? 0) == (g.Key ?? 0))
                     .Select(x => x.Prn).ToList();
-                var groupedProblemConvocationPayouts = problemConvocationPayouts.Where(a => (a.CollegeId ?? 0) == (g.Key ?? 0))
+                var groupedProblemConvocationPayouts = convoResult.ProblemPayouts.Where(a => (a.CollegeId ?? 0) == (g.Key ?? 0))
                     .Select(x => x.Prn).ToList();
+
                 return new
                 {
                     CollegeId = g.Key,
@@ -391,7 +507,6 @@ public partial class PayoutSummaryRpt : Report
 
         table1.DataSource = dataSource;
     }
-
     #endregion
 
     #region -- Events --

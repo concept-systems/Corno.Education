@@ -3,20 +3,14 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Transactions;
-using Corno.Data.Admin;
 using Corno.Data.Api;
 using Corno.Data.Core;
-using Corno.Data.Corno;
 using Corno.Data.Helpers;
 using Corno.Data.ViewModels;
-using Corno.Globals.Constants;
 using Corno.Logger;
 using Corno.Services.Core.Interfaces;
 using Corno.Services.Core.Marks_Entry.Interfaces;
 using Corno.Services.Corno;
-using MoreLinq;
 using Newtonsoft.Json;
 
 namespace Corno.Services.Core.Marks_Entry;
@@ -375,12 +369,15 @@ public class MarksApiService : BaseService, IMarksApiService
                     }
 
                     // Check if record already exists
+                    var collegeId = apiItem.CollegeId.ToInt();
+                    var categoryId = marksApiViewModel.CategoryId.ToString();
                     var existingRecord = _coreService.Tbl_MARKS_TMP_Repository.Get(t =>
                         t.Num_FK_INST_NO == instanceId &&
-                        t.Num_FK_COL_CD == (marksApiViewModel.CollegeId ?? 0) &&
+                        t.Num_FK_COL_CD == collegeId &&
                         t.Chr_FK_COPRT_NO == marksApiViewModel.CoursePartId.ToString() &&
                         t.Chr_FK_SUB_CD == marksApiViewModel.SubjectId.ToString() &&
-                        t.Chr_CODE_SEAT_NO == apiItem.SeatNo.Value)
+                        t.Chr_CODE_SEAT_NO == apiItem.SeatNo.Value && 
+                        t.Chr_FK_CAT_CD == categoryId)
                         .FirstOrDefault();
 
                     var status = "P";
@@ -397,10 +394,10 @@ public class MarksApiService : BaseService, IMarksApiService
                     if (existingRecord != null)
                     {
                         // Update existing record
-                        existingRecord.Chr_MARKS = marks;
+                        /*existingRecord.Chr_MARKS = marks;
                         existingRecord.Chr_STATUS_FLG = status;
                         existingRecord.Dtm_DTE_UP = DateTime.Now;
-                        _coreService.Tbl_MARKS_TMP_Repository.Update(existingRecord);
+                        _coreService.Tbl_MARKS_TMP_Repository.Update(existingRecord);*/
                         updatedCount++;
                     }
                     else
@@ -409,9 +406,9 @@ public class MarksApiService : BaseService, IMarksApiService
                         var marksTemp = new Tbl_MARKS_TMP
                         {
                             Num_FK_INST_NO = (short)instanceId,
-                            Num_FK_COL_CD = (short)(marksApiViewModel.CollegeId ?? 0),
+                            Num_FK_COL_CD = (short)collegeId,
                             
-                            Num_FK_DISTCOL_CD = (short)apiItem.CenterId.ToUShort(),
+                            //Num_FK_DISTCOL_CD = (short)apiItem.CenterId.ToUShort(),
                             Chr_FK_COPRT_NO = marksApiViewModel.CoursePartId.ToString(),
                             
                             Chr_FK_SUB_CD = apiItem.SubjectCode,
