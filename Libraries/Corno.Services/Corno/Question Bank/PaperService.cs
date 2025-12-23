@@ -123,13 +123,48 @@ public class PaperService : MainService<Paper>, IPaperService
 
     private static int GetTaxonomyLevel(IEnumerable<MiscMaster> taxonomies, string question)
     {
+        if (string.IsNullOrWhiteSpace(question))
+            return 0;
+
+        // Normalize and split the question into clean word tokens
+        var tokens = Regex.Split(question, @"\s+")
+            .Where(t => !string.IsNullOrWhiteSpace(t))
+            .Select(t => t.Trim().Trim(',', '.', ';', ':', '?', '!', '"', '\'', '(', ')'))
+            .Where(t => !string.IsNullOrWhiteSpace(t))
+            .ToList();
+
+        if (!tokens.Any())
+            return 0;
+
+        var miscMasters = taxonomies.ToList();
+        var maxLevel = 0;
+
+        // Consider all contiguous word combinations (supports multi‑word action verbs)
+        foreach (var phrase in GetSubstrings(tokens))
+        {
+            var current = phrase.Trim();
+            if (string.IsNullOrEmpty(current))
+                continue;
+
+            var result = miscMasters.FirstOrDefault(p =>
+                !string.IsNullOrWhiteSpace(p.Name) &&
+                p.Name.Trim().Equals(current, StringComparison.OrdinalIgnoreCase));
+
+            if (result?.SerialNo is > 0 serialNo && serialNo > maxLevel)
+                maxLevel = serialNo;
+        }
+
+        // If multiple action verbs are present, this returns the highest taxonomy level among them
+        return maxLevel;
+    }
+
+    /*private static int GetTaxonomyLevel(IEnumerable<MiscMaster> taxonomies, string question)
+    {
         var words = question.Split(' ');
 
         var miscMasters = taxonomies.ToList();
         foreach (var word in words)
         {
-            /*var result = miscMasters.FirstOrDefault(p =>
-                p.Name.Trim().ToLower().Contains(word.Trim().ToLower()));*/
             var result = miscMasters.FirstOrDefault(p =>
                 p.Name.Trim().ToLower().Equals(word.Trim().ToLower(), StringComparison.OrdinalIgnoreCase));
             if (null != result)
@@ -137,7 +172,7 @@ public class PaperService : MainService<Paper>, IPaperService
         }
 
         return 0;
-    }
+    }*/
 
     private string SanitizeName(string name)
     {
