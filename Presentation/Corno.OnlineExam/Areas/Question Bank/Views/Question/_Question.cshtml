@@ -109,7 +109,8 @@
                                         .Data("filterQuestionTypes"))
                                     .ServerFiltering(true)
                                 )
-                                .CascadeFrom(ModelConstants.ChapterId))
+                                .CascadeFrom(ModelConstants.ChapterId)
+                                .Events(e => e.Change("onQuestionTypeChange")))
                             <script>
                                 function filterQuestionTypes() {
                                     var comboBox = $("#ChapterId").data("kendoMultiColumnComboBox");
@@ -118,6 +119,45 @@
                                     return {
                                         chapterSerialNo: dataItem ? dataItem.SerialNo : null
                                     };
+                                }
+
+                                function onQuestionTypeChange() {
+                                    var questionTypeComboBox = $("#QuestionTypeId").data("kendoMultiColumnComboBox");
+                                    var chapterComboBox = $("#ChapterId").data("kendoMultiColumnComboBox");
+                                    var marksNumericTextBox = $("#Marks").data("kendoNumericTextBox");
+
+                                    if (!questionTypeComboBox || !chapterComboBox || !marksNumericTextBox) {
+                                        return;
+                                    }
+
+                                    var questionTypeId = questionTypeComboBox.value();
+                                    var chapterId = chapterComboBox.value();
+                                    var subjectId = @(Model.SubjectId ?? 0);
+                                    var paperCategoryId = @(Model.PaperCategoryId ?? 0);
+
+                                    if (!questionTypeId || !chapterId || !subjectId || !paperCategoryId) {
+                                        return;
+                                    }
+
+                                    // Call controller to get Marks from Structure
+                                    $.ajax({
+                                        url: '@Url.Action("GetMarksFromStructure", "Question", new { area = "Question Bank" })',
+                                        type: 'GET',
+                                        data: {
+                                            subjectId: subjectId,
+                                            chapterId: chapterId,
+                                            questionTypeId: questionTypeId,
+                                            paperCategoryId: paperCategoryId
+                                        },
+                                        success: function(response) {
+                                            if (response && response.marks !== undefined) {
+                                                marksNumericTextBox.value(response.marks);
+                                            }
+                                        },
+                                        error: function() {
+                                            console.error('Error fetching marks from structure');
+                                        }
+                                    });
                                 }
                             </script>
 

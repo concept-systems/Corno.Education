@@ -121,6 +121,11 @@ public class QuestionController : CornoController
             var subject = GetSubject(question.SubjectId ?? 0);
             question.SubjectName = $"({subject?.Code}) {subject?.Name}";
 
+            /*var structureService = Bootstrapper.Get<IStructureService>();
+            var structure = structureService.FirstOrDefault(p => p.SubjectId == subjectId && p.PaperCategoryId == paperCategoryId,
+                p => p);
+            question.Marks = structure.MaxMarks;*/
+
             return View(_createPath, question);
         }
         catch (Exception exception)
@@ -605,6 +610,44 @@ public class QuestionController : CornoController
             LogHandler.LogError(exception);
         }
         return Json(null, JsonRequestBehavior.AllowGet);
+    }
+
+    public JsonResult GetMarksFromStructure(int? subjectId, int? chapterId, int? questionTypeId, int? paperCategoryId)
+    {
+        if (null == subjectId || null == chapterId || null == questionTypeId || null == paperCategoryId)
+            return Json(new { marks = 0 }, JsonRequestBehavior.AllowGet);
+
+        try
+        {
+            // Get the chapter SerialNo from ChapterId
+            var subject = _subjectService.FirstOrDefault(p => p.Id == subjectId, p => p);
+            var chapter = subject?.SubjectChapterDetails.FirstOrDefault(c => c.Id == chapterId);
+            if (chapter == null || !chapter.SerialNo.HasValue)
+                return Json(new { marks = 0 }, JsonRequestBehavior.AllowGet);
+
+            var chapterSerialNo = chapter.SerialNo.Value;
+
+            // Get Structure
+            var structureService = Bootstrapper.Get<IStructureService>();
+            var structure = structureService.FirstOrDefault(p => p.SubjectId == subjectId && p.PaperCategoryId == paperCategoryId,
+                p => p);
+            if (null == structure)
+                return Json(new { marks = 0 }, JsonRequestBehavior.AllowGet);
+
+            // Find StructureDetail that matches ChapterSerialNo and QuestionTypeId
+            var structureDetail = structure.StructureDetails
+                .FirstOrDefault(d => d.QuestionTypeId == questionTypeId &&
+                                     !string.IsNullOrEmpty(d.ChapterNos) &&
+                                     d.ChapterNos.Split(',').Any(c => c.Trim() == chapterSerialNo.ToString()));
+
+            var marks = structureDetail?.Marks ?? 0;
+            return Json(new { marks = marks }, JsonRequestBehavior.AllowGet);
+        }
+        catch (Exception exception)
+        {
+            LogHandler.LogError(exception);
+        }
+        return Json(new { marks = 0 }, JsonRequestBehavior.AllowGet);
     }
 
     [AcceptVerbs(HttpVerbs.Post)]
