@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using Corno.Services.Common.Interfaces;
 using Corno.Services.Corno;

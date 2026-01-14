@@ -1,0 +1,88 @@
+@{
+    ViewBag.Title = "Paper Generation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="page-header">
+                <i class="fa fa-file-alt"></i> Paper Generation
+            </h2>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-12">
+            @(Html.Telerik().Grid<dynamic>()
+                .Name("PaperGrid")
+                .Columns(columns =>
+                {
+                    columns.Bound("PaperCode").Title("Paper Code").Width(200);
+                    columns.Bound("SetNumber").Title("Set").Width(80);
+                    columns.Bound("PaperType").Title("Type").Width(100);
+                    columns.Bound("MaxMarks").Title("Max Marks").Width(100);
+                    columns.Bound("Status").Title("Status").Width(120)
+                        .Template(@<text>
+                            <span class="label label-@(item.Status == "Drawn" ? "success" : 
+                                                       item.Status == "Generated" ? "warning" : "default")">
+                                @item.Status
+                            </span>
+                        </text>);
+                    columns.Bound("GeneratedDate").Title("Generated Date").Width(150)
+                        .Format("{0:dd/MM/yyyy HH:mm}");
+                    columns.Bound("DrawnDate").Title("Drawn Date").Width(150)
+                        .Format("{0:dd/MM/yyyy HH:mm}");
+                    columns.Command(commands =>
+                    {
+                        commands.Custom("View").Text("View").Action("ViewPaper", "QB_PaperGeneration")
+                            .DataRouteValues(route => route.Add(o => o.Id).RouteKey("id"));
+                        commands.Custom("Draw").Text("Draw").Ajax(true)
+                            .Action("DrawPaper", "QB_PaperGeneration")
+                            .DataRouteValues(route => route.Add(o => o.Id).RouteKey("id"))
+                            .HtmlAttributes(new { @class = "draw-paper-btn" });
+                        commands.Custom("Download").Text("Download").Action("DownloadWord", "QB_PaperGeneration")
+                            .DataRouteValues(route => route.Add(o => o.Id).RouteKey("id"));
+                    }).Width(250);
+                })
+                .DataBinding(dataBinding => dataBinding
+                    .Ajax()
+                    .Select("GetPapers", "QB_PaperGeneration")
+                )
+                .Pageable(paging => paging.PageSize(20))
+                .Sortable()
+                .Filterable()
+                .Scrollable(scroll => scroll.Height(600))
+                .Resizable(resize => resize.Columns(true))
+                .HtmlAttributes(new { style = "height:600px;" })
+            )
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Handle Draw button click
+            $(document).on("click", ".draw-paper-btn", function (e) {
+                e.preventDefault();
+                var url = $(this).attr("href");
+                
+                if (!confirm("Are you sure you want to draw this paper? Once drawn, it cannot be modified.")) {
+                    return false;
+                }
+                
+                $.post(url, function (result) {
+                    if (result.success) {
+                        alert(result.message);
+                        $("#PaperGrid").data("tGrid").rebind();
+                    } else {
+                        alert("Error: " + result.message);
+                    }
+                });
+                
+                return false;
+            });
+        });
+    </script>
+}

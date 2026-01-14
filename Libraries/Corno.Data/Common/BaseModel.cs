@@ -1,4 +1,4 @@
-﻿using Corno.Globals.Constants;
+using Corno.Globals.Constants;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -39,7 +39,7 @@ public class BaseModel
 
     public SessionData GetSessionData()
     {
-        return HttpContext.Current.Session[HttpContext.Current.User.Identity.Name] as SessionData;
+        return HttpContext.Current?.Session[HttpContext.Current.User.Identity.Name] as SessionData;
     }
 
     public virtual void Reset()

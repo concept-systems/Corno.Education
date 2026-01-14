@@ -1,4 +1,4 @@
-﻿namespace Corno.Globals.Constants
+namespace Corno.Globals.Constants
 {
     public static class LoginConstants
     {

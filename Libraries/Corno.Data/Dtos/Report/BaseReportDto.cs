@@ -1,4 +1,4 @@
-﻿namespace Corno.Data.Dtos.Report;
+namespace Corno.Data.Dtos.Report;
 
 public class BaseReportDto
 {

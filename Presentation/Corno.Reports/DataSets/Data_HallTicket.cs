@@ -1,4 +1,4 @@
-﻿namespace Corno.Reports.DataSets;
+namespace Corno.Reports.DataSets;
 
 public partial class Data_HallTicket
 {

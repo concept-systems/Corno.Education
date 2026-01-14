@@ -1,4 +1,4 @@
-﻿namespace Corno.Data.Common;
+namespace Corno.Data.Common;
 
 public class TransactionModel : BaseModel
 {

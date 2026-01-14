@@ -1,4 +1,4 @@
-﻿using Corno.Data.Admin;
+using Corno.Data.Admin;
 using Corno.Services.Corno.Interfaces;
 
 namespace Corno.Services.Login.Interfaces;

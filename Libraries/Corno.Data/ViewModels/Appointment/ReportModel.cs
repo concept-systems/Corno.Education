@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Corno.Data.Corno.Masters;
 using Corno.Data.Corno.Paper_Setting.Models;
 

@@ -1,0 +1,59 @@
+@{
+    ViewBag.Title = "Question Bank V2";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="page-header">
+                <i class="fa fa-book"></i> Question Bank V2
+                <a href="@Url.Action("Create")" class="btn btn-primary pull-right">
+                    <i class="fa fa-plus"></i> Create Question
+                </a>
+            </h2>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-12">
+            @(Html.Telerik().Grid<dynamic>()
+                .Name("QuestionGrid")
+                .Columns(columns =>
+                {
+                    columns.Bound("QuestionCode").Title("Question Code").Width(150);
+                    columns.Bound("SubjectName").Title("Subject").Width(200);
+                    columns.Bound("QuestionTypeName").Title("Type").Width(150);
+                    columns.Bound("DifficultyLevelName").Title("Difficulty").Width(120);
+                    columns.Bound("TaxonomyLevelName").Title("Taxonomy").Width(120);
+                    columns.Bound("Marks").Title("Marks").Width(80).Format("{0:n2}");
+                    columns.Bound("Status").Title("Status").Width(150);
+                    columns.Bound("CreatedDate").Title("Created Date").Width(120).Format("{0:dd/MM/yyyy}");
+                    columns.Command(commands =>
+                    {
+                        commands.Custom("View").Text("View").Action("View", "QB_QuestionBank").DataRouteValues(route => route.Add(o => o.Id).RouteKey("id"));
+                        commands.Custom("Edit").Text("Edit").Action("Edit", "QB_QuestionBank").DataRouteValues(route => route.Add(o => o.Id).RouteKey("id"));
+                    }).Width(200);
+                })
+                .DataBinding(dataBinding => dataBinding
+                    .Ajax()
+                    .Select("GetQuestions", "QB_QuestionBank")
+                )
+                .Pageable(paging => paging.PageSize(20))
+                .Sortable()
+                .Filterable()
+                .Scrollable(scroll => scroll.Height(600))
+                .Resizable(resize => resize.Columns(true))
+                .HtmlAttributes(new { style = "height:600px;" })
+            )
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Grid initialization handled by Telerik
+        });
+    </script>
+}

@@ -1,4 +1,4 @@
-﻿using OnlineExam.Models;
+using OnlineExam.Models;
 namespace Corno.Services
 {
     public class TehsilService : MasterService<Tehsil>,ITehsilService

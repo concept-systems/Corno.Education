@@ -1,4 +1,4 @@
-ï»¿using System;
+using System;
 using System.Net;
 using System.Net.Mail;
 using Corno.Data.ViewModels;
@@ -26,13 +26,13 @@ public class EmailService : BaseService, IEmailService
     public string SendEmailAsync(string toAddress, string subject, string body)
     {
         var result = "Message Sent Successfully..!!";
-        var senderId = "info@4everpayment.com";// use senderâ€™s email id here..
-        const string senderPassword = "jugad4ever"; // sender password hereâ€¦
+        var senderId = "info@4everpayment.com";// use sender’s email id here..
+        const string senderPassword = "jugad4ever"; // sender password here…
         try
         {
             var smtp = new SmtpClient
             {
-                Host = "smtp.gmail.com", // smtp server address hereâ€¦
+                Host = "smtp.gmail.com", // smtp server address here…
                 Port = 587,
                 EnableSsl = true,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
@@ -60,7 +60,7 @@ public class EmailService : BaseService, IEmailService
         const string result = "Message Sent Successfully..!!";
         var smtp = new SmtpClient
         {
-            Host = smtpAddress, // smtp server address hereâ€¦
+            Host = smtpAddress, // smtp server address here…
             Port = smtpPort,
             EnableSsl = true,
             DeliveryMethod = SmtpDeliveryMethod.Network,
@@ -86,7 +86,7 @@ public class EmailService : BaseService, IEmailService
         const string result = "Message Sent Successfully..!!";
         var smtp = new SmtpClient
         {
-            Host = smtpAddress, // smtp server address hereâ€¦
+            Host = smtpAddress, // smtp server address here…
             Port = smtpPort,
             EnableSsl = bEnableSsl,
             DeliveryMethod = SmtpDeliveryMethod.Network,
@@ -119,7 +119,7 @@ public class EmailService : BaseService, IEmailService
 
         using (var smtpClient = new SmtpClient
                {
-                   Host = emailSetting.SmtpServer, // SMTP server address hereâ€¦
+                   Host = emailSetting.SmtpServer, // SMTP server address here…
                    Port = emailSetting.SmtpPort ?? 0,
                    EnableSsl = emailSetting.EnableSsl ?? false,
                    DeliveryMethod = SmtpDeliveryMethod.Network,
@@ -168,7 +168,7 @@ public class EmailService : BaseService, IEmailService
         const string result = "Message Sent Successfully..!!";
         var smtpClient = new SmtpClient
         {
-            Host = emailSetting.SmtpServer, // smtp server address hereâ€¦
+            Host = emailSetting.SmtpServer, // smtp server address here…
             Port = emailSetting.SmtpPort ?? 0,
             EnableSsl = emailSetting.EnableSsl ?? false,
             DeliveryMethod = SmtpDeliveryMethod.Network,

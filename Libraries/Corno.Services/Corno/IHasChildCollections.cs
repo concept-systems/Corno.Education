@@ -1,4 +1,4 @@
-﻿namespace Corno.Services.Corno;
+namespace Corno.Services.Corno;
 
 public interface IHasChildCollections<T>
 {

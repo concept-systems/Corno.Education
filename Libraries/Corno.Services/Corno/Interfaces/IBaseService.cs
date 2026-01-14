@@ -1,4 +1,4 @@
-﻿namespace Corno.Services.Corno.Interfaces;
+namespace Corno.Services.Corno.Interfaces;
 
 public interface IBaseService : IService
 {

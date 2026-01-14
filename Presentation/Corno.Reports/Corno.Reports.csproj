@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -43,15 +43,15 @@
   <ItemGroup>
     <Reference Include="CrystalDecisions.CrystalReports.Engine">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Corno.OnlineExam\bin\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
+      <HintPath>..\Corno.Education\bin\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
     </Reference>
     <Reference Include="CrystalDecisions.ReportSource">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Corno.OnlineExam\bin\CrystalDecisions.ReportSource.dll</HintPath>
+      <HintPath>..\Corno.Education\bin\CrystalDecisions.ReportSource.dll</HintPath>
     </Reference>
     <Reference Include="CrystalDecisions.Shared">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Corno.OnlineExam\bin\CrystalDecisions.Shared.dll</HintPath>
+      <HintPath>..\Corno.Education\bin\CrystalDecisions.Shared.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
@@ -88,12 +88,12 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Telerik.Reporting">
-      <HintPath>..\Corno.OnlineExam\bin\Telerik.Reporting.dll</HintPath>
+      <HintPath>..\Corno.Education\bin\Telerik.Reporting.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="Telerik.ReportViewer.WebForms">
-      <HintPath>..\Corno.OnlineExam\bin\Telerik.ReportViewer.WebForms.dll</HintPath>
+    <Reference Include="Telerik.ReportViewer.WebForms, Version=18.3.24.1112, Culture=neutral, PublicKeyToken=a9d7983dfcc261be, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_MSIL\Telerik.ReportViewer.WebForms\v4.0_18.3.24.1112__a9d7983dfcc261be\Telerik.ReportViewer.WebForms.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -120,6 +120,12 @@
     </Compile>
     <Compile Include="Accounts\PayoutSummaryRpt.designer.cs">
       <DependentUpon>PayoutSummaryRpt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Additional Credits\AdditionalCreditsRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Additional Credits\AdditionalCreditsRpt.designer.cs">
+      <DependentUpon>AdditionalCreditsRpt.cs</DependentUpon>
     </Compile>
     <Compile Include="AnswerSheet\AnswerSheetRpt.cs">
       <SubType>Component</SubType>
@@ -568,6 +574,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Accounts\PayoutSummaryRpt.resx">
       <DependentUpon>PayoutSummaryRpt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Additional Credits\AdditionalCreditsRpt.resx">
+      <DependentUpon>AdditionalCreditsRpt.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AnswerSheet\AnswerSheetRpt.resx">
       <DependentUpon>AnswerSheetRpt.cs</DependentUpon>

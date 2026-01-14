@@ -1,0 +1,408 @@
+@using Corno.Globals.Constants
+@using Kendo.Mvc.UI
+
+<style>
+    /* Ensure bootbox dialogs appear above Kendo Windows */
+    .bootbox {
+        z-index: 10003 !important;
+    }
+    .modal-backdrop {
+        z-index: 10002 !important;
+    }
+    /* Status message colors */
+    .status-success {
+        color: #28a745 !important;
+        font-weight: bold;
+    }
+    .status-error {
+        color: #dc3545 !important;
+        font-weight: bold;
+    }
+    .status-info {
+        color: #007bff !important;
+        font-weight: bold;
+    }
+    .details-success {
+        color: #155724;
+    }
+    .details-error {
+        color: #721c24;
+    }
+    .transfer-tabs .k-tabstrip-items {
+        border-bottom: 1px solid #ccc;
+    }
+</style>
+
+<div id="transferWindow" style="display:none;">
+    <div class="form-horizontal" style="padding: 20px;">
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Select Type:</label>
+            <div class="col-sm-8" style="padding-right: 0;">
+                <select id="transferType" class="form-control">
+                    <option value="">-- Select Type --</option>
+                    <option value="Appointment">Appointments</option>
+                    <option value="Schedule">Schedules</option>
+                    <option value="Remuneration">Remunerations</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Select Instance:</label>
+            <div class="col-sm-8" style="padding-right: 0;">
+                @(Html.Kendo().ComboBox()
+                    .Name("transferInstanceId")
+                    .HtmlAttributes(new { style = "width:calc(100% + 15px)" })
+                    .Placeholder("Select Instance...")
+                    .Filter(FilterType.Contains)
+                    .DataTextField(ModelConstants.NameWithId)
+                    .DataValueField(ModelConstants.Id)
+                    .AutoBind(false)
+                    .DataSource(dataSource => dataSource
+                        .Read(read => read.Action("GetTransferInstances", "PaperSetting", new { area = "Paper Setting" }))
+                        .ServerFiltering(true)
+                    ))
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12">
+                <div id="transferConfirm" style="display:none; margin-bottom: 15px; padding: 15px; background-color: #fff3cd; border: 1px solid #ffc107; border-radius: 4px;">
+                    <div style="margin-bottom: 10px; font-weight: bold; color: #856404;">
+                        <i class="fa fa-exclamation-triangle" style="margin-right: 5px;"></i>
+                        <span id="confirmMessage"></span>
+                    </div>
+                    <div class="text-right">
+                        <button type="button" id="btnConfirmYes" class="k-button k-button-md k-rounded-lg k-button-outline k-button-outline-primary" style="margin-right: 10px;">
+                            <span><i class="fa fa-check"></i></span> Yes
+                        </button>
+                        <button type="button" id="btnConfirmNo" class="k-button k-button-md k-rounded-lg k-button-outline k-button-outline-secondary">
+                            <span><i class="fa fa-times"></i></span> No
+                        </button>
+                    </div>
+                </div>
+                <div id="transferProgress" style="display:none;">
+                    <div class="k-progressbar-wrapper">
+                        <div id="progressBar" class="k-progressbar" style="width: 100%;"></div>
+                    </div>
+                    <div id="progressStatus" style="margin-top: 10px;"></div>
+                    <div id="progressDetails" style="margin-top: 5px;"></div>
+                </div>
+                <div id="transferMessage" style="display:none; margin-top: 10px; padding: 10px; border-radius: 4px;"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12 text-right">
+                <button type="button" id="btnTransfer" class="k-button k-button-md k-rounded-lg k-button-outline k-button-outline-info">
+                    <span><i class="fa fa-exchange"></i></span> Transfer
+                </button>
+                <button type="button" id="btnCancelTransfer" class="k-button k-button-md k-rounded-lg k-button-outline k-button-outline-danger">
+                    <span><i class="fa fa-times"></i></span> Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var transferWindow;
+    var progressBar;
+    var transferInProgress = false;
+    var progressPollInterval = null;
+
+    $(function () {
+        // Initialize Kendo Window
+        transferWindow = $("#transferWindow").kendoWindow({
+            title: "Transfer from Old Instance",
+            modal: true,
+            visible: false,
+            width: "600px",
+            height: "auto",
+            resizable: false,
+            actions: ["Close"],
+            close: function() {
+                if (transferInProgress) {
+                    if (confirm("Transfer is in progress. Do you want to cancel it and close the window?")) {
+                        cancelTransfer();
+                    }
+                    return false;
+                }
+                if (progressPollInterval) {
+                    clearInterval(progressPollInterval);
+                    progressPollInterval = null;
+                }
+                resetTransferUI();
+            }
+        }).data("kendoWindow");
+
+        progressBar = $("#progressBar").kendoProgressBar({
+            min: 0,
+            max: 100,
+            value: 0,
+            type: "percent"
+        }).data("kendoProgressBar");
+
+        $(document).on("click", "#btnOpenTransfer", function () {
+            $("#transferInstanceId").data("kendoComboBox").dataSource.read();
+            $("#transferInstanceId").data("kendoComboBox").value("");
+            $("#transferType").val("");
+            $("#transferProgress").hide();
+            $("#transferMessage").hide();
+            $("#transferConfirm").hide();
+            progressBar.value(0);
+            $("#progressStatus").text("").removeClass("status-success status-error status-info");
+            $("#progressDetails").text("").removeClass("details-success details-error");
+            transferWindow.center().open();
+        });
+
+        $("#btnTransfer").on("click", function () {
+            if (transferInProgress) {
+                return;
+            }
+
+            var transferType = $("#transferType").val();
+            var instanceComboBox = $("#transferInstanceId").data("kendoComboBox");
+            var selectedInstanceId = instanceComboBox.value();
+
+            if (!transferType || transferType === "") {
+                showMessage("Please select a transfer type.", "error");
+                return;
+            }
+
+            if (!selectedInstanceId || selectedInstanceId === "") {
+                showMessage("Please select an instance to transfer from.", "error");
+                return;
+            }
+
+            showConfirm("Are you sure you want to transfer " + transferType.toLowerCase() + " from Instance ID: " + selectedInstanceId + "?", function() {
+                transferInProgress = true;
+                $("#btnTransfer").prop("disabled", true);
+                $("#btnCancelTransfer")
+                    .prop("disabled", false)
+                    .html('<span><i class="fa fa-stop"></i></span> Cancel Transfer');
+                $("#transferProgress").show();
+                $("#transferMessage").hide();
+                $("#transferConfirm").hide();
+                progressBar.value(0);
+                $("#progressStatus").text("Starting transfer...").removeClass("status-success status-error").addClass("status-info");
+                $("#progressDetails").text("").removeClass("details-success details-error");
+
+                startTransfer(transferType, parseInt(selectedInstanceId));
+            });
+        });
+
+        $("#btnCancelTransfer").on("click", function () {
+            if (transferInProgress) {
+                showConfirm("Transfer is in progress. Are you sure you want to cancel?", function() {
+                    cancelTransfer();
+                });
+            } else {
+                transferWindow.close();
+                resetTransferUI();
+            }
+        });
+
+        $(document).on("click", "#btnConfirmYes", function () {
+            if (window.confirmCallback) {
+                window.confirmCallback();
+                window.confirmCallback = null;
+            }
+            $("#transferConfirm").hide();
+        });
+
+        $(document).on("click", "#btnConfirmNo", function () {
+            window.confirmCallback = null;
+            $("#transferConfirm").hide();
+        });
+    });
+
+    function startTransfer(transferType, sourceInstanceId) {
+        var token = $('input[name="__RequestVerificationToken"]').val();
+        
+        if (!token) {
+            showMessage("Anti-forgery token not found. Please refresh the page and try again.", "error");
+            transferInProgress = false;
+            $("#btnTransfer").prop("disabled", false);
+            $("#btnCancelTransfer").prop("disabled", false);
+            return;
+        }
+        
+        var url = '@Url.Action("TransferData", "PaperSetting", new { area = "Paper Setting" })';
+        console.log("Transfer URL: " + url);
+        console.log("Transfer Type: " + transferType);
+        console.log("Source Instance ID: " + sourceInstanceId);
+        
+        if (progressPollInterval) {
+            clearInterval(progressPollInterval);
+            progressPollInterval = null;
+        }
+        
+        $.ajax({
+            url: url,
+            type: 'POST',
+            headers: {
+                'RequestVerificationToken': token
+            },
+            data: {
+                transferType: transferType,
+                sourceInstanceId: sourceInstanceId,
+                __RequestVerificationToken: token
+            },
+            dataType: 'json',
+            success: function (response) {
+                if (response.success) {
+                    startProgressPolling(transferType);
+                } else {
+                    $("#progressStatus").text("Transfer failed!").removeClass("status-success status-info").addClass("status-error");
+                    $("#progressDetails").text(response.message || "An error occurred during transfer.").removeClass("details-success").addClass("details-error");
+                    transferInProgress = false;
+                    $("#btnTransfer").prop("disabled", false);
+                    $("#btnCancelTransfer")
+                        .prop("disabled", false)
+                        .html('<span><i class="fa fa-times"></i></span> Cancel');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Transfer error:", xhr, status, error);
+                $("#progressStatus").text("Transfer failed!").removeClass("status-success status-info").addClass("status-error");
+                var errorMessage = error;
+                if (xhr.responseText) {
+                    try {
+                        var errorResponse = JSON.parse(xhr.responseText);
+                        errorMessage = errorResponse.message || errorResponse.Message || errorMessage;
+                    } catch (e) {
+                        errorMessage = xhr.responseText.substring(0, 200);
+                    }
+                }
+                $("#progressDetails").text("Error: " + errorMessage).removeClass("details-success").addClass("details-error");
+                transferInProgress = false;
+                $("#btnTransfer").prop("disabled", false);
+                $("#btnCancelTransfer")
+                    .prop("disabled", false)
+                    .html('<span><i class="fa fa-times"></i></span> Cancel');
+            }
+        });
+    }
+
+    function startProgressPolling(transferType) {
+        var progressUrl = '@Url.Action("GetTransferProgress", "PaperSetting", new { area = "Paper Setting" })';
+        
+        progressPollInterval = setInterval(function() {
+            $.ajax({
+                url: progressUrl,
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.success) {
+                        progressBar.value(response.percent);
+                        
+                        var statusText = "Processing... (" + response.processed + " / " + response.total + ")";
+                        if (response.currentItem) {
+                            statusText += " - " + response.currentItem;
+                        }
+                        $("#progressStatus").text(statusText).removeClass("status-success status-error").addClass("status-info");
+                        
+                        $("#progressDetails").html(
+                            "Total: " + response.total + "<br/>" +
+                            "Transferred: " + response.transferred + "<br/>" +
+                            "Skipped: " + response.skipped
+                        ).removeClass("details-error").addClass("details-success");
+                        
+                        if (response.isCompleted) {
+                            completeTransfer(response);
+                        }
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Progress polling error:", error);
+                }
+            });
+        }, 500);
+    }
+
+    function completeTransfer(response) {
+        clearInterval(progressPollInterval);
+        progressPollInterval = null;
+        transferInProgress = false;
+        
+        if (response.hasError) {
+            $("#progressStatus").text("Transfer completed with error!").removeClass("status-success status-info").addClass("status-error");
+            $("#progressDetails").html(
+                "Total: " + response.total + "<br/>" +
+                "Transferred: " + response.transferred + "<br/>" +
+                "Skipped: " + response.skipped + "<br/>" +
+                "Error: " + response.errorMessage
+            ).removeClass("details-success").addClass("details-error");
+        } else {
+            progressBar.value(100);
+            $("#progressStatus").text("Transfer completed successfully!").removeClass("status-error status-info").addClass("status-success");
+            $("#progressDetails").html(
+                "Total: " + response.total + "<br/>" +
+                "Transferred: " + response.transferred + "<br/>" +
+                "Skipped: " + response.skipped
+            ).removeClass("details-error").addClass("details-success");
+        }
+        
+        $("#btnTransfer").prop("disabled", false);
+        $("#btnCancelTransfer")
+            .prop("disabled", false)
+            .html('<span><i class="fa fa-times"></i></span> Cancel');
+    }
+
+    function showConfirm(message, callback) {
+        window.confirmCallback = callback;
+        $("#confirmMessage").text(message);
+        $("#transferConfirm").show();
+    }
+
+    function showMessage(message, type) {
+        var messageDiv = $("#transferMessage");
+        messageDiv.removeClass("alert alert-success alert-danger alert-info");
+        
+        if (type === "success") {
+            messageDiv.addClass("alert alert-success");
+        } else if (type === "error") {
+            messageDiv.addClass("alert alert-danger");
+        } else {
+            messageDiv.addClass("alert alert-info");
+        }
+        
+        messageDiv.text(message).show();
+    }
+
+    function cancelTransfer() {
+        var token = $('input[name="__RequestVerificationToken"]').val();
+        
+        $.ajax({
+            url: '@Url.Action("CancelTransfer", "PaperSetting", new { area = "Paper Setting" })',
+            type: 'POST',
+            headers: {
+                'RequestVerificationToken': token
+            },
+            data: {
+                __RequestVerificationToken: token
+            },
+            dataType: 'json',
+            complete: function() {
+                if (progressPollInterval) {
+                    clearInterval(progressPollInterval);
+                    progressPollInterval = null;
+                }
+                transferInProgress = false;
+                transferWindow.close();
+                resetTransferUI();
+            }
+        });
+    }
+
+    function resetTransferUI() {
+        $("#btnTransfer").prop("disabled", false);
+        $("#btnCancelTransfer").prop("disabled", false);
+        $("#transferType").val("");
+        $("#transferInstanceId").data("kendoComboBox").value("");
+        $("#transferProgress").hide();
+        $("#transferMessage").hide();
+        $("#transferConfirm").hide();
+        progressBar.value(0);
+        $("#progressStatus").text("");
+        $("#progressDetails").text("");
+    }
+</script>

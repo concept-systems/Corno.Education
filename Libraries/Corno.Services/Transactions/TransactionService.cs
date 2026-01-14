@@ -1,4 +1,4 @@
-﻿using Corno.Models;
+using Corno.Models;
 
 namespace Corno.DAL.Classes
 {

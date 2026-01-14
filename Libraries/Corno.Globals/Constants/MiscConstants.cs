@@ -1,4 +1,4 @@
-﻿namespace Corno.Globals.Constants;
+namespace Corno.Globals.Constants;
 
 public static class MiscConstants
 {
@@ -10,4 +10,6 @@ public static class MiscConstants
     public const string StudentCategory = "StudentCategory";
     public const string PaperCategory = "PaperCategory";
     public const string LearningPriority = "LearningPriority";
+    public const string QuestionType = "QuestionType";
+    public const string DifficultyLevel = "DifficultyLevel";
 }

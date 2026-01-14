@@ -1,4 +1,4 @@
-﻿using Corno.Data.Corno.Masters;
+using Corno.Data.Corno.Masters;
 using Corno.Data.ViewModels;
 using Corno.Services.Corno.Masters.Interfaces;
 using System.Linq;

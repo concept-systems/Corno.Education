@@ -1,4 +1,4 @@
-﻿using Corno.Data.Corno.Question_Bank;
+using Corno.Data.Corno.Question_Bank;
 using Corno.Data.Corno.Question_Bank.Models;
 using Corno.Globals.Enums;
 using Corno.Logger;
@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Corno.Globals.Constants;
+using DevExpress.XtraPrinting.Native;
 using Document = DevExpress.XtraRichEdit.API.Native.Document;
 using ParagraphAlignment = DevExpress.XtraRichEdit.API.Native.ParagraphAlignment;
 using Table = DevExpress.XtraRichEdit.API.Native.Table;
@@ -528,7 +529,7 @@ public class RichEditDocumentService : BaseService, IRichEditDocumentService
         tableAttempt.PreferredWidth = totalWidth - 300;
 
 
-        // ✅ Column width logic:
+        // ? Column width logic:
         // Attempt table column 1 + column 2 = widthSecond
         // Attempt table column 3 = widthThird
         var col1Width = 100; // letter column (fixed small width)
@@ -813,7 +814,7 @@ public class RichEditDocumentService : BaseService, IRichEditDocumentService
         using var richEditDocumentServer = new RichEditDocumentServer();
         using var stream = new MemoryStream(bytes);
 
-        if (!richEditDocumentServer.LoadDocument(stream, DocumentFormat.Rtf))
+        if (!richEditDocumentServer.LoadDocument(stream, DevExpress.XtraRichEdit.DocumentFormat.Rtf))
             return default;
 
         var document = richEditDocumentServer.Document;
@@ -845,7 +846,7 @@ public class RichEditDocumentService : BaseService, IRichEditDocumentService
         var document = new RichEditDocumentServer();
         document.HtmlText = htmlContent;
         using var stream = new MemoryStream();
-        document.SaveDocument(stream, DocumentFormat.Html);
+        document.SaveDocument(stream, DevExpress.XtraRichEdit.DocumentFormat.Html);
         return stream.ToArray();
     }
 
@@ -856,7 +857,7 @@ public class RichEditDocumentService : BaseService, IRichEditDocumentService
         using var richEditDocumentServer = new RichEditDocumentServer();
         // Load the RTF byte array into the server
         using var stream = new MemoryStream(bytes);
-        return richEditDocumentServer.LoadDocument(stream, DocumentFormat.Rtf) ?
+        return richEditDocumentServer.LoadDocument(stream, DevExpress.XtraRichEdit.DocumentFormat.Rtf) ?
             richEditDocumentServer.Text : default;
     }
     #endregion

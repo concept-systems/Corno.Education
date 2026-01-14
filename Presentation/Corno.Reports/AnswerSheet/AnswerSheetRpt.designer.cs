@@ -741,7 +741,7 @@ namespace Corno.Reports.AnswerSheet
             this.textBox20.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(15D);
             this.textBox20.Style.TextAlign = Telerik.Reporting.Drawing.HorizontalAlign.Center;
             this.textBox20.Style.VerticalAlign = Telerik.Reporting.Drawing.VerticalAlign.Middle;
-            this.textBox20.Value = "BHARATI VIDYAPEETH DEEMED UNIVERSITY, PUNE";
+            this.textBox20.Value = "Bharati Vidyapeeth Deemed University, Pune (India)";
             // 
             // shape1
             // 

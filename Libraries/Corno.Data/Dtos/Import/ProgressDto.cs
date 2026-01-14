@@ -1,4 +1,4 @@
-﻿using Corno.Data.Helpers;
+using Corno.Data.Helpers;
 using System;
 using System.IO;
 using System.Threading;

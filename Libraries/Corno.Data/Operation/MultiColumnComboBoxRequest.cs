@@ -1,4 +1,4 @@
-﻿using Corno.Data.Common;
+using Corno.Data.Common;
 using Kendo.Mvc.UI;
 
 namespace Corno.Data.Operation;

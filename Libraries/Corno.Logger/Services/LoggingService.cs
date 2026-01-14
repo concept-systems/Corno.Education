@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Corno.Logger.Classes;
 using NLog;
 using NLog.Config;

@@ -1,4 +1,4 @@
-﻿namespace Corno.Globals.Constants;
+namespace Corno.Globals.Constants;
 
 public static class StatusConstants
 {
@@ -18,4 +18,15 @@ public static class StatusConstants
     public const string Success = "Success";
 
     public const string Drawn = "Drawn";
+    
+    // Question Bank V2 Status Constants
+    public const string Draft = "Draft";
+    public const string Submitted = "Submitted";
+    public const string SubmittedForCheck = "Submitted for Check";
+    public const string UnderCheck = "Under Check";
+    public const string Reviewed = "Reviewed";
+    public const string ApprovedByChecker = "Approved by Checker";
+    public const string NeedsRevision = "Needs Revision";
+    public const string Generated = "Generated";
+    public const string Created = "Created";
 }

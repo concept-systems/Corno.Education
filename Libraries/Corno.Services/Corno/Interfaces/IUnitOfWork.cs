@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Corno.Data.Contexts;
 
 namespace Corno.Services.Corno.Interfaces;

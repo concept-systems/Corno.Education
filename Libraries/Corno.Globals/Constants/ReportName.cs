@@ -1,4 +1,4 @@
-﻿namespace Corno.Globals.Constants;
+namespace Corno.Globals.Constants;
 
 public static class ReportName
 {
@@ -81,4 +81,7 @@ public static class ReportName
     public const string Schedule = "Schedule";
     public const string ScheduledExaminers = "ScheduledExaminers";
     public const string ScheduleForPaperSetting = "ScheduleForPaperSetting";
+
+    // Transactions
+    public const string AdditionalCreditsRpt = "AdditionalCreditsRpt";
 }

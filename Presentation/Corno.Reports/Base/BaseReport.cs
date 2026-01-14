@@ -1,4 +1,4 @@
-﻿using Corno.Logger;
+using Corno.Logger;
 using Telerik.Reporting;
 using Telerik.ReportViewer.Common;
 

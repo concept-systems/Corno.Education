@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -370,25 +370,27 @@ public class MarksApiService : BaseService, IMarksApiService
 
                     // Check if record already exists
                     var collegeId = apiItem.CollegeId.ToInt();
+                    var coursePartId = apiItem.CoursePartId.ToInt();
+                    var subjectCode = apiItem.SubjectCode;
                     var categoryId = marksApiViewModel.CategoryId.ToString();
                     var existingRecord = _coreService.Tbl_MARKS_TMP_Repository.Get(t =>
                         t.Num_FK_INST_NO == instanceId &&
                         t.Num_FK_COL_CD == collegeId &&
-                        t.Chr_FK_COPRT_NO == marksApiViewModel.CoursePartId.ToString() &&
-                        t.Chr_FK_SUB_CD == marksApiViewModel.SubjectId.ToString() &&
+                        t.Chr_FK_COPRT_NO == coursePartId.ToString() &&
+                        t.Chr_FK_SUB_CD == subjectCode &&
                         t.Chr_CODE_SEAT_NO == apiItem.SeatNo.Value && 
                         t.Chr_FK_CAT_CD == categoryId)
                         .FirstOrDefault();
 
                     var status = "P";
                     var marks = apiItem.Marks.Split('.').FirstOrDefault();
-                    LogHandler.LogInfo($"Marks, Orig : {apiItem.Marks}, Converted : {marks}");
-                    /*var marksStr = marks.ToString();
+                    //LogHandler.LogInfo($"Marks, Orig : {apiItem.Marks}, Converted : {marks}");
+                    var marksStr = marks.ToString();
                     if (marksStr == "999" || marksStr == "ABS" || marksStr.ToUpper() == "ABSENT")
                     {
                         status = "A";
                         marks = "0";
-                    }*/
+                    }
 
                     // Marks should be less than 3 digits;
                     if (existingRecord != null)
@@ -409,9 +411,9 @@ public class MarksApiService : BaseService, IMarksApiService
                             Num_FK_COL_CD = (short)collegeId,
                             
                             //Num_FK_DISTCOL_CD = (short)apiItem.CenterId.ToUShort(),
-                            Chr_FK_COPRT_NO = marksApiViewModel.CoursePartId.ToString(),
+                            Chr_FK_COPRT_NO = coursePartId.ToString(),
                             
-                            Chr_FK_SUB_CD = apiItem.SubjectCode,
+                            Chr_FK_SUB_CD = subjectCode,
                             Chr_FK_CAT_CD = marksApiViewModel.CategoryId?.ToString(),
                             Chr_FK_PAP_CD = null != marksApiViewModel.PaperId ? marksApiViewModel.PaperId?.ToString() : "0",
                             Chr_FK_SEC_CD = "0",

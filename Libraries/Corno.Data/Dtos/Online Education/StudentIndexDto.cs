@@ -1,4 +1,4 @@
-﻿using Corno.Data.ViewModels;
+using Corno.Data.ViewModels;
 
 namespace Corno.Data.Dtos.Online_Education;
 

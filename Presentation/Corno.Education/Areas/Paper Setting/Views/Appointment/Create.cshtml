@@ -1,0 +1,23 @@
+@using System.ComponentModel
+@using Corno.Globals.Constants
+@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Paper_Setting.Models.Appointment
+
+@{
+    ViewBag.Controller = "Appointment";
+    ViewBag.Details = "AppointmentDetails";
+    ViewBag.DetailName = "AppointmentDetails";
+    ViewBag.GridCommonAction = "Inline_Create_Update_Destroy";
+}
+
+@if (TempData["Success"] != null)
+{
+    <script type="text/javascript">
+        bootbox.alert("@TempData["Success"]")
+    </script>
+}
+
+@{
+    Html.RenderPartial("_Create", Model);
+    Html.RenderPartial("_TransferConsolidated");
+}

@@ -1,4 +1,4 @@
-﻿using Corno.Data.Corno.Paper_Setting.Models;
+using Corno.Data.Corno.Paper_Setting.Models;
 using Corno.Services.Corno.Interfaces;
 
 namespace Corno.Services.Corno.Paper_Setting.Interfaces;

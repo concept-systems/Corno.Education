@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Corno.Data.Helpers;
 
 namespace Corno.Data.Payment;

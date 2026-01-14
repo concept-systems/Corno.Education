@@ -1,4 +1,4 @@
-﻿using Corno.Globals.Enums;
+using Corno.Globals.Enums;
 using System.Collections.Generic;
 using Corno.Data.ViewModels;
 

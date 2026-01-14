@@ -1,4 +1,4 @@
-﻿namespace Corno.Data.ViewModels;
+namespace Corno.Data.ViewModels;
 
 public class MasterViewModel : BaseViewModel
 {

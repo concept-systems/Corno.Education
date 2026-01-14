@@ -1,4 +1,4 @@
-﻿using Corno.Globals.Enums;
+using Corno.Globals.Enums;
 using Unity;
 
 namespace Corno.Globals;

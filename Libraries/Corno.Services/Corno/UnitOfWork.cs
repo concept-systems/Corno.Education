@@ -1,4 +1,4 @@
-﻿using Corno.Data.Contexts;
+using Corno.Data.Contexts;
 using Corno.Logger;
 using Corno.Services.Corno.Interfaces;
 using System;

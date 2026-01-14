@@ -1,4 +1,4 @@
-﻿namespace Corno.Globals.Constants.Error_Constants;
+namespace Corno.Globals.Constants.Error_Constants;
 
 public static class ErrorConstants
 {

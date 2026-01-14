@@ -1,4 +1,4 @@
-﻿using Corno.Data.ViewModels;
+using Corno.Data.ViewModels;
 using Corno.Services.Corno.Interfaces;
 
 namespace Corno.Services.Email.Interfaces;

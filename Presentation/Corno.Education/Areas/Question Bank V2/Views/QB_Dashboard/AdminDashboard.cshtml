@@ -1,0 +1,174 @@
+@model Corno.Data.Corno.Question_Bank_V2.Dtos.AdminDashboardDto
+@{
+    ViewBag.Title = "Admin Dashboard - Question Bank V2";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="page-header">
+                <i class="fa fa-dashboard"></i> Admin Dashboard - Question Bank V2
+            </h2>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-question-circle fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">@Model.TotalQuestions</div>
+                            <div>Total Questions</div>
+                        </div>
+                    </div>
+                </div>
+                <a href="@Url.Action("Index", "QB_QuestionBank", new { area = "Question Bank V2" })">
+                    <div class="panel-footer">
+                        <span class="pull-left">View Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="panel panel-green">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-check-circle fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">@Model.ApprovedQuestions</div>
+                            <div>Approved Questions</div>
+                        </div>
+                    </div>
+                </div>
+                <a href="@Url.Action("Index", "QB_QuestionBank", new { area = "Question Bank V2", status = "Approved" })">
+                    <div class="panel-footer">
+                        <span class="pull-left">View Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="panel panel-yellow">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-calendar fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">@Model.TotalAppointments</div>
+                            <div>Total Appointments</div>
+                        </div>
+                    </div>
+                </div>
+                <a href="@Url.Action("Index", "QB_Appointment", new { area = "Question Bank V2" })">
+                    <div class="panel-footer">
+                        <span class="pull-left">View Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="panel panel-red">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-file-alt fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">@Model.TotalPapers</div>
+                            <div>Total Papers</div>
+                        </div>
+                    </div>
+                </div>
+                <a href="@Url.Action("Index", "QB_PaperGeneration", new { area = "Question Bank V2" })">
+                    <div class="panel-footer">
+                        <span class="pull-left">View Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <i class="fa fa-info-circle"></i> Quick Actions
+                    </h4>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <a href="@Url.Action("Create", "QB_QuestionBank", new { area = "Question Bank V2" })" class="btn btn-primary btn-block">
+                                <i class="fa fa-plus"></i> Create New Question
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="@Url.Action("Create", "QB_Appointment", new { area = "Question Bank V2" })" class="btn btn-success btn-block">
+                                <i class="fa fa-calendar-plus"></i> Create Appointment
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="@Url.Action("Index", "QB_PaperGeneration", new { area = "Question Bank V2" })" class="btn btn-info btn-block">
+                                <i class="fa fa-file-alt"></i> Generate Paper
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="@Url.Action("Index", "QB_QuestionBank", new { area = "Question Bank V2" })" class="btn btn-warning btn-block">
+                                <i class="fa fa-list"></i> View All Questions
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .huge {
+        font-size: 40px;
+    }
+    .panel-primary .panel-heading {
+        color: #fff;
+        background-color: #337ab7;
+        border-color: #337ab7;
+    }
+    .panel-green .panel-heading {
+        color: #fff;
+        background-color: #5cb85c;
+        border-color: #4cae4c;
+    }
+    .panel-yellow .panel-heading {
+        color: #fff;
+        background-color: #f0ad4e;
+        border-color: #eea236;
+    }
+    .panel-red .panel-heading {
+        color: #fff;
+        background-color: #d9534f;
+        border-color: #d43f3a;
+    }
+    .btn-block {
+        margin-bottom: 10px;
+    }
+</style>

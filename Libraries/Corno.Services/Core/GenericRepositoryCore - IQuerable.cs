@@ -1,4 +1,4 @@
-﻿using Corno.Data.Contexts;
+using Corno.Data.Contexts;
 using Corno.Services.Core.Interfaces;
 using Org.BouncyCastle.Asn1;
 using System;

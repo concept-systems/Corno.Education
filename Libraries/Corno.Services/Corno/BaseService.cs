@@ -1,4 +1,4 @@
-﻿using System.Data.Entity;
+using System.Data.Entity;
 using Corno.Services.Corno.Interfaces;
 
 namespace Corno.Services.Corno;

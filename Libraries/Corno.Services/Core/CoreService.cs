@@ -1,4 +1,4 @@
-﻿using Corno.Data.Core;
+using Corno.Data.Core;
 using Corno.Data.Payment;
 using Corno.Services.Core.Interfaces;
 

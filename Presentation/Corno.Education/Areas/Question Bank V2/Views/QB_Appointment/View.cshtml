@@ -1,0 +1,142 @@
+@model Corno.Data.Corno.Question_Bank_V2.Models.QB_Appointment
+
+@{
+    ViewBag.Title = "View Appointment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="page-header">
+                <i class="fa fa-eye"></i> View Appointment: @Model.AppointmentCode
+                <div class="pull-right">
+                    <button type="button" class="btn btn-success" onclick="sendNotification('Email')">
+                        <i class="fa fa-envelope"></i> Send Email
+                    </button>
+                    <button type="button" class="btn btn-info" onclick="sendNotification('SMS')">
+                        <i class="fa fa-comment"></i> Send SMS
+                    </button>
+                    <button type="button" class="btn btn-success" onclick="sendNotification('WhatsApp')">
+                        <i class="fa fa-whatsapp"></i> Send WhatsApp
+                    </button>
+                    <a href="@Url.Action("Index")" class="btn btn-default">
+                        <i class="fa fa-arrow-left"></i> Back
+                    </a>
+                </div>
+            </h3>
+        </div>
+    </div>
+    
+    <!-- Appointment Information -->
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">Appointment Information</h4>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <strong>Appointment Code:</strong> @Model.AppointmentCode
+                </div>
+                <div class="col-md-3">
+                    <strong>Subject:</strong> @Model.SubjectName
+                </div>
+                <div class="col-md-3">
+                    <strong>Number of Papers:</strong> @Model.NoOfPapers
+                </div>
+                <div class="col-md-3">
+                    <strong>Status:</strong> 
+                    <span class="label label-@(Model.Status == "Completed" ? "success" : "warning")">
+                        @Model.Status
+                    </span>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-md-6">
+                    <strong>Deadline:</strong> @(Model.AppointmentDate?.ToString("dd/MM/yyyy") ?? "") 
+                    @(Model.AppointmentTime?.ToString(@"hh\:mm") ?? "")
+                </div>
+                <div class="col-md-6">
+                    <strong>Created Date:</strong> @(Model.CreatedDate?.ToString("dd/MM/yyyy HH:mm") ?? "")
+                </div>
+            </div>
+            @if (!string.IsNullOrEmpty(Model.Instructions))
+            {
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col-md-12">
+                        <strong>Instructions:</strong>
+                        <p>@Model.Instructions</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    
+    <!-- Assigned Staff -->
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4 class="panel-title">Assigned Staff</h4>
+        </div>
+        <div class="panel-body">
+            @(Html.Telerik().Grid(Model.AppointmentDetails ?? new List<Corno.Data.Corno.Question_Bank_V2.Models.QB_AppointmentDetail>())
+                .Name("StaffGrid")
+                .Columns(columns =>
+                {
+                    columns.Bound(c => c.RoleName).Title("Role").Width(150);
+                    columns.Bound(c => c.UserName).Title("Staff Name").Width(200);
+                    columns.Bound(c => c.TemporaryUsername).Title("Username").Width(200);
+                    columns.Bound(c => c.TemporaryPassword).Title("Password").Width(150);
+                    columns.Bound(c => c.IsAccepted).Title("Accepted").Width(100)
+                        .Template(@<text>
+                            @if (item.IsAccepted)
+                            {
+                                <span class="label label-success">Yes</span>
+                            }
+                            else
+                            {
+                                <span class="label label-warning">No</span>
+                            }
+                        </text>);
+                    columns.Template(@<text>
+                        <span class="label label-@(item.EmailSent ? "success" : "default")" title="Email">
+                            <i class="fa fa-envelope"></i>
+                        </span>
+                        <span class="label label-@(item.SmsSent ? "success" : "default")" title="SMS">
+                            <i class="fa fa-comment"></i>
+                        </span>
+                        <span class="label label-@(item.WhatsAppSent ? "success" : "default")" title="WhatsApp">
+                            <i class="fa fa-whatsapp"></i>
+                        </span>
+                    </text>).Title("Notifications").Width(150);
+                })
+                .Scrollable()
+                .Resizable(resize => resize.Columns(true))
+            )
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function sendNotification(type) {
+        if (!confirm('Send ' + type + ' notifications to all assigned staff?')) {
+            return;
+        }
+        
+        $.ajax({
+            url: '@Url.Action("SendNotifications", "QB_Appointment")',
+            type: 'POST',
+            data: { id: @Model.Id, notificationType: type },
+            success: function (result) {
+                if (result.success) {
+                    alert(result.message);
+                    location.reload();
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            },
+            error: function () {
+                alert('An error occurred while sending notifications.');
+            }
+        });
+    }
+</script>

@@ -1,4 +1,4 @@
-﻿// Services/Question_Bank/RichEditDocumentService.cs
+// Services/Question_Bank/RichEditDocumentService.cs
 
 using Corno.Data.Corno.Masters;
 using Corno.Data.Corno.Question_Bank.Models;
@@ -281,7 +281,7 @@ namespace Corno.Services.Corno.Question_Bank
             MakeRun(p, text, true, Alignment.Center);
         }
 
-        // Remove only the first <p>...</p> pair (keep inner HTML) – same as your helper
+        // Remove only the first <p>...</p> pair (keep inner HTML) � same as your helper
         static string MergeFirstParagraphIntoHost(string html)
         {
             if (string.IsNullOrWhiteSpace(html)) return html;

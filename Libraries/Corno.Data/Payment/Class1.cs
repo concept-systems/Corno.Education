@@ -1,4 +1,4 @@
-﻿namespace Corno.Data.Payment;
+namespace Corno.Data.Payment;
 
 // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
 public class TransactionMessage

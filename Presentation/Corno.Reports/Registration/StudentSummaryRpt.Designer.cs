@@ -426,7 +426,7 @@ namespace Corno.Reports.Registration
             // 
             // sdsCollege
             // 
-            this.sdsCollege.ConnectionString = "CoreContext (Corno.OnlineExam)";
+            this.sdsCollege.ConnectionString = "CoreContext (Corno.Education)";
             this.sdsCollege.Name = "sdsCollege";
             this.sdsCollege.SelectCommand = "\r\nSELECT  Num_PK_COLLEGE_CD as Id,\r\n        Var_CL_COLLEGE_NM1 as Name\r\n     \r\n  " +
     "FROM  Tbl_COLLEGE_MSTR";

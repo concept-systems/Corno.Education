@@ -767,14 +767,14 @@ namespace Corno.Reports.Marks_Entry
             // 
             // sdsCollege
             // 
-            this.sdsCollege.ConnectionString = "CoreContext (Corno.OnlineExam)";
+            this.sdsCollege.ConnectionString = "CoreContext (Corno.Education)";
             this.sdsCollege.Name = "sdsCollege";
             this.sdsCollege.SelectCommand = "\r\nSELECT  Num_PK_COLLEGE_CD as Id,\r\n        Var_CL_COLLEGE_NM1 as Name\r\n     \r\n  " +
     "FROM  Tbl_COLLEGE_MSTR";
             // 
             // sdsCenters
             // 
-            this.sdsCenters.ConnectionString = "CoreContext (Corno.OnlineExam)";
+            this.sdsCenters.ConnectionString = "CoreContext (Corno.Education)";
             this.sdsCenters.Name = "sdsCenters";
             this.sdsCenters.Parameters.Add(new Telerik.Reporting.SqlDataSourceParameter("@CollegeId", System.Data.DbType.String, "= Parameters.College.Value"));
             this.sdsCenters.SelectCommand = "SELECT         Num_PK_DistCenter_Id AS Id, DIST_CENT_NAME AS Name\r\nFROM          " +
@@ -789,7 +789,7 @@ namespace Corno.Reports.Marks_Entry
             // 
             // sdsCoursePart
             // 
-            this.sdsCoursePart.ConnectionString = "CoreContext (Corno.OnlineExam)";
+            this.sdsCoursePart.ConnectionString = "CoreContext (Corno.Education)";
             this.sdsCoursePart.Name = "sdsCoursePart";
             this.sdsCoursePart.Parameters.Add(new Telerik.Reporting.SqlDataSourceParameter("@CourseId", System.Data.DbType.String, "=Parameters.Course.Value"));
             this.sdsCoursePart.SelectCommand = "SELECT Num_PK_COPRT_NO as Id, Var_COPRT_DESC as Name, Num_FK_CO_CD as CourseId\r\n " +

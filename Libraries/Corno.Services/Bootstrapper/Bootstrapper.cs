@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Web.Hosting;
 using System.Web.Mvc;
 using Corno.Globals;
@@ -20,6 +20,10 @@ using Corno.Services.Corno.Paper_Setting;
 using Corno.Services.Corno.Paper_Setting.Interfaces;
 using Corno.Services.Corno.Question_Bank;
 using Corno.Services.Corno.Question_Bank.Interfaces;
+using Corno.Services.Corno.Question_Bank_V2;
+using Corno.Services.Corno.Question_Bank_V2.Interfaces;
+using Corno.Services.Corno.Question_Bank_V2.Security;
+using Corno.Data.Corno.Question_Bank_V2.Models;
 using Corno.Services.Email;
 using Corno.Services.Email.Interfaces;
 using Corno.Services.File;
@@ -112,6 +116,15 @@ public static class Bootstrapper
         container.RegisterType(typeof(IDocumentService), typeof(DocumentService));
         container.RegisterType(typeof(IRichEditDocumentService), typeof(RichEditDocumentService));
         container.RegisterType(typeof(ITelerikDocumentService), typeof(TelerikDocumentService));
+
+        // Question Bank V2
+        container.RegisterType(typeof(QuestionEncryptionService), typeof(QuestionEncryptionService));
+        container.RegisterType(typeof(IQB_QuestionBankService), typeof(QB_QuestionBankService));
+        container.RegisterType(typeof(IQB_AppointmentService), typeof(QB_AppointmentService));
+        container.RegisterType(typeof(IQB_PaperGenerationService), typeof(QB_PaperGenerationService));
+        container.RegisterType(typeof(WordDocumentService), typeof(WordDocumentService));
+        container.RegisterType(typeof(IMainService<QB_Paper>), typeof(MainService<QB_Paper>));
+        container.RegisterType(typeof(IMainService<QB_PaperDetail>), typeof(MainService<QB_PaperDetail>));
 
         // Online Education
         container.RegisterType(typeof(IOnlineEducationStudentService), typeof(OnlineEducationStudentService));

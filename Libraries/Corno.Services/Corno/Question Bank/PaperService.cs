@@ -1,4 +1,4 @@
-﻿using Corno.Data.Common;
+using Corno.Data.Common;
 using Corno.Data.Corno.Question_Bank;
 using Corno.Data.Corno.Question_Bank.Models;
 using Corno.Data.Helpers;
@@ -139,7 +139,7 @@ public class PaperService : MainService<Paper>, IPaperService
         var miscMasters = taxonomies.ToList();
         var maxLevel = 0;
 
-        // Consider all contiguous word combinations (supports multi‑word action verbs)
+        // Consider all contiguous word combinations (supports multi-word action verbs)
         foreach (var phrase in GetSubstrings(tokens))
         {
             var current = phrase.Trim();
@@ -362,7 +362,7 @@ public class PaperService : MainService<Paper>, IPaperService
         var document = CreateWordFile(paper);*/
 
         /*// Save the document
-            var filePath = @"E:\Home\Bharti Vidyapeeth\Online Exam\Development\Source\Presentation\Corno.OnlineExam\Content\UserFiles\Papers\YourDocument.docx";
+            var filePath = @"E:\Home\Bharti Vidyapeeth\Online Exam\Development\Source\Presentation\Corno.Education\Content\UserFiles\Papers\YourDocument.docx";
             using var stream = new FileStream(filePath, FileMode.Create);
             var provider = new DocxFormatProvider();
             provider.Export(document, stream);*/

@@ -1,4 +1,4 @@
-﻿using Corno.Data.Core;
+using Corno.Data.Core;
 using Corno.Data.Corno;
 using Corno.Data.Corno.Online_Education;
 using Corno.Data.Dtos.Import;

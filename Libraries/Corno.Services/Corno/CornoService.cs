@@ -1,4 +1,4 @@
-﻿using Corno.Data.Core;
+using Corno.Data.Core;
 using Corno.Data.Corno;
 using Corno.Data.Corno.Question_Bank;
 using Corno.Data.Corno.Question_Bank.Models;

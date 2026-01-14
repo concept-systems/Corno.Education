@@ -1,4 +1,4 @@
-﻿namespace Corno.Data.Corno.Question_Bank.Dtos;
+namespace Corno.Data.Corno.Question_Bank.Dtos;
 
 public class EmailSmsDto
 {

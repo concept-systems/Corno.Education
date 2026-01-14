@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Corno.Data.Admin;
 using Corno.Services.Corno.Admin.Interfaces;

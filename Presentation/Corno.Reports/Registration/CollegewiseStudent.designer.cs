@@ -502,7 +502,7 @@ namespace Corno.Reports.Registration
             // 
             // sdsCollege
             // 
-            this.sdsCollege.ConnectionString = "CoreContext (Corno.OnlineExam)";
+            this.sdsCollege.ConnectionString = "CoreContext (Corno.Education)";
             this.sdsCollege.Name = "sdsCollege";
             this.sdsCollege.SelectCommand = "SELECT  Num_PK_COLLEGE_CD as ID,\r\n        Var_CL_COLLEGE_NM1 as Name\r\nFROM  Tbl_C" +
     "OLLEGE_MSTR\r\nWhere Chr_DELETE_FLG != \'Y\'";
@@ -516,7 +516,7 @@ namespace Corno.Reports.Registration
             // 
             // sdsCoursePart
             // 
-            this.sdsCoursePart.ConnectionString = "CoreContext (Corno.OnlineExam)";
+            this.sdsCoursePart.ConnectionString = "CoreContext (Corno.Education)";
             this.sdsCoursePart.Name = "sdsCoursePart";
             this.sdsCoursePart.Parameters.Add(new Telerik.Reporting.SqlDataSourceParameter("@CourseID", System.Data.DbType.String, "=Parameters.Course.Value"));
             this.sdsCoursePart.SelectCommand = "SELECT Num_PK_COPRT_NO as ID, Var_COPRT_DESC as Name, Num_FK_CO_CD as CourseID\r\n " +
@@ -525,7 +525,7 @@ namespace Corno.Reports.Registration
             // 
             // sdsBranch
             // 
-            this.sdsBranch.ConnectionString = "CoreContext (Corno.OnlineExam)";
+            this.sdsBranch.ConnectionString = "CoreContext (Corno.Education)";
             this.sdsBranch.Name = "sdsBranch";
             this.sdsBranch.Parameters.Add(new Telerik.Reporting.SqlDataSourceParameter("@NUM_PK_CO_CD", System.Data.DbType.String, "=Parameters.Course.Value"));
             this.sdsBranch.SelectCommand = resources.GetString("sdsBranch.SelectCommand");

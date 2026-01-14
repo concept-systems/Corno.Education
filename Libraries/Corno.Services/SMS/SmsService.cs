@@ -1,4 +1,4 @@
-﻿using Corno.Services.SMS.Interfaces;
+using Corno.Services.SMS.Interfaces;
 using System;
 using System.Net;
 using Corno.Globals.Constants;

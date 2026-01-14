@@ -10,6 +10,7 @@ using Corno.Data.Corno.Online_Education;
 using Corno.Data.Corno.Paper_Setting.Models;
 using Corno.Data.Corno.Question_Bank;
 using Corno.Data.Corno.Question_Bank.Models;
+using Corno.Data.Corno.Question_Bank_V2.Models;
 using Corno.Data.Payment;
 
 namespace Corno.Data.Contexts;
@@ -155,6 +156,20 @@ public class CornoContext : DbContext
         // Online Education
         modelBuilder.Entity<OnlineStudent>().ToTable(nameof(OnlineStudent));
         modelBuilder.Entity<College45OptionalSubject>().ToTable(nameof(College45OptionalSubject));
+
+        // Question Bank V2
+        modelBuilder.Entity<QB_QuestionType>().ToTable("QB_QuestionType");
+        modelBuilder.Entity<QB_DifficultyLevel>().ToTable("QB_DifficultyLevel");
+        modelBuilder.Entity<QB_TaxonomyLevel>().ToTable("QB_TaxonomyLevel");
+        modelBuilder.Entity<QB_QuestionBank>().ToTable("QB_QuestionBank");
+        modelBuilder.Entity<QB_QuestionOptions>().ToTable("QB_QuestionOptions");
+        modelBuilder.Entity<QB_RoleAssignment>().ToTable("QB_RoleAssignment");
+        modelBuilder.Entity<QB_Appointment>().ToTable("QB_Appointment");
+        modelBuilder.Entity<QB_AppointmentDetail>().ToTable("QB_AppointmentDetail");
+        modelBuilder.Entity<QB_Paper>().ToTable("QB_Paper");
+        modelBuilder.Entity<QB_PaperDetail>().ToTable("QB_PaperDetail");
+        modelBuilder.Entity<QB_QuestionWorkflow>().ToTable("QB_QuestionWorkflow");
+        modelBuilder.Entity<QB_QuestionChangeLog>().ToTable("QB_QuestionChangeLog");
     }
     #endregion
 }

@@ -1,4 +1,4 @@
-﻿using Corno.Data.Operation;
+using Corno.Data.Operation;
 using System;
 using Corno.Services.Corno.Interfaces;
 

@@ -1,0 +1,21 @@
+@using Kendo.Mvc.UI
+@model Corno.Data.Corno.Paper_Setting.Models.Remuneration
+
+@{
+    ViewBag.Controller = "Remuneration";
+    ViewBag.Details = "RemunerationDetails";
+    ViewBag.DetailName = "RemunerationDetails";
+    ViewBag.GridCommonAction = "Inline_Create_Update_Destroy";
+}
+
+@if (TempData["Success"] != null)
+{
+    <script type="text/javascript">
+        bootbox.alert("@TempData["Success"]")
+    </script>
+}
+
+@{
+    Html.RenderPartial("_Create", Model);
+    Html.RenderPartial("_TransferConsolidated");
+}

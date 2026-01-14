@@ -1,0 +1,154 @@
+@model Corno.Data.Corno.Question_Bank_V2.Models.QB_QuestionBank
+
+@{
+    ViewBag.Title = "View Question";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="page-header">
+                <i class="fa fa-eye"></i> View Question: @Model.QuestionCode
+                <div class="pull-right">
+                    <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-primary">
+                        <i class="fa fa-edit"></i> Edit
+                    </a>
+                    <a href="@Url.Action("Index")" class="btn btn-default">
+                        <i class="fa fa-arrow-left"></i> Back
+                    </a>
+                </div>
+            </h3>
+        </div>
+    </div>
+    
+    <!-- Question Information -->
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">Question Information</h4>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <strong>Question Code:</strong> @Model.QuestionCode
+                </div>
+                <div class="col-md-3">
+                    <strong>Subject:</strong> @Model.SubjectName
+                </div>
+                <div class="col-md-3">
+                    <strong>Question Type:</strong> @Model.QuestionTypeName
+                </div>
+                <div class="col-md-3">
+                    <strong>Status:</strong> 
+                    <span class="label label-@(Model.Status == "Approved" ? "success" : Model.Status == "Draft" ? "default" : "warning")">
+                        @Model.Status
+                    </span>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-md-3">
+                    <strong>Unit:</strong> @(Model.UnitName ?? "N/A")
+                </div>
+                <div class="col-md-3">
+                    <strong>Difficulty:</strong> @Model.DifficultyLevelName
+                </div>
+                <div class="col-md-3">
+                    <strong>Taxonomy:</strong> @Model.TaxonomyLevelName
+                </div>
+                <div class="col-md-3">
+                    <strong>Marks:</strong> @Model.Marks
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Question Text -->
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4 class="panel-title">Question Text</h4>
+        </div>
+        <div class="panel-body">
+            <div class="question-text-display">
+                @Html.Raw(Model.QuestionText)
+            </div>
+        </div>
+    </div>
+    
+    <!-- Model Answer -->
+    @if (!string.IsNullOrEmpty(Model.ModelAnswer))
+    {
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h4 class="panel-title">Model Answer</h4>
+            </div>
+            <div class="panel-body">
+                <div class="model-answer-display">
+                    @Html.Raw(Model.ModelAnswer)
+                </div>
+            </div>
+        </div>
+    }
+    
+    <!-- Metadata -->
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">Metadata</h4>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <strong>Tags:</strong> @(Model.Tags ?? "N/A")
+                </div>
+                <div class="col-md-6">
+                    <strong>Keywords:</strong> @(Model.Keywords ?? "N/A")
+                </div>
+            </div>
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-md-6">
+                    <strong>Created By:</strong> @Model.CreatedBy
+                </div>
+                <div class="col-md-6">
+                    <strong>Created Date:</strong> @(Model.CreatedDate?.ToString("dd/MM/yyyy HH:mm") ?? "")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .question-text-display,
+    .model-answer-display {
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+        font-family: 'Times New Roman', serif;
+        font-size: 12pt;
+        line-height: 1.6;
+        min-height: 100px;
+    }
+    
+    .question-text-display img,
+    .model-answer-display img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 10px auto;
+    }
+    
+    .question-text-display table,
+    .model-answer-display table {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 10px 0;
+    }
+    
+    .question-text-display table td,
+    .question-text-display table th,
+    .model-answer-display table td,
+    .model-answer-display table th {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+</style>

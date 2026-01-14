@@ -1,0 +1,1 @@
+<%@ Application Codebehind="Global.asax.cs" Inherits="Corno.Education.MvcApplication" Language="C#" %>

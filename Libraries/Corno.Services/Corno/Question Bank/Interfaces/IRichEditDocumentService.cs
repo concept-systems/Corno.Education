@@ -1,4 +1,4 @@
-﻿using Corno.Data.Corno.Question_Bank.Models;
+using Corno.Data.Corno.Question_Bank.Models;
 using Corno.Services.Corno.Interfaces;
 using DevExpress.XtraRichEdit;
 

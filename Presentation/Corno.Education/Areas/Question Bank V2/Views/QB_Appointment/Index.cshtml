@@ -1,0 +1,73 @@
+@{
+    ViewBag.Title = "Appointments";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="page-header">
+                <i class="fa fa-calendar"></i> Appointments
+                <a href="@Url.Action("Create")" class="btn btn-primary pull-right">
+                    <i class="fa fa-plus"></i> Create Appointment
+                </a>
+            </h2>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-12">
+            @(Html.Telerik().Grid<dynamic>()
+                .Name("AppointmentGrid")
+                .Columns(columns =>
+                {
+                    columns.Bound("AppointmentCode").Title("Appointment Code").Width(150);
+                    columns.Bound("SubjectName").Title("Subject").Width(200);
+                    columns.Bound("NoOfPapers").Title("No. of Papers").Width(120);
+                    columns.Bound("AppointmentDate").Title("Deadline").Width(150).Format("{0:dd/MM/yyyy}");
+                    columns.Bound("Status").Title("Status").Width(120);
+                    columns.Template(@<text>
+                        <span class="label label-@(item.EmailSent ? "success" : "default")" title="Email Sent">
+                            <i class="fa fa-envelope"></i>
+                        </span>
+                        <span class="label label-@(item.SmsSent ? "success" : "default")" title="SMS Sent">
+                            <i class="fa fa-comment"></i>
+                        </span>
+                        <span class="label label-@(item.WhatsAppSent ? "success" : "default")" title="WhatsApp Sent">
+                            <i class="fa fa-whatsapp"></i>
+                        </span>
+                    </text>).Title("Notifications").Width(150);
+                    columns.Command(commands =>
+                    {
+                        commands.Custom("View").Text("View").Action("View", "QB_Appointment")
+                            .DataRouteValues(route => route.Add(o => o.Id).RouteKey("id"));
+                        commands.Custom("SendEmail").Text("Email").Ajax(true)
+                            .Action("SendNotifications", "QB_Appointment", new { notificationType = "Email" })
+                            .DataRouteValues(route => route.Add(o => o.Id).RouteKey("id"));
+                        commands.Custom("SendSMS").Text("SMS").Ajax(true)
+                            .Action("SendNotifications", "QB_Appointment", new { notificationType = "SMS" })
+                            .DataRouteValues(route => route.Add(o => o.Id).RouteKey("id"));
+                    }).Width(250);
+                })
+                .DataBinding(dataBinding => dataBinding
+                    .Ajax()
+                    .Select("GetAppointments", "QB_Appointment")
+                )
+                .Pageable(paging => paging.PageSize(20))
+                .Sortable()
+                .Filterable()
+                .Scrollable(scroll => scroll.Height(600))
+                .Resizable(resize => resize.Columns(true))
+                .HtmlAttributes(new { style = "height:600px;" })
+            )
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Grid initialization handled by Telerik
+        });
+    </script>
+}

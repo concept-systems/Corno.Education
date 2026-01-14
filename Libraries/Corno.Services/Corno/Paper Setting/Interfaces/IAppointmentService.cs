@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Corno.Data.Corno.Paper_Setting.Dtos;
 using Corno.Data.Corno.Paper_Setting.Models;

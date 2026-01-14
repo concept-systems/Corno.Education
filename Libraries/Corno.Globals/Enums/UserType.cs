@@ -1,4 +1,4 @@
-﻿namespace Corno.Globals.Enums;
+namespace Corno.Globals.Enums;
 
 public enum UserType
 {

@@ -1,4 +1,4 @@
-ï»¿using Corno.Data.Corno.Question_Bank.Models;
+using Corno.Data.Corno.Question_Bank.Models;
 using Corno.Globals.Enums;
 using Corno.Services.Corno.Masters.Interfaces;
 using Corno.Services.Corno.Question_Bank.Interfaces;
@@ -64,7 +64,7 @@ public class TelerikDocumentService : BaseService, ITelerikDocumentService
         var header = section.Headers.Default ?? section.Headers.Add();
         section.HeaderTopMargin = 36; // optional: 0.375" top padding
 
-        // Weâ€™ll use small tables to align left/right fields neatly.
+        // We’ll use small tables to align left/right fields neatly.
         // 1) First row: "Total No. of Questions" (left) and "Seat No." (right)
         var topTable = header.Blocks.AddTable();
         topTable.TableCellPadding = new Padding(0);
@@ -235,7 +235,7 @@ public class TelerikDocumentService : BaseService, ITelerikDocumentService
     }
 
     /*public static void BuildBody(RadFlowDocument document, Paper paper,
-        bool sectionNameAsAlpha = true) // A, B, Câ€¦ or numeric
+        bool sectionNameAsAlpha = true) // A, B, C… or numeric
     {
         var section = document.Sections.FirstOrDefault() ?? document.Sections.AddSection();
         section.PageMargins = new Padding(72); // 1" margins
@@ -345,7 +345,7 @@ public class TelerikDocumentService : BaseService, ITelerikDocumentService
                                           bool continueInSameParagraph)
     {
         var htmlProvider = new HtmlFormatProvider();
-        var fragment = htmlProvider.Import(html); // HTML â†’ RadFlowDocument [2](https://docs.telerik.com/devtools/document-processing/libraries/radwordsprocessing/model/paragraph)
+        var fragment = htmlProvider.Import(html); // HTML ? RadFlowDocument [2](https://docs.telerik.com/devtools/document-processing/libraries/radwordsprocessing/model/paragraph)
 
         var options = new InsertDocumentOptions
         {
@@ -375,7 +375,7 @@ public class TelerikDocumentService : BaseService, ITelerikDocumentService
         var header = section.Headers.Default ?? section.Headers.Add();
 
         // ---- Horizontal line BEFORE instructions ----
-        AddHorizontalRule(header); // <â€” renders a thin line across the page
+        AddHorizontalRule(header); // <— renders a thin line across the page
 
         // Small spacing
         header.Blocks.AddParagraph();
@@ -406,7 +406,7 @@ public class TelerikDocumentService : BaseService, ITelerikDocumentService
             var cNo = row.Cells.AddTableCell();
             var cTxt = row.Cells.AddTableCell();
 
-            // Widths: ~18 DIP (â‰ˆ 0.19") for numbering; text fills remaining
+            // Widths: ~18 DIP (˜ 0.19") for numbering; text fills remaining
             cNo.PreferredWidth = new TableWidthUnit(TableWidthUnitType.Fixed, 18);
             cTxt.PreferredWidth = new TableWidthUnit(TableWidthUnitType.Percent, 100);
 
@@ -422,14 +422,14 @@ public class TelerikDocumentService : BaseService, ITelerikDocumentService
         header.Blocks.AddParagraph();
 
         // ---- Horizontal line AFTER instructions ----
-        AddHorizontalRule(header); // <â€” closing line
+        AddHorizontalRule(header); // <— closing line
 
         // Optionally add a tiny spacer paragraph to ensure separation from the body
         var spacer = header.Blocks.AddParagraph();
         spacer.Spacing.SpacingAfter = 4;
     }
 
-    // Renders a full-width â€œHRâ€ using the documented table-top-border workaround.
+    // Renders a full-width “HR” using the documented table-top-border workaround.
     static void AddHorizontalRule(Header header, double thickness = 1.0)
     {
         var hr = header.Blocks.AddTable();
@@ -488,7 +488,7 @@ public class TelerikDocumentService : BaseService, ITelerikDocumentService
         AddHorizontalRuleTable(header); // [3](https://docs.telerik.com/devtools/wpf/api/telerik.windows.documents.layout.padding)
     }
 
-    // HR using Telerikâ€™s recommended technique: a 1-row table with a top border.
+    // HR using Telerik’s recommended technique: a 1-row table with a top border.
     static void AddHorizontalRuleTable(Header header, double thicknessDip = 1.0)
     {
         var hr = header.Blocks.AddTable();

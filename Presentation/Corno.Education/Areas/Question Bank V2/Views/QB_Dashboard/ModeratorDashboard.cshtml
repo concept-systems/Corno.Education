@@ -1,0 +1,145 @@
+@model Corno.Data.Corno.Question_Bank_V2.Dtos.ModeratorDashboardDto
+@{
+    ViewBag.Title = "Moderator Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="page-header">
+                <i class="fa fa-user-shield"></i> Moderator Dashboard
+            </h2>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-file-alt fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">@Model.TotalPapers</div>
+                            <div>Total Papers</div>
+                        </div>
+                    </div>
+                </div>
+                <a href="@Url.Action("Index", "QB_PaperGeneration")">
+                    <div class="panel-footer">
+                        <span class="pull-left">View All</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="panel panel-warning">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-file-invoice fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">@Model.GeneratedPapers</div>
+                            <div>Generated</div>
+                        </div>
+                    </div>
+                </div>
+                <a href="@Url.Action("Index", "QB_PaperGeneration", new { status = "Generated" })">
+                    <div class="panel-footer">
+                        <span class="pull-left">View Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-check-circle fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">@Model.DrawnPapers</div>
+                            <div>Drawn</div>
+                        </div>
+                    </div>
+                </div>
+                <a href="@Url.Action("Index", "QB_PaperGeneration", new { status = "Drawn" })">
+                    <div class="panel-footer">
+                        <span class="pull-left">View Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    @if (Model.RecentAppointments != null && Model.RecentAppointments.Any())
+    {
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">Recent Appointments</h4>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Appointment Code</th>
+                                    <th>Subject</th>
+                                    <th>No. of Papers</th>
+                                    <th>Deadline</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var appointment in Model.RecentAppointments)
+                                {
+                                    <tr>
+                                        <td>@appointment.AppointmentCode</td>
+                                        <td>@appointment.SubjectName</td>
+                                        <td>@appointment.NoOfPapers</td>
+                                        <td>@(appointment.AppointmentDate?.ToString("dd/MM/yyyy") ?? "")</td>
+                                        <td>
+                                            <span class="label label-@(appointment.Status == "Completed" ? "success" : "warning")">
+                                                @appointment.Status
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <a href="@Url.Action("GenerateAuto", "QB_PaperGeneration", new { appointmentId = appointment.Id })" 
+                                               class="btn btn-sm btn-primary">
+                                                <i class="fa fa-magic"></i> Generate Auto
+                                            </a>
+                                            <a href="@Url.Action("GenerateManual", "QB_PaperGeneration", new { appointmentId = appointment.Id })" 
+                                               class="btn btn-sm btn-info">
+                                                <i class="fa fa-hand-pointer"></i> Generate Manual
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .huge {
+        font-size: 40px;
+    }
+</style>

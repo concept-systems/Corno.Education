@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Corno.Data.Core;
 using Corno.Data.Corno;
+using Corno.Logger;
 using Corno.Services.Core.Interfaces;
 using Corno.Services.Corno.Interfaces;
 
@@ -722,17 +723,17 @@ public class ExamServerHelper
     {
         try
         {
-            var year =
+            var revalDate =
                 examService.Tbl_EXAM_SCHEDULE_MSTR_Repository.Get(
                     c => c.Num_FK_INST_NO == instance && c.Num_FK_COPRT_NO == coursePartId).FirstOrDefault();
-            if (null != year)
-                return year.Dtm_Reval_Date;
+            if (null != revalDate)
+                return revalDate.Dtm_Reval_Date;
         }
-        catch
+        catch (Exception exception)
         {
             // ignored
+            LogHandler.LogError(exception);
         }
-
         return null;
     }
 

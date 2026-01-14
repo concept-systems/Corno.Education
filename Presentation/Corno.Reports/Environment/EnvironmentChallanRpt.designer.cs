@@ -85,7 +85,7 @@ namespace Corno.Reports.Environment
             // 
             // sdsFees
             // 
-            this.sdsFees.ConnectionString = "CoreContext (Corno.OnlineExam)";
+            this.sdsFees.ConnectionString = "CoreContext (Corno.Education)";
             this.sdsFees.Name = "sdsFees";
             this.sdsFees.Parameters.AddRange(new Telerik.Reporting.SqlDataSourceParameter[] {
             new Telerik.Reporting.SqlDataSourceParameter("@InstanceID", System.Data.DbType.String, "44"),

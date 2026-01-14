@@ -84,7 +84,7 @@ namespace Corno.Reports.Revaluation
             // 
             // sdsRevaluationFees
             // 
-            this.sdsRevaluationFees.ConnectionString = "CoreContext (Corno.OnlineExam)";
+            this.sdsRevaluationFees.ConnectionString = "CoreContext (Corno.Education)";
             this.sdsRevaluationFees.Name = "sdsRevaluationFees";
             this.sdsRevaluationFees.Parameters.AddRange(new Telerik.Reporting.SqlDataSourceParameter[] {
             new Telerik.Reporting.SqlDataSourceParameter("@InstanceID", System.Data.DbType.String, "44"),

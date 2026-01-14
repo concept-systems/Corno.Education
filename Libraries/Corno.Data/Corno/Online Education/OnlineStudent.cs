@@ -1,4 +1,4 @@
-﻿using Corno.Data.Common;
+using Corno.Data.Common;
 
 namespace Corno.Data.Corno.Online_Education;
 

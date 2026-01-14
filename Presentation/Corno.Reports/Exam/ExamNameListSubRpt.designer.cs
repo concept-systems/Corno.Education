@@ -125,7 +125,7 @@ namespace Corno.Reports.Exam
             // 
             // sdsCollege
             // 
-            this.sdsCollege.ConnectionString = "CoreContext (Corno.OnlineExam)";
+            this.sdsCollege.ConnectionString = "CoreContext (Corno.Education)";
             this.sdsCollege.Name = "sdsCollege";
             this.sdsCollege.SelectCommand = "\r\nSELECT  Num_PK_COLLEGE_CD as ID,\r\n        Var_CL_COLLEGE_NM1 as Name\r\n     \r\n  " +
     "FROM  Tbl_COLLEGE_MSTR";
@@ -139,7 +139,7 @@ namespace Corno.Reports.Exam
             // 
             // sdsCoursePart
             // 
-            this.sdsCoursePart.ConnectionString = "CoreContext (Corno.OnlineExam)";
+            this.sdsCoursePart.ConnectionString = "CoreContext (Corno.Education)";
             this.sdsCoursePart.Name = "sdsCoursePart";
             this.sdsCoursePart.Parameters.Add(new Telerik.Reporting.SqlDataSourceParameter("@CourseID", System.Data.DbType.String, "=Parameters.Course.Value"));
             this.sdsCoursePart.SelectCommand = "SELECT Num_PK_COPRT_NO as ID, Var_COPRT_DESC as Name, Num_FK_CO_CD as CourseID\r\n " +
@@ -147,7 +147,7 @@ namespace Corno.Reports.Exam
             // 
             // sdsBranch
             // 
-            this.sdsBranch.ConnectionString = "CoreContext (Corno.OnlineExam)";
+            this.sdsBranch.ConnectionString = "CoreContext (Corno.Education)";
             this.sdsBranch.Name = "sdsBranch";
             this.sdsBranch.Parameters.Add(new Telerik.Reporting.SqlDataSourceParameter("@NUM_PK_CO_CD", System.Data.DbType.String, "=Parameters.Course.Value"));
             this.sdsBranch.Parameters.Add(new Telerik.Reporting.SqlDataSourceParameter("@Num_PK_COPRT_NO", System.Data.DbType.String, "= Parameters.CoursePart.Value"));
@@ -155,7 +155,7 @@ namespace Corno.Reports.Exam
             // 
             // sdsSubjectNames
             // 
-            this.sdsSubjectNames.ConnectionString = "CoreContext (Corno.OnlineExam)";
+            this.sdsSubjectNames.ConnectionString = "CoreContext (Corno.Education)";
             this.sdsSubjectNames.Name = "sdsSubjectNames";
             this.sdsSubjectNames.Parameters.Add(new Telerik.Reporting.SqlDataSourceParameter("@CollegeID", System.Data.DbType.String, "= Parameters.College.Value"));
             this.sdsSubjectNames.Parameters.Add(new Telerik.Reporting.SqlDataSourceParameter("@InstanceID", System.Data.DbType.String, "= Parameters.Instance.Value"));

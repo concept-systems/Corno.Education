@@ -1,0 +1,107 @@
+@model Corno.Data.Corno.Question_Bank_V2.Models.QB_Paper
+
+@{
+    ViewBag.Title = "View Paper";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="page-header">
+                <i class="fa fa-file-alt"></i> Paper: @Model.PaperCode
+                <div class="pull-right">
+                    @if (Model.Status != "Drawn")
+                    {
+                        <button type="button" class="btn btn-success" onclick="drawPaper()">
+                            <i class="fa fa-check"></i> Draw Paper
+                        </button>
+                    }
+                    @if (Model.WordDocumentContent != null && Model.WordDocumentContent.Length > 0)
+                    {
+                        <a href="@Url.Action("DownloadWord", new { id = Model.Id })" class="btn btn-primary">
+                            <i class="fa fa-download"></i> Download Word
+                        </a>
+                    }
+                    <a href="@Url.Action("Index")" class="btn btn-default">
+                        <i class="fa fa-arrow-left"></i> Back
+                    </a>
+                </div>
+            </h3>
+        </div>
+    </div>
+    
+    <!-- Paper Information -->
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">Paper Information</h4>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-3"><strong>Paper Code:</strong> @Model.PaperCode</div>
+                <div class="col-md-3"><strong>Set Number:</strong> @Model.SetNumber</div>
+                <div class="col-md-3"><strong>Type:</strong> @Model.PaperType</div>
+                <div class="col-md-3"><strong>Max Marks:</strong> @Model.MaxMarks</div>
+            </div>
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-md-3"><strong>Status:</strong> 
+                    <span class="label label-@(Model.Status == "Drawn" ? "success" : "warning")">
+                        @Model.Status
+                    </span>
+                </div>
+                <div class="col-md-3"><strong>Generated Date:</strong> @(Model.GeneratedDate?.ToString("dd/MM/yyyy HH:mm") ?? "")</div>
+                <div class="col-md-3"><strong>Drawn Date:</strong> @(Model.DrawnDate?.ToString("dd/MM/yyyy HH:mm") ?? "Not drawn")</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Paper Questions -->
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4 class="panel-title">Questions</h4>
+        </div>
+        <div class="panel-body">
+            @(Html.Telerik().Grid(Model.PaperDetails ?? new List<Corno.Data.Corno.Question_Bank_V2.Models.QB_PaperDetail>())
+                .Name("QuestionGrid")
+                .Columns(columns =>
+                {
+                    columns.Bound(c => c.SectionNo).Title("Section").Width(80);
+                    columns.Bound(c => c.QuestionNo).Title("Q.No").Width(80);
+                    columns.Bound(c => c.QuestionText).Title("Question").Width(400)
+                        .ClientTemplate("#= QuestionText.length > 100 ? QuestionText.substring(0, 100) + '...' : QuestionText #");
+                    columns.Bound(c => c.Marks).Title("Marks").Width(80);
+                    columns.Bound(c => c.DifficultyLevelName).Title("Difficulty").Width(100);
+                    columns.Bound(c => c.TaxonomyLevelName).Title("Taxonomy").Width(100);
+                    columns.Bound(c => c.SelectionMethod).Title("Method").Width(100);
+                })
+                .Scrollable()
+                .Resizable(resize => resize.Columns(true))
+            )
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function drawPaper() {
+        if (!confirm("Are you sure you want to draw this paper? Once drawn, it cannot be modified.")) {
+            return;
+        }
+        
+        $.ajax({
+            url: '@Url.Action("DrawPaper", "QB_PaperGeneration")',
+            type: 'POST',
+            data: { id: @Model.Id },
+            success: function (result) {
+                if (result.success) {
+                    alert(result.message);
+                    location.reload();
+                } else {
+                    alert("Error: " + result.message);
+                }
+            },
+            error: function () {
+                alert("An error occurred while drawing the paper.");
+            }
+        });
+    }
+</script>

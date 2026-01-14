@@ -1,4 +1,4 @@
-﻿using Corno.Data.Corno;
+using Corno.Data.Corno;
 using Corno.Data.Corno.Masters;
 
 namespace Corno.Services.Corno.Interfaces;

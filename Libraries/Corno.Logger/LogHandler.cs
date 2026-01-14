@@ -1,4 +1,4 @@
-﻿using Corno.Logger.Services;
+using Corno.Logger.Services;
 using System;
 using System.Collections;
 using System.Collections.Generic;

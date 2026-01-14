@@ -1,0 +1,228 @@
+
+@using Corno.Globals
+@model Corno.Data.Corno.Question_Bank_V2.Models.QB_Appointment
+
+@{
+    ViewBag.Title = "Create Appointment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Create", "QB_Appointment", FormMethod.Post, new { @class = "form-horizontal", id = "appointmentForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="page-header">
+                    <i class="fa fa-calendar-plus"></i> Create Appointment
+                </h3>
+            </div>
+        </div>
+
+        <!-- Context Selection -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Context Selection</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.FacultyId, new { @class = "control-label" })
+                            <span class="text-danger">*</span>
+                            @Html.DropDownListFor(m => m.FacultyId, ViewBag.Faculties as SelectList, "Select Faculty",
+                                new { @class = "form-control", @required = "required", id = "FacultyId" })
+                            @Html.ValidationMessageFor(m => m.FacultyId)
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.CourseId, new { @class = "control-label" })
+                            <span class="text-danger">*</span>
+                            @Html.DropDownListFor(m => m.CourseId, ViewBag.Courses as SelectList, "Select Course",
+                                new { @class = "form-control", @required = "required", id = "CourseId" })
+                            @Html.ValidationMessageFor(m => m.CourseId)
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.SubjectId, new { @class = "control-label" })
+                            <span class="text-danger">*</span>
+                            @Html.DropDownListFor(m => m.SubjectId, ViewBag.Subjects as SelectList, "Select Subject",
+                                new { @class = "form-control", @required = "required", id = "SubjectId" })
+                            @Html.ValidationMessageFor(m => m.SubjectId)
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.StructureId, new { @class = "control-label" })
+                            <span class="text-danger">*</span>
+                            @Html.DropDownListFor(m => m.StructureId, ViewBag.Structures as SelectList, "Select Structure",
+                                new { @class = "form-control", @required = "required", id = "StructureId" })
+                            @Html.ValidationMessageFor(m => m.StructureId)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Appointment Details -->
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4 class="panel-title">Appointment Details</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.NoOfPapers, new { @class = "control-label" })
+                            <span class="text-danger">*</span>
+                            @Html.TextBoxFor(m => m.NoOfPapers, new { @class = "form-control", type = "number", min = "1", @required = "required" })
+                            @Html.ValidationMessageFor(m => m.NoOfPapers)
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.AppointmentDate, new { @class = "control-label" })
+                            <span class="text-danger">*</span>
+                            @Html.TextBoxFor(m => m.AppointmentDate, "{0:yyyy-MM-dd}", 
+                                new { @class = "form-control", type = "date", @required = "required" })
+                            @Html.ValidationMessageFor(m => m.AppointmentDate)
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.AppointmentTime, new { @class = "control-label" })
+                            @Html.TextBoxFor(m => m.AppointmentTime, "{0:HH:mm}", 
+                                new { @class = "form-control", type = "time" })
+                            @Html.ValidationMessageFor(m => m.AppointmentTime)
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Instructions, new { @class = "control-label" })
+                            @Html.TextAreaFor(m => m.Instructions, new { @class = "form-control", rows = "3" })
+                            @Html.ValidationMessageFor(m => m.Instructions)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Role Assignments -->
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h4 class="panel-title">Role Assignments</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h5>Question Setters</h5>
+                        <select id="setterStaffIds" name="setterStaffIds" multiple="multiple" class="form-control" style="height: 200px;">
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <h5>Question Checkers</h5>
+                        <select id="checkerStaffIds" name="checkerStaffIds" multiple="multiple" class="form-control" style="height: 200px;">
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <h5>Moderators</h5>
+                        <select id="moderatorStaffIds" name="moderatorStaffIds" multiple="multiple" class="form-control" style="height: 200px;">
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-save"></i> Create Appointment
+                    </button>
+                    <a href="@Url.Action("Index")" class="btn btn-default">
+                        <i class="fa fa-times"></i> Cancel
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @{
+        var sessionData = Session[User.Identity.Name] as SessionData;
+        var instanceId = sessionData != null ? sessionData.InstanceId : 0;
+    }
+    <script type="text/javascript">
+        function getSubjectId() {
+            return {
+                subjectId: $("#SubjectId").val(),
+                instanceId: @instanceId
+            };
+        }
+
+        $(document).ready(function () {
+            // Load structures when subject changes
+            $("#SubjectId").change(function () {
+                var subjectId = $(this).val();
+                var instanceId = @instanceId;
+
+                if (subjectId) {
+                    $.ajax({
+                        url: '@Url.Action("GetStructuresBySubject", "QB_Appointment")',
+                        type: 'POST',
+                        data: { subjectId: subjectId, instanceId: instanceId },
+                        success: function (data) {
+                            var structureSelect = $("#StructureId");
+                            structureSelect.empty();
+                            structureSelect.append($('<option></option>').val('').text('Select Structure'));
+                            $.each(data, function (index, item) {
+                                structureSelect.append($('<option></option>').val(item.Id).text(item.Name));
+                            });
+                        }
+                    });
+                }
+            });
+
+            // Load staff when subject changes
+            $("#SubjectId").change(function () {
+                var subjectId = $(this).val();
+                var instanceId = @instanceId;
+
+                if (subjectId) {
+                    $.ajax({
+                        url: '@Url.Action("GetStaffBySubject", "QB_Appointment")',
+                        type: 'POST',
+                        data: { subjectId: subjectId, instanceId: instanceId },
+                        success: function (data) {
+                            updateStaffSelects(data);
+                        }
+                    });
+                }
+            });
+        });
+
+        function updateStaffSelects(staff) {
+            var setterSelect = $("#setterStaffIds");
+            var checkerSelect = $("#checkerStaffIds");
+            var moderatorSelect = $("#moderatorStaffIds");
+
+            setterSelect.empty();
+            checkerSelect.empty();
+            moderatorSelect.empty();
+
+            $.each(staff, function (index, item) {
+                setterSelect.append($('<option></option>').val(item.Id).text(item.Name));
+                checkerSelect.append($('<option></option>').val(item.Id).text(item.Name));
+                moderatorSelect.append($('<option></option>').val(item.Id).text(item.Name));
+            });
+        }
+    </script>
+}

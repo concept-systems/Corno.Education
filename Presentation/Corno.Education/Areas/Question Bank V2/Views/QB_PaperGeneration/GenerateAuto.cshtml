@@ -1,0 +1,121 @@
+@{
+    ViewBag.Title = "Generate Paper (Auto)";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var appointment = ViewBag.Appointment as Corno.Data.Corno.Question_Bank_V2.Models.QB_Appointment;
+    var appointmentId = ViewBag.AppointmentId as int?;
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="page-header">
+                <i class="fa fa-magic"></i> Automatic Paper Generation
+            </h3>
+        </div>
+    </div>
+    
+    @if (appointment != null)
+    {
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h4 class="panel-title">Appointment Information</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3"><strong>Appointment Code:</strong> @appointment.AppointmentCode</div>
+                    <div class="col-md-3"><strong>Subject:</strong> @appointment.SubjectName</div>
+                    <div class="col-md-3"><strong>No. of Papers:</strong> @appointment.NoOfPapers</div>
+                    <div class="col-md-3"><strong>Deadline:</strong> @(appointment.AppointmentDate?.ToString("dd/MM/yyyy") ?? "")</div>
+                </div>
+            </div>
+        </div>
+    }
+    
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4 class="panel-title">Generation Settings</h4>
+        </div>
+        <div class="panel-body">
+            <form id="generateForm">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="noOfSets">Number of Sets to Generate:</label>
+                            <input type="number" id="noOfSets" name="noOfSets" class="form-control" 
+                                   min="1" max="@(appointment?.NoOfPapers ?? 10)" value="1" required />
+                            <small class="text-muted">Maximum: @(appointment?.NoOfPapers ?? 10) sets</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert alert-info">
+                            <i class="fa fa-info-circle"></i> 
+                            The system will automatically select questions based on the structure, 
+                            difficulty distribution, taxonomy levels, and question usage history.
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <button type="button" class="btn btn-primary" onclick="generatePapers()">
+                            <i class="fa fa-magic"></i> Generate Papers
+                        </button>
+                        <a href="@Url.Action("Index", new { appointmentId })" class="btn btn-default">
+                            <i class="fa fa-times"></i> Cancel
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div id="generationResult" style="display: none;"></div>
+</div>
+
+<script type="text/javascript">
+    function generatePapers() {
+        var noOfSets = $("#noOfSets").val();
+        if (!noOfSets || noOfSets < 1) {
+            alert("Please enter a valid number of sets.");
+            return;
+        }
+        
+        if (!confirm("Generate " + noOfSets + " paper set(s)? This may take a few moments.")) {
+            return;
+        }
+        
+        $.ajax({
+            url: '@Url.Action("GenerateAuto", "QB_PaperGeneration")',
+            type: 'POST',
+            data: { 
+                appointmentId: @(appointmentId ?? 0),
+                noOfSets: noOfSets
+            },
+            beforeSend: function () {
+                $("#generationResult").html('<div class="alert alert-info"><i class="fa fa-spinner fa-spin"></i> Generating papers...</div>').show();
+            },
+            success: function (result) {
+                if (result.success) {
+                    var html = '<div class="alert alert-success"><i class="fa fa-check"></i> ' + result.message + '</div>';
+                    html += '<div class="panel panel-success"><div class="panel-heading"><h4>Generated Papers</h4></div>';
+                    html += '<div class="panel-body"><ul>';
+                    $.each(result.papers, function (index, paper) {
+                        html += '<li><a href="@Url.Action("ViewPaper", "QB_PaperGeneration")?id=' + paper.Id + '">' + paper.PaperCode + ' (Set ' + paper.SetNumber + ')</a></li>';
+                    });
+                    html += '</ul></div></div>';
+                    $("#generationResult").html(html);
+                    
+                    setTimeout(function () {
+                        window.location.href = '@Url.Action("Index", new { appointmentId })';
+                    }, 3000);
+                } else {
+                    $("#generationResult").html('<div class="alert alert-danger"><i class="fa fa-exclamation-triangle"></i> Error: ' + result.message + '</div>');
+                }
+            },
+            error: function () {
+                $("#generationResult").html('<div class="alert alert-danger"><i class="fa fa-exclamation-triangle"></i> An error occurred while generating papers.</div>');
+            }
+        });
+    }
+</script>
